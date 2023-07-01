@@ -25,7 +25,7 @@ jobs:
       - name: Set up Gradle Wrapper
         run: |
           cd server
-          chmod +x server
+          chmod +x ./*
       - name: Build with Gradle
         run: |
           cd server
