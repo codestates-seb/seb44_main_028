@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/playpack?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: rootroot
+    url: jdbc:mysql://${{secrets.RDS_ENDPOINT}}:${{secrets.RDS_PORT}}
+    username: ${{secrets.RDS_Mysql_Admin_id}}
+    password: ${{secrets.RDS_Mysql_Admin_password}}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
