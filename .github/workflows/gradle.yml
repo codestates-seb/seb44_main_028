@@ -52,7 +52,7 @@ jobs:
     # CodeDeploy에게 배포 명령을 내립니다.
       - name: Code Deploy
         run: >
-         aws deploy create-deployment --application-name seb44main028
+         aws deploy create-deployment --application-name seb44main028-codeDeploy
          --deployment-config-name CodeDeployDefault.AllAtOnce
          --deployment-group-name seb44main028
          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=seb44main028.zip
