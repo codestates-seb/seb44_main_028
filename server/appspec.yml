@@ -10,9 +10,3 @@ permissions:
     pattern: "**"
     owner: ubuntu
     group: ubuntu
-
-hooks:
-  ApplicationStart:
-    - location: server/scripts/deploy.sh
-      timeout: 60
-      runas: ubuntu
