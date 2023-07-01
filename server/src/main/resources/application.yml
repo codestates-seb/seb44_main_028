@@ -4,8 +4,6 @@ spring:
     username: ${RDS_MYSQL_ADMIN_ID}
     password: ${RDS_MYSQL_ADMIN_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-awsParameterStorePropertySource:
-  enabled: true
   jpa:
     properties:
       hibernate:
