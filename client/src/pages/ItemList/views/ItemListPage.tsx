@@ -1,4 +1,4 @@
 function ItemListPage() {
-  return <div>Item list</div>;
+  return <div>item list page</div>;
 }
 export default ItemListPage;

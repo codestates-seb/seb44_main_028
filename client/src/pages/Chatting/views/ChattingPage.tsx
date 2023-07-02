@@ -1,4 +1,4 @@
 function ChattingPage() {
-  return null;
+  return <div>ChattingPage</div>;
 }
 export default ChattingPage;

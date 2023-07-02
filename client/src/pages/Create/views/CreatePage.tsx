@@ -1,4 +1,4 @@
 function CreatePage() {
-  return <div>detail page</div>;
+  return <div>create page</div>;
 }
 export default CreatePage;
