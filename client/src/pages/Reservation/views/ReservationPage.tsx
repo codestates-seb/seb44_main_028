@@ -1,4 +1,4 @@
 function ReservationPage() {
-  return <div>Reservation page</div>;
+  return <div>reservation page</div>;
 }
 export default ReservationPage;

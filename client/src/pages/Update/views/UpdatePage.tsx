@@ -1,4 +1,4 @@
 function UpdatePage() {
-  return <div>edit page</div>;
+  return <div>update page</div>;
 }
 export default UpdatePage;
