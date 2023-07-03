@@ -1,6 +1,6 @@
 #!/bin/bash
 # 빌드 파일의 이름이 콘텐츠와 다르다면 다음 줄의 .jar 파일 이름을 수정하시기 바랍니다.
-BUILD_JAR=$(ls /home/ubuntu/action/build/libs/travel-rental-0.0.1-SNAPSHOT.jar)
+BUILD_JAR=$(ls /home/ubuntu/action/server/build/libs/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 
 echo "> 현재 시간: $(date)" >> /home/ubuntu/action/deploy.log
@@ -26,4 +26,4 @@ fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
-sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/action/deploy.log 2>/home/ubuntu/action/deploy_err.log &
+sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/action/server/deploy.log 2>/home/ubuntu/action/server/deploy_err.log &
