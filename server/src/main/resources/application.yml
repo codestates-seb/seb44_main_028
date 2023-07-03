@@ -12,3 +12,9 @@ spring:
         hbm2ddl:
           auto: create
     show-sql: true
+aws:
+  paramstore:
+    enabled: true
+    prefix: /spring-boot-aws
+    name: seb44main028-ec2
+    profileSeparator: _
