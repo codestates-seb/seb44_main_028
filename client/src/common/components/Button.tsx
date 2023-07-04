@@ -17,7 +17,7 @@ const DefaultBtn = styled.button`
   &:hover {
     background-color: #1d5799;
   }
-  &:active {
+  /* &:active {
     transform: scale(0.98);
-  }
+  } */
 `;
