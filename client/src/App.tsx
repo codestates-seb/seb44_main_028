@@ -9,6 +9,7 @@ function App() {
       <Header />
       <Router />
       <Footer />
+      {/* <Footer logo="" copyrightText="© PLAYPACK All Rights Reserved." /> */}
     </>
   );
 }
