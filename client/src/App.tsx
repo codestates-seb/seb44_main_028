@@ -7,6 +7,7 @@ function App() {
   return (
     <>
       <Header />
+      <span>아이우에오</span>
       <Router />
       <Footer />
     </>
