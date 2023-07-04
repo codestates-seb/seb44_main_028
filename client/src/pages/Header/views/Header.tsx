@@ -9,10 +9,12 @@ import {
   NavIconWrapper,
   NavSearchForm,
   ActionWrapper,
+  LogoutInfo,
 } from '../style';
 
 function Header() {
   const [isClick, setIsClick] = useState(false);
+  const [isLogoutHovered, setIsLogoutHovered] = useState(false);
   const handleClick = () => {
     setIsClick(!isClick);
   };
@@ -35,7 +37,11 @@ function Header() {
         </NavIconWrapper>
       </NavWrapper>
       <ActionWrapper>
-        <MdLogout />
+        <MdLogout
+          onMouseEnter={() => setIsLogoutHovered(true)}
+          onMouseLeave={() => setIsLogoutHovered(false)}
+        />
+        <LogoutInfo isHovered={isLogoutHovered}>logout</LogoutInfo>
       </ActionWrapper>
     </HeaderContainer>
   );

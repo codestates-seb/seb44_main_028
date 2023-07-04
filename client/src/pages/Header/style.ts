@@ -101,4 +101,31 @@ export const ActionWrapper = styled.div`
     color: black;
     font-size: 20px;
   }
+  position: relative;
+`;
+export const LogoutInfo = styled.div<{ isHovered: boolean }>`
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 70px;
+  height: 35px;
+  background-color: #fff;
+  top: 30px;
+  right: -15px;
+  border-radius: 5px;
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.1));
+  &::before {
+    content: '';
+    border-right: 13px solid transparent;
+    border-bottom: 13px solid #fff;
+    position: absolute;
+    top: -9px;
+    right: 17px;
+  }
+  ${({ isHovered }) =>
+    isHovered &&
+    css`
+      display: flex;
+    `}
 `;
