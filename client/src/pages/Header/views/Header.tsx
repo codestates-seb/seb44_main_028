@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { MdSearch, MdSend, MdLogout } from 'react-icons/md';
 import { LogoText, NavMenu } from '../constants';
 import {
@@ -20,30 +21,41 @@ function Header() {
   };
 
   return (
-    <HeaderContainer>
-      <LogoWrapper>{LogoText}</LogoWrapper>
-      <NavWrapper>
-        <ol>
-          {NavMenu.map((item, idx) => {
-            return <NavList key={idx}>{item}</NavList>;
-          })}
-        </ol>
-        <NavIconWrapper>
-          <NavSearchForm isClick={isClick}>
-            <input type="text" />
-            <MdSearch onClick={handleClick} />
-          </NavSearchForm>
-          <MdSend />
-        </NavIconWrapper>
-      </NavWrapper>
-      <ActionWrapper>
-        <MdLogout
-          onMouseEnter={() => setIsLogoutHovered(true)}
-          onMouseLeave={() => setIsLogoutHovered(false)}
-        />
-        <LogoutInfo isHovered={isLogoutHovered}>logout</LogoutInfo>
-      </ActionWrapper>
-    </HeaderContainer>
+    <Router>
+      <HeaderContainer>
+        <LogoWrapper>
+          <Link to="/">{LogoText}</Link>
+        </LogoWrapper>
+        <NavWrapper>
+          <ol>
+            <NavList>
+              <Link to="/mypage">{NavMenu[0]}</Link>
+            </NavList>
+            <NavList>
+              <Link to="/create">{NavMenu[1]}</Link>
+            </NavList>
+          </ol>
+          <NavIconWrapper>
+            <NavSearchForm isClick={isClick}>
+              <input type="text" />
+              <MdSearch onClick={handleClick} />
+            </NavSearchForm>
+            <Link to="/chatting">
+              <MdSend />
+            </Link>
+          </NavIconWrapper>
+        </NavWrapper>
+        <ActionWrapper>
+          <Link to="/login">
+            <MdLogout
+              onMouseEnter={() => setIsLogoutHovered(true)}
+              onMouseLeave={() => setIsLogoutHovered(false)}
+            />
+          </Link>
+          <LogoutInfo isHovered={isLogoutHovered}>logout</LogoutInfo>
+        </ActionWrapper>
+      </HeaderContainer>
+    </Router>
   );
 }
 export default Header;
