@@ -27,7 +27,7 @@ public class ImageController {
 
         return new ResponseEntity(image, HttpStatus.OK);
     }
-    @GetMapping("iamge")
+    @GetMapping("image")
     public ResponseEntity postImage2(){
 
 
