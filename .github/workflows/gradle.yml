@@ -34,8 +34,8 @@ jobs:
         env:
           spring.datasource.username: ${{secrets.RDS_MYSQL_ADMIN_ID}}
           spring.datasource.password: ${{secrets.RDS_MYSQL_ADMIN_PASSWORD}}
-          #cloud.aws.credentials.accessKey: ${{secrets.ACCESS_KEY}}
-          #cloud.aws.credentials.secretKey: ${{secrets.SECRET_ACCESS_KEY}}
+          cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
+          cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           
           
       - name: Build with Gradle
