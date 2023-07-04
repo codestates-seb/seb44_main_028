@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
@@ -15,8 +17,9 @@ import javax.persistence.Id;
 @Entity
 public class Member extends BaseEntity {
 
-    @Id // UUID사용
-    private String memberId;
+    @Id // 멤버의 경우 숫자형식의 id 사용
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long memberId;
     private String email;
     private String name;
 
@@ -24,6 +27,10 @@ public class Member extends BaseEntity {
 
     private Double latitude;
     private Double longitude;
+
+    public Member(String email) {
+        this.email = email;
+    }
 
 /*    private Double totalRateScore;
     private Double totalRateCount;*/
