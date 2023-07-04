@@ -8,6 +8,7 @@ import {
   NavWrapper,
   NavList,
   NavIconWrapper,
+  NavSendIconWrapper,
   NavSearchForm,
   ActionWrapper,
   LogoutInfo,
@@ -40,9 +41,11 @@ function Header() {
               <input type="text" />
               <MdSearch onClick={handleClick} />
             </NavSearchForm>
-            <Link to="/chatting">
-              <MdSend />
-            </Link>
+            <NavSendIconWrapper>
+              <Link to="/chatting">
+                <MdSend />
+              </Link>
+            </NavSendIconWrapper>
           </NavIconWrapper>
         </NavWrapper>
         <ActionWrapper>

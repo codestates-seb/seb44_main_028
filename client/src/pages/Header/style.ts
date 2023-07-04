@@ -38,11 +38,11 @@ export const NavList = styled.li`
 export const NavIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  & > svg {
-    font-size: 18px;
-    margin-right: 10.125rem;
-    margin-left: 2rem;
-  }
+`;
+export const NavSendIconWrapper = styled.div`
+  font-size: 18px;
+  margin-right: 10.125rem;
+  margin-left: 2rem;
 `;
 const slideInFromLeft = keyframes`
   0% {
