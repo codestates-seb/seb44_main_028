@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdSearch, MdSend, MdLogout } from 'react-icons/md';
 import { LogoText, NavMenu } from '../constants';
 import {
@@ -7,10 +7,16 @@ import {
   NavWrapper,
   NavList,
   NavIconWrapper,
+  NavSearchForm,
   ActionWrapper,
 } from '../style';
 
 function Header() {
+  const [isClick, setIsClick] = useState(false);
+  const handleClick = () => {
+    setIsClick(!isClick);
+  };
+
   return (
     <HeaderContainer>
       <LogoWrapper>{LogoText}</LogoWrapper>
@@ -21,7 +27,10 @@ function Header() {
           })}
         </ol>
         <NavIconWrapper>
-          <MdSearch />
+          <NavSearchForm isClick={isClick}>
+            <input type="text" />
+            <MdSearch onClick={handleClick} />
+          </NavSearchForm>
           <MdSend />
         </NavIconWrapper>
       </NavWrapper>

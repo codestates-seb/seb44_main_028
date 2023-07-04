@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 export const HeaderContainer = styled.header`
   display: flex;
@@ -24,9 +24,10 @@ export const LogoWrapper = styled.div`
   color: #3aa6b9;
 `;
 export const NavWrapper = styled.div`
-  width: 85%;
+  flex: 1;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   & > ol {
     display: flex;
   }
@@ -37,16 +38,60 @@ export const NavList = styled.li`
 export const NavIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  & > svg:first-child {
-    width: 20px;
-    height: 20px;
-  }
-  & > svg:last-child {
+  & > svg {
     font-size: 18px;
     margin-right: 10.125rem;
     margin-left: 2rem;
   }
 `;
+const slideInFromLeft = keyframes`
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    width: 220px;
+    opacity: 1;
+  }
+`;
+const slideOutToRight = keyframes`
+  0% {
+    width: 220px;
+    opacity: 1;
+  } 
+  100% {
+    width: 0;
+    opacity: 0;
+  }
+`;
+export const NavSearchForm = styled.form<{ isClick: boolean }>`
+  display: flex;
+  align-items: center;
+  & > svg {
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+    color: ${(props) => (props.isClick ? '#ffff' : 'inherit')};
+  }
+  & > input {
+    height: 26px;
+    border-radius: 20px;
+    transform: translateX(28px);
+    background-color: #d6d6d6;
+    border: none;
+    padding: 0.5rem 1rem;
+    padding-right: 2.5rem;
+    animation: ${({ isClick }) =>
+      isClick
+        ? css`
+            ${slideInFromLeft} 0.3s ease-in-out forwards;
+          `
+        : css`
+            ${slideOutToRight} 0.3s ease-in-out forwards;
+          `};
+  }
+`;
+
 export const ActionWrapper = styled.div`
   width: 5%;
   display: flex;
