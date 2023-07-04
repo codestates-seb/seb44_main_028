@@ -9,6 +9,7 @@ permissions:
 
 env:
   S3_BUCKET_NAME: seb44main028-bucket
+  RESOURCE_PATH: ./server/src/main/resources/application.yml
 
 jobs:
   build:
@@ -26,6 +27,17 @@ jobs:
         run: |
           cd server
           chmod +x ./*
+      - name : Set Yaml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          spring.datasource.username: ${{secrets.RDS_MYSQL_ADMIN_ID}}
+          spring.datasource.password: ${{secrets.RDS_MYSQL_ADMIN_PASSWORD}}
+          #cloud.aws.credentials.accessKey: ${{secrets.ACCESS_KEY}}
+          #cloud.aws.credentials.secretKey: ${{secrets.SECRET_ACCESS_KEY}}
+          
+          
       - name: Build with Gradle
         run: |
           cd server
