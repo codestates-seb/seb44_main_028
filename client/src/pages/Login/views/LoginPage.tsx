@@ -1,4 +1,6 @@
+import { KakaoLoginBtn } from '../style';
+
 function LoginPage() {
-  return <div>login page</div>;
+  return <KakaoLoginBtn />;
 }
 export default LoginPage;
