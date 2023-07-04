@@ -3,6 +3,8 @@ import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { KakaoLoginBtn } from '../style';
+import { useDispatch } from 'react-redux';
+import { createUserInfo } from '../../../common/store/UserInfoStore';
 
 const fetchUserData = async (code: string | null) => {
   if (!code) return;
@@ -14,6 +16,7 @@ const fetchUserData = async (code: string | null) => {
 
 function KakaoLogin() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [authorizationCode, setAuthorizationCode] = useState<string | null>('');
 
   const {
@@ -27,7 +30,23 @@ function KakaoLogin() {
       enabled: !!authorizationCode,
     },
   );
-  console.log(userData);
+  console.log('유저 정보', userData);
+
+  if (isError) {
+    console.log(error);
+  }
+
+  useEffect(() => {
+    if (userData) {
+      dispatch(
+        createUserInfo({
+          displayName: userData.displayName,
+          latitude: userData.latitude,
+          longitude: userData.longitude,
+        }),
+      );
+    }
+  }, [userData]);
 
   const handleKakaoLogin = async () => {
     try {
@@ -53,6 +72,7 @@ function KakaoLogin() {
   useEffect(() => {
     getAuthorizationCode();
   }, [location]);
+
   return <KakaoLoginBtn onClick={handleKakaoLogin} />;
 }
 export default KakaoLogin;
