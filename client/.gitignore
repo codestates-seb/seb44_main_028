@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 hosting.YnVpbGQ.cache
+
+package-lock.json
