@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { KakaoLoginBtn } from '../style';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 function KakaoLogin() {
   const location = useLocation();
