@@ -1,5 +1,6 @@
 spring:
   datasource:
+    # RDS 접근 설정
     url: jdbc:mysql://seb44main028-db.cx1erli3wray.ap-northeast-2.rds.amazonaws.com:13306
     username: ${RDS_MYSQL_ADMIN_ID}
     password: ${RDS_MYSQL_ADMIN_PASSWORD}
@@ -11,10 +12,17 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
-    show-sql: true
-aws:
-  paramstore:
-    enabled: true
-    prefix: /spring-boot-aws
-    name: seb44main028-ec2
-    profileSeparator: _
+
+cloud:
+  aws:
+    # S3 접근 권한 설정 -image
+    credentials:
+      accessKey : ${ACCESS_KEY}
+      secretKey : ${SECRET_ACCESS_KEY}
+    s3:
+      bucket: seb44main028image-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto:
+        false
