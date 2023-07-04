@@ -3,6 +3,7 @@ package com.ftiland.travelrental.reservation.entity;
 import com.ftiland.travelrental.common.aduit.BaseEntity;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.product.entity.Product;
+import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
