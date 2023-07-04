@@ -5,4 +5,5 @@ export const KakaoLoginButton = styled.div`
   background-repeat: no-repeat;
   width: 400px;
   height: 60px;
+  cursor: pointer;
 `;
