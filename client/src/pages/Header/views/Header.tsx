@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MdSearch, MdSend, MdLogout } from 'react-icons/md';
 import { LogoText, NavMenu } from '../constants';
 import {
