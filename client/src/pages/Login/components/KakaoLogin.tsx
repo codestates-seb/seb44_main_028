@@ -19,6 +19,7 @@ function KakaoLogin() {
   const dispatch = useDispatch();
   const [authorizationCode, setAuthorizationCode] = useState<string | null>('');
 
+  // 4. 인가 코드를 이용하여 유저 정보를 가져옴
   const {
     data: userData,
     isError,
@@ -36,6 +37,7 @@ function KakaoLogin() {
     console.log(error);
   }
 
+  // 5. 유저 정보를 store에 저장
   useEffect(() => {
     if (userData) {
       dispatch(
@@ -48,6 +50,7 @@ function KakaoLogin() {
     }
   }, [userData]);
 
+  // 1. 카카오 로그인 버튼 클릭 시 응답으로 반환 받은 redirect uri로 이동
   const handleKakaoLogin = async () => {
     try {
       const response = await axios.get('https://playpack.shop/api/members/me');
@@ -59,6 +62,7 @@ function KakaoLogin() {
     }
   };
 
+  // 3. redirect uri에서 인가 코드를 추출하여 state에 저장
   const getAuthorizationCode = () => {
     const authorizationCode = new URLSearchParams(location.search).get('code');
     if (authorizationCode) {
@@ -69,6 +73,7 @@ function KakaoLogin() {
     }
   };
 
+  // 2. redirect uri로 이동 후 인가 코드 추출하는 함수 호출
   useEffect(() => {
     getAuthorizationCode();
   }, [location]);
