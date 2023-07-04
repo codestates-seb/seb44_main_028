@@ -2,22 +2,21 @@ import React from 'react';
 import { Container, Box, LogoBox, TextBox } from '../FooterStyles';
 import { FooterType } from '../type';
 
-const Footer: React.FC<FooterType> = () => {
+function Footer({ prop1 }: FooterType) {
   // 추가적인 코드 작성
-
   return (
     <Container>
       <Box>
-        <LogoBox>
-          {/*<img src="" alt="Logo" />*/}
-          로고
-        </LogoBox>
-        <TextBox>
-          <p>© PLAYPACK All Rights Reserved.</p>
-        </TextBox>
+        <LogoBox>{prop1}</LogoBox>
+
+        <Box>
+          <TextBox>
+            <h6>© PLAYPACK All Rights Reserved.</h6>
+          </TextBox>
+        </Box>
       </Box>
     </Container>
   );
-};
+}
 
 export default Footer;
