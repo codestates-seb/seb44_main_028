@@ -2,39 +2,51 @@ package com.ftiland.travelrental.product.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
-import com.ftiland.travelrental.image.entity.Image;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ftiland.travelrental.member.entity.Member;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.*;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Product extends BaseEntity {
 
     @Id
     private String productId;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String content;
 
-    // 이미지 필드 필요
-
+    @Column(nullable = false)
     private Integer baseFee;
+    @Column(nullable = false)
     private Integer feePerDay;
+    @Column(nullable = false)
     private Integer overdueFee;
+    @Column(nullable = false)
     private Integer minimumRentalPeriod;
 
-    private Double totalRateScore;
-    private Double totalRateCount;
-
+    @Column(nullable = false)
+    private Integer totalRateScore;
+    @Column(nullable = false)
+    private Integer totalRateCount;
+    @Column(nullable = false)
     private Integer viewCount;
 
-    @OneToMany(mappedBy = "product")
-    private List<Image> images;
+    @Column(nullable = false)
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
