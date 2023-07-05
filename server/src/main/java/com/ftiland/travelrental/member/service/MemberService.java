@@ -1,6 +1,6 @@
 package com.ftiland.travelrental.member.service;
 
-import com.ftiland.travelrental.member.MemberRepository.MemberRepository;
+import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.entity.Member;
 import org.springframework.stereotype.Service;
 
