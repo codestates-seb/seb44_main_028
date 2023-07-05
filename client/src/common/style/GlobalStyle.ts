@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`  
   *{
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   ol{
     padding: 0;
   }
-  
+
   li{
     list-style: none;
   }
