@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { colorPalette } from '../utils/enum/colorPalette';
 
 export const ItemCardContainer = styled.div`
