@@ -45,7 +45,7 @@ class ProductServiceTest {
     @DisplayName("상품 생성 성공")
     void createProduct_SUCCESS() {
         // given
-        Member member = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1117",
+        Member member = new Member(1L,
                 "test@test.com",
                 "이명규",
                 37.5793493362539,
@@ -107,7 +107,7 @@ class ProductServiceTest {
     @DisplayName("상품 생성 실패 - 멤버 위치정보 없을 때")
     void createProduct_FAIL_NOT_FOUND_LOCATION() {
         // given
-        Member member = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1117",
+        Member member = new Member(1L,
                 "test@test.com",
                 "이명규",
                 null,
@@ -133,13 +133,14 @@ class ProductServiceTest {
     @DisplayName("상품 수정 성공")
     void updateProduct_SUCCESS() {
         // given
-        Member member = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1117",
+        Member member = new Member(1L,
                 "test@test.com",
                 "이명규",
                 37.5793493362539,
                 126.91794995956589);
 
         Product product = Product.builder()
+                .productId("91052a17-bca6-4fde-a586-a1d179ad3463")
                 .title("원래제목입니다.")
                 .content("원래내용입니다.")
                 .baseFee(1)
@@ -170,7 +171,7 @@ class ProductServiceTest {
 
         // when
         UpdateProduct.Response response = productService.updateProduct(request,
-                member.getMemberId(),
+                product.getProductId(),
                 "test2@test2.com");
 
         // then
@@ -201,19 +202,20 @@ class ProductServiceTest {
     @DisplayName("상품 수정 실패 - 작성자일치하지 않음")
     void updateProduct_FAIL_() {
         // given
-        Member member1 = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1117",
+        Member member1 = new Member(1L,
                 "test@test.com",
                 "이명규",
                 37.5793493362539,
                 126.91794995956589);
 
-        Member member2 = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1119",
+        Member member2 = new Member(2L,
                 "test@test.com",
                 "이명규",
                 37.5793493362539,
                 126.91794995956589);
 
         Product product = Product.builder()
+                .productId("91052a17-bca6-4fde-a586-a1d179ad3463")
                 .title("원래제목입니다.")
                 .content("원래내용입니다.")
                 .baseFee(1)
@@ -242,7 +244,7 @@ class ProductServiceTest {
 
         // when
         BusinessLogicException exception = assertThrows(BusinessLogicException.class,
-                () -> productService.updateProduct(request, member1.getMemberId(), "test2@test2.com"));
+                () -> productService.updateProduct(request, product.getProductId(), "test2@test2.com"));
 
         // then
         assertThat(exception.getExceptionCode()).isEqualTo(ExceptionCode.UNAUTHORIZED);

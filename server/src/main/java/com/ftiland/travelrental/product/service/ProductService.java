@@ -51,6 +51,8 @@ public class ProductService {
                 .totalRateCount(0)
                 .totalRateScore(0)
                 .viewCount(0)
+                .latitude(member.getLatitude())
+                .longitude(member.getLongitude())
                 .member(member).build();
 
         // save시에 id를 기준으로 insert쿼리나 update쿼리를 생성해야하기 때문에 select를 먼저 실행한다.

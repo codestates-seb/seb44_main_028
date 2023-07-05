@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -37,9 +39,10 @@ class ProductControllerTest {
     private ProductService productService;
 
     @Test
+    @WithMockUser(username = "사용자", roles = {"USER"})
     void createProduct_SUCCESS() throws Exception {
         // given
-        Member member = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1117",
+        Member member = new Member(1L,
                 "test@test.com",
                 "이명규",
                 37.5793493362539,
@@ -73,7 +76,8 @@ class ProductControllerTest {
         // when
         ResultActions result = mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)));
+                .content(objectMapper.writeValueAsString(request))
+                .with(csrf()));
 
         // then
         result.andExpect(status().isCreated())
@@ -82,9 +86,10 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "사용자", roles = {"USER"})
     void updateProduct_SUCCESS() throws Exception {
         // given
-        Member member = new Member("d2fb011a-9910-4659-bbc0-803c5b9d1117",
+        Member member = new Member(1L,
                 "test@test.com",
                 "이명규",
                 37.5793493362539,
@@ -119,7 +124,8 @@ class ProductControllerTest {
         // when
         ResultActions result = mockMvc.perform(patch("/api/products/d2fb011a-9910-4659-bbc0-803c5b9d1117")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)));
+                .content(objectMapper.writeValueAsString(request))
+                .with(csrf()));
 
         // then
         result.andExpect(status().isOk())
