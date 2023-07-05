@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { colorPalette } from '../utils/enum/colorPalette';
 
+// ItemCard 컴포넌트의 스타일을 정의
 export const ItemCardContainer = styled.div`
   display: flex;
   flex-direction: column;
