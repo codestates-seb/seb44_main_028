@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { colorPalette } from '../utils/enum/colorPalette';
 
 export const ItemCardContainer = styled.div`
@@ -37,6 +37,7 @@ export const ItemLocationWrapper = styled.div`
   font-size: 10px;
   margin-bottom: 1.104rem;
 `;
+
 export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   display: flex;
   justify-content: space-between;
@@ -49,6 +50,7 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
         : `${colorPalette.itemCardHeartColor}`};
     font-size: 18px;
     transform: translateY(-5px);
+    transition: color 0.2s ease-in-out;
   }
 `;
 export const ItemPrice = styled.div``;
