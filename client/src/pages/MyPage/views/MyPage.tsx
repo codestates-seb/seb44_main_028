@@ -1,44 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import RatingStar from '../components/RatingStar';
-import { RatingStarType } from '../type';
+import Modal from '../components/Modal';
 
-type User = {
-  name: string;
-  email: string;
-};
+// type User = {
+//   name: string;
+//   email: string;
+// };
 
 const MyPage: React.FC = () => {
-  const [ratingIndex, setRatingIndex] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  // const [user, setUser] = useState<User | null>(null);
 
-  const [user, setUser] = useState<User | null>(null);
+  // // 사용자 정보 가져오기 (임시로 작성된 코드)
+  // const fetchUserInfo = () => {
+  //   // API 호출 또는 데이터베이스에서 사용자 정보를 가져온다고 가정
+  //   const userInfo: User = {
+  //     name: 'John Doe',
+  //     email: 'johndoe@example.com',
+  //   };
+  //   setUser(userInfo);
+  // };
 
-  // 사용자 정보 가져오기 (임시로 작성된 코드)
-  const fetchUserInfo = () => {
-    // API 호출 또는 데이터베이스에서 사용자 정보를 가져온다고 가정
-    const userInfo: User = {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-    };
-    setUser(userInfo);
-  };
-
-  // 마이페이지 컴포넌트가 처음 렌더링될 때 사용자 정보를 가져옴
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
+  // // 마이페이지 컴포넌트가 처음 렌더링될 때 사용자 정보를 가져옴
+  // useEffect(() => {
+  //   fetchUserInfo();
+  // }, []);
 
   return (
     <div>
       <h2>My Page</h2>
-      <RatingStar ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
-      {user ? (
+      <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
+        솔직한 별점을 남겨주세요.
+      </Modal>
+
+      {/* {user ? (
         <div>
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
         </div>
       ) : (
         <p>Loading user information...</p>
-      )}
+      )} */}
     </div>
   );
 };

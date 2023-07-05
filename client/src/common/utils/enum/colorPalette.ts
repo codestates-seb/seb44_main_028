@@ -7,4 +7,5 @@ export enum colorPalette {
   grayTextColor = '#777',
   tagColor = '#74D4E4',
   modalIconColor = '#D0E2Ef',
+  cancelButtonColor = '#CDDBF0',
 }
