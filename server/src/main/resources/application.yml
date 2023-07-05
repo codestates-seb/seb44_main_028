@@ -2,7 +2,7 @@ spring:
   datasource:
 
     # RDS 접근 설정
-    url: ${RDS_END_POINT}:${RDS_PORT}/${DB_NAME}
+    url: ${RDS_END_POINT}
     username: ${RDS_MYSQL_ADMIN_ID}
     password: ${RDS_MYSQL_ADMIN_PASSWORD}
 
