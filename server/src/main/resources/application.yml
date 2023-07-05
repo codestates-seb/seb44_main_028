@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/playpack?serverTimezone=UTC&characterEncoding=UTF-8
-    username: //
-    password: //
+
+    # RDS 접근 설정
+    url: jdbc:mysql://seb44main028-db.cx1erli3wray.ap-northeast-2.rds.amazonaws.com:13306/playpack
+    username: ${RDS_MYSQL_ADMIN_ID}
+    password: ${RDS_MYSQL_ADMIN_PASSWORD}
+
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
@@ -29,6 +32,7 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
+
     show-sql: true
 
 jwt:
@@ -43,3 +47,19 @@ logging:
       springframework:
         orm:
           jpa: DEBUG
+
+
+cloud:
+  aws:
+    # S3 접근 권한 설정 -image
+    credentials:
+      accessKey : ${ACCESS_KEY}
+      secretKey : ${SECRET_ACCESS_KEY}
+    s3:
+      bucket: seb44main028image-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto:
+        false
+

@@ -1,4 +1,6 @@
+import KakaoLogin from '../components/KakaoLogin';
+
 function LoginPage() {
-  return <div>login page</div>;
+  return <KakaoLogin />;
 }
 export default LoginPage;

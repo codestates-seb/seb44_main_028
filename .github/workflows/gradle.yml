@@ -1,0 +1,70 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+env:
+  S3_BUCKET_NAME: seb44main028-bucket
+  RESOURCE_PATH: ./server/src/main/resources/application.yml
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Set up Gradle Wrapper
+        run: |
+          cd server
+          chmod +x ./*
+      - name : Set Yaml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          spring.datasource.username: ${{secrets.RDS_MYSQL_ADMIN_ID}}
+          spring.datasource.password: ${{secrets.RDS_MYSQL_ADMIN_PASSWORD}}
+          cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
+          cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          
+          
+      - name: Build with Gradle
+        run: |
+          cd server
+          ./gradlew bootJar
+          
+
+      # build한 후 프로젝트를 압축합니다.
+      - name: Make zip file
+        run: zip -r ./seb44main028.zip .
+        shell: bash
+
+      # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      # 압축한 프로젝트를 S3로 전송합니다.
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./seb44main028.zip s3://$S3_BUCKET_NAME/seb44main028.zip
+
+    # CodeDeploy에게 배포 명령을 내립니다.
+      - name: Code Deploy
+        run: >
+         aws deploy create-deployment --application-name seb44main028-codeDeploy
+         --deployment-config-name CodeDeployDefault.AllAtOnce
+         --deployment-group-name seb44main028
+         --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=seb44main028.zip

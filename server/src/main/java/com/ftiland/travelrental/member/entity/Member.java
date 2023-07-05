@@ -5,6 +5,7 @@ import com.ftiland.travelrental.common.aduit.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 public class Member extends BaseEntity {
 
     @Id // 멤버의 경우 숫자형식의 id 사용
