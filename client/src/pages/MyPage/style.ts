@@ -4,6 +4,10 @@ import { PiStarFill } from 'react-icons/pi';
 import { DefaultBtn } from '../../common/style/style';
 import { BoxShadow } from '../../../src/common/utils/enum/boxShadow';
 
+//ImageUpload
+export const ProfileWapper = styled.div``;
+export const Button = styled.button``;
+
 //RatingStar
 export const RatingStarWapper = styled.div`
   display: flex;

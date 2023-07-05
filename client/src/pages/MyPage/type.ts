@@ -10,3 +10,7 @@ export type ModalType = {
   setIsOpen: Dispatch<boolean>;
   children: ReactNode;
 };
+
+export type ImageUploadType = {
+  label: string;
+};
