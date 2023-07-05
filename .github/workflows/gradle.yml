@@ -40,7 +40,7 @@ jobs:
           spring.security.oauth2.client.registration.kakao.redirect-uri: ${{secrets.REDIRECT_URL}}
           cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
           cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          jwt.key.secret: ${{secret.JWT_SECRET_KEY}}
+          jwt.key.secret: ${{secrets.JWT_SECRET_KEY}}
           
           
           
