@@ -1,4 +1,12 @@
+import BookingDates from '../components/BookingDates';
+import Calendars from '../components/Calendars';
+
 function BookingPage() {
-  return <div>booking page</div>;
+  return (
+    <>
+      <BookingDates />
+      <Calendars />
+    </>
+  );
 }
 export default BookingPage;
