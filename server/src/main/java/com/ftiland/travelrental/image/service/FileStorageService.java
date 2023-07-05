@@ -10,6 +10,7 @@ import com.ftiland.travelrental.image.entity.Image;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.mapper.ImageMapper;
 import com.ftiland.travelrental.image.repository.ImageMemberRepository;
+
 import com.ftiland.travelrental.image.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +37,7 @@ public class FileStorageService {
     private ImageMemberRepository imageMemberRepository;
 
     @Autowired
-    public FileStorageService(AmazonS3 amazonS3,ImageMapper imageMapper,ImageRepository imageRepository,ImageMemberRepository imageMemberRepository) {
+    public FileStorageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageRepository imageRepository, ImageMemberRepository imageMemberRepository) {
         this.amazonS3 = amazonS3;
         this.imageMapper=imageMapper;
         this.imageRepository = imageRepository;
