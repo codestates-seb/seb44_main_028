@@ -4,6 +4,9 @@ import { PiStarFill } from 'react-icons/pi';
 import { DefaultBtn } from '../../common/style/style';
 import { BoxShadow } from '../../../src/common/utils/enum/boxShadow';
 
+//Tap
+export const SwitchBtn = styled.div``;
+
 //ImageUpload
 export const ProfileWapper = styled.div``;
 export const Button = styled.button``;

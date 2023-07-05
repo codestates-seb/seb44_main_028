@@ -14,3 +14,8 @@ export type ModalType = {
 export type ImageUploadType = {
   label: string;
 };
+
+export type TapButtonType = {
+  nowActivatedTabValue: string;
+  handleNowActivatedTabValue: (inputValue: string) => void;
+};

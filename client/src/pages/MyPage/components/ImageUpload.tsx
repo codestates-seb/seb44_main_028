@@ -2,7 +2,7 @@ import React, { useRef, useCallback } from 'react';
 import { ImageUploadType } from '../type';
 import { Button } from '../style';
 
-function ImageUpload({ label }: ImageUploadType) {
+function ImageUpload() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const onUploadImage = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ function ImageUpload({ label }: ImageUploadType) {
         ref={inputRef}
         onChange={onUploadImage}
       />
-      <Button label="파일 선택" onClick={onUploadButtonClick} />
+      <Button onClick={onUploadButtonClick} />
     </>
   );
 }
