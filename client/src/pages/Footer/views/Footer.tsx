@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Box, LogoBox, TextBox } from '../FooterStyles';
+import { FooterWapper, Box, LogoBox, TextBox } from '../FooterStyles';
 import { FooterType } from '../type';
 
 function Footer({ prop1 }: FooterType) {
   // 추가적인 코드 작성
   return (
-    <Container>
+    <FooterWapper>
       <Box>
         <LogoBox>{prop1}</LogoBox>
 
@@ -15,7 +15,7 @@ function Footer({ prop1 }: FooterType) {
           </TextBox>
         </Box>
       </Box>
-    </Container>
+    </FooterWapper>
   );
 }
 
