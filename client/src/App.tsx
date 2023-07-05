@@ -8,7 +8,7 @@ function App() {
     <>
       <Header />
       <Router />
-      <Footer />
+      <Footer prop1={'로고'} />
     </>
   );
 }
