@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import RatingStar from '../components/RatingStar';
+import { RatingStarType } from '../type';
 
 type User = {
   name: string;
@@ -6,6 +8,8 @@ type User = {
 };
 
 const MyPage: React.FC = () => {
+  const [ratingIndex, setRatingIndex] = useState(1);
+
   const [user, setUser] = useState<User | null>(null);
 
   // 사용자 정보 가져오기 (임시로 작성된 코드)
@@ -26,6 +30,7 @@ const MyPage: React.FC = () => {
   return (
     <div>
       <h2>My Page</h2>
+      <RatingStar ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
       {user ? (
         <div>
           <p>Name: {user.name}</p>
