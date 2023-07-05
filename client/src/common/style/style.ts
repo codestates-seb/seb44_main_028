@@ -37,13 +37,16 @@ export const ItemLocationWrapper = styled.div`
   font-size: 10px;
   margin-bottom: 1.104rem;
 `;
-export const PriceFavoriteWrapper = styled.div`
+export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   color: ${colorPalette.heavyColor};
   & svg {
-    color: ${colorPalette.itemCardHeartColor};
+    color: ${(prop) =>
+      prop.isHeartClicked
+        ? `${colorPalette.heavyColor}`
+        : `${colorPalette.itemCardHeartColor}`};
     font-size: 18px;
     transform: translateY(-5px);
   }
