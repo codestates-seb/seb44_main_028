@@ -20,13 +20,13 @@ public class ImageController {
         this.fileStorageService = fileStorageService;
     }
 
-    @PostMapping("image")
+    /*@PostMapping("image")
     public ResponseEntity postImage(@RequestParam("imageFile")MultipartFile imageFile){
 
         Image image = fileStorageService.storeImageProduct(imageFile);
 
         return new ResponseEntity(image, HttpStatus.OK);
-    }
+    }*/
     @GetMapping("image")
     public ResponseEntity postImage2(){
 
