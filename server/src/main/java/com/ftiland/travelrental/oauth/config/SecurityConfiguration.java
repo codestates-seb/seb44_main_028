@@ -2,6 +2,8 @@ package com.ftiland.travelrental.oauth.config;
 
 import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.oauth.auth.filter.JwtVerificationFilter;
+import com.ftiland.travelrental.oauth.auth.handler.MemberAccessDeniedHandler;
+import com.ftiland.travelrental.oauth.auth.handler.MemberAuthenticationEntryPoint;
 import com.ftiland.travelrental.oauth.auth.handler.Oauth2MemberSuccessHandler;
 import com.ftiland.travelrental.oauth.jwt.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -35,6 +42,12 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                //.authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
+                .and()
+                .apply(new CustomFilterConfigurer())
+                .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                 )
@@ -42,6 +55,16 @@ public class SecurityConfiguration {
                         .successHandler(new Oauth2MemberSuccessHandler(jwtTokenizer, memberService))
                 );
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("**", configuration);
+        return source;
     }
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
@@ -52,6 +75,4 @@ public class SecurityConfiguration {
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
-
-
 }
