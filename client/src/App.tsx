@@ -14,12 +14,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Container maxWidth="xs">
-        {/* <Header /> */}
+        <Header />
         <ItemCard />
         <Provider store={store}>
           <Router />
         </Provider>
-        {/* <Footer prop1={'로고'} /> */}
+        <Footer prop1={'로고'} />
       </Container>
     </QueryClientProvider>
   );
