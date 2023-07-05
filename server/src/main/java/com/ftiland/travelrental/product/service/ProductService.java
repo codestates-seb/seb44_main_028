@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -92,16 +91,13 @@ public class ProductService {
                 .ifPresent(overdueFee -> product.setOverdueFee(overdueFee));
         Optional.ofNullable(request.getMinimumRentalPeriod())
                 .ifPresent(minimumRentalPeriod -> product.setMinimumRentalPeriod(minimumRentalPeriod));
+        Optional.ofNullable(request.getCategoryIds())
+                .ifPresent(categoryIds -> {
+                    productCategoryService.deleteProductCategoriesByProductId(productId);
+                    productCategoryService.createProductCategories(product, categoryIds);
+                });
 
-        List<CategoryDto> categories;
-        if (!Objects.isNull(request.getCategoryIds())) {
-            productCategoryService.deleteProductCategoriesByProductId(productId);
-            categories = productCategoryService.createProductCategories(product, request.getCategoryIds());
-        } else {
-            categories = productCategoryService.findCategoriesByProductId(productId);
-        }
-
-        return UpdateProduct.Response.from(product, categories);
+        return UpdateProduct.Response.from(product);
     }
 
     @Transactional
