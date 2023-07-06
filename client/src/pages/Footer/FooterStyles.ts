@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const FooterWapper = styled.div`
   display: flex;
   position: absolute;
   bottom: 0;
