@@ -5,8 +5,8 @@ import { setDate } from '../store/CalendarStore';
 
 function Dates() {
   const dispatch = useDispatch();
-  const today = useSelector((state: RootState) => state.calendar);
-  const { year, month, date } = today;
+  const currentDate = useSelector((state: RootState) => state.calendar);
+  const { year, month, date } = currentDate;
   // 지난 달 마지막 날짜를 구함
   const lastDateOfLastMonth = new Date(year, month - 1, 0).getDate();
   // 이번 달 마지막 날짜를 구함
@@ -46,7 +46,7 @@ function Dates() {
       {week.map((date, j) => (
         <EachDate
           key={j}
-          today={today}
+          today={currentDate}
           row={{
             week: i,
             lastWeek: dates.findIndex(
