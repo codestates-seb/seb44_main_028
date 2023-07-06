@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { DatesContainer, EachDate } from '../style';
-import { RootState } from '../../../common/store/RootStore';
 import { setDate } from '../store/CalendarStore';
+import { CalendarProps } from '../type';
 
-function Dates() {
+function Dates({ calendar }: CalendarProps) {
   const dispatch = useDispatch();
-  const currentDate = useSelector((state: RootState) => state.calendar);
-  const { year, month, date } = currentDate;
+
+  const { year, month, date } = calendar;
   // 지난 달 마지막 날짜를 구함
   const lastDateOfLastMonth = new Date(year, month - 1, 0).getDate();
   // 이번 달 마지막 날짜를 구함
@@ -46,7 +46,7 @@ function Dates() {
       {week.map((date, j) => (
         <EachDate
           key={j}
-          today={currentDate}
+          today={calendar}
           row={{
             week: i,
             lastWeek: dates.findIndex(
