@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal';
-import ImageUpload from '../components/ImageUpload';
+import ImageUpload from '../components/ProfileEdit';
 import { ProfileWrapper } from '../style';
 import TapButton from '../components/TapButton';
 
