@@ -1,5 +1,28 @@
 import styled from 'styled-components';
 
+export const BookingPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CalendarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+export const CalendarWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 export const BookingDatesForm = styled.form`
   display: flex;
   flex-direction: row;
@@ -30,7 +53,6 @@ export const Table = styled.table`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid transparent;
   border-radius: 20px;
   height: 426px;
   width: 403px;
@@ -49,7 +71,7 @@ export const YearAndMonthWrapper = styled.caption`
 `;
 
 export const Year = styled.span`
-  font-size: 45px;
+  font-size: 30px;
   color: black;
   margin-left: 80px;
   position: absolute;
@@ -64,15 +86,15 @@ export const MonthWrapper = styled.caption`
 `;
 
 export const Month = styled.span`
-  font-size: 45px;
+  font-size: 30px;
   color: black;
   padding-bottom: 40px;
   position: absolute;
   margin-right: 150px;
+  width: 100px;
 `;
 
 export const Btn = styled.button`
-  background: linear-gradient(200deg, rgba(125, 202, 220, 0.1), #e6cdcd);
   height: 45px;
   width: 45px;
   margin: 10px 13vw;
