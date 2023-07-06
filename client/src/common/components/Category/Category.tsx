@@ -1,4 +1,3 @@
-import React from 'react';
 import CategoryButton from './CategoryButton';
 import { CATEGORY } from '../../constants';
 import { CategoryContainer } from '../../style/style';
