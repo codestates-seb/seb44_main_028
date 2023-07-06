@@ -28,10 +28,8 @@ function FirstCalendar() {
   return (
     <Table>
       <YearAndMonthWrapper>
-        <Btn onClick={onClickBack}>◀️</Btn>
         <Month>{current.month + '월'}</Month>
         <Year>{current.year}</Year>
-        <Btn onClick={onClickNext}>▶️</Btn>
       </YearAndMonthWrapper>
       <Days />
       <Dates />
