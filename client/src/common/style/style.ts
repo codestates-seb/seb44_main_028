@@ -197,6 +197,7 @@ export const OptionWrapper = styled.ul<{ isClick: boolean }>`
   margin: 10px 0 0 -1px;
   border-radius: 5px;
   cursor: pointer;
+  display: ${({ isClick }) => (isClick ? 'block' : 'none')};
   animation: ${({ isClick }) =>
     isClick
       ? css`
