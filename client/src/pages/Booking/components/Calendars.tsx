@@ -12,6 +12,10 @@ import {
 function Calendars() {
   const dispatch = useDispatch();
   const current = useSelector((state: RootState) => state.calendar);
+  const next =
+    current.month === 12
+      ? { ...current, year: current.year + 1, month: 1 }
+      : { ...current, month: current.month + 1 };
 
   const onClickBack = () => {
     if (current.month > 1) {
@@ -34,8 +38,8 @@ function Calendars() {
         <Btn onClick={onClickNext}>▶️</Btn>
       </ButtonWrapper>
       <CalendarWrapper>
-        <Calendar />
-        <Calendar />
+        <Calendar calendar={current} />
+        <Calendar calendar={next} />
       </CalendarWrapper>
     </CalendarContainer>
   );
