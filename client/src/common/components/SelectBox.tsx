@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DISTANCE_DEFAULT_VALUE, DISTANCE_OPTIONS } from '../constants';
 import { MdOutlineExpandMore } from 'react-icons/md';
 import {
@@ -11,6 +11,8 @@ import {
 const SelectBox = () => {
   const [onClick, setOnClick] = useState(false);
   const [selectedValue, setSelectedValue] = useState(DISTANCE_DEFAULT_VALUE);
+  const selectBoxRef = useRef<HTMLDivElement>(null);
+
   const onClickHandler = () => {
     setOnClick(!onClick);
   };
@@ -18,8 +20,22 @@ const SelectBox = () => {
     const optionValue = e.currentTarget.innerText;
     setSelectedValue(optionValue);
   };
+  const handleClickOutside = (e: MouseEvent) => {
+    if (
+      selectBoxRef.current &&
+      !selectBoxRef.current.contains(e.target as Node)
+    ) {
+      setOnClick(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   return (
-    <SelectBoxWrapper onClick={onClickHandler}>
+    <SelectBoxWrapper onClick={onClickHandler} ref={selectBoxRef}>
       <Selected>
         <SelectedValue>{selectedValue}</SelectedValue>
         <MdOutlineExpandMore />
