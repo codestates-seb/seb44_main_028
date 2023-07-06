@@ -40,15 +40,13 @@ const SelectBox = () => {
         <SelectedValue>{selectedValue}</SelectedValue>
         <MdOutlineExpandMore />
       </Selected>
-      {onClick && (
-        <OptionWrapper>
-          {DISTANCE_OPTIONS.map((option, index) => (
-            <Option key={index} onClick={selectOption}>
-              {option.label}
-            </Option>
-          ))}
-        </OptionWrapper>
-      )}
+      <OptionWrapper isClick={onClick}>
+        {DISTANCE_OPTIONS.map((option, index) => (
+          <Option key={index} onClick={selectOption}>
+            {option.label}
+          </Option>
+        ))}
+      </OptionWrapper>
     </SelectBoxWrapper>
   );
 };

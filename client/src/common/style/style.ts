@@ -132,6 +132,8 @@ export const SelectBoxWrapper = styled.div`
   width: 16.75rem;
   height: 2.995rem;
   border: ${border.basic};
+  border-radius: 5px;
+  font-weight: 700;
 `;
 const onRotate = keyframes`
   from {
@@ -172,16 +174,40 @@ export const Selected = styled.div<{ isClick: boolean }>`
 export const SelectedValue = styled.div`
   max-width: 130px;
 `;
-export const OptionWrapper = styled.ul`
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    }
+  to {
+    opacity: 1;
+    }
+`;
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    }
+  to {
+    opacity: 0;
+    }
+`;
+export const OptionWrapper = styled.ul<{ isClick: boolean }>`
   width: 16.75rem;
   border: ${border.basic};
   position: absolute;
-  border-top: none;
-  margin: 1px 0 0 -1px;
+  margin: 10px 0 0 -1px;
+  border-radius: 5px;
   cursor: pointer;
+  animation: ${({ isClick }) =>
+    isClick
+      ? css`
+          ${fadeIn} 0.3s forwards
+        `
+      : css`
+          ${fadeOut} 0.3s forwards
+        `};
 `;
 export const Option = styled.li`
-  padding: 0.713rem 0;
+  padding: 1rem 0;
   padding-left: 1.75rem;
   &:hover {
     background-color: ${colorPalette.selectListHoverColor};
