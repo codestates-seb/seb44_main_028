@@ -1,14 +1,15 @@
+export const DISTANCE_DEFAULT_VALUE = '내 주변에서 찾기';
 export const DISTANCE_OPTIONS = [
   {
-    value: 10,
+    value: '10',
     label: '10k㎡',
   },
   {
-    value: 20,
+    value: '20',
     label: '20k㎡',
   },
   {
-    value: 30,
+    value: '30',
     label: '30k㎡',
   },
 ];

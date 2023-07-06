@@ -146,7 +146,7 @@ export const Selected = styled.div`
   }
 `;
 export const SelectedValue = styled.div`
-  max-width: 90px;
+  max-width: 130px;
 `;
 export const OptionWrapper = styled.ul`
   width: 16.75rem;
@@ -155,10 +155,6 @@ export const OptionWrapper = styled.ul`
   border-top: none;
   margin: 1px 0 0 -1px;
   cursor: pointer;
-  display: none;
-  & .selectActive {
-    display: initial;
-  }
 `;
 export const Option = styled.li`
   padding: 0.713rem 0;
