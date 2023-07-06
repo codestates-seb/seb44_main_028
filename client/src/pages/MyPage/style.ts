@@ -5,7 +5,42 @@ import { DefaultBtn } from '../../common/style/style';
 import { BoxShadow } from '../../../src/common/utils/enum/boxShadow';
 
 //Tap
-export const SwitchBtn = styled.div``;
+export const SwitchBtn = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${colorPalette.borderColor};
+  z-index: 1;
+`;
+export const CustomTapButton = styled.button`
+  padding: 12px 24px;
+  background-color: ${colorPalette.whiteColor};
+  color: ${colorPalette.basicTextColor};
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+
+  line-height: 1.5;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+  z-index: 5;
+
+  &:hover {
+    color: ${colorPalette.deepMintColor};
+    border-bottom: 1px solid ${colorPalette.deepMintColor};
+  }
+
+  &:disabled {
+    opacity: 0.5; /* 비활성화 시 투명도 조정 */
+    cursor: not-allowed;
+  }
+  &:active {
+    color: ${colorPalette.deepMintColor};
+    border-bottom: 1px solid ${colorPalette.deepMintColor};
+  }
+  &:focus {
+    color: ${colorPalette.deepMintColor};
+    border-bottom: 1px solid ${colorPalette.deepMintColor};
+  }
+`;
 
 //ImageUpload
 export const ProfileWapper = styled.div``;
