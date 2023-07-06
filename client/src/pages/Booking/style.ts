@@ -128,9 +128,29 @@ export const EachDate = styled.th<EachDatesProps>`
   height: 20px;
   padding: 14px;
   color: ${(props) => {
+    const thisMonth = new Date().getMonth() + 1;
     return (props.row.week === 0 && Number(props.children) > 7) ||
-      (props.row.week === props.row.lastWeek && Number(props.children) < 8)
+      (props.row.week === props.row.lastWeek && Number(props.children) < 8) ||
+      props.today.year < new Date().getFullYear() ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month < thisMonth) ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month === thisMonth &&
+        props.today.date > Number(props.children))
       ? 'rgb(0, 0, 0, 0.1)'
       : 'rgb(0, 0, 0, 0.6)';
+  }};
+  cursor: ${(props) => {
+    const thisMonth = new Date().getMonth() + 1;
+    return (props.row.week === 0 && Number(props.children) > 7) ||
+      (props.row.week === props.row.lastWeek && Number(props.children) < 8) ||
+      props.today.year < new Date().getFullYear() ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month < thisMonth) ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month === thisMonth &&
+        props.today.date > Number(props.children))
+      ? 'not-allowed'
+      : 'pointer';
   }};
 `;
