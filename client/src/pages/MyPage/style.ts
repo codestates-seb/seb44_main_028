@@ -20,13 +20,8 @@ export const CustomTapButton = styled.button`
 
   line-height: 1.5;
   cursor: pointer;
-  transition: color 0.2s ease-in-out;
+  /* transition: color 1ms ease-in-out; */
   z-index: 5;
-
-  &:hover {
-    color: ${colorPalette.deepMintColor};
-    border-bottom: 1px solid ${colorPalette.deepMintColor};
-  }
 
   &:disabled {
     opacity: 0.5; /* 비활성화 시 투명도 조정 */
