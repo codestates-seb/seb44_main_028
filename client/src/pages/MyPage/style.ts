@@ -61,11 +61,11 @@ export const Close = styled(DefaultBtn)`
   justify-content: space-around;
   border-radius: 5px;
   color: ${colorPalette.basicTextColor};
-  background-color: ${colorPalette.cancelButtonColor};
+  background-color: ${colorPalette.modalCancelButtonColor};
   margin-right: 10px;
   cursor: pointer;
   &:hover {
-    background-color: ${colorPalette.cancelButtonColor};
+    background-color: ${colorPalette.modalCancelButtonColor};
   }
 `;
 export const Rating = styled(DefaultBtn)``;
