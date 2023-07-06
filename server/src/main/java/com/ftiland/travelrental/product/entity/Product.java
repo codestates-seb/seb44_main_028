@@ -2,12 +2,10 @@ package com.ftiland.travelrental.product.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
-import com.ftiland.travelrental.image.entity.Image;
 import com.ftiland.travelrental.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -51,7 +49,4 @@ public class Product extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @OneToMany(mappedBy = "product")
-    private List<Image> images;
 }

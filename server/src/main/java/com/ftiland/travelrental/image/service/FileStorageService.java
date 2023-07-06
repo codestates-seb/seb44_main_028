@@ -1,9 +1,9 @@
 package com.ftiland.travelrental.image.service;
 
-import com.amazonaws.services.s3.AmazonS3;
+/*import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;*/
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.image.entity.Image;
@@ -27,7 +27,7 @@ import java.util.List;
 @Component
 @Service
 public class FileStorageService {
-
+/*
     private ImageMapper imageMapper;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -130,7 +130,7 @@ public class FileStorageService {
         catch (BusinessLogicException e){
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
-    }
+    }*/
 
 }
 
