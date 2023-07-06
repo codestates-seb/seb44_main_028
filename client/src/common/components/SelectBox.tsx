@@ -36,7 +36,7 @@ const SelectBox = () => {
   }, []);
   return (
     <SelectBoxWrapper onClick={onClickHandler} ref={selectBoxRef}>
-      <Selected>
+      <Selected isClick={onClick}>
         <SelectedValue>{selectedValue}</SelectedValue>
         <MdOutlineExpandMore />
       </Selected>

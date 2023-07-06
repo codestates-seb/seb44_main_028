@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
@@ -133,7 +133,23 @@ export const SelectBoxWrapper = styled.div`
   height: 2.995rem;
   border: ${border.basic};
 `;
-export const Selected = styled.div`
+const onRotate = keyframes`
+  from {
+    transform: rotate(0deg);
+    }
+  to {
+    transform: rotate(-180deg);
+    }
+`;
+const offRotate = keyframes`
+  from {
+    transform: rotate(-90deg);
+    }
+  to {
+    transform: rotate(0deg);
+    }
+`;
+export const Selected = styled.div<{ isClick: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -143,6 +159,14 @@ export const Selected = styled.div`
   & svg {
     font-size: 1.5rem;
     margin-left: -35px;
+    animation: ${({ isClick }) =>
+      isClick
+        ? css`
+            ${onRotate} 0.3s forwards
+          `
+        : css`
+            ${offRotate} 0.3s forwards
+          `};
   }
 `;
 export const SelectedValue = styled.div`
