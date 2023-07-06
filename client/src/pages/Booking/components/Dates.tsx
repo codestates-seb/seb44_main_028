@@ -54,7 +54,7 @@ function Dates({ calendar }: CalendarProps) {
             ),
           }}
           day={j}
-          onClick={() => dispatch(setDate({ year, month, date }))}
+          onClick={() => console.log(date)}
         >
           {date ? date : null}
         </EachDate>
