@@ -1,5 +1,7 @@
+import { SelectOption } from './type';
+
 export const DISTANCE_DEFAULT_VALUE = '내 주변에서 찾기';
-export const DISTANCE_OPTIONS = [
+export const DISTANCE_OPTIONS: SelectOption[] = [
   {
     value: '10',
     label: '10k㎡',
@@ -13,7 +15,7 @@ export const DISTANCE_OPTIONS = [
     label: '30k㎡',
   },
 ];
-export const PRODUCT_FILTER_OPTIONS = [
+export const PRODUCT_FILTER_OPTIONS: SelectOption[] = [
   {
     value: 'new',
     label: '최신순',

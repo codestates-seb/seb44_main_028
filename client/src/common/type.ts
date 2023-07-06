@@ -7,3 +7,7 @@ export type ModalFrameProps = {
   children: React.ReactNode;
   setOnModal: (state: boolean) => void;
 };
+export type SelectOption = {
+  value: string;
+  label: string;
+};
