@@ -10,7 +10,6 @@ import ItemCard from './common/components/ItemCard';
 
 function App() {
   const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <Container maxWidth="xs">
