@@ -1,36 +1,36 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { YearAndMonthWrapper, Btn, Month, Table, Year } from '../style';
 import Days from './Days';
 import Dates from './Dates';
+import { setDate } from '../store/CalendarStore';
+import { RootState } from '../../../common/store/RootStore';
 
 function FirstCalendar() {
-  const date = new Date();
-  const [year, setYear] = useState(date.getFullYear());
-  const [month, setMonth] = useState(date.getMonth() + 1);
+  const dispatch = useDispatch();
+  const current = useSelector((state: RootState) => state.calendar);
 
   const onClickBack = () => {
-    if (month > 1) {
-      setMonth(month - 1);
+    if (current.month > 1) {
+      dispatch(setDate({ ...current, month: current.month - 1 }));
     } else {
-      setYear(year - 1);
-      setMonth(12);
+      dispatch(setDate({ ...current, year: current.year - 1, month: 12 }));
     }
   };
 
   const onClickNext = () => {
-    if (month < 12) {
-      setMonth(month + 1);
+    if (current.month < 12) {
+      dispatch(setDate({ ...current, month: current.month + 1 }));
     } else {
-      setYear(year + 1);
-      setMonth(1);
+      dispatch(setDate({ ...current, year: current.year + 1, month: 1 }));
     }
   };
   return (
     <Table>
       <YearAndMonthWrapper>
         <Btn onClick={onClickBack}>◀️</Btn>
-        <Month>{month + '월'}</Month>
-        <Year>{year}</Year>
+        <Month>{current.month + '월'}</Month>
+        <Year>{current.year}</Year>
         <Btn onClick={onClickNext}>▶️</Btn>
       </YearAndMonthWrapper>
       <Days />
