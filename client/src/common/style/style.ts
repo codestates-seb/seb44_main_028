@@ -126,3 +126,5 @@ export const DefaultBtn = styled.button`
   }
 `;
 // SelectBox 컴포넌트의 스타일을 정의
+export const SelectBoxWrapper = styled.select``;
+export const SelectOption = styled.option``;
