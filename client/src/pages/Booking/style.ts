@@ -97,7 +97,7 @@ export const DaysContainer = styled.thead`
 `;
 
 export const DatesContainer = styled.tbody`
-  margin-top: 130px;
+  margin-top: 105px;
 `;
 
 export type EachDatesProps = {
@@ -116,20 +116,8 @@ export type EachDatesProps = {
 export const EachDate = styled.th<EachDatesProps>`
   font-size: 20px;
   font-weight: 400;
-  height: 40px;
-  border: 1px solid red;
-  padding: 2px 4.8vw 30px 0.5vw;
-  text-shadow: 1px 1px 2px gray;
-  background-image: ${(props) => {
-    const date = new Date();
-    const thisMonth = date.getMonth();
-    const thisYear = date.getFullYear();
-    return props.today.year === thisYear &&
-      props.today.month === thisMonth &&
-      props.today.date === props.children
-      ? 'linear-gradient(150deg, rgba(249, 245, 245, 0.1),#f3bac3)'
-      : 'linear-gradient(150deg, rgba(244, 239, 239, 0.1), #eae2e4)';
-  }};
+  height: 20px;
+  padding: 14px;
   color: ${(props) => {
     return (props.row.week === 0 && Number(props.children) > 7) ||
       (props.row.week === props.row.lastWeek && Number(props.children) < 8)
