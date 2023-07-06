@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '../style';
 import { SwitchBtn, CustomTapButton } from '../style';
 import ParentTap from './ParentTap';
 import { TapButtonType } from '../type';

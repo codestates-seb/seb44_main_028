@@ -43,8 +43,56 @@ export const CustomTapButton = styled.button`
 `;
 
 //ImageUpload
-export const ProfileWapper = styled.div``;
-export const Button = styled.button``;
+export const ProfileWrapper = styled.div`
+  display: flex;
+`;
+export const ProfileSection = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+export const UploadBtn = styled.button`
+  font-size: 12px;
+  width: 80px;
+  height: 32px;
+  background-color: ${colorPalette.whiteColor};
+  border-radius: 3px;
+  border: 1px solid ${colorPalette.grayTextColor};
+`;
+export const ProfilerEdit = styled.div`
+  display: none;
+`;
+export const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+export const NameWrapper = styled.div`
+  margin: 40px;
+`;
+export const InputWrapper = styled.div`
+  input {
+    width: 200px;
+    height: 25px;
+    padding-left: 10px;
+  }
+`;
+
+export const TownBtn = styled(DefaultBtn)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  width: 80px;
+  height: 22px;
+`;
+export const ProfileImg = styled.div`
+  img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+`;
 
 //RatingStar
 export const RatingStarWapper = styled.div`
