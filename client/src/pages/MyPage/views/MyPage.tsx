@@ -45,7 +45,9 @@ const MyPage: React.FC = () => {
       <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
         솔직한 별점을 남겨주세요.
       </Modal>
-      <ProfileWapper>{/* <ImageUpload /> */}</ProfileWapper>
+      <ProfileWapper>
+        <ImageUpload />
+      </ProfileWapper>
       {user ? (
         <div>
           <p>닉네임: {user.name}</p>
