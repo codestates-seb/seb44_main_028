@@ -1,21 +1,17 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { YearAndMonthWrapper, Btn, Month, Table, Year } from '../style';
+import { YearAndMonthWrapper, Month, Table, Year } from '../style';
 import Days from './Days';
 import Dates from './Dates';
-import { RootState } from '../../../common/store/RootStore';
+import { CalendarProps } from '../type';
 
-function Calendar({ currentDate }: any) {
-  const current = useSelector((state: RootState) => state.calendar);
-
+function Calendar({ calendar }: CalendarProps) {
   return (
     <Table>
       <YearAndMonthWrapper>
-        <Month>{current.month + '월'}</Month>
-        <Year>{current.year}</Year>
+        <Month>{calendar.month + '월'}</Month>
+        <Year>{calendar.year}</Year>
       </YearAndMonthWrapper>
       <Days />
-      <Dates />
+      <Dates calendar={calendar} />
     </Table>
   );
 }
