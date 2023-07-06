@@ -15,6 +15,8 @@ public class UpdateProduct {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class Request {
         private String title;
         private Integer baseFee;
@@ -36,12 +38,10 @@ public class UpdateProduct {
     public static class Response {
 
         private String productId;
-        private List<CategoryDto> categories;
 
-        public static Response from(Product product, List<CategoryDto> categories) {
+        public static Response from(Product product) {
             return Response.builder()
                     .productId(product.getProductId())
-                    .categories(categories)
                     .build();
         }
     }

@@ -5,7 +5,10 @@ export enum colorPalette {
   basicTextColor = '#333',
   whiteColor = '#fff',
   grayTextColor = '#777',
+  lightGrayTextColor = '#BABABA',
+  borderColor = '#CBCBCB',
   tagColor = '#74D4E4',
   modalIconColor = '#D0E2Ef',
   modalCancelButtonColor = '#CDDBF0',
+  itemCardHeartColor = '#DEDEDE',
 }
