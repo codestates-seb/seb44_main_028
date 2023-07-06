@@ -7,7 +7,6 @@ import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
 import ItemCard from './common/components/ItemCard';
-import SelectBox from './common/components/SelectBox';
 
 function App() {
   const queryClient = new QueryClient();
@@ -19,7 +18,6 @@ function App() {
         <Provider store={store}>
           <Router />
         </Provider>
-        <SelectBox />
         <Footer prop1={'로고'} />
       </Container>
     </QueryClientProvider>

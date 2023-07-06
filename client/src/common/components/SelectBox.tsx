@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { DISTANCE_DEFAULT_VALUE, DISTANCE_OPTIONS } from '../constants';
 import { MdOutlineExpandMore } from 'react-icons/md';
+import { SelectOption } from '.././type';
 import {
   SelectBoxWrapper,
   Selected,
@@ -8,9 +8,17 @@ import {
   OptionWrapper,
   Option,
 } from '../style/style';
-const SelectBox = () => {
+const SelectBox = ({
+  selectOptionData,
+  selectDefaultOption,
+}: {
+  selectOptionData: SelectOption[];
+  selectDefaultOption?: string;
+}) => {
   const [onClick, setOnClick] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(DISTANCE_DEFAULT_VALUE);
+  const [selectedValue, setSelectedValue] = useState(
+    selectDefaultOption || selectOptionData[0].label,
+  );
   const selectBoxRef = useRef<HTMLDivElement>(null);
 
   const onClickHandler = () => {
@@ -41,7 +49,7 @@ const SelectBox = () => {
         <MdOutlineExpandMore />
       </Selected>
       <OptionWrapper isClick={onClick}>
-        {DISTANCE_OPTIONS.map((option, index) => (
+        {selectOptionData.map((option, index) => (
           <Option key={index} onClick={selectOption}>
             {option.label}
           </Option>
