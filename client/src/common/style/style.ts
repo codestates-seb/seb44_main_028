@@ -210,6 +210,7 @@ export const OptionWrapper = styled.ul<{ isClick: boolean }>`
 export const Option = styled.li`
   padding: 1rem 0;
   padding-left: 1.75rem;
+  background-color: ${colorPalette.whiteColor};
   &:hover {
     background-color: ${colorPalette.selectListHoverColor};
   }
