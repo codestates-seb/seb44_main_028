@@ -17,7 +17,7 @@ const fetchUserData = async (code: string | null) => {
 function KakaoLogin() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [authorizationCode, setAuthorizationCode] = useState<string | null>('');
+  const [authorizationCode, setAuthorizationCode] = useState<string>('');
 
   // 4. 인가 코드를 이용하여 유저 정보를 가져옴
   const {
