@@ -3,6 +3,7 @@ package com.ftiland.travelrental.interest.entity;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.product.entity.Product;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +12,13 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class Interest {
     @Id
     private String interestId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
