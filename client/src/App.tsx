@@ -14,7 +14,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Header />
       <Container maxWidth="xs">
-        <ItemCard />
+        {/* <ItemCard /> */}
         <Provider store={store}>
           <Router />
         </Provider>
