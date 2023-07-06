@@ -6,6 +6,7 @@ import Header from './pages/Header/views/Header';
 import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
+import ItemCard from './common/components/ItemCard';
 
 function App() {
   const queryClient = new QueryClient();
@@ -14,10 +15,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Container maxWidth="xs">
         <Header />
+        <ItemCard />
         <Provider store={store}>
           <Router />
         </Provider>
-        <Footer prop1={'로고'}/>
+        <Footer prop1={'로고'} />
       </Container>
     </QueryClientProvider>
   );
