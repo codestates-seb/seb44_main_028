@@ -1,13 +1,24 @@
 import { DISTANCE_OPTIONS } from '../constants';
-import { SelectBoxWrapper, SelectOption } from '../style/style';
+import { MdOutlineExpandMore } from 'react-icons/md';
+import {
+  SelectBoxWrapper,
+  Selected,
+  SelectedValue,
+  OptionWrapper,
+  Option,
+} from '../style/style';
 const SelectBox = () => {
   return (
     <SelectBoxWrapper>
-      {DISTANCE_OPTIONS.map((option, index) => (
-        <SelectOption key={index} value={option.value}>
-          {option.label}
-        </SelectOption>
-      ))}
+      <Selected>
+        <SelectedValue>내 주변 보기</SelectedValue>
+        <MdOutlineExpandMore />
+      </Selected>
+      <OptionWrapper>
+        {DISTANCE_OPTIONS.map((option, index) => (
+          <Option key={index}>{option.label}</Option>
+        ))}
+      </OptionWrapper>
     </SelectBoxWrapper>
   );
 };

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
+import { border } from '../utils/enum/border';
 
 // Modal 컴포넌트의 스타일을 정의
 export const ModalWrapper = styled.div`
@@ -126,5 +127,43 @@ export const DefaultBtn = styled.button`
   }
 `;
 // SelectBox 컴포넌트의 스타일을 정의
-export const SelectBoxWrapper = styled.select``;
-export const SelectOption = styled.option``;
+export const SelectBoxWrapper = styled.div`
+  display: inline-block;
+  width: 16.75rem;
+  height: 2.995rem;
+  border: ${border.basic};
+`;
+export const Selected = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.713rem 0;
+  padding-left: 1.75rem;
+  padding-right: 0.888rem;
+  & svg {
+    font-size: 1.5rem;
+    margin-left: -35px;
+  }
+`;
+export const SelectedValue = styled.div`
+  max-width: 90px;
+`;
+export const OptionWrapper = styled.ul`
+  width: 16.75rem;
+  border: ${border.basic};
+  position: absolute;
+  border-top: none;
+  margin: 1px 0 0 -1px;
+  cursor: pointer;
+  display: none;
+  & .selectActive {
+    display: initial;
+  }
+`;
+export const Option = styled.li`
+  padding: 0.713rem 0;
+  padding-left: 1.75rem;
+  &:hover {
+    background-color: ${colorPalette.selectListHoverColor};
+  }
+`;
