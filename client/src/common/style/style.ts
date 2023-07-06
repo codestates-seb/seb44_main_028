@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 
+// Modal 컴포넌트의 스타일을 정의
 export const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -124,3 +125,4 @@ export const DefaultBtn = styled.button`
     transform: scale(0.98);
   }
 `;
+// SelectBox 컴포넌트의 스타일을 정의
