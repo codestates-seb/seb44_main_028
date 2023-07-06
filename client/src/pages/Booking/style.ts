@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { EachDatesProps } from './type';
 
 export const BookingPageContainer = styled.div`
   display: flex;
@@ -120,19 +121,6 @@ export const DaysContainer = styled.thead`
 export const DatesContainer = styled.tbody`
   margin-top: 105px;
 `;
-
-export type EachDatesProps = {
-  today: {
-    year: number;
-    month: number;
-    date: number;
-  };
-  row: {
-    week: number;
-    lastWeek: number;
-  };
-  day: number;
-};
 
 export const EachDate = styled.th<EachDatesProps>`
   font-size: 20px;
