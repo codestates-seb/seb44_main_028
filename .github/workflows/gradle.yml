@@ -34,8 +34,14 @@ jobs:
         env:
           spring.datasource.username: ${{secrets.RDS_MYSQL_ADMIN_ID}}
           spring.datasource.password: ${{secrets.RDS_MYSQL_ADMIN_PASSWORD}}
+          spring.datasource.url: ${{secrets.RDS_END_POINT}}
+          spring.security.oauth2.client.registration.kakao.clientId: ${{secrets.CLIENT_ID}}
+          spring.security.oauth2.client.registration.kakao.clientSecret: ${{secrets.CLIENT_SECRET}}
+          spring.security.oauth2.client.registration.kakao.redirect-uri: ${{secrets.REDIRECT_URL}}
           cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
           cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          jwt.key.secret: ${{secrets.JWT_SECRET_KEY}}
+          
           
           
       - name: Build with Gradle

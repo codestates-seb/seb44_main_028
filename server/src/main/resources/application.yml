@@ -1,8 +1,7 @@
 spring:
   datasource:
-
     # RDS 접근 설정
-    url: jdbc:mysql://seb44main028-db.cx1erli3wray.ap-northeast-2.rds.amazonaws.com:13306/playpack
+    url: ${RDS_END_POINT}
     username: ${RDS_MYSQL_ADMIN_ID}
     password: ${RDS_MYSQL_ADMIN_PASSWORD}
 
