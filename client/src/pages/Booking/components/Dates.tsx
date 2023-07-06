@@ -1,10 +1,12 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DatesContainer, EachDate } from '../style';
-import { setDate } from '../store/CalendarStore';
 import { CalendarProps } from '../type';
+import { RootState } from '../../../common/store/RootStore';
+import { setEndDate, setStartDate } from '../store/ReservationDateStore';
 
 function Dates({ calendar }: CalendarProps) {
   const dispatch = useDispatch();
+  const reservationState = useSelector((state: RootState) => state.reservation);
 
   const { year, month, date } = calendar;
   // 지난 달 마지막 날짜를 구함
@@ -54,7 +56,24 @@ function Dates({ calendar }: CalendarProps) {
             ),
           }}
           day={j}
-          onClick={() => console.log(date)}
+          onClick={() => {
+            console.log({ ...calendar, date });
+            if (!reservationState.startDate) {
+              dispatch(
+                setStartDate({
+                  ...reservationState,
+                  startDate: { ...calendar, date },
+                }),
+              );
+            } else {
+              dispatch(
+                setEndDate({
+                  ...reservationState,
+                  endDate: { ...calendar, date },
+                }),
+              );
+            }
+          }}
         >
           {date ? date : null}
         </EachDate>
