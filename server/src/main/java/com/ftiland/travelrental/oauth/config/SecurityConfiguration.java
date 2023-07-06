@@ -57,6 +57,7 @@ public class SecurityConfiguration {
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -69,4 +70,3 @@ public class SecurityConfiguration {
         return source;
     }
 
-}
