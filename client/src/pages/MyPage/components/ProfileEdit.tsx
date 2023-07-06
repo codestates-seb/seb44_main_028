@@ -9,12 +9,17 @@ import {
   NameWrapper,
   InputWrapper,
   TownBtn,
+  InputBox,
+  StyledForm,
+  MyPageEdit,
 } from '../style';
 // import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
 import { text } from 'stream/consumers';
+import { Button } from '@mui/base';
+import { backdropClasses } from '@mui/material';
 
-function ImageUpload() {
+function ProfileEdit() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -62,40 +67,82 @@ function ImageUpload() {
     }
     inputRef.current.click();
   }, []);
-  return (
-    <ProfileWrapper>
-      <ProfileSection>
-        <ProfileImg>
-          {previewImage ? (
-            <img src={previewImage} alt="Profile Image" />
-          ) : (
-            <img src={profileImage} alt="Profile Image" />
-          )}
-        </ProfileImg>
-        <ProfilerEdit>
-          <input
-            ref={inputRef}
-            type="file"
-            id="imgUpload"
-            name="file"
-            accept="image/*"
-            onChange={onUploadImage}
-          />
-        </ProfilerEdit>
 
-        <UploadBtn onClick={onInputButtonClick}>파일 선택</UploadBtn>
-      </ProfileSection>
-      <TextWrapper>
-        <NameWrapper>
-          <span>닉네임</span>
-          <span>내 동네</span>
-        </NameWrapper>
-        <InputWrapper>
-          <input type="text" placeholder="닉네임" />
-          <TownBtn>내 동네 설정</TownBtn>
-        </InputWrapper>
-      </TextWrapper>
-    </ProfileWrapper>
+  const onSubmitForm = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      console.log('Form data:', Object.fromEntries(formData));
+      console.log('Form submitted!');
+      // 서버로 전송하는 로직을 구현합니다.
+      // axios({
+      //   baseURL: API_HOST,
+      //   url: '/user/update',
+      //   method: 'POST',
+      //   data: {
+      //     profileImage: previewImage,
+      //     nickname: e.target.elements.nickname.value,
+      //     // 추가 정보들...
+      //   },
+      // })
+      //   .then((response) => {
+      //     console.log(response.data);
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+    },
+    [],
+    // [previewImage],
+  );
+  return (
+    <MyPageEdit>
+      <ProfileWrapper>
+        <ProfileSection>
+          <ProfileImg>
+            {previewImage ? (
+              <img src={previewImage} alt="Profile Image" />
+            ) : (
+              <img src={profileImage} alt="Profile Image" />
+            )}
+          </ProfileImg>
+          <ProfilerEdit>
+            <input
+              ref={inputRef}
+              type="file"
+              id="imgUpload"
+              name="file"
+              accept="image/*"
+              onChange={onUploadImage}
+            />
+          </ProfilerEdit>
+
+          <UploadBtn onClick={onInputButtonClick}>파일 선택</UploadBtn>
+        </ProfileSection>
+        <TextWrapper>
+          <NameWrapper>
+            <ol>
+              <li>닉네임</li>
+              <li>내 동네</li>
+            </ol>
+          </NameWrapper>
+          <InputWrapper>
+            <InputBox>
+              <input type="text" placeholder="닉네임" />
+            </InputBox>
+            <TownBtn>내 동네 설정</TownBtn>
+          </InputWrapper>
+        </TextWrapper>
+      </ProfileWrapper>
+      <StyledForm onSubmit={onSubmitForm}>
+        <input
+          type="submit"
+          value="돌아가기"
+          style={{ backgroundColor: '#CDDBF0', color: '#333' }}
+        />
+        <input type="submit" value="정보 수정" />
+      </StyledForm>
+    </MyPageEdit>
   );
 }
-export default ImageUpload;
+export default ProfileEdit;

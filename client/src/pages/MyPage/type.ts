@@ -12,7 +12,7 @@ export type ModalType = {
 };
 
 export type ImageUploadType = {
-  label: string;
+  input: string;
 };
 
 export type TapButtonType = {

@@ -42,7 +42,10 @@ export const CustomTapButton = styled.button`
   }
 `;
 
-//ImageUpload
+//Profile
+export const MyPageEdit = styled.div`
+  display: flex;
+`;
 export const ProfileWrapper = styled.div`
   display: flex;
 `;
@@ -70,13 +73,15 @@ export const NameWrapper = styled.div`
   margin: 40px;
 `;
 export const InputWrapper = styled.div`
+  padding: 20px;
+`;
+export const InputBox = styled.div`
   input {
     width: 200px;
     height: 25px;
     padding-left: 10px;
   }
 `;
-
 export const TownBtn = styled(DefaultBtn)`
   display: flex;
   align-items: center;
@@ -91,6 +96,27 @@ export const ProfileImg = styled.div`
     width: 100px;
     border-radius: 50%;
     object-fit: cover;
+  }
+`;
+
+export const StyledForm = styled.form`
+  display: flex;
+  align-items: center;
+
+  input {
+    background-color: #0d4c92;
+    color: #fff;
+    height: 28px;
+    width: 80px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: ${BoxShadow.Basic};
+    &:hover {
+      background-color: #1d5799;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
   }
 `;
 

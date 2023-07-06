@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal';
-import ImageUpload from '../components/ProfileEdit';
+import ProfileEdit from '../components/ProfileEdit';
 import { ProfileWrapper } from '../style';
 import TapButton from '../components/TapButton';
 
@@ -46,7 +46,7 @@ const MyPage: React.FC = () => {
         솔직한 별점을 남겨주세요.
       </Modal>
       <ProfileWrapper>
-        <ImageUpload />
+        <ProfileEdit />
       </ProfileWrapper>
       {user ? (
         <div>
