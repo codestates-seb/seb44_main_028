@@ -56,7 +56,6 @@ export const Table = styled.table`
   border-radius: 20px;
   height: 426px;
   width: 403px;
-  margin-left: 7vw;
   box-shadow: 2px 2px 4px #999;
 `;
 
