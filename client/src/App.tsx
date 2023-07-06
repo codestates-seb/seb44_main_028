@@ -12,8 +12,8 @@ function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
+      <Header />
       <Container maxWidth="xs">
-        <Header />
         {/* <ItemCard /> */}
         <Provider store={store}>
           <Router />
