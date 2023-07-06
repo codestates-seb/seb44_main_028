@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Component
 @Service
@@ -120,18 +120,31 @@ public class FileStorageService {
     }
 
     // 이미지 삭제(맴버)
-    public void deleteImageMember(String imageId){
+    public void deleteImageMember(String imageId) {
 
-        ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
         try {
             amazonS3.deleteObject(buckName, imageMember.getFileName());
             imageMemberRepository.delete(imageMember);
-        }
-        catch (BusinessLogicException e){
+        } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
     }
 
+    // 상품 이미지
+    public List<Image> findImageProduct(String productId){
+            List<Image> images = imageRepository.findByProductId(productId);
+            return images;
+        }
+
+    // 맴버 이미지
+    public List<ImageMember> findImageMember(Long memberId){
+        List<ImageMember> imagesMember = imageMemberRepository.findByMemberId(memberId);
+        return imagesMember;
+    }
+
 }
+
+
 
 
