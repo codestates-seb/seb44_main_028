@@ -29,7 +29,6 @@ export const reservation = createSlice({
       } else {
         return;
       }
-      console.log('상태', state);
     },
     clearReservationDates: () => {
       return initialReservationState;
