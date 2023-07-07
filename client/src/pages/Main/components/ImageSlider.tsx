@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 import { SliderWrapper, SliderButton, SliderDotsWrapper } from '../style';
 import { IMAGE_SLIDER } from '../constants';
@@ -18,6 +18,15 @@ const ImageSlider = () => {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleGoToNext();
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [currentIndex]);
   return (
     <SliderWrapper>
       <SliderButton>
