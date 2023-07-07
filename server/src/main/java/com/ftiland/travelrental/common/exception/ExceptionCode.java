@@ -3,7 +3,7 @@ package com.ftiland.travelrental.common.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
-
+    INTEREST_EXISTS(409,"Interest exists"),
     IMAGE_EMPTY(501,"이미지가 없습니다."),
     MEMBER_NOT_FOUND(404, "멤버가 존재하지 않습니다."),
     MEMBER_EXISTS(409, "Member exists"),

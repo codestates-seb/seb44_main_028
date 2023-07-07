@@ -23,15 +23,16 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
     private String email;
-    private String name;
+    private String displayName;
 
     // 이미지 필드 필요
 
     private Double latitude;
     private Double longitude;
 
-    public Member(String email) {
+    public Member(String email, String displayName) {
         this.email = email;
+        this.displayName = displayName;
     }
 
 /*    private Double totalRateScore;
