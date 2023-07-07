@@ -4,7 +4,6 @@ import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
 
-
 // Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
