@@ -1,3 +1,4 @@
+import { SelectOption } from './type';
 import climbing from '../assets/category_icon/등산.svg';
 import camping from '../assets/category_icon/캠핑.svg';
 import ski from '../assets/category_icon/스키.svg';
@@ -8,6 +9,41 @@ import play from '../assets/category_icon/놀거리.svg';
 import clothes from '../assets/category_icon/의류.svg';
 import accessory from '../assets/category_icon/액서서리.svg';
 import others from '../assets/category_icon/기타.svg';
+
+export const DISTANCE_DEFAULT_VALUE = '내 주변에서 찾기';
+export const DISTANCE_OPTIONS: SelectOption[] = [
+  {
+    value: '10',
+    label: '10k㎡',
+  },
+  {
+    value: '20',
+    label: '20k㎡',
+  },
+  {
+    value: '30',
+    label: '30k㎡',
+  },
+];
+
+export const PRODUCT_FILTER_OPTIONS: SelectOption[] = [
+  {
+    value: 'new',
+    label: '최신순',
+  },
+  {
+    value: 'starRating',
+    label: '별점순',
+  },
+  {
+    value: 'view',
+    label: '조회순',
+  },
+  {
+    value: 'nearest',
+    label: '가까운순',
+  }
+];
 
 export const CATEGORY = [
   {

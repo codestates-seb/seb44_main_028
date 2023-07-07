@@ -1,13 +1,17 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { BoxShadow } from '../utils/enum/boxShadow';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
+import { border } from '../utils/enum/border';
 
+
+// Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 4.275rem 2.4rem;
 `;
+
 export const CategoryButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -141,5 +145,94 @@ export const DefaultBtn = styled.button`
   }
   &:active {
     transform: scale(0.98);
+  }
+`;
+// SelectBox 컴포넌트의 스타일을 정의
+export const SelectBoxWrapper = styled.div`
+  display: inline-block;
+  width: 16.75rem;
+  height: 2.995rem;
+  border: ${border.basic};
+  border-radius: 5px;
+  font-weight: 700;
+`;
+const onRotate = keyframes`
+  from {
+    transform: rotate(0deg);
+    }
+  to {
+    transform: rotate(-180deg);
+    }
+`;
+const offRotate = keyframes`
+  from {
+    transform: rotate(-90deg);
+    }
+  to {
+    transform: rotate(0deg);
+    }
+`;
+export const Selected = styled.div<{ isClick: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.713rem 0;
+  padding-left: 1.75rem;
+  padding-right: 0.888rem;
+  & svg {
+    font-size: 1.5rem;
+    margin-left: -35px;
+    animation: ${({ isClick }) =>
+      isClick
+        ? css`
+            ${onRotate} 0.3s forwards
+          `
+        : css`
+            ${offRotate} 0.3s forwards
+          `};
+  }
+`;
+export const SelectedValue = styled.div`
+  max-width: 130px;
+`;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    }
+  to {
+    opacity: 1;
+    }
+`;
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    }
+  to {
+    opacity: 0;
+    }
+`;
+export const OptionWrapper = styled.ul<{ isClick: boolean }>`
+  width: 16.75rem;
+  border: ${border.basic};
+  position: absolute;
+  margin: 10px 0 0 -1px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: ${({ isClick }) => (isClick ? 'block' : 'none')};
+  animation: ${({ isClick }) =>
+    isClick
+      ? css`
+          ${fadeIn} 0.3s forwards
+        `
+      : css`
+          ${fadeOut} 0.3s forwards
+        `};
+`;
+export const Option = styled.li`
+  padding: 1rem 0;
+  padding-left: 1.75rem;
+  background-color: ${colorPalette.whiteColor};
+  &:hover {
+    background-color: ${colorPalette.selectListHoverColor};
   }
 `;

@@ -13,4 +13,5 @@ export enum colorPalette {
   modalIconColor = '#D0E2Ef',
   modalCancelButtonColor = '#CDDBF0',
   itemCardHeartColor = '#DEDEDE',
+  selectListHoverColor = '#F2F7FF',
 }
