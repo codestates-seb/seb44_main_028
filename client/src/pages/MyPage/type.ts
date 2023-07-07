@@ -1,5 +1,10 @@
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
+export type ProfileDataType = {
+  name: string;
+  age: number;
+};
+
 export type RatingStarType = {
   ratingIndex: number;
   setRatingIndex: Dispatch<SetStateAction<number>>;
@@ -16,13 +21,17 @@ export type ImageUploadType = {
 };
 
 export type TapButtonType = {
-  nowActivatedTabValue: string;
-  handleNowActivatedTabValue: (inputValue: string) => void;
+  // nowActivatedTabValue: string;
+  // handleNowActivatedTabValue: (inputValue: string) => void;
+  tap: string;
+  setTapList: Dispatch<SetStateAction<string[]>>;
 };
-
-export type ProfileType = {
-  activePage?: number;
-  itemsCountPerPage?: number;
-  totalItemsCount?: number;
-  onChange?: (pageNumber: number) => void;
+export type WishListType = {
+  item: string[];
+};
+export type PagingType = {
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  itemsPerPage: number;
+  totalItemsCount: number;
 };

@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import Pagination from 'react-js-pagination';
-import { ProfileType } from '../type';
-function Paging({
-  activePage,
-  itemsCountPerPage,
-  totalItemsCount,
-  onChange,
-}: ProfileType) {
-  const [page, setPage] = useState(1);
+import { PagingType } from '../type';
+import { PagingWrapper } from '../style';
 
+const Paging = ({
+  currentPage,
+  onPageChange,
+  itemsPerPage,
+  totalItemsCount,
+}: PagingType) => {
   const handlePageChange = (page: number) => {
-    setPage(page);
+    onPageChange(page);
   };
 
   return (
-    <Pagination
-      activePage={page}
-      itemsCountPerPage={10}
-      totalItemsCount={450}
-      pageRangeDisplayed={5}
-      prevPageText={'‹'}
-      nextPageText={'›'}
-      onChange={handlePageChange}
-    />
+    <PagingWrapper>
+      <Pagination
+        activePage={currentPage}
+        itemsCountPerPage={itemsPerPage}
+        totalItemsCount={totalItemsCount}
+        pageRangeDisplayed={5}
+        prevPageText={'‹'}
+        nextPageText={'›'}
+        onChange={handlePageChange}
+      />
+    </PagingWrapper>
   );
-}
+};
 
 export default Paging;

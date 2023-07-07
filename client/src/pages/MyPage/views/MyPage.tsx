@@ -1,62 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal';
+import ParentTap from '../components/ParentTap';
 import ProfileEdit from '../components/ProfileEdit';
-import { ProfileWrapper } from '../style';
-import TapButton from '../components/TapButton';
 import WishList from '../components/WishList';
-type User = {
-  name: string;
-  email: string;
-};
+import { ProfileWrapper } from '../style';
+import { ProfileDataType } from '../type';
 
-const MyPage: React.FC = () => {
+const MyPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+
   const [nowActivatedTabValue, setNowActivatedTabValue] = useState<string>('');
+  const [profileData, setProfileData] = useState<ProfileDataType | null>(null);
 
-  // 사용자 정보 가져오기 (임시로 작성된 코드)
-  const fetchUserInfo = () => {
-    // API 호출 또는 데이터베이스에서 사용자 정보를 가져온다고 가정
-    const userInfo: User = {
-      name: '김민트',
-      email: 'johndoe@example.com',
-    };
-    setUser(userInfo);
-  };
+  // useEffect(() => {
+  //   // 서버에서 데이터를 가져오는 API 요청을 수행합니다.
+  //   fetchProfileData()
+  //     .then((data) => setProfileData(data))
+  //     .catch((error) => {
+  //       // 에러 처리를 수행합니다.
+  //       console.error('Error fetching profile data:', error);
+  //     });
+  // }, []);
 
-  // 마이페이지 컴포넌트가 처음 렌더링될 때 사용자 정보를 가져옴
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
-
-  const handleNowActivatedTabValue = (inputValue: string) => {
-    setNowActivatedTabValue(inputValue);
-    // 탭 버튼이 클릭되면 다른 동작을 수행하거나 상태를 업데이트할 수 있습니다.
-    console.log('Activated tab value:', inputValue);
-  };
+  // const fetchProfileData = async (): Promise<ProfileDataType> => {
+  //   const response = await fetch('/api/profile');
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch profile data');
+  //   }
+  //   const data: ProfileDataType = await response.json();
+  //   return data;
+  // };
+  // if (!profileData) {
+  //   // 데이터 로딩 중일 때 표시할 로딩 상태를 처리합니다.
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div>
       <h2>My Page</h2>
-      <TapButton
-        nowActivatedTabValue={nowActivatedTabValue}
-        handleNowActivatedTabValue={handleNowActivatedTabValue}
-      />
+      {/* <p>Name: {profileData.name}</p>
+      <p>Age: {profileData.age}</p> */}
+      <ParentTap />
       <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
         솔직한 별점을 남겨주세요.
       </Modal>
       <ProfileWrapper>
         <ProfileEdit />
       </ProfileWrapper>
-      {user ? (
-        <div>
-          <p>닉네임: {user.name}</p>
-          <p>내 동네 찾기: {user.email}</p>
-        </div>
-      ) : (
-        <p>Loading user information...</p>
-      )}
-      <WishList />
+      {/* <WishList /> */}
     </div>
   );
 };
