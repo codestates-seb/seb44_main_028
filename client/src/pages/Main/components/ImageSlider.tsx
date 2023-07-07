@@ -5,14 +5,27 @@ import { IMAGE_SLIDER } from '../constants';
 
 const ImageSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const handleGoToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? IMAGE_SLIDER.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+  const handleGoToNext = () => {
+    const isLastSlide = currentIndex === IMAGE_SLIDER.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
   return (
     <SliderWrapper>
       <SliderButton>
         <div>
-          <MdOutlineChevronLeft className="previous" />
+          <MdOutlineChevronLeft
+            onClick={handleGoToPrevious}
+            className="previous"
+          />
         </div>
         <div>
-          <MdOutlineChevronRight className="next" />
+          <MdOutlineChevronRight onClick={handleGoToNext} className="next" />
         </div>
       </SliderButton>
       <img src={IMAGE_SLIDER[currentIndex].image}></img>
