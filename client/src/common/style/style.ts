@@ -237,7 +237,6 @@ export const Option = styled.li`
   }
 `;
 // checkbox 컴포넌트의 스타일을 정의
-export const CheckBoxListContainer = styled.div``;
 export const CheckBoxWrapper = styled.div`
   display: inline-block;
   width: auto;

@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { CATEGORY } from '../../constants';
-import { CheckBoxListContainer } from '../../style/style';
 import CheckBox from './CheckBox';
 
 const CheckBoxList = () => {
   const [seletedCategories, setSelectedCategories] = useState<string[]>([]);
   console.log(seletedCategories);
   return (
-    <CheckBoxListContainer>
+    <div>
       {CATEGORY.map((category, index) => {
         return (
           <CheckBox
@@ -18,7 +17,7 @@ const CheckBoxList = () => {
           />
         );
       })}
-    </CheckBoxListContainer>
+    </div>
   );
 };
 
