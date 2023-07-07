@@ -31,7 +31,10 @@ const ImageSlider = () => {
           <MdOutlineChevronRight onClick={handleGoToNext} className="next" />
         </div>
       </SliderButton>
-      <img src={IMAGE_SLIDER[currentIndex].image}></img>
+      <img
+        src={IMAGE_SLIDER[currentIndex].image}
+        alt={IMAGE_SLIDER[currentIndex].name}
+      ></img>
       <SliderDotsWrapper>
         {IMAGE_SLIDER.map((_, index) => (
           <div key={index} onClick={() => goToSlide(index)}>
