@@ -15,15 +15,28 @@ export const reservation = createSlice({
   initialState: initialReservationState,
   reducers: {
     setStartDate: (state, action: PayloadAction<ReservationProps>) => {
-      state.startDate = action.payload.startDate;
+      const today = new Date();
+      if (
+        action.payload.startDate &&
+        action.payload.startDate?.year >= today.getFullYear() &&
+        action.payload.startDate?.month >= today.getMonth() + 1 &&
+        action.payload.startDate?.date >= today.getDate()
+      ) {
+        state.startDate = action.payload.startDate;
+      } else {
+        return;
+      }
     },
     setEndDate: (state, action: PayloadAction<ReservationProps>) => {
       if (
         state.startDate &&
         action.payload.endDate &&
-        state.startDate.year <= action.payload.endDate?.year &&
-        state.startDate.month <= action.payload.endDate?.month &&
-        state.startDate.date <= action.payload.endDate?.date
+        (state.startDate.year < action.payload.endDate?.year ||
+          (state.startDate.year === action.payload.endDate?.year &&
+            state.startDate.month < action.payload.endDate?.month) ||
+          (state.startDate.year === action.payload.endDate?.year &&
+            state.startDate.month === action.payload.endDate?.month &&
+            state.startDate.date <= action.payload.endDate?.date))
       ) {
         state.endDate = action.payload.endDate;
       } else {
