@@ -1,4 +1,28 @@
 import styled from 'styled-components';
+import { EachDatesProps } from './type';
+
+export const BookingPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CalendarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+export const CalendarWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 export const BookingDatesForm = styled.form`
   display: flex;
@@ -30,11 +54,9 @@ export const Table = styled.table`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid transparent;
   border-radius: 20px;
   height: 426px;
   width: 403px;
-  margin-left: 7vw;
   box-shadow: 2px 2px 4px #999;
 `;
 
@@ -49,7 +71,7 @@ export const YearAndMonthWrapper = styled.caption`
 `;
 
 export const Year = styled.span`
-  font-size: 45px;
+  font-size: 30px;
   color: black;
   margin-left: 80px;
   position: absolute;
@@ -64,15 +86,15 @@ export const MonthWrapper = styled.caption`
 `;
 
 export const Month = styled.span`
-  font-size: 45px;
+  font-size: 30px;
   color: black;
   padding-bottom: 40px;
   position: absolute;
   margin-right: 150px;
+  width: 100px;
 `;
 
 export const Btn = styled.button`
-  background: linear-gradient(200deg, rgba(125, 202, 220, 0.1), #e6cdcd);
   height: 45px;
   width: 45px;
   margin: 10px 13vw;
@@ -100,28 +122,35 @@ export const DatesContainer = styled.tbody`
   margin-top: 105px;
 `;
 
-export type EachDatesProps = {
-  today: {
-    year: number;
-    month: number;
-    date: number;
-  };
-  row: {
-    week: number;
-    lastWeek: number;
-  };
-  day: number;
-};
-
 export const EachDate = styled.th<EachDatesProps>`
   font-size: 20px;
   font-weight: 400;
   height: 20px;
   padding: 14px;
   color: ${(props) => {
+    const thisMonth = new Date().getMonth() + 1;
     return (props.row.week === 0 && Number(props.children) > 7) ||
-      (props.row.week === props.row.lastWeek && Number(props.children) < 8)
+      (props.row.week === props.row.lastWeek && Number(props.children) < 8) ||
+      props.today.year < new Date().getFullYear() ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month < thisMonth) ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month === thisMonth &&
+        props.today.date > Number(props.children))
       ? 'rgb(0, 0, 0, 0.1)'
       : 'rgb(0, 0, 0, 0.6)';
+  }};
+  cursor: ${(props) => {
+    const thisMonth = new Date().getMonth() + 1;
+    return (props.row.week === 0 && Number(props.children) > 7) ||
+      (props.row.week === props.row.lastWeek && Number(props.children) < 8) ||
+      props.today.year < new Date().getFullYear() ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month < thisMonth) ||
+      (props.today.year === new Date().getFullYear() &&
+        props.today.month === thisMonth &&
+        props.today.date > Number(props.children))
+      ? 'not-allowed'
+      : 'pointer';
   }};
 `;
