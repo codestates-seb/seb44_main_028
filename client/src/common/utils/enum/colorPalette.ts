@@ -2,6 +2,7 @@ export enum colorPalette {
   lightColor = '#B0F4E6',
   accentColor = '#12D3CF',
   heavyColor = '#OD4C92',
+  deepMintColor = '#3AA6B9',
   grayColor = '#cecece',
   basicTextColor = '#333',
   whiteColor = '#fff',

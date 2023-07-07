@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from '../style';
-import { SwitchBtn } from '../style';
+import { SwitchBtn, CustomTapButton } from '../style';
 import ParentTap from './ParentTap';
 import { TapButtonType } from '../type';
 import { fetchList } from './fetchList';
@@ -11,7 +10,7 @@ function TapButton({
 }: TapButtonType) {
   return (
     <SwitchBtn>
-      <Button
+      <CustomTapButton
         className={nowActivatedTabValue === 'firstBtn' ? 'btnL' : 'btnR'}
         value="firstBtn"
         onClick={(e) => {
@@ -19,9 +18,9 @@ function TapButton({
         }}
       >
         빌려준 내역
-      </Button>
+      </CustomTapButton>
 
-      <Button
+      <CustomTapButton
         className={nowActivatedTabValue === 'secondBtn' ? 'btnL' : 'btnR'}
         value="secondBtn"
         onClick={(e) => {
@@ -29,8 +28,8 @@ function TapButton({
         }}
       >
         빌린 내역
-      </Button>
-      <Button
+      </CustomTapButton>
+      <CustomTapButton
         className={nowActivatedTabValue === 'thirdBtn' ? 'btnL' : 'btnR'}
         value="thirdBtn"
         onClick={(e) => {
@@ -38,7 +37,7 @@ function TapButton({
         }}
       >
         관심 목록
-      </Button>
+      </CustomTapButton>
     </SwitchBtn>
   );
 }

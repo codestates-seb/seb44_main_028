@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BoxShadow } from '../utils/enum/boxShadow';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 
@@ -134,7 +135,7 @@ export const DefaultBtn = styled.button`
   width: 80px;
   border-radius: 5px;
   border: none;
-  box-shadow: 1px 1px 1px 1px #888;
+  box-shadow: ${BoxShadow.Basic};
   &:hover {
     background-color: #1d5799;
   }

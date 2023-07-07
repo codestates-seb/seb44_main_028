@@ -30,7 +30,11 @@ function ParentTap() {
     const currentPageNumber = 1; // 현재 페이지 번호를 임시로 설정
     fetchList(currentPageNumber);
 
-    return <div>ParentTab</div>;
+    return (
+      <div>
+        <div>ParentTab</div>
+      </div>
+    );
   };
 }
 
