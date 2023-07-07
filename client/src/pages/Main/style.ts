@@ -29,3 +29,7 @@ export const ImageSliderWrapper = styled.div`
   width: 400vw;
   height: 34.5rem;
 `;
+export const SliderWrapper = styled.div``;
+export const SliderButton = styled.div``;
+export const SliderImageWrapper = styled.div``;
+export const SliderDotsWrapper = styled.div``;
