@@ -15,6 +15,9 @@ const ImageSlider = () => {
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
   return (
     <SliderWrapper>
       <SliderButton>
@@ -31,7 +34,9 @@ const ImageSlider = () => {
       <img src={IMAGE_SLIDER[currentIndex].image}></img>
       <SliderDotsWrapper>
         {IMAGE_SLIDER.map((_, index) => (
-          <div key={index}>●</div>
+          <div key={index} onClick={() => goToSlide(index)}>
+            ●
+          </div>
         ))}
       </SliderDotsWrapper>
     </SliderWrapper>
