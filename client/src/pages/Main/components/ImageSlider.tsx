@@ -9,7 +9,7 @@ const ImageSlider = () => {
     <SliderWrapper>
       <SliderButton>
         <div>
-          <MdOutlineChevronLeft className="prevent" />
+          <MdOutlineChevronLeft className="previous" />
         </div>
         <div>
           <MdOutlineChevronRight className="next" />

@@ -53,7 +53,7 @@ export const SliderButton = styled.div`
     top: 45%;
     cursor: pointer;
   }
-  & .prevent {
+  & .previous {
     left: 10px;
   }
   & .next {
