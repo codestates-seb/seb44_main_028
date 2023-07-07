@@ -1,4 +1,4 @@
-import { SelectOption } from './type';
+import { SelectOption, CategoryProp } from './type';
 import climbing from '../assets/category_icon/등산.svg';
 import camping from '../assets/category_icon/캠핑.svg';
 import ski from '../assets/category_icon/스키.svg';
@@ -45,7 +45,7 @@ export const PRODUCT_FILTER_OPTIONS: SelectOption[] = [
   },
 ];
 
-export const CATEGORY = [
+export const CATEGORY: CategoryProp[] = [
   {
     image: climbing,
     name: '등산',

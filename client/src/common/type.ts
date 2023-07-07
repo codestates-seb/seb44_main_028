@@ -15,3 +15,7 @@ export type SelectOption = {
   value: string;
   label: string;
 };
+export type CategoryProp = {
+  image: string;
+  name: string;
+};
