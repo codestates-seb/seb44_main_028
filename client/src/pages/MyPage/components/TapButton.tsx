@@ -13,7 +13,7 @@ function TapButton({ tap, setTapList }: TapButtonType) {
   const handleNowTapValue = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { currentTarget } = event;
     if (currentTarget) {
-      setTapList((prevList) => [...prevList, currentTarget.innerText]);
+      setTapList(() => [currentTarget.innerText]);
     }
     console.log(tap);
   };
