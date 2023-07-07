@@ -3,6 +3,7 @@ import { BoxShadow } from '../utils/enum/boxShadow';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
+import { borderRadius } from '../utils/enum/borderRadius';
 
 // Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
@@ -234,4 +235,13 @@ export const Option = styled.li`
   &:hover {
     background-color: ${colorPalette.selectListHoverColor};
   }
+`;
+// checkbox 컴포넌트의 스타일을 정의
+export const CheckboxWrapper = styled.div`
+  display: inline-block;
+  width: auto;
+  border: ${border.basic};
+  padding: 0.525rem 1.15rem;
+  cursor: pointer;
+  border-radius: ${borderRadius.basicRadius};
 `;

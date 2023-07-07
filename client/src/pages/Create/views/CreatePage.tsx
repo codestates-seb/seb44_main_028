@@ -1,4 +1,6 @@
+import Checkbox from '../../../common/components/Checkbox/Checkbox';
+
 function CreatePage() {
-  return <div>create page</div>;
+  return <Checkbox />;
 }
 export default CreatePage;
