@@ -5,12 +5,13 @@ import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 
 
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
-import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.entity.Member;
 
 import com.ftiland.travelrental.product.dto.CreateProduct;
+import com.ftiland.travelrental.product.dto.ProductDetailDto;
 import com.ftiland.travelrental.product.dto.UpdateProduct;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
@@ -64,6 +65,8 @@ public class ProductService {
 
         List<CategoryDto> productCategories =
                 productCategoryService.createProductCategories(product, request.getCategoryIds());
+
+        // 이미지 저장
 
         return CreateProduct.Response.from(product, productCategories);
     }
@@ -120,5 +123,12 @@ public class ProductService {
     public Product findProduct(String productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
+    }
+
+    public ProductDetailDto findProductDetail(String productId) {
+        Product product = findProduct(productId);
+
+        List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
+        return ProductDetailDto.from(product, categories);
     }
 }

@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -64,13 +63,12 @@ class ProductControllerTest {
 
         CreateProduct.Request request = new CreateProduct.Request(
                 "제목", 1000, 500, 1000, "내용", 3, 0, 0,
-                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151"),
-                "aa@aa.com"
+                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151")
         );
 
         CreateProduct.Response response = CreateProduct.Response.from(product, categories);
 
-        given(productService.createProduct(any(), anyString()))
+        given(productService.createProduct(any(), anyLong()))
                 .willReturn(response);
 
         // when
@@ -113,12 +111,11 @@ class ProductControllerTest {
                 .title("제목")
                 .baseFee(1000)
                 .feePerDay(500)
-                .memberEmail("test@test.com")
                 .build();
 
         UpdateProduct.Response response = UpdateProduct.Response.from(product);
 
-        given(productService.updateProduct(any(), anyString(), anyString()))
+        given(productService.updateProduct(any(), anyString(), anyLong()))
                 .willReturn(response);
 
         // when
