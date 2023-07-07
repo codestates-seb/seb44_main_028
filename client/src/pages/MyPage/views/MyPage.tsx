@@ -3,7 +3,7 @@ import Modal from '../components/Modal';
 import ProfileEdit from '../components/ProfileEdit';
 import { ProfileWrapper } from '../style';
 import TapButton from '../components/TapButton';
-
+import WishList from '../components/WishList';
 type User = {
   name: string;
   email: string;
@@ -56,6 +56,7 @@ const MyPage: React.FC = () => {
       ) : (
         <p>Loading user information...</p>
       )}
+      <WishList />
     </div>
   );
 };

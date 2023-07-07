@@ -18,6 +18,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.3",
     "react-icons": "^4.10.1",
+    "react-js-pagination": "^3.0.3",
     "react-query": "^3.39.3",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.13.0",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/crypto-js": "^4.1.1",
+    "@types/react-js-pagination": "^3.0.4",
     "@types/styled-components": "^5.1.26",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

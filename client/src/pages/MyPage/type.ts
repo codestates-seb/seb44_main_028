@@ -19,3 +19,10 @@ export type TapButtonType = {
   nowActivatedTabValue: string;
   handleNowActivatedTabValue: (inputValue: string) => void;
 };
+
+export type ProfileType = {
+  activePage?: number;
+  itemsCountPerPage?: number;
+  totalItemsCount?: number;
+  onChange?: (pageNumber: number) => void;
+};
