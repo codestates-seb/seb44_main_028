@@ -15,7 +15,12 @@ export type SelectOption = {
   value: string;
   label: string;
 };
-export type CategoryProp = {
+export type CategoryProps = {
   image: string;
   name: string;
+};
+export type CheckBoxProps = {
+  categoryData: string;
+  selectedCategories: string[];
+  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
 };
