@@ -23,3 +23,9 @@ export const TopButton = styled.button`
     color: #12d3cf;
   }
 `;
+// Carousel
+export const CarouselContainer = styled.div``;
+export const ImageSliderWrapper = styled.div`
+  width: 400vw;
+  height: 34.5rem;
+`;
