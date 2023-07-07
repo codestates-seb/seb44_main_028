@@ -245,4 +245,6 @@ export const CheckBoxWrapper = styled.div`
   padding: 0.525rem 1.15rem;
   cursor: pointer;
   border-radius: ${borderRadius.basicRadius};
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
 `;
