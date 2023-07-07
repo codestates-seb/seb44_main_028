@@ -1,7 +1,7 @@
 import { CheckboxWrapper } from '../../style/style';
 
-const Checkbox = () => {
+const CheckBox = () => {
   return <CheckboxWrapper></CheckboxWrapper>;
 };
 
-export default Checkbox;
+export default CheckBox;
