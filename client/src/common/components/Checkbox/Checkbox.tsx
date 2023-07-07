@@ -6,6 +6,8 @@ const CheckBox = ({
   selectedCategories,
   setSelectedCategories,
 }: CheckBoxProps) => {
+  const isSelected = selectedCategories.includes(categoryData);
+  console.log(categoryData, selectedCategories);
   const handleIsClick = () => {
     if (selectedCategories.includes(categoryData)) {
       setSelectedCategories((prevCategories) =>
@@ -19,7 +21,9 @@ const CheckBox = ({
     }
   };
   return (
-    <CheckBoxWrapper onClick={handleIsClick}>{categoryData}</CheckBoxWrapper>
+    <CheckBoxWrapper onClick={handleIsClick} isSelected={isSelected}>
+      {categoryData}
+    </CheckBoxWrapper>
   );
 };
 

@@ -237,7 +237,7 @@ export const Option = styled.li`
   }
 `;
 // checkbox 컴포넌트의 스타일을 정의
-export const CheckBoxWrapper = styled.div`
+export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
   display: inline-block;
   width: auto;
   border: ${border.basic};
@@ -246,4 +246,9 @@ export const CheckBoxWrapper = styled.div`
   border-radius: ${borderRadius.basicRadius};
   margin-right: 1rem;
   margin-bottom: 0.5rem;
+  background-color: ${({ isSelected }) =>
+    isSelected && `${colorPalette.tagColor}`};
+  color: ${({ isSelected }) => isSelected && `${colorPalette.whiteColor}`};
+  border: ${({ isSelected }) =>
+    isSelected && `1px solid ${colorPalette.deepMintColor}`};
 `;
