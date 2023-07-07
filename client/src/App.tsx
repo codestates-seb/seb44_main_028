@@ -6,12 +6,13 @@ import Header from './pages/Header/views/Header';
 import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
-
+import Carousel from './pages/Main/components/Carousel';
 function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
+      <Carousel />
       <Container maxWidth="xs">
         <Provider store={store}>
           <Router />
