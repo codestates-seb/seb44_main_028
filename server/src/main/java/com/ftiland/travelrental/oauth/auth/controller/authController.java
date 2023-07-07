@@ -26,7 +26,7 @@ public class authController {
         System.out.println(principal.toString());
         Long memberId = 1L;
 
-        Member member = memberService.getMember(memberId);
+        Member member = memberService.findMember(memberId);
 
         GetMember.Response response = GetMember.Response.from(member);
 

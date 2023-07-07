@@ -25,7 +25,7 @@ public class ReservationDto {
         return ReservationDto.builder()
                 .reservationId(reservation.getReservationId())
                 .totalFee(reservation.getTotalFee())
-                .username(reservation.getProduct().getMember().getName())
+                .username(reservation.getProduct().getMember().getDisplayName())
                 .startDate(reservation.getStartDate().toString())
                 .endDate(reservation.getEndDate().toString()).build();
     }
