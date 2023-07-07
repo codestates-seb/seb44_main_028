@@ -32,8 +32,6 @@ export const ImageSliderWrapper = styled.div`
   height: 34.5rem;
 `;
 export const SliderWrapper = styled.div`
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
