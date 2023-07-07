@@ -1,3 +1,7 @@
+export type CategoryButtonProps = {
+  imageUrl: string;
+  imageName: string;
+};
 export type ModalPortalProps = {
   children: React.ReactNode;
 };

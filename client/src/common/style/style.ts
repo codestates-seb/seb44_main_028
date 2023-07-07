@@ -1,9 +1,30 @@
 import styled, { css, keyframes } from 'styled-components';
+import { BoxShadow } from '../utils/enum/boxShadow';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
 
+
 // Modal 컴포넌트의 스타일을 정의
+export const CategoryContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4.275rem 2.4rem;
+`;
+
+export const CategoryButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: ${fontSize.basic};
+  cursor: pointer;
+  & img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+`;
+
 export const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -118,7 +139,7 @@ export const DefaultBtn = styled.button`
   width: 80px;
   border-radius: 5px;
   border: none;
-  box-shadow: 1px 1px 1px 1px #888;
+  box-shadow: ${BoxShadow.Basic};
   &:hover {
     background-color: #1d5799;
   }

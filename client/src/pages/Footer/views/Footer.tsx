@@ -1,21 +1,25 @@
 import React from 'react';
-import { FooterWapper, Box, LogoBox, TextBox } from '../FooterStyles';
+import {
+  FooterWrapper,
+  FooterBox,
+  FooterLogo,
+  FooterTextBox,
+  FooterText,
+} from '../FooterStyles';
 import { FooterType } from '../type';
 
 function Footer({ prop1 }: FooterType) {
   // 추가적인 코드 작성
   return (
-    <FooterWapper>
-      <Box>
-        <LogoBox>{prop1}</LogoBox>
+    <FooterWrapper>
+      <FooterBox>
+        <FooterLogo>{prop1}</FooterLogo>
+      </FooterBox>
 
-        <Box>
-          <TextBox>
-            <h6>© PLAYPACK All Rights Reserved.</h6>
-          </TextBox>
-        </Box>
-      </Box>
-    </FooterWapper>
+      <FooterTextBox>
+        <FooterText>© PLAYPACK All Rights Reserved.</FooterText>
+      </FooterTextBox>
+    </FooterWrapper>
   );
 }
 

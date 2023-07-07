@@ -12,13 +12,12 @@ function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
+      <Header />
       <Container maxWidth="xs">
-        <Header />
-        <ItemCard />
         <Provider store={store}>
           <Router />
         </Provider>
-        <Footer prop1={'로고'} />
+        <Footer prop1={'플레이 팩'} />
       </Container>
     </QueryClientProvider>
   );

@@ -3,6 +3,10 @@ package com.ftiland.travelrental.product.service;
 import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+
+
+import com.ftiland.travelrental.member.service.MemberService;
+
 import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.entity.Member;
 
@@ -28,17 +32,16 @@ import static com.ftiland.travelrental.common.exception.ExceptionCode.*;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final ProductCategoryService productCategoryService;
 
     @Transactional
-    public CreateProduct.Response createProduct(CreateProduct.Request request, String memberEmail) {
+    public CreateProduct.Response createProduct(CreateProduct.Request request, Long memberId) {
         log.info("[ProductService] createProduct called");
-        Member member = memberRepository.findByEmail(memberEmail)
-                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        Member member = memberService.findMember(memberId);
 
         if (member.getLatitude() == null || member.getLongitude() == null) {
-            throw new BusinessLogicException(NOT_FOUNT_LOCATION);
+            throw new BusinessLogicException(NOT_FOUND_LOCATION);
         }
 
         Product productEntity = Product.builder()
@@ -73,9 +76,8 @@ public class ProductService {
 
     @Transactional
     public UpdateProduct.Response updateProduct(UpdateProduct.Request request,
-                                                String productId, String memberEmail) {
-        Member member = memberRepository.findByEmail(memberEmail)
-                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+                                                String productId, Long memberId) {
+        Member member = memberService.findMember(memberId);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
@@ -104,9 +106,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(String productId, String memberEmail) {
-        Member member = memberRepository.findByEmail(memberEmail)
-                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+    public void deleteProduct(String productId, Long memberId) {
+        Member member = memberService.findMember(memberId);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
@@ -114,5 +115,10 @@ public class ProductService {
         validateOwner(member, product);
 
         productRepository.delete(product);
+    }
+
+    public Product findProduct(String productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
     }
 }
