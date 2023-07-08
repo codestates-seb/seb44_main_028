@@ -6,7 +6,6 @@ import Header from './pages/Header/views/Header';
 import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
-import ItemCard from './common/components/ItemCard';
 
 function App() {
   const queryClient = new QueryClient();
@@ -17,8 +16,8 @@ function App() {
         <Provider store={store}>
           <Router />
         </Provider>
-        <Footer prop1={'플레이 팩'} />
       </Container>
+      <Footer prop1={'플레이 팩'} />
     </QueryClientProvider>
   );
 }
