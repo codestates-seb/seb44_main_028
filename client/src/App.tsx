@@ -12,7 +12,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
-      <Container maxWidth="xs">
+      <Container maxWidth="lg">
         <Provider store={store}>
           <Router />
         </Provider>
