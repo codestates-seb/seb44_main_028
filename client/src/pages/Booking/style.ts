@@ -30,6 +30,8 @@ export const CalendarWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin: 30px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 5px #999;
 `;
 
 export const BookingDatesForm = styled.form`
@@ -69,7 +71,6 @@ export const Table = styled.table`
   border-radius: 20px;
   height: 426px;
   width: 403px;
-  box-shadow: 2px 2px 4px #999;
 `;
 
 export const YearAndMonthWrapper = styled.caption`
@@ -163,4 +164,11 @@ export const EachDate = styled.th<EachDatesProps>`
       ? 'not-allowed'
       : 'pointer';
   }};
+`;
+
+export const SeparationLine = styled.span`
+  position: absolute;
+  font-size: 70px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.1);
 `;
