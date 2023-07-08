@@ -34,8 +34,12 @@ function Dates({ calendar }: CalendarProps) {
       // }
       if (dates[i][j - 1]) {
         dates[i][j] = dates[i][j - 1] + 1;
+        if (dates[i][j] === lastDateOfThisMonth) {
+          break;
+        }
       } else if (dates[i - 1]?.[6]) {
-        // if (dates[i - 1].includes(lastDateOfThisMonth) && i > 1) break;
+        if (dates[i - 1].includes(lastDateOfThisMonth) && i > 1) break;
+
         dates[i][j] = dates[i - 1][6] + 1;
       }
 
