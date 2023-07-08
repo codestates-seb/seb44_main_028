@@ -2,28 +2,44 @@ import { useSelector } from 'react-redux';
 import {
   BookingDatesForm,
   BookingDatesLabel,
-  DatesInput,
   DatesWrapper,
+  ReservationDate,
 } from '../style';
 import { RootState } from '../../../common/store/RootStore';
 
 function BookingDates() {
-  const reservationState = useSelector((state: RootState) => state.reservation);
+  const reservationStartDate = useSelector(
+    (state: RootState) => state.reservation.startDate,
+  );
+  const reservationEndDate = useSelector(
+    (state: RootState) => state.reservation.endDate,
+  );
+
+  const fillZero = (number: number) => {
+    return String(number).padStart(2, '0');
+  };
+
   return (
     <BookingDatesForm>
       <DatesWrapper>
         <BookingDatesLabel>예약 시작 날짜</BookingDatesLabel>
-        <DatesInput />
-        {reservationState.startDate
-          ? `${reservationState.startDate?.year}/${reservationState.startDate?.month}/${reservationState.startDate?.date}`
-          : null}
+        <ReservationDate>
+          {reservationStartDate
+            ? `${reservationStartDate?.year}.${fillZero(
+                reservationStartDate?.month,
+              )}.${fillZero(reservationStartDate?.date)}`
+            : null}
+        </ReservationDate>
       </DatesWrapper>
       <DatesWrapper>
         <BookingDatesLabel>예약 마감 날짜</BookingDatesLabel>
-        <DatesInput />
-        {reservationState.endDate
-          ? `${reservationState.endDate?.year}/${reservationState.endDate?.month}/${reservationState.endDate?.date}`
-          : null}
+        <ReservationDate>
+          {reservationEndDate
+            ? `${reservationEndDate?.year}.${fillZero(
+                reservationEndDate?.month,
+              )}.${fillZero(reservationEndDate?.date)}`
+            : null}
+        </ReservationDate>
       </DatesWrapper>
     </BookingDatesForm>
   );
