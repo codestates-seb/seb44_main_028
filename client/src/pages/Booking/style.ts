@@ -199,6 +199,23 @@ export const EachDate = styled.th<EachDatesProps>`
             endDate >= Number(props.children)
             ? colorPalette.deepMintColor
             : 'white';
+        } else {
+          return ((startYear === props.today.year &&
+            startMonth === props.today.month &&
+            startDate <= Number(props.children)) ||
+            (endYear === props.today.year &&
+              endMonth === props.today.month &&
+              endDate >= Number(props.children))) &&
+            Number(props.children) !== 0
+            ? colorPalette.deepMintColor
+            : startMonth &&
+              endMonth &&
+              endMonth - startMonth > 1 &&
+              props.today.month > startMonth &&
+              props.today.month < endMonth &&
+              Number(props.children) !== 0
+            ? colorPalette.deepMintColor
+            : 'white';
         }
       }
     }
