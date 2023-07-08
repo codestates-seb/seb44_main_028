@@ -39,11 +39,13 @@ export const BookingDatesForm = styled.form`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-top: 60px;
+  margin-top: 30px;
+  padding-top: 5px;
   width: 727px;
   height: 97px;
-  border: 1px solid #ebebeb;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 50px;
+  box-shadow: 1px 1px 3px #999;
 `;
 
 export const BookingDatesLabel = styled.label`
