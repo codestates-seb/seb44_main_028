@@ -4,6 +4,7 @@ import {
   BookingDatesLabel,
   DatesWrapper,
   ReservationDate,
+  SeparationLine,
 } from '../style';
 import { RootState } from '../../../common/store/RootStore';
 
@@ -31,6 +32,7 @@ function BookingDates() {
             : null}
         </ReservationDate>
       </DatesWrapper>
+      <SeparationLine>|</SeparationLine>
       <DatesWrapper>
         <BookingDatesLabel>예약 마감 날짜</BookingDatesLabel>
         <ReservationDate>
