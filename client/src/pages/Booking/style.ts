@@ -79,10 +79,8 @@ export const YearAndMonthWrapper = styled.caption`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  position: absolute;
-  margin-bottom: 650px;
-  margin-top: 350px;
-  height: 70px;
+  position: relative;
+  margin-top: 20px;
 `;
 
 export const Year = styled.span`
@@ -128,7 +126,7 @@ export const Day = styled.th`
 export const DaysContainer = styled.thead`
   position: absolute;
   width: auto;
-  margin-bottom: 250px;
+  margin-bottom: 205px;
 `;
 
 export const DatesContainer = styled.tbody`
