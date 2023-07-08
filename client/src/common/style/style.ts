@@ -236,6 +236,7 @@ export const Option = styled.li`
     background-color: ${colorPalette.selectListHoverColor};
   }
 `;
+
 // checkbox 컴포넌트의 스타일을 정의
 export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
   display: inline-block;
@@ -251,4 +252,13 @@ export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
   color: ${({ isSelected }) => isSelected && `${colorPalette.whiteColor}`};
   border: ${({ isSelected }) =>
     isSelected && `1px solid ${colorPalette.deepMintColor}`};
+`;
+
+// Loading 컴포넌트의 스타일을 정의
+export const LoadingWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
 `;

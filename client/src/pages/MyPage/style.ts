@@ -4,11 +4,53 @@ import { PiStarFill } from 'react-icons/pi';
 import { DefaultBtn } from '../../common/style/style';
 import { BoxShadow } from '../../../src/common/utils/enum/boxShadow';
 
+//Paging
+export const PagingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    color: ${colorPalette.basicTextColor};
+    font-weight: 300;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border-radius: 50%;
+
+    &:active {
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+      background-color: ${colorPalette.deepMintColor};
+    }
+    &:focus {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+    }
+  }
+`;
 //Tap
-export const SwitchBtn = styled.div`
-  width: 100%;
-  border-bottom: 1px solid ${colorPalette.borderColor};
-  z-index: 1;
+
+// export const SwitchBtn = styled.div`
+//   width: 100%;
+//   border-bottom: 1px solid ${colorPalette.borderColor};
+//   z-index: 1;
+// `;
+export const ParentWrapper = styled.div`
+  display: flex;
 `;
 export const CustomTapButton = styled.button`
   padding: 12px 24px;
