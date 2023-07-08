@@ -42,7 +42,7 @@ export const PRODUCT_FILTER_OPTIONS: SelectOption[] = [
   {
     value: 'nearest',
     label: '가까운순',
-  }
+  },
 ];
 
 export const CATEGORY = [
@@ -87,3 +87,4 @@ export const CATEGORY = [
     name: '기타',
   },
 ];
+export const NODATA_TEXT = '검색 결과가 없습니다.';
