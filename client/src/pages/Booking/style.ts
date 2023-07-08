@@ -6,28 +6,37 @@ export const BookingPageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 1000px;
 `;
 
 export const CalendarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  width: 807px;
 `;
 
 export const ButtonWrapper = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 1000px;
+  margin-top: 50px;
 `;
+
 export const CalendarWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 30px;
 `;
 
 export const BookingDatesForm = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   margin-top: 60px;
   width: 727px;
   height: 97px;
@@ -36,17 +45,20 @@ export const BookingDatesForm = styled.form`
 `;
 
 export const BookingDatesLabel = styled.label`
-  border: 1px solid black;
+  font-weight: 600;
 `;
 
 export const DatesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const DatesInput = styled.input`
-  width: 100%;
-  height: 40px;
+export const ReservationDate = styled.h6`
+  font-size: 20px;
+  font-weight: 300;
+  margin-top: 10px;
 `;
 
 export const Table = styled.table`
@@ -66,14 +78,14 @@ export const YearAndMonthWrapper = styled.caption`
   justify-content: center;
   position: absolute;
   margin-bottom: 650px;
-  margin-top: 320px;
+  margin-top: 350px;
   height: 70px;
 `;
 
 export const Year = styled.span`
-  font-size: 30px;
+  font-size: 20px;
   color: black;
-  margin-left: 80px;
+  margin-left: 40px;
   position: absolute;
 `;
 
@@ -86,30 +98,28 @@ export const MonthWrapper = styled.caption`
 `;
 
 export const Month = styled.span`
-  font-size: 30px;
+  font-size: 20px;
   color: black;
   padding-bottom: 40px;
   position: absolute;
-  margin-right: 150px;
+  margin-right: 70px;
   width: 100px;
 `;
 
 export const Btn = styled.button`
+  position: relative;
   height: 45px;
   width: 45px;
-  margin: 10px 13vw;
-  border: rgba(0, 0, 0, 0) 2px solid;
   border-radius: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: none;
 `;
 
 export const Day = styled.th`
-  font-size: 25px;
+  font-size: 20px;
   padding: 20px 0px 20px;
-  width: 50px;
+  width: 44px;
   color: black;
+  font-weight: 450;
 `;
 
 export const DaysContainer = styled.thead`
@@ -126,7 +136,7 @@ export const EachDate = styled.th<EachDatesProps>`
   font-size: 20px;
   font-weight: 400;
   height: 20px;
-  padding: 14px;
+  padding: 11px;
   color: ${(props) => {
     const thisMonth = new Date().getMonth() + 1;
     return (props.row.week === 0 && Number(props.children) > 7) ||
