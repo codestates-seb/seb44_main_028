@@ -6,14 +6,13 @@ import Header from './pages/Header/views/Header';
 import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
-import ItemCard from './common/components/ItemCard';
 
 function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Provider store={store}>
           <Router />
         </Provider>
