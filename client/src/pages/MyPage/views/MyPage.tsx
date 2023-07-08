@@ -15,13 +15,14 @@ const MyPage = () => {
   return (
     <div>
       <h2>My Page</h2>
-      <ParentTap />
+
       <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
         솔직한 별점을 남겨주세요.
       </Modal>
       <ProfileWrapper>
         <ProfileEdit />
       </ProfileWrapper>
+      <ParentTap />
       {/* <WishList /> */}
     </div>
   );

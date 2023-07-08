@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { CustomTapButton } from '../style';
-// import ParentTap from './ParentTap';
-import { fetchList } from './fetchList';
 import WishList from './WishList';
 import { TapButtonType } from '../type';
 
