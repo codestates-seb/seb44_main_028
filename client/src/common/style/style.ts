@@ -3,6 +3,7 @@ import { BoxShadow } from '../utils/enum/boxShadow';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
+import { borderRadius } from '../utils/enum/borderRadius';
 
 // Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
@@ -235,11 +236,33 @@ export const Option = styled.li`
     background-color: ${colorPalette.selectListHoverColor};
   }
 `;
+
 // NoData 컴포넌트의 스타일을 정의
 export const NoDataWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+// checkbox 컴포넌트의 스타일을 정의
+export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
+  display: inline-block;
+  width: auto;
+  border: ${border.basic};
+  padding: 0.525rem 1.15rem;
+  cursor: pointer;
+  border-radius: ${borderRadius.basicRadius};
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: ${({ isSelected }) =>
+    isSelected && `${colorPalette.tagColor}`};
+  color: ${({ isSelected }) => isSelected && `${colorPalette.whiteColor}`};
+  border: ${({ isSelected }) =>
+    isSelected && `1px solid ${colorPalette.deepMintColor}`};
+`;
+
+// Loading 컴포넌트의 스타일을 정의
+export const LoadingWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
