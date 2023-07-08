@@ -15,9 +15,6 @@ import {
 } from '../style';
 // import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
-import { text } from 'stream/consumers';
-import { Button } from '@mui/base';
-import { backdropClasses } from '@mui/material';
 
 function ProfileEdit() {
   const inputRef = useRef<HTMLInputElement | null>(null);

@@ -4,8 +4,8 @@ import { colorPalette } from '../../common/utils/enum/colorPalette';
 
 export const Container = styled.div`
   position: fixed;
-  right: 5%;
-  bottom: 5%;
+  right: 1rem;
+  bottom: 5rem;
   z-index: 1;
 `;
 
