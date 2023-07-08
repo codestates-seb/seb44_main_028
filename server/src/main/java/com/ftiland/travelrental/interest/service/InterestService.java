@@ -11,8 +11,12 @@ import com.ftiland.travelrental.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import static java.util.function.Predicate.not;
 
 // Test 필요
 @Service
@@ -27,27 +31,31 @@ public class InterestService {
         this.productRepository = productRepository;
         this.interestRepository = interestRepository;
     }
+
     // 특정 관심객체 검색
     public Optional<Interest> findVerifiedInterest(Long memberId, String productId){
         Optional<Interest> optionalInterest = interestRepository.findByProductIdMemberId(memberId,productId);
         return optionalInterest;
     }
 
+
     // 한 사용자의 관심 목록
-    public List<Interest> findInterest(Long memberId){
+    public ArrayList<Interest> findInterest(Long memberId){
         return interestRepository.findByMemberId(memberId);
     }
 
     // 관심 상품 등록
     public Interest createInterest(Long memberId,String productId){
 
+
+        // 수정 필요
         // 이미 관심 목록에 등록했으면 에러 리턴
-        if(findVerifiedInterest(memberId,productId)!=null){throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);}
+        if (findVerifiedInterest(memberId,productId).isPresent()){throw new BusinessLogicException(ExceptionCode.INTEREST_EXISTS);}
 
         Member member = memberRepository.findById(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         Product product = productRepository.findById(productId).orElseThrow(()->new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
 
-        Interest interest = Interest.builder().member(member).product(product).build();
+        Interest interest = Interest.builder().interestId(UUID.randomUUID().toString()).member(member).product(product).build();
 
         return interestRepository.save(interest);
     }

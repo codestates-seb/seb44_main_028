@@ -4,12 +4,158 @@ import { PiStarFill } from 'react-icons/pi';
 import { DefaultBtn } from '../../common/style/style';
 import { BoxShadow } from '../../../src/common/utils/enum/boxShadow';
 
-//Tap
-export const SwitchBtn = styled.div``;
+//Paging
+export const PagingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    color: ${colorPalette.basicTextColor};
+    font-weight: 300;
+  }
 
-//ImageUpload
-export const ProfileWapper = styled.div``;
-export const Button = styled.button``;
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border-radius: 50%;
+
+    &:active {
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+      background-color: ${colorPalette.deepMintColor};
+    }
+    &:focus {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+    }
+  }
+`;
+//Tap
+
+// export const SwitchBtn = styled.div`
+//   width: 100%;
+//   border-bottom: 1px solid ${colorPalette.borderColor};
+//   z-index: 1;
+// `;
+export const ParentWrapper = styled.div`
+  display: flex;
+`;
+export const CustomTapButton = styled.button`
+  padding: 12px 24px;
+  background-color: ${colorPalette.whiteColor};
+  color: ${colorPalette.basicTextColor};
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+
+  line-height: 1.5;
+  cursor: pointer;
+  /* transition: color 1ms ease-in-out; */
+  z-index: 5;
+
+  &:disabled {
+    opacity: 0.5; /* 비활성화 시 투명도 조정 */
+    cursor: not-allowed;
+  }
+  &:active {
+    color: ${colorPalette.deepMintColor};
+    border-bottom: 1px solid ${colorPalette.deepMintColor};
+  }
+  &:focus {
+    color: ${colorPalette.deepMintColor};
+    border-bottom: 1px solid ${colorPalette.deepMintColor};
+  }
+`;
+
+//Profile
+export const MyPageEdit = styled.div`
+  display: flex;
+`;
+export const ProfileWrapper = styled.div`
+  display: flex;
+`;
+export const ProfileSection = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+export const UploadBtn = styled.button`
+  font-size: 12px;
+  width: 80px;
+  height: 32px;
+  background-color: ${colorPalette.whiteColor};
+  border-radius: 3px;
+  border: 1px solid ${colorPalette.grayTextColor};
+`;
+export const ProfilerEdit = styled.div`
+  display: none;
+`;
+export const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+export const NameWrapper = styled.div`
+  margin: 40px;
+`;
+export const InputWrapper = styled.div`
+  padding: 20px;
+`;
+export const InputBox = styled.div`
+  input {
+    width: 200px;
+    height: 25px;
+    padding-left: 10px;
+  }
+`;
+export const TownBtn = styled(DefaultBtn)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  width: 80px;
+  height: 22px;
+`;
+export const ProfileImg = styled.div`
+  img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+`;
+
+export const StyledForm = styled.form`
+  display: flex;
+  align-items: center;
+
+  input {
+    background-color: #0d4c92;
+    color: #fff;
+    height: 28px;
+    width: 80px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: ${BoxShadow.Basic};
+    &:hover {
+      background-color: #1d5799;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+`;
 
 //RatingStar
 export const RatingStarWapper = styled.div`

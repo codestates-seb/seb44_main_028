@@ -1,27 +1,32 @@
 import styled from 'styled-components';
+import { colorPalette } from '../../common/utils/enum/colorPalette';
 
-export const FooterWapper = styled.div`
+export const FooterWrapper = styled.div`
   display: flex;
-  position: absolute;
+  justify-content: space-between;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 70px;
   background-color: #cecece;
 `;
 
-export const Box = styled.div`
+export const FooterBox = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding-right: 50px;
-  padding-left: 30px;
+  margin-left: 50px;
 `;
 
-export const LogoBox = styled.div``;
+export const FooterLogo = styled.div`
+  font-size: 20px;
+  color: ${colorPalette.deepMintColor};
+`;
 
-export const TextBox = styled.div`
-  color: #777;
-  margin-left: auto;
+export const FooterTextBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+`;
+export const FooterText = styled.h6`
+  color: ${colorPalette.grayTextColor};
 `;

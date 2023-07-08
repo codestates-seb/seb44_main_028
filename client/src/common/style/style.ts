@@ -1,6 +1,29 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { BoxShadow } from '../utils/enum/boxShadow';
 import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
+import { border } from '../utils/enum/border';
+import { borderRadius } from '../utils/enum/borderRadius';
+
+// Modal 컴포넌트의 스타일을 정의
+export const CategoryContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4.275rem 2.4rem;
+`;
+
+export const CategoryButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: ${fontSize.basic};
+  cursor: pointer;
+  & img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+`;
 
 export const ModalWrapper = styled.div`
   display: flex;
@@ -116,11 +139,142 @@ export const DefaultBtn = styled.button`
   width: 80px;
   border-radius: 5px;
   border: none;
-  box-shadow: 1px 1px 1px 1px #888;
+  box-shadow: ${BoxShadow.Basic};
   &:hover {
     background-color: #1d5799;
   }
   &:active {
     transform: scale(0.98);
+  }
+`;
+// SelectBox 컴포넌트의 스타일을 정의
+export const SelectBoxWrapper = styled.div`
+  display: inline-block;
+  width: 16.75rem;
+  height: 2.995rem;
+  border: ${border.basic};
+  border-radius: 5px;
+  font-weight: 700;
+`;
+const onRotate = keyframes`
+  from {
+    transform: rotate(0deg);
+    }
+  to {
+    transform: rotate(-180deg);
+    }
+`;
+const offRotate = keyframes`
+  from {
+    transform: rotate(-90deg);
+    }
+  to {
+    transform: rotate(0deg);
+    }
+`;
+export const Selected = styled.div<{ isClick: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.713rem 0;
+  padding-left: 1.75rem;
+  padding-right: 0.888rem;
+  & svg {
+    font-size: 1.5rem;
+    margin-left: -35px;
+    animation: ${({ isClick }) =>
+      isClick
+        ? css`
+            ${onRotate} 0.3s forwards
+          `
+        : css`
+            ${offRotate} 0.3s forwards
+          `};
+  }
+`;
+export const SelectedValue = styled.div`
+  max-width: 130px;
+`;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    }
+  to {
+    opacity: 1;
+    }
+`;
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    }
+  to {
+    opacity: 0;
+    }
+`;
+export const OptionWrapper = styled.ul<{ isClick: boolean }>`
+  width: 16.75rem;
+  border: ${border.basic};
+  position: absolute;
+  margin: 10px 0 0 -1px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: ${({ isClick }) => (isClick ? 'block' : 'none')};
+  animation: ${({ isClick }) =>
+    isClick
+      ? css`
+          ${fadeIn} 0.3s forwards
+        `
+      : css`
+          ${fadeOut} 0.3s forwards
+        `};
+`;
+export const Option = styled.li`
+  padding: 1rem 0;
+  padding-left: 1.75rem;
+  background-color: ${colorPalette.whiteColor};
+  &:hover {
+    background-color: ${colorPalette.selectListHoverColor};
+  }
+`;
+
+// NoData 컴포넌트의 스타일을 정의
+export const NoDataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+// checkbox 컴포넌트의 스타일을 정의
+export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
+  display: inline-block;
+  width: auto;
+  border: ${border.basic};
+  padding: 0.525rem 1.15rem;
+  cursor: pointer;
+  border-radius: ${borderRadius.basicRadius};
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: ${({ isSelected }) =>
+    isSelected && `${colorPalette.tagColor}`};
+  color: ${({ isSelected }) => isSelected && `${colorPalette.whiteColor}`};
+  border: ${({ isSelected }) =>
+    isSelected && `1px solid ${colorPalette.deepMintColor}`};
+`;
+
+// Loading 컴포넌트의 스타일을 정의
+export const LoadingWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  & img {
+    width: 150px;
+    height: 150px;
+  }
+  & p {
+    margin-top: 2.2rem;
+    font-size: ${fontSize.NoDataText};
+    color: ${colorPalette.lightGrayTextColor};
   }
 `;

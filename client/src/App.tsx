@@ -6,20 +6,18 @@ import Header from './pages/Header/views/Header';
 import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
-import ItemCard from './common/components/ItemCard';
 
 function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
-      <Container maxWidth="xs">
-        {/* <ItemCard /> */}
+      <Container maxWidth="lg">
         <Provider store={store}>
           <Router />
         </Provider>
       </Container>
-      <Footer prop1={'로고'} />
+      <Footer prop1={'플레이 팩'} />
     </QueryClientProvider>
   );
 }
