@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { EachDatesProps } from './type';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../common/store/RootStore';
+import { colorPalette } from '../../common/utils/enum/colorPalette';
 
 export const BookingPageContainer = styled.div`
   display: flex;
@@ -164,6 +167,41 @@ export const EachDate = styled.th<EachDatesProps>`
       Number(props.children) === 0
       ? 'default'
       : 'pointer';
+  }};
+  background-color: ${(props) => {
+    const start = useSelector(
+      (state: RootState) => state.reservation.startDate,
+    );
+    const end = useSelector((state: RootState) => state.reservation.endDate);
+
+    const startYear = start?.year;
+    const startMonth = start?.month;
+    const startDate = start?.date;
+
+    const endYear = end?.year;
+    const endMonth = end?.month;
+    const endDate = end?.date;
+
+    if (start && !end) {
+      return startYear === props.today.year &&
+        startMonth === props.today.month &&
+        startDate === Number(props.children)
+        ? colorPalette.deepMintColor
+        : 'white';
+    }
+
+    if (startDate && endDate) {
+      if (startYear === endYear) {
+        if (startMonth === endMonth) {
+          return startYear === props.today.year &&
+            startMonth === props.today.month &&
+            startDate <= Number(props.children) &&
+            endDate >= Number(props.children)
+            ? colorPalette.deepMintColor
+            : 'white';
+        }
+      }
+    }
   }};
 `;
 
