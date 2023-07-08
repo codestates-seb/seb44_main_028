@@ -15,32 +15,50 @@ export const reservation = createSlice({
   initialState: initialReservationState,
   reducers: {
     setStartDate: (state, action: PayloadAction<ReservationProps>) => {
+      const newStart = action.payload.startDate;
+      if (!newStart) return;
+
+      const newStartYear = newStart.year;
+      const newStartMonth = newStart.month;
+      const newStartDate = newStart.date;
+
       const today = new Date();
+      const todaysYear = today.getFullYear();
+      const todaysMonth = today.getMonth() + 1;
+      const todaysDate = today.getDate();
+
       if (
-        action.payload.startDate &&
-        action.payload.startDate?.year >= today.getFullYear() &&
-        action.payload.startDate?.month >= today.getMonth() + 1 &&
-        action.payload.startDate?.date >= today.getDate()
+        newStartYear > todaysYear ||
+        (newStartYear === todaysYear && newStartMonth > todaysMonth) ||
+        (newStartYear === todaysYear &&
+          newStartMonth === todaysMonth &&
+          newStartDate >= todaysDate)
       ) {
-        state.startDate = action.payload.startDate;
-      } else {
-        return;
+        state.startDate = newStart;
       }
     },
     setEndDate: (state, action: PayloadAction<ReservationProps>) => {
+      const newEnd = action.payload.endDate;
+      if (!newEnd) return;
+
+      const newEndYear = newEnd.year;
+      const newEndMonth = newEnd.month;
+      const newEndDate = newEnd.date;
+
+      const currentStart = state.startDate;
+      if (!currentStart) return;
+      const currentStartYear = currentStart.year;
+      const currentStartMonth = currentStart.month;
+      const currentStartDate = currentStart.date;
+
       if (
-        state.startDate &&
-        action.payload.endDate &&
-        (state.startDate.year < action.payload.endDate?.year ||
-          (state.startDate.year === action.payload.endDate?.year &&
-            state.startDate.month < action.payload.endDate?.month) ||
-          (state.startDate.year === action.payload.endDate?.year &&
-            state.startDate.month === action.payload.endDate?.month &&
-            state.startDate.date <= action.payload.endDate?.date))
+        currentStartYear < newEndYear ||
+        (currentStartYear === newEndYear && currentStartMonth < newEndMonth) ||
+        (currentStartYear === newEndYear &&
+          currentStartMonth === newEndMonth &&
+          currentStartDate <= newEndDate)
       ) {
-        state.endDate = action.payload.endDate;
-      } else {
-        return;
+        state.endDate = newEnd;
       }
     },
     clearReservationDates: () => {
