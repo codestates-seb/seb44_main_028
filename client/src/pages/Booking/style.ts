@@ -160,8 +160,9 @@ export const EachDate = styled.th<EachDatesProps>`
         props.today.month < thisMonth) ||
       (props.today.year === new Date().getFullYear() &&
         props.today.month === thisMonth &&
-        props.today.date > Number(props.children))
-      ? 'not-allowed'
+        props.today.date > Number(props.children)) ||
+      Number(props.children) === 0
+      ? 'default'
       : 'pointer';
   }};
 `;
