@@ -237,6 +237,13 @@ export const Option = styled.li`
   }
 `;
 
+// NoData 컴포넌트의 스타일을 정의
+export const NoDataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 // checkbox 컴포넌트의 스타일을 정의
 export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
   display: inline-block;
@@ -261,4 +268,13 @@ export const LoadingWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
+  & img {
+    width: 150px;
+    height: 150px;
+  }
+  & p {
+    margin-top: 2.2rem;
+    font-size: ${fontSize.NoDataText};
+    color: ${colorPalette.lightGrayTextColor};
+  }
 `;

@@ -87,3 +87,4 @@ export const CATEGORY: CategoryProps[] = [
     name: '기타',
   },
 ];
+export const NODATA_TEXT = '검색 결과가 없습니다.';
