@@ -16,7 +16,7 @@ export const reservation = createSlice({
   reducers: {
     setStartDate: (state, action: PayloadAction<ReservationProps>) => {
       const newStart = action.payload.startDate;
-      if (!newStart) return;
+      if (!newStart || !newStart.date) return;
 
       const newStartYear = newStart.year;
       const newStartMonth = newStart.month;
@@ -39,7 +39,7 @@ export const reservation = createSlice({
     },
     setEndDate: (state, action: PayloadAction<ReservationProps>) => {
       const newEnd = action.payload.endDate;
-      if (!newEnd) return;
+      if (!newEnd || !newEnd.date) return;
 
       const newEndYear = newEnd.year;
       const newEndMonth = newEnd.month;
