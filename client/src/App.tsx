@@ -19,7 +19,7 @@ function App() {
           <Router />
         </Provider>
       </Container>
-      {/* <Footer prop1={'플레이 팩'} /> */}
+      <Footer prop1={'플레이 팩'} />
     </QueryClientProvider>
   );
 }
