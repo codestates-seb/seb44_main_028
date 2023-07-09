@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { IMAGE_SLIDER } from './constants';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 
+export const MainPageContainer = styled.div`
+  height: 300vh;
+`;
 export const Container = styled.div`
   position: fixed;
   right: 1rem;
