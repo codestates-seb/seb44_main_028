@@ -31,13 +31,15 @@ function BigBtn({
   height,
   width,
   children,
+  onClick,
 }: {
   height: number;
   width: number;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
   return (
-    <BigDefaultBtn height={height} width={width}>
+    <BigDefaultBtn height={height} width={width} onClick={onClick}>
       {children}
     </BigDefaultBtn>
   );
