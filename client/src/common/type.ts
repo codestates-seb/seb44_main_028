@@ -39,4 +39,5 @@ export type ItemCardProps = {
   category: number[];
   location: string;
   minRental: number;
+  imageUrl: string;
 };

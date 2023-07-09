@@ -19,7 +19,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   };
   return (
     <ItemCardContainer>
-      <ItemImage src="https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg"></ItemImage>
+      <ItemImage src={itemCardData.imageUrl}></ItemImage>
       <ItemInfo>
         <ItemName>{itemCardData.title}</ItemName>
         <ItemDescription>{itemCardData.content}</ItemDescription>
