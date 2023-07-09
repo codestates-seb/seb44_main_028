@@ -23,7 +23,7 @@ public class GetMember {
         private String displayName;
 
         // 이미지 필드 필요
-
+        private String addr;
         private Double latitude;
         private Double longitude;
 
@@ -31,6 +31,7 @@ public class GetMember {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
+                    .addr(member.getAddr())
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
