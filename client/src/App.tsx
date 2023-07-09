@@ -7,21 +7,42 @@ import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
 import Carousel from './pages/Main/components/Carousel';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   const queryClient = new QueryClient();
-  const isMainPage = window.location.pathname === '/';
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      {isMainPage && <Carousel />}
-      <Container maxWidth="lg">
-        <Provider store={store}>
-          <Router />
-        </Provider>
-      </Container>
-      <Footer prop1={'플레이 팩'} />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Carousel />
+                <Container maxWidth="lg">
+                  <Provider store={store}>
+                    <Router />
+                  </Provider>
+                </Container>
+              </>
+            }
+          />
+          <Route
+            path="/*"
+            element={
+              <Container maxWidth="lg">
+                <Provider store={store}>
+                  <Router />
+                </Provider>
+              </Container>
+            }
+          />
+        </Routes>
+        <Footer prop1={'플레이 팩'} />
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
