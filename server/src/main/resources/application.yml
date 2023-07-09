@@ -1,15 +1,15 @@
 spring:
   datasource:
     # RDS 접근 설정
-    url: ${RDS_END_POINT}
-    username: ${RDS_MYSQL_ADMIN_ID}
-    password: ${RDS_MYSQL_ADMIN_PASSWORD}
+    #url: ${RDS_END_POINT}
+    #username: ${RDS_MYSQL_ADMIN_ID}
+    #password: ${RDS_MYSQL_ADMIN_PASSWORD}
 
 
     # LOCAL 접근 설정
-    #url: ${LOCAL_END_POINT}
-    #username: ${LOCAL_MYSQL_ADMIN_ID}
-    #password: ${LOCAL_MYSQL_ADMIN_PASSWORD}
+    url: ${LOCAL_END_POINT}
+    username: ${LOCAL_MYSQL_ADMIN_ID}
+    password: ${LOCAL_MYSQL_ADMIN_PASSWORD}
 
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
@@ -55,6 +55,8 @@ logging:
           jpa: DEBUG
 
 
+
+
 cloud:
   aws:
     # S3 접근 권한 설정 -image
@@ -68,4 +70,8 @@ cloud:
     stack:
       auto:
         false
+
+kakao:
+  restApi : ${KAKAO_REST_API}
+
 
