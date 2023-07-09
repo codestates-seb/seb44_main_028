@@ -23,7 +23,7 @@ export const EditWrapper = styled.div`
 export const ProfileDataWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 3rem;
+  padding-top: 3em;
 `;
 //MypageProfile
 export const MypageProfileWrapper = styled.div`
@@ -39,9 +39,9 @@ export const MypageRight = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -1rem;
 `;
 export const MypageImage = styled.div`
+  margin-right: 2rem;
   img {
     border-radius: 50px;
     width: 86px;
