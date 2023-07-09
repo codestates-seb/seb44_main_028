@@ -28,7 +28,7 @@ export type CheckBoxProps = {
 };
 export type ModalButtonProps = {
   children?: ReactNode;
-  onClick?: (e: MouseEvent) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 export type ModalTitleProps = {
   children?: ReactNode;
