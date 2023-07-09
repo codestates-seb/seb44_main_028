@@ -17,9 +17,9 @@ const Category = () => {
     isError,
   } = useQuery<ICategory[]>('categories', fetchCategoryData);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
   //   <CategoryContainer>
   //   {category.map((categoryBtn) => (
   //     <CategoryButton
