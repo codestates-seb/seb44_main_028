@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import BigBtn from '../../../common/components/BigButton';
+import BigBtn from '../../../common/components/Button';
 import { RootState } from '../../../common/store/RootStore';
 import { IReservationData } from '../model/IReservationData';
 
