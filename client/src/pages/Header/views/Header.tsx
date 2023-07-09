@@ -22,43 +22,41 @@ function Header() {
   };
 
   return (
-    <Router>
-      <HeaderContainer>
-        <LogoWrapper>
-          <Link to="/">{LogoText}</Link>
-        </LogoWrapper>
-        <NavWrapper>
-          <ol>
-            <NavList>
-              <Link to="/mypage">{NavMenu[0]}</Link>
-            </NavList>
-            <NavList>
-              <Link to="/create">{NavMenu[1]}</Link>
-            </NavList>
-          </ol>
-          <NavIconWrapper>
-            <NavSearchForm isClick={isClick}>
-              <input type="text" />
-              <MdSearch onClick={handleClick} />
-            </NavSearchForm>
-            <NavSendIconWrapper>
-              <Link to="/chatting">
-                <MdSend />
-              </Link>
-            </NavSendIconWrapper>
-          </NavIconWrapper>
-        </NavWrapper>
-        <ActionWrapper>
-          <Link to="/login">
-            <MdLogout
-              onMouseEnter={() => setIsLogoutHovered(true)}
-              onMouseLeave={() => setIsLogoutHovered(false)}
-            />
-          </Link>
-          <LogoutInfo isHovered={isLogoutHovered}>logout</LogoutInfo>
-        </ActionWrapper>
-      </HeaderContainer>
-    </Router>
+    <HeaderContainer>
+      <LogoWrapper>
+        <Link to="/">{LogoText}</Link>
+      </LogoWrapper>
+      <NavWrapper>
+        <ol>
+          <NavList>
+            <Link to="/mypage">{NavMenu[0]}</Link>
+          </NavList>
+          <NavList>
+            <Link to="/create">{NavMenu[1]}</Link>
+          </NavList>
+        </ol>
+        <NavIconWrapper>
+          <NavSearchForm isClick={isClick}>
+            <input type="text" />
+            <MdSearch onClick={handleClick} />
+          </NavSearchForm>
+          <NavSendIconWrapper>
+            <Link to="/chatting">
+              <MdSend />
+            </Link>
+          </NavSendIconWrapper>
+        </NavIconWrapper>
+      </NavWrapper>
+      <ActionWrapper>
+        <Link to="/login">
+          <MdLogout
+            onMouseEnter={() => setIsLogoutHovered(true)}
+            onMouseLeave={() => setIsLogoutHovered(false)}
+          />
+        </Link>
+        <LogoutInfo isHovered={isLogoutHovered}>logout</LogoutInfo>
+      </ActionWrapper>
+    </HeaderContainer>
   );
 }
 export default Header;
