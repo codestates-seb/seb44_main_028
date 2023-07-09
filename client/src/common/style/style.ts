@@ -8,8 +8,8 @@ import { borderRadius } from '../utils/enum/borderRadius';
 // ScrollToTop 컴포넌트의 스타일을 정의
 export const ScrollToTopButtonContainer = styled.div`
   position: fixed;
-  right: 1rem;
-  bottom: 5rem;
+  right: 3rem;
+  bottom: 2rem;
   z-index: 1;
 `;
 
