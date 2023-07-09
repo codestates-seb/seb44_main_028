@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Component
+
 @Service
 public class ImageService {
 
@@ -78,7 +78,6 @@ public class ImageService {
         createdImageProduct.setImageUrl(amazonS3.getUrl(buckName,fileName).toString());
 
         return imageProductRepository.save(createdImageProduct);
-        //return  createdImage;
     }
 
     // 이미지 업로드(맴버) (png,jpg만 저장가능) -> 구현 필요
@@ -100,11 +99,10 @@ public class ImageService {
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
         ImageMember createdImage= imageMapper.fileToImageMember(file,memberRepository,memberId);
-        createdImage.setFileName(amazonS3.getUrl(buckName,fileName).toString());
+        createdImage.setImageUrl(amazonS3.getUrl(buckName,fileName).toString());
 
 
         return imageMemberRepository.save(createdImage);
-        //return createdImage;
     }
 
     // 이미지 삭제(상품)
