@@ -3,12 +3,57 @@ import { colorPalette } from '../../../src/common/utils/enum/colorPalette';
 import { PiStarFill } from 'react-icons/pi';
 import { DefaultBtn } from '../../common/style/style';
 import { BoxShadow } from '../../../src/common/utils/enum/boxShadow';
+import { fontSize } from '../../../src/common/utils/enum/fontSize';
+
+//MyPage
+export const ProfileWrapper = styled.div`
+  margin-top: 4rem;
+  margin-bottom: 0.5rem;
+  height: 200px;
+  box-shadow: ${BoxShadow.Basic};
+  border-radius: 3px;
+`;
+export const EditWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 5px;
+  font-size: ${fontSize.small};
+  color: ${colorPalette.grayTextColor};
+`;
+export const ProfileDataWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 20rem;
+  padding-top: 3rem;
+`;
+//MypageProfile
+export const MypageProfileWrapper = styled.div`
+  display: flex;
+  width: 210px;
+  height: 86px;
+`;
+export const MypageImage = styled.div`
+  margin-right: 2rem;
+  img {
+    border-radius: 50px;
+    width: 86px;
+    height: 86px;
+  }
+`;
+export const MypageInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+export const EvaluationItem = styled.div``;
 
 //Paging
 export const PagingWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  margin-top: 1.5em;
   ul {
     list-style: none;
     padding: 0;
@@ -54,12 +99,12 @@ export const ParentWrapper = styled.div`
 `;
 export const CustomTapButton = styled.button`
   padding: 12px 24px;
-  background-color: ${colorPalette.whiteColor};
+  margin-bottom: 4rem;
+  background-color: transparent; /* 배경색을 투명으로 설정 */
   color: ${colorPalette.basicTextColor};
   font-size: 12px;
   font-weight: bold;
   border: none;
-
   line-height: 1.5;
   cursor: pointer;
   /* transition: color 1ms ease-in-out; */
@@ -72,20 +117,26 @@ export const CustomTapButton = styled.button`
   &:active {
     color: ${colorPalette.deepMintColor};
     border-bottom: 1px solid ${colorPalette.deepMintColor};
+    background-color: transparent; /* 배경색을 투명으로 설정 */
   }
   &:focus {
     color: ${colorPalette.deepMintColor};
     border-bottom: 1px solid ${colorPalette.deepMintColor};
+    background-color: transparent; /* 배경색을 투명으로 설정 */
   }
 `;
 
-//Profile
+//ProfileEdit
 export const MyPageEdit = styled.div`
-  display: flex;
+  display: grid;
 `;
-export const ProfileWrapper = styled.div`
+
+export const ProfileEditWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
 `;
+
 export const ProfileSection = styled.div`
   display: flex;
   align-items: center;
@@ -139,12 +190,15 @@ export const ProfileImg = styled.div`
 export const StyledForm = styled.form`
   display: flex;
   align-items: center;
+  justify-content: center;
+  height: 15rem;
 
   input {
     background-color: #0d4c92;
     color: #fff;
     height: 28px;
     width: 80px;
+    margin: 5px;
     border-radius: 5px;
     border: none;
     box-shadow: ${BoxShadow.Basic};
