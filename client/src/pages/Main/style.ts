@@ -5,29 +5,7 @@ import { colorPalette } from '../../common/utils/enum/colorPalette';
 export const MainPageContainer = styled.div`
   height: 300vh;
 `;
-export const Container = styled.div`
-  position: fixed;
-  right: 1rem;
-  bottom: 5rem;
-  z-index: 1;
-`;
 
-export const TopButton = styled.button`
-  font-weight: bold;
-  font-size: 15px;
-  padding: 15px 10px;
-  background-color: #12d3cf;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #b0f4e6;
-    color: #12d3cf;
-  }
-`;
 // Carousel
 export const CarouselContainer = styled.div``;
 export const ImageSliderWrapper = styled.div`

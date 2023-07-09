@@ -5,6 +5,30 @@ import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
 import { borderRadius } from '../utils/enum/borderRadius';
 
+// ScrollToTop 컴포넌트의 스타일을 정의
+export const ScrollToTopButtonContainer = styled.div`
+  position: fixed;
+  right: 1rem;
+  bottom: 5rem;
+  z-index: 1;
+`;
+
+export const TopButton = styled.button`
+  font-weight: bold;
+  font-size: 15px;
+  padding: 15px 10px;
+  background-color: #12d3cf;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #b0f4e6;
+    color: #12d3cf;
+  }
+`;
 // Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
