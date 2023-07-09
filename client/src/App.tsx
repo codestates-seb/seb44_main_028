@@ -10,10 +10,12 @@ import Carousel from './pages/Main/components/Carousel';
 
 function App() {
   const queryClient = new QueryClient();
+  const isMainPage = window.location.pathname === '/';
+
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
-      <Carousel />
+      {isMainPage && <Carousel />}
       <Container maxWidth="lg">
         <Provider store={store}>
           <Router />
