@@ -10,8 +10,9 @@ import {
   ItemLocationWrapper,
   ItemPrice,
   PriceFavoriteWrapper,
-} from '../style/style';
-const ItemCard = () => {
+} from '../../style/style';
+import { ItemCardProps } from '../../type';
+const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const [isHeartClicked, setIsHeartClicked] = useState(false);
   const handleHeartClick = () => {
     setIsHeartClicked(!isHeartClicked);
@@ -20,17 +21,18 @@ const ItemCard = () => {
     <ItemCardContainer>
       <ItemImage src="https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg"></ItemImage>
       <ItemInfo>
-        <ItemName>다이슨 빌려줍니다.</ItemName>
-        <ItemDescription>
-          에어랩 빌려가실 분? 다이슨은 영국의 기업으로...
-        </ItemDescription>
+        <ItemName>{itemCardData.title}</ItemName>
+        <ItemDescription>{itemCardData.content}</ItemDescription>
         <ItemLocationWrapper>
           <MdLocationOn />
-          <span>동대문구 마장동</span>
+          <span>{itemCardData.location}</span>
         </ItemLocationWrapper>
       </ItemInfo>
       <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>
-        <ItemPrice>최소 대여기간 3일 고정금 5만원 / 1일 1만원</ItemPrice>
+        <ItemPrice>
+          {`최소 대여기간 ${itemCardData.minimumRentalPeriod}일 고정금 ${itemCardData.baseFee}
+          만원 / ${itemCardData.feePerDay}일 ${itemCardData.overdueFee}만원`}
+        </ItemPrice>
         <BsFillHeartFill onClick={handleHeartClick} />
       </PriceFavoriteWrapper>
     </ItemCardContainer>

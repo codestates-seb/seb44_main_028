@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Paging from './Paging';
-import ItemCard from '../../../common/components/ItemCard';
+import ItemCard from '../../../common/components/ItemCard/ItemCard';
 
 function WishList() {
   const [items, setItems] = useState([]);
@@ -23,7 +23,7 @@ function WishList() {
   // };
   return (
     <div>
-      <ItemCard />
+      {/* <ItemCard /> */}
       {/* {items.map((item) => (
         <ItemCard key={item.id} item={item} />
       ))} */}

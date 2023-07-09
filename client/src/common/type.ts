@@ -24,3 +24,19 @@ export type CheckBoxProps = {
   selectedCategories: string[];
   setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
 };
+export type ItemCardListProps = {
+  itemCardListTitle: string;
+  itemCardListContentData: ItemCardProps[];
+};
+export type ItemCardProps = {
+  id: number;
+  title: string;
+  baseFee: number;
+  feePerDay: number;
+  overdueFee: number;
+  content: string;
+  minimumRentalPeriod: number;
+  category: number[];
+  location: string;
+  minRental: number;
+};

@@ -76,7 +76,21 @@ export const ModalButtonWrapper = styled.div`
     color: ${colorPalette.whiteColor};
   }
 `;
-
+// ItemCardList 컴포넌트의 스타일을 정의
+export const ItemCardListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 8.063rem;
+  & p {
+    font-size: 24px;
+    margin-bottom: 1.25rem;
+  }
+`;
+export const ItemCardWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+`;
 // ItemCard 컴포넌트의 스타일을 정의
 export const ItemCardContainer = styled.div`
   display: flex;
