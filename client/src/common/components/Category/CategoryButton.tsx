@@ -1,4 +1,3 @@
-import React from 'react';
 import { CategoryButtonProps } from '../../type';
 import { CategoryButtonWrapper } from '../../style/style';
 import { useNavigate } from 'react-router-dom';

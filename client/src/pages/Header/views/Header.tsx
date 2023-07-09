@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { MdSearch, MdSend, MdLogout } from 'react-icons/md';
 import { LogoText, NavMenu } from '../constants';
