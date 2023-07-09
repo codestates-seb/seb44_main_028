@@ -77,7 +77,7 @@ export const NavSearchForm = styled.form<{ isClick: boolean }>`
     height: 26px;
     border-radius: 20px;
     transform: translateX(28px);
-    background-color: #d6d6d6;
+    background-color: #f1f1f1;
     border: none;
     padding: 0.5rem 1rem;
     padding-right: 2.5rem;
@@ -89,6 +89,9 @@ export const NavSearchForm = styled.form<{ isClick: boolean }>`
         : css`
             ${slideOutToRight} 0.3s ease-in-out forwards;
           `};
+  }
+  & > input:focus {
+    outline: none;
   }
 `;
 
