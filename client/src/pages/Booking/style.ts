@@ -209,7 +209,8 @@ export const EachDate = styled.th<EachDatesProps>`
               endDate >= Number(props.children))) &&
             Number(props.children) !== 0
             ? colorPalette.lightColor
-            : startMonth &&
+            : startYear === props.today.year &&
+              startMonth &&
               endMonth &&
               endMonth - startMonth > 1 &&
               props.today.month > startMonth &&
