@@ -217,6 +217,38 @@ export const EachDate = styled.th<EachDatesProps>`
             ? colorPalette.deepMintColor
             : 'white';
         }
+      } else {
+        if (
+          (startYear === props.today.year &&
+            Number(props.children) !== 0 &&
+            startMonth &&
+            startMonth < props.today.month) ||
+          (startYear === props.today.year &&
+            startMonth === props.today.month &&
+            startDate &&
+            startDate <= Number(props.children))
+        ) {
+          return colorPalette.deepMintColor;
+        } else if (
+          (endYear === props.today.year &&
+            Number(props.children) !== 0 &&
+            endMonth &&
+            endMonth > props.today.month) ||
+          (endYear === props.today.year &&
+            endMonth === props.today.month &&
+            endDate &&
+            endDate >= Number(props.children) &&
+            Number(props.children) !== 0)
+        ) {
+          return colorPalette.deepMintColor;
+        }
+        if (endYear && startYear && endYear - startYear > 1) {
+          return props.today.year > startYear &&
+            props.today.year < endYear &&
+            Number(props.children) !== 0
+            ? colorPalette.deepMintColor
+            : 'white';
+        }
       }
     }
   }};
