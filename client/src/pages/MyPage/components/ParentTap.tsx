@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TapButton from './TapButton';
 import { TAP } from '../constants';
 import { ParentWrapper } from '../style';
