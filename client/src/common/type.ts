@@ -33,3 +33,7 @@ export type ModalButtonProps = {
 export type ModalTitleProps = {
   children?: ReactNode;
 };
+export type ModalMainProps = {
+  children?: ReactNode;
+  isOpen?: boolean;
+};
