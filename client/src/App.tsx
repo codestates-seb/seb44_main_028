@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
@@ -9,15 +10,18 @@ import { store } from './common/store/RootStore';
 
 function App() {
   const queryClient = new QueryClient();
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      <Container maxWidth="lg">
-        <Provider store={store}>
-          <Router />
-        </Provider>
-      </Container>
-      <Footer prop1={'플레이 팩'} />
+      <BrowserRouter>
+        <Header />
+        <Container maxWidth="lg">
+          <Provider store={store}>
+            <Router />
+          </Provider>
+        </Container>
+        <Footer prop1={'플레이 팩'} />
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
