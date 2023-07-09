@@ -14,4 +14,7 @@ const ModalMain = ({ children, isOpen }: ModalMainProps) => {
   );
 };
 
-export default ModalMain;
+export default Object.assign(ModalMain, {
+  ModalTitle,
+  ModalButton,
+});
