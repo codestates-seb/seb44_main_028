@@ -1,4 +1,5 @@
 export type CategoryButtonProps = {
+  ImageId: number;
   imageUrl: string;
   imageName: string;
 };
@@ -16,6 +17,7 @@ export type SelectOption = {
   label: string;
 };
 export type CategoryProps = {
+  id: number;
   image: string;
   name: string;
 };

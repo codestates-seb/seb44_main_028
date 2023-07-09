@@ -32,6 +32,7 @@ const Category = () => {
     <CategoryContainer>
       {CATEGORY.map((categoryBtn) => (
         <CategoryButton
+          ImageId={categoryBtn.id}
           imageUrl={categoryBtn.image}
           imageName={categoryBtn.name}
         />
