@@ -50,7 +50,7 @@ const MyPage = () => {
       </ProfileWrapper> */}
       <ProfileWrapper>
         <ProfileDataWrapper>
-          <MypageProfile />
+          <MypageProfile itemCount={10} />
           {/* {profileData && (
             <>
               <div>{profileData.displayName}</div>

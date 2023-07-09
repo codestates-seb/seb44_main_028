@@ -23,17 +23,25 @@ export const EditWrapper = styled.div`
 export const ProfileDataWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 20rem;
   padding-top: 3rem;
 `;
 //MypageProfile
 export const MypageProfileWrapper = styled.div`
   display: flex;
-  width: 210px;
+  justify-content: space-evenly;
+  width: 2000px;
   height: 86px;
 `;
+export const MypageLeft = styled.div`
+  display: flex;
+`;
+export const MypageRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -1rem;
+`;
 export const MypageImage = styled.div`
-  margin-right: 2rem;
   img {
     border-radius: 50px;
     width: 86px;
@@ -45,7 +53,20 @@ export const MypageInfo = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-export const EvaluationItem = styled.div``;
+
+export const EvaluationItem = styled.div`
+  img {
+    border-radius: 50px;
+    width: 86px;
+    height: 86px;
+  }
+`;
+
+export const EvaluationScore = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 //Paging
 export const PagingWrapper = styled.div`
@@ -89,11 +110,11 @@ export const PagingWrapper = styled.div`
 `;
 //Tap
 
-// export const SwitchBtn = styled.div`
-//   width: 100%;
-//   border-bottom: 1px solid ${colorPalette.borderColor};
-//   z-index: 1;
-// `;
+export const SwitchBtn = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${colorPalette.borderColor};
+  z-index: 1;
+`;
 export const ParentWrapper = styled.div`
   display: flex;
 `;
