@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type CategoryButtonProps = {
   imageUrl: string;
   imageName: string;
@@ -23,4 +25,8 @@ export type CheckBoxProps = {
   categoryData: string;
   selectedCategories: string[];
   setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+};
+export type ModalButtonProps = {
+  children?: ReactNode;
+  onClick?: (e: MouseEvent) => void;
 };
