@@ -19,7 +19,7 @@ function TapButton({ tap, setTapList }: TapButtonType) {
   return (
     <>
       <CustomTapButton onClick={handleNowTapValue}>{tap}</CustomTapButton>
-      {/* <WishList /> */}
+      <WishList />
     </>
   );
 }

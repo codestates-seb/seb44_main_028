@@ -23,7 +23,6 @@ const MyPage = () => {
         <ProfileEdit />
       </ProfileWrapper>
       <ParentTap />
-      {/* <WishList /> */}
     </div>
   );
 };
