@@ -110,17 +110,17 @@ export const PagingWrapper = styled.div`
 `;
 //Tap
 
-export const SwitchBtn = styled.div`
+export const TapWrapper = styled.div`
   width: 100%;
   border-bottom: 1px solid ${colorPalette.borderColor};
-  z-index: 1;
+  margin-bottom: 3rem;
 `;
 export const ParentWrapper = styled.div`
   display: flex;
 `;
 export const CustomTapButton = styled.button`
   padding: 12px 24px;
-  margin-bottom: 4rem;
+
   background-color: transparent; /* 배경색을 투명으로 설정 */
   color: ${colorPalette.basicTextColor};
   font-size: 12px;
@@ -129,7 +129,6 @@ export const CustomTapButton = styled.button`
   line-height: 1.5;
   cursor: pointer;
   /* transition: color 1ms ease-in-out; */
-  z-index: 5;
 
   &:disabled {
     opacity: 0.5; /* 비활성화 시 투명도 조정 */
