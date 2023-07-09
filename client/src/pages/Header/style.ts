@@ -7,6 +7,10 @@ export const HeaderContainer = styled.header`
   padding: 1.375rem 2.625rem;
   font-size: 16px;
   border-bottom: 1px solid #cbcbcb;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5;
   & svg,
   li {
     cursor: pointer;

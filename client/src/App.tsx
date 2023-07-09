@@ -14,7 +14,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Header />
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" style={{ paddingTop: '4.5rem' }}>
           <Provider store={store}>
             <Router />
           </Provider>
