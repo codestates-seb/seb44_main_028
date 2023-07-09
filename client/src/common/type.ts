@@ -30,3 +30,6 @@ export type ModalButtonProps = {
   children?: ReactNode;
   onClick?: (e: MouseEvent) => void;
 };
+export type ModalTitleProps = {
+  children?: ReactNode;
+};
