@@ -8,8 +8,9 @@ import { borderRadius } from '../utils/enum/borderRadius';
 // Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
+  padding: 0 10rem;
   grid-template-columns: repeat(5, 1fr);
-  gap: 4.275rem 2.4rem;
+  gap: 2rem 0;
 `;
 
 export const CategoryButtonWrapper = styled.div`
@@ -19,8 +20,8 @@ export const CategoryButtonWrapper = styled.div`
   font-size: ${fontSize.basic};
   cursor: pointer;
   & img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 20px;
   }
 `;

@@ -32,7 +32,7 @@ export const TopButton = styled.button`
 export const CarouselContainer = styled.div``;
 export const ImageSliderWrapper = styled.div`
   width: 100%;
-  height: 34.5rem;
+  height: 28rem;
 `;
 export const SliderWrapper = styled.div`
   display: flex;
@@ -42,6 +42,7 @@ export const SliderWrapper = styled.div`
   position: relative;
   & img {
     width: 100%;
+    height: 399px;
     object-fit: cover;
   }
 `;
