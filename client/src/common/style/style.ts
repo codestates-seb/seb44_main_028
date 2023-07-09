@@ -96,7 +96,7 @@ export const ItemCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 22.5rem;
-  height: 21rem;
+  height: 22rem;
   border-bottom: 1px solid ${colorPalette.borderColor};
   cursor: pointer;
   & img:hover {
@@ -117,8 +117,10 @@ export const ItemName = styled.p`
   margin-bottom: 4.15px;
 `;
 export const ItemDescription = styled.div`
-  height: 0.97rem;
   overflow: hidden;
+  height: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 11px;
   color: ${colorPalette.grayTextColor};
 `;
@@ -134,6 +136,7 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   justify-content: space-between;
   font-size: 12px;
   color: ${colorPalette.heavyColor};
+  margin-bottom: 1.248rem;
   & svg {
     color: ${(prop) =>
       prop.isHeartClicked
@@ -144,8 +147,9 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
     transition: color 0.2s ease-in-out;
   }
 `;
-export const ItemPrice = styled.div``;
-
+export const ItemPrice = styled.div`
+  font-weight: 500;
+`;
 // Button
 export const DefaultBtn = styled.button`
   background-color: #0d4c92;
