@@ -8,7 +8,7 @@ export const FooterWrapper = styled.div`
   transform: translateY(500%);
   bottom: 0;
   width: 100%;
-  height: 70px;
+  min-height: 70px;
   background-color: #cecece;
 `;
 
