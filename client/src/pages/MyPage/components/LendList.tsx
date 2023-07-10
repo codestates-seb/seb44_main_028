@@ -35,5 +35,4 @@ function LendList() {
     </div>
   );
 }
-        
 export default LendList;
