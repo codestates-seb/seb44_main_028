@@ -1,7 +1,7 @@
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
 import { ITEMCARD_DATA } from '../../Main/constants';
-import { ItemListPageContainer, ItemFilterWrapper } from '../style';
+import { ItemListPageContainer } from '../style';
 
 import {
   DISTANCE_DEFAULT_VALUE,
@@ -11,13 +11,13 @@ import {
 function ItemListPage() {
   return (
     <ItemListPageContainer>
-      <ItemFilterWrapper>
+      <div>
         <SelectBox
           selectOptionData={DISTANCE_OPTIONS}
           selectDefaultOption={DISTANCE_DEFAULT_VALUE}
         />
         <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-      </ItemFilterWrapper>
+      </div>
       <ItemCardList itemCardListContentData={ITEMCARD_DATA} />
     </ItemListPageContainer>
   );
