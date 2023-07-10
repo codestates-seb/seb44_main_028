@@ -198,6 +198,7 @@ export const SelectBoxWrapper = styled.div`
   border: ${border.basic};
   border-radius: 5px;
   font-weight: 700;
+  margin-right: 2.75rem;
 `;
 const onRotate = keyframes`
   from {
