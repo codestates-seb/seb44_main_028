@@ -2,10 +2,9 @@ package com.ftiland.travelrental.member.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import lombok.*;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-@ToString
 public class Member extends BaseEntity {
 
     @Id // 멤버의 경우 숫자형식의 id 사용
@@ -26,15 +26,15 @@ public class Member extends BaseEntity {
     private String displayName;
 
     // 이미지 필드 필요
-
     private Double latitude;
     private Double longitude;
+    private String address;
 
     public Member(String email, String displayName) {
+
+    public Member(long l, String email, String displayName, double v, double v1) {
+
         this.email = email;
         this.displayName = displayName;
     }
-
-/*    private Double totalRateScore;
-    private Double totalRateCount;*/
 }

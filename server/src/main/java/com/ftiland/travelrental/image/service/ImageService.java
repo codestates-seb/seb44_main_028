@@ -20,13 +20,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
-@Component
+
 @Service
 public class ImageService {
 
@@ -47,77 +49,81 @@ public class ImageService {
                         ImageMemberRepository imageMemberRepository, MemberRepository memberRepository,
                         ProductRepository productRepository) {
         this.amazonS3 = amazonS3;
-        this.imageMapper=imageMapper;
+        this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
         this.productRepository = productRepository;
         this.memberRepository = memberRepository;
     }
 
+    public List<ImageProduct> storeImageProducts(List<MultipartFile> files, String productId) {
+        return files.stream()
+                .map(file -> storeImageProduct(file, productId))
+                .collect(Collectors.toList());
+    }
 
     // 이미지 업로드(상품) (png,jpg만 저장가능) -> 구현 필요
-    public ImageProduct storeImageProduct(MultipartFile file, String productId){
+    public ImageProduct storeImageProduct(MultipartFile file, String productId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
 
-        try{
+        try {
             // 파일이 비었을 때 예외처리
-            if(file.isEmpty()){throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);}
+            if (file.isEmpty()) {
+                throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
+            }
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
             //S3 버킷에 파일 업로드
-            amazonS3.putObject(new PutObjectRequest(buckName,fileName,file.getInputStream(),metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-        }
-        catch (IOException e){
+            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
-        ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file,productRepository,productId);
-        createdImageProduct.setImageUrl(amazonS3.getUrl(buckName,fileName).toString());
+        ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
+        createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
 
         return imageProductRepository.save(createdImageProduct);
-        //return  createdImage;
     }
 
     // 이미지 업로드(맴버) (png,jpg만 저장가능) -> 구현 필요
-    public ImageMember storeImageMember(MultipartFile file,Long memberId){
+    public ImageMember storeImageMember(MultipartFile file, Long memberId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        try{
+        try {
             // 파일이 비었을 때 예외처리
-            if(file.isEmpty()){throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);}
+            if (file.isEmpty()) {
+                throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
+            }
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
             //S3 버킷에 파일 업로드
-            amazonS3.putObject(new PutObjectRequest(buckName,fileName,file.getInputStream(),metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-        }
-        catch (IOException e){
+            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
+
         ImageMember createdImage= imageMapper.fileToImageMember(file,memberRepository,memberId);
-        createdImage.setFileName(amazonS3.getUrl(buckName,fileName).toString());
+        createdImage.setImageUrl(amazonS3.getUrl(buckName,fileName).toString());
 
 
         return imageMemberRepository.save(createdImage);
-        //return createdImage;
     }
 
     // 이미지 삭제(상품)
     public void deleteImageProduct(String imageId) {
-
         // 파일 확인
-        ImageProduct imageProduct = imageProductRepository.findById(imageId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageProduct imageProduct = imageProductRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
         try {
             amazonS3.deleteObject(buckName, imageProduct.getFileName());
             imageProductRepository.delete(imageProduct);
-        }
-        catch (BusinessLogicException e){
-        throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+        } catch (BusinessLogicException e) {
+            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
     }
 
@@ -134,15 +140,15 @@ public class ImageService {
     }
 
     // 상품 이미지
-    public ArrayList<ImageProduct> findImageProduct(String productId){
-            ArrayList<ImageProduct> imageProducts = imageProductRepository.findByProductId(productId);
-            return imageProducts;
-        }
+    public ArrayList<ImageProduct> findImageProduct(String productId) {
+        ArrayList<ImageProduct> imageProducts = imageProductRepository.findByProductId(productId);
+        return imageProducts;
+    }
 
     // 맴버 이미지
-    public ImageMember findImageMember(Long memberId){
+    public ImageMember findImageMember(Long memberId) {
         Optional<ImageMember> optionalImageMember = imageMemberRepository.findByMemberId(memberId);
-        ImageMember imageMember = optionalImageMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
         return imageMember;
     }
 

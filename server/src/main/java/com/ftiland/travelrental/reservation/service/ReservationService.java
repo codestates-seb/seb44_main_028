@@ -134,10 +134,29 @@ public class ReservationService {
         }
     }
 
+    private void validateOwner(Product product, Member member) {
+        if (!Objects.equals(product.getMember().getMemberId(), member.getMemberId())) {
+            throw new BusinessLogicException(UNAUTHORIZED);
+        }
+    }
+
     public List<ReservationDto> getReservationByBorrower(Long memberId, ReservationStatus status) {
         Member member = memberService.findMember(memberId);
 
         List<Reservation> reservations = reservationRepository.findAllByMemberMemberIdAndStatus(memberId, status);
+
+        return reservations.stream()
+                .map(r -> ReservationDto.from(r))
+                .collect(Collectors.toList());
+    }
+
+    public List<ReservationDto> getReservationByLender(Long memberId, String productId, ReservationStatus status) {
+        Member member = memberService.findMember(memberId);
+        Product product = productService.findProduct(productId);
+
+        validateOwner(product, member);
+
+        List<Reservation> reservations = reservationRepository.findAllByProductProductIdAndStatus(productId, status);
 
         return reservations.stream()
                 .map(r -> ReservationDto.from(r))

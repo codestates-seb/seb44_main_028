@@ -5,6 +5,8 @@ import { ParentWrapper } from '../style';
 import ItemCard from '../../../common/components/ItemCard';
 import LendList from './LendList';
 import BorrowList from './BorrowList';
+
+
 function ParentTap() {
   const [tapList, setTapList] = useState<string[]>([]);
 
