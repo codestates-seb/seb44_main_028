@@ -1,19 +1,17 @@
 spring:
   datasource:
-    # RDS 접근 설정
-    url: ${RDS_END_POINT}
-    username: ${RDS_MYSQL_ADMIN_ID}
-    password: ${RDS_MYSQL_ADMIN_PASSWORD}
-
+    url: jdbc:mysql://localhost:3306/playpack
+    username: root
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
       client:
         registration:
           kakao:
-            clientId: ${CLIENT_ID}
-            clientSecret: ${CLIENT_SECRET}
-            redirect-uri: ${REDIRECT_URL}
+            clientId: e1ebe1203f7b94d6b2577cc1e01b84ef
+            clientSecret: Ld1Ex1tueBaIvYDWykKjvvSrUhe7Vt3G
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: Kakao
@@ -37,7 +35,7 @@ spring:
 
 jwt:
   key:
-    secret: ${JWT_SECRET_KEY}
+    secret: playback28FTILANDplayback28FTILANDplayback28FTILANDplayback28FTILAND
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 
@@ -48,13 +46,11 @@ logging:
         orm:
           jpa: DEBUG
 
-
 cloud:
   aws:
-    # S3 접근 권한 설정 -image
     credentials:
-      accessKey : ${ACCESS_KEY}
-      secretKey : ${SECRET_ACCESS_KEY}
+      accessKey : AKIAR45AI4TFZ32NELWJ
+      secretKey : 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
     s3:
       bucket: seb44main028image-bucket
     region:

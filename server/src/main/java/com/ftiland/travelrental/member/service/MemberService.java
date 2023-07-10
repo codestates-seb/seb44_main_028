@@ -1,7 +1,5 @@
 package com.ftiland.travelrental.member.service;
 
-
-
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
@@ -33,7 +31,7 @@ public class MemberService {
     }
 
 
-    private boolean existsEmail(String email) {
+    public boolean existsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         return member.isPresent();
     }
@@ -44,20 +42,20 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    private MemberDto.Response updateMember(MemberPatchDto.Request request, Long memberId) {
+    public Member findMemberByEmail(String email){
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+    }
+
+    public MemberDto.Response updateMember(MemberPatchDto.Request request, Long memberId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
 
         Optional.ofNullable(request.getDisplayName())
                 .ifPresent(displayName -> member.setDisplayName(displayName));
-        Optional.ofNullable(request.getLatitude())
-                .ifPresent(latitude -> member.setLatitude(latitude));
-        Optional.ofNullable(request.getLongitude())
-                .ifPresent(longitude -> member.setLongitude(longitude));
 
         return MemberDto.Response.from(member);
-
     }
 
 }
