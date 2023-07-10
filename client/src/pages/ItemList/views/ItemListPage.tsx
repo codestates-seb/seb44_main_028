@@ -24,7 +24,7 @@ function ItemListPage() {
     error,
   } = useQuery('products', async () => {
     try {
-      const res = await axios.get(`/api/products`, {
+      const res = await axios.get(`https://playpack.shop/products`, {
         params: {
           page: page,
           size: size,
