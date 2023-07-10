@@ -39,6 +39,7 @@ export const MypageRight = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: -0.5rem;
 `;
 export const MypageImage = styled.div`
   margin-right: 2rem;
@@ -46,6 +47,7 @@ export const MypageImage = styled.div`
     border-radius: 50px;
     width: 86px;
     height: 86px;
+    object-fit: cover;
   }
 `;
 export const MypageInfo = styled.div`
@@ -53,8 +55,20 @@ export const MypageInfo = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-
+export const Location = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${colorPalette.grayTextColor};
+  font-size: ${fontSize.small};
+  span {
+    margin-right: 5px;
+  }
+`;
 export const EvaluationItem = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: ${fontSize.small};
   img {
     border-radius: 50px;
     width: 86px;
