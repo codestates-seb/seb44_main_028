@@ -3,6 +3,7 @@ package com.ftiland.travelrental.product.controller;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.product.dto.CreateProduct;
 import com.ftiland.travelrental.product.dto.ProductDetailDto;
+import com.ftiland.travelrental.product.dto.ProductDto;
 import com.ftiland.travelrental.product.dto.UpdateProduct;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,9 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<CreateProduct.Response> createProduct(
-            @Valid @RequestPart CreateProduct.Request request,
+            @Valid @RequestPart(required = false) CreateProduct.Request request,
             @RequestPart(required = false) List<MultipartFile> images) {
         log.info("[ProductController] createProduct called");
-
         Long memberId = 1L;
 
         CreateProduct.Response response = productService.createProduct(request, memberId);
@@ -62,8 +62,15 @@ public class ProductController {
 
     @GetMapping("/{product-id}")
     public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId) {
-        log.info("[ProductController] findProduct called");
+        log.info("[ProductController] findProductDetail called");
         Long memberId = 1L;
         return ResponseEntity.ok(productService.findProductDetail(productId));
+    }
+
+    @GetMapping("/members")
+    public ResponseEntity<List<ProductDto>> findProducts() {
+        log.info("[ProductController] findProducts called");
+        Long memberId = 2L;
+        return ResponseEntity.ok(productService.findProducts(memberId));
     }
 }

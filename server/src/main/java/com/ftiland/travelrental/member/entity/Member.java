@@ -3,9 +3,9 @@ package com.ftiland.travelrental.member.entity;
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +15,8 @@ import javax.persistence.Id;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-@ToString
 public class Member extends BaseEntity {
 
     @Id // 멤버의 경우 숫자형식의 id 사용
@@ -30,11 +30,10 @@ public class Member extends BaseEntity {
     private Double latitude;
     private Double longitude;
 
+    private String address;
+
     public Member(String email, String displayName) {
         this.email = email;
         this.displayName = displayName;
     }
-
-/*    private Double totalRateScore;
-    private Double totalRateCount;*/
 }

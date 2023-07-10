@@ -13,37 +13,31 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDetailDto {
+public class ProductDto {
+
 
     private String title;
     private String content;
     private Integer baseFee;
     private Integer feePerDay;
-    private Integer overdueFee;
     private Integer minimumRentalPeriod;
 
-    private Double rate;
-    private Integer viewCount;
+    private String image;
 
-    private List<CategoryDto> categories;
-    private List<String> images;
-
-    private String username;
     private String address;
 
-    public static ProductDetailDto from(Product product, List<CategoryDto> categories) {
-        return ProductDetailDto.builder()
+    public static ProductDto from(Product product, List<CategoryDto> categories) {
+        return ProductDto.builder()
                 .title(product.getTitle())
                 .content(product.getContent())
                 .baseFee(product.getBaseFee())
                 .feePerDay(product.getFeePerDay())
-                .overdueFee(product.getOverdueFee())
                 .minimumRentalPeriod(product.getMinimumRentalPeriod())
-                .rate((double) product.getTotalRateScore() / product.getTotalRateCount())
-                .viewCount(product.getViewCount())
-                .username(product.getMember().getDisplayName())
-                .address(product.getAddress())
-                .images(null)
-                .categories(categories).build();
+                .image(null)
+                .address(product.getAddress()).build();
+    }
+    public static ProductDto from(Product product){
+        return ProductDto.builder()
+                .build();
     }
 }
