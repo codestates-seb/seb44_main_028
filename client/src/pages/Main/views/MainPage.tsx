@@ -28,6 +28,7 @@ function MainPage() {
     //       </ModalMain>
     //     )} */}
     //   </>
+
     <MainPageContainer>
       <Category />
       <ScrollToTop />
