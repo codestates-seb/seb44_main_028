@@ -322,3 +322,8 @@ export const LoadingWrapper = styled.div`
     color: ${colorPalette.lightGrayTextColor};
   }
 `;
+// Error 컴포넌트의 스타일을 정의
+export const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
