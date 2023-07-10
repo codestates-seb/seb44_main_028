@@ -9,7 +9,7 @@ function LendList() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          '/api/reservations/products/${products-id}',
+          'https://playpack.shop/api/reservations/products/${products-id}',
         );
         setLendList(response.data);
       } catch (error) {

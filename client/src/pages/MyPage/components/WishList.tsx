@@ -12,7 +12,9 @@ function WishList() {
     // 서버에 API 요청을 보내는 비동기 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/members/interests'); // 실제 API 엔드포인트에 맞게 수정
+        const response = await axios.get(
+          'https://playpack.shop/api/members/interests',
+        ); // 실제 API 엔드포인트에 맞게 수정
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching wishlist:', error);

@@ -8,7 +8,9 @@ function BorrowList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/reservations');
+        const response = await axios.get(
+          'https://playpack.shop/api/reservations',
+        );
         setBorrowList(response.data);
       } catch (error) {
         console.error('Error fetching borrow list:', error);
