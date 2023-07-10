@@ -29,7 +29,6 @@ export const TopButton = styled.button`
     color: #12d3cf;
   }
 `;
-// Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
   padding: 0 10rem;
@@ -49,7 +48,7 @@ export const CategoryButtonWrapper = styled.div`
     margin-bottom: 20px;
   }
 `;
-
+// Modal 컴포넌트의 스타일을 정의
 export const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,6 +69,10 @@ export const ModalWrapper = styled.div`
     font-size: 4rem;
     color: ${colorPalette.modalIconColor};
     margin-bottom: 1rem;
+  }
+  & button {
+    margin-right: 0.438rem;
+    margin-top: 0.938rem;
   }
 `;
 
@@ -100,6 +103,14 @@ export const ModalButtonWrapper = styled.div`
     background-color: ${colorPalette.heavyColor};
     color: ${colorPalette.whiteColor};
   }
+`;
+export const ModalInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+export const ModalChildrenWrapper = styled.div`
+  display: flex;
 `;
 // ItemCardList 컴포넌트의 스타일을 정의
 export const ItemCardListWrapper = styled.div`

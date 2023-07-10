@@ -4,7 +4,11 @@ import { MdError } from 'react-icons/md';
 import ModalTitle from './ModalTitle';
 import ModalButton from './ModalButton';
 import { ModalMainProps } from '../../type';
-import { ModalOverlay, ModalWrapper } from '../../style/style';
+import {
+  ModalOverlay,
+  ModalWrapper,
+  ModalInfoWrapper,
+} from '../../style/style';
 
 const ModalMain = ({ children, isOpen }: ModalMainProps) => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(true);
@@ -21,10 +25,10 @@ const ModalMain = ({ children, isOpen }: ModalMainProps) => {
       {isOverlayVisible && <ModalOverlay onClick={handleCloseModal} />}
       {isOverlayVisible && (
         <ModalWrapper ref={modalRef}>
-          <div onClick={handleModalContentClick}>
+          <ModalInfoWrapper onClick={handleModalContentClick}>
             <MdError />
             {children}
-          </div>
+          </ModalInfoWrapper>
         </ModalWrapper>
       )}
     </>,

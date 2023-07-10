@@ -9,6 +9,7 @@ import {
   ITEMCARD_DATA,
   ITEMCARD_DEVELOPMENT_DATA,
 } from '../constants';
+import { colorPalette } from '../../../common/utils/enum/colorPalette';
 function MainPage() {
   const [isClick, setIsClick] = useState(false);
   const handleModalTest = () => {
@@ -21,10 +22,24 @@ function MainPage() {
       {isClick && (
         <ModalMain isOpen={isClick}>
           <ModalMain.Title>다이슨 예약하시겠습니까?</ModalMain.Title>
-          <ModalMain.Button onClick={() => setIsClick(false)}>
-            돌아가기
-          </ModalMain.Button>
-          <ModalMain.Button>예약하기</ModalMain.Button>
+          <div>
+            <ModalMain.Button
+              color="inherit"
+              backgroundColor={colorPalette.modalCancelButtonColor}
+              hoverBackgroundColor={colorPalette.modalCancelHoverColor}
+              onClick={() => setIsClick(false)}
+            >
+              돌아가기
+            </ModalMain.Button>
+            <ModalMain.Button
+              color={colorPalette.whiteColor}
+              backgroundColor={colorPalette.heavyColor}
+              hoverBackgroundColor={colorPalette.rightButtonHoverColor}
+              onClick={() => setIsClick(false)}
+            >
+              예약하기
+            </ModalMain.Button>
+          </div>
         </ModalMain>
       )}
     </>

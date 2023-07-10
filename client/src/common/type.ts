@@ -30,6 +30,9 @@ export type CheckBoxProps = {
 };
 
 export type ModalButtonProps = {
+  color: string;
+  backgroundColor: string;
+  hoverBackgroundColor?: string;
   children?: ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
