@@ -5,8 +5,8 @@ import Header from './pages/Header/views/Header';
 import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
-import Carousel from './pages/Main/components/Carousel';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Carousel from './pages/Main/components/Carousel';
 
 function App() {
   const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ function App() {
             element={
               <>
                 <Carousel />
-                <Container maxWidth="lg">
+                <Container maxWidth="lg" style={{ paddingTop: '4.5rem' }}>
                   <Provider store={store}>
                     <Router />
                   </Provider>
@@ -32,7 +32,7 @@ function App() {
           <Route
             path="/*"
             element={
-              <Container maxWidth="lg">
+              <Container maxWidth="lg" style={{ paddingTop: '4.5rem' }}>
                 <Provider store={store}>
                   <Router />
                 </Provider>
