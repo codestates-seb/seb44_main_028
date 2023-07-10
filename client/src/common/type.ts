@@ -42,7 +42,7 @@ export type ModalMainProps = {
 };
 
 export type ItemCardListProps = {
-  itemCardListTitle: string;
+  itemCardListTitle?: string;
   itemCardListContentData: ItemCardProps[];
 };
 export type ItemCardProps = {

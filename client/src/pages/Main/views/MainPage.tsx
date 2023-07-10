@@ -15,19 +15,19 @@ function MainPage() {
   //   setIsClick(!isClick);
   // };
   return (
-
-<!--     <>
-      <div>Main page</div>
-      {/* <button onClick={handleModalTest}>버튼</button>
-      {isClick && (
-        <ModalMain isOpen={isClick}>
-          <ModalMain.Title>다이슨 예약하시겠습니까?</ModalMain.Title>
-          <ModalMain.Button onClick={() => setIsClick(false)}>
-            돌아가기
-          </ModalMain.Button>
-          <ModalMain.Button>예약하기</ModalMain.Button>
-        </ModalMain>
-      )} */} -->
+    //  <>
+    //     <div>Main page</div>
+    //     {/* <button onClick={handleModalTest}>버튼</button>
+    //     {isClick && (
+    //       <ModalMain isOpen={isClick}>
+    //         <ModalMain.Title>다이슨 예약하시겠습니까?</ModalMain.Title>
+    //         <ModalMain.Button onClick={() => setIsClick(false)}>
+    //           돌아가기
+    //         </ModalMain.Button>
+    //         <ModalMain.Button>예약하기</ModalMain.Button>
+    //       </ModalMain>
+    //     )} */}
+    //   </>
 
     <MainPageContainer>
       <Category />
