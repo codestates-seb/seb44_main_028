@@ -14,9 +14,9 @@ export const DefaultBtn = styled.button<DefaultBtnprops>`
   border-radius: 5px;
   border: none;
   box-shadow: ${BoxShadow.Basic};
+  cursor: pointer;
   &:hover {
     background-color: ${(props) => props.hoverBackgroundColor};
-    /* background-color: #1d5799; */
   }
   &:active {
     transform: scale(0.98);
