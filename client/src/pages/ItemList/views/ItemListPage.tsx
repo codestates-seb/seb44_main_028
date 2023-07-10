@@ -1,5 +1,8 @@
-import { ItemListPageContainer, ItemFilterWrapper } from '../style';
 import SelectBox from '../../../common/components/SelectBox';
+import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
+import { ITEMCARD_DATA } from '../../Main/constants';
+import { ItemListPageContainer, ItemFilterWrapper } from '../style';
+
 import {
   DISTANCE_DEFAULT_VALUE,
   DISTANCE_OPTIONS,
@@ -15,6 +18,7 @@ function ItemListPage() {
         />
         <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
       </ItemFilterWrapper>
+      <ItemCardList itemCardListContentData={ITEMCARD_DATA} />
     </ItemListPageContainer>
   );
 }
