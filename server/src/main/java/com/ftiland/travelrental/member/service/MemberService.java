@@ -1,8 +1,8 @@
 package com.ftiland.travelrental.member.service;
 
 
+
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
-import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.MEMBER_NOT_FOUND;
-import static com.ftiland.travelrental.common.exception.ExceptionCode.PRODUCT_NOT_FOUND;
 
 @Service
 public class MemberService {
@@ -33,21 +32,16 @@ public class MemberService {
         return null;
     }
 
-    public Member getMember(Long memberId) {
-        return findVerfiedMember(memberId);
-    }
 
     private boolean existsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         return member.isPresent();
     }
-
-    private Member findVerfiedMember(Long id) {
-        Optional<Member> optionalMember = memberRepository.findById(id);
-        Member findMember = optionalMember.orElseThrow(() ->
-                    new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
-                );
-        return findMember;
+  
+    // 명규 님이 작성
+    public Member findMember(Long memberId){
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
     private MemberDto.Response updateMember(MemberPatchDto.Request request, Long memberId) {

@@ -33,7 +33,7 @@ public class memberController {
             Integer memberId = (Integer) claims.get("memberId");
             Long memberIdLong = memberId != null ? memberId.longValue() : null;
 
-            Member member = memberService.getMember(memberIdLong);
+            Member member = memberService.findMember(memberIdLong);
 
             MemberDto.Response response = MemberDto.Response.from(member);
 
