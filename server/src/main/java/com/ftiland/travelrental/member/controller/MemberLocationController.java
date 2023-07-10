@@ -1,6 +1,6 @@
 package com.ftiland.travelrental.member.controller;
 
-import com.ftiland.travelrental.member.dto.GetMember;
+import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberLocationService;
 import com.ftiland.travelrental.member.service.MemberService;
@@ -29,7 +29,7 @@ public class MemberLocationController {
     @PatchMapping
     public ResponseEntity updateLocation(@Param("memberId")Long memberId,@Param("latitude") double latitude,@Param("longitude") double longitude){
         Member member = memberLocationService.updateLocation(memberId,latitude,longitude);
-        GetMember.Response response = GetMember.Response.from(member);
+        MemberDto.Response response = MemberDto.Response.from(member);
 
         return new ResponseEntity(response, HttpStatus.OK);
     }
