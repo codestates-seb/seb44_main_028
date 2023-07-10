@@ -31,9 +31,11 @@ public class Member extends BaseEntity {
     private String address;
 
     public Member(String email, String displayName) {
+        this.email = email;
+        this.displayName = displayName;
+    }
 
     public Member(long l, String email, String displayName, double v, double v1) {
-
         this.email = email;
         this.displayName = displayName;
     }

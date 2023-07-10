@@ -1,15 +1,10 @@
 package com.ftiland.travelrental.member.dto;
 
-import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.member.entity.Member;
-import com.ftiland.travelrental.product.dto.CreateProduct;
-import com.ftiland.travelrental.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 public class GetMember {
     @Getter
@@ -31,7 +26,7 @@ public class GetMember {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
-                    .addr(member.getAddr())
+                    .addr(member.getAddress())
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
