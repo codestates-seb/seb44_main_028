@@ -28,12 +28,6 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         this.memberService = memberService;
     }
 
-    public Oauth2MemberSuccessHandler(String defaultTargetUrl, JwtTokenizer jwtTokenizer, MemberService memberService) {
-        super(defaultTargetUrl);
-        this.jwtTokenizer = jwtTokenizer;
-        this.memberService = memberService;
-    }
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = (OAuth2User)authentication.getPrincipal();
@@ -46,26 +40,7 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         Member savedMember = saveMember(email, displayName);
         Long memberId = savedMember.getMemberId();
 
-        String accessToken = delegateAccessToken(displayName, memberId, email);
-        String refreshToken = delegateRefreshToken(displayName);
-
-        response.addHeader("Authorization", "Bearer " + accessToken);
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(30 * 24 * 60 * 60);
-        response.addCookie(refreshTokenCookie);
-
-        String host = "http://localhost:3000";
-        getRedirectStrategy().sendRedirect(request, response, host);
-//        String uri = createURI(accessToken, refreshToken, host).toString();
-//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        response.setCharacterEncoding("UTF-8");
-//        response.getWriter().write("{\"message\": \"로그인 성공\"}");
-
-//        super.onAuthenticationSuccess(request, response, authentication);
-//        redirect(request, response, displayName, memberId, email);
+        redirect(request, response, displayName, memberId, email);
     }
 
     private Member saveMember(String email, String displayName) {
@@ -79,11 +54,19 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String accessToken = delegateAccessToken(displayName, memberId, email);
         String refreshToken = delegateRefreshToken(displayName);
 
-        response.addHeader("Authorization", "Bearer" + accessToken);
+        response.addHeader("Authorization", "Bearer " + accessToken);
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(30 * 24 * 60 * 60);
+        response.addCookie(refreshTokenCookie);
 
-//        String uri = createURI(accessToken, refreshToken).toString();
-//        getRedirectStrategy().sendRedirect(request, response, uri);
+        response.getWriter().write("login success");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        String uri = createURI(accessToken).toString();
+        getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
     private String delegateAccessToken(String displayName, Long memberId, String email) {
@@ -112,15 +95,16 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-    private URI createURI(String accessToken, String refreshToken, String host) {
+    private URI createURI(String accessToken) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host(host)
+                .host("localhost")
+                .port(3000)
+                .path("/login")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
