@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CATEGORY } from '../../constants';
-import CheckBox from './CheckBox';
+import CheckBox from './Checkbox';
 
 const CheckBoxList = () => {
   const [seletedCategories, setSelectedCategories] = useState<string[]>([]);

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react';
 import {
   UploadBtn,
-  ProfileWrapper,
+  ProfileEditWrapper,
   ProfilerEdit,
   ProfileImg,
   ProfileSection,
@@ -94,7 +94,7 @@ function ProfileEdit() {
   );
   return (
     <MyPageEdit>
-      <ProfileWrapper>
+      <ProfileEditWrapper>
         <ProfileSection>
           <ProfileImg>
             {previewImage ? (
@@ -130,7 +130,7 @@ function ProfileEdit() {
             <TownBtn>내 동네 설정</TownBtn>
           </InputWrapper>
         </TextWrapper>
-      </ProfileWrapper>
+      </ProfileEditWrapper>
       <StyledForm onSubmit={onSubmitForm}>
         <input
           type="submit"
