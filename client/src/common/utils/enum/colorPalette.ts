@@ -1,7 +1,7 @@
 export enum colorPalette {
   lightColor = '#B0F4E6',
   accentColor = '#12D3CF',
-  heavyColor = '#OD4C92',
+  heavyColor = '#0D4C92',
   deepMintColor = '#3AA6B9',
   grayColor = '#cecece',
   basicTextColor = '#333',
@@ -9,6 +9,7 @@ export enum colorPalette {
   grayTextColor = '#777',
   lightGrayTextColor = '#BABABA',
   borderColor = '#CBCBCB',
+  headerSearchColor = '#f1f1f1',
   tagColor = '#74D4E4',
   modalIconColor = '#D0E2Ef',
   modalCancelButtonColor = '#CDDBF0',

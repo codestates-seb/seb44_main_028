@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Pagination from 'react-js-pagination';
 import { PagingType } from '../type';
 import { PagingWrapper } from '../style';

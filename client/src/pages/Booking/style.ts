@@ -141,6 +141,7 @@ export const EachDate = styled.th<EachDatesProps>`
   font-weight: 400;
   height: 20px;
   padding: 11px;
+  border-radius: 10px;
   color: ${(props) => {
     const thisMonth = new Date().getMonth() + 1;
     return (props.row.week === 0 && Number(props.children) > 7) ||
@@ -186,7 +187,7 @@ export const EachDate = styled.th<EachDatesProps>`
       return startYear === props.today.year &&
         startMonth === props.today.month &&
         startDate === Number(props.children)
-        ? colorPalette.deepMintColor
+        ? colorPalette.lightColor
         : 'white';
     }
 
@@ -197,7 +198,7 @@ export const EachDate = styled.th<EachDatesProps>`
             startMonth === props.today.month &&
             startDate <= Number(props.children) &&
             endDate >= Number(props.children)
-            ? colorPalette.deepMintColor
+            ? colorPalette.lightColor
             : 'white';
         } else {
           return ((startYear === props.today.year &&
@@ -207,14 +208,47 @@ export const EachDate = styled.th<EachDatesProps>`
               endMonth === props.today.month &&
               endDate >= Number(props.children))) &&
             Number(props.children) !== 0
-            ? colorPalette.deepMintColor
-            : startMonth &&
+            ? colorPalette.lightColor
+            : startYear === props.today.year &&
+              startMonth &&
               endMonth &&
               endMonth - startMonth > 1 &&
               props.today.month > startMonth &&
               props.today.month < endMonth &&
               Number(props.children) !== 0
-            ? colorPalette.deepMintColor
+            ? colorPalette.lightColor
+            : 'white';
+        }
+      } else {
+        if (
+          (startYear === props.today.year &&
+            Number(props.children) !== 0 &&
+            startMonth &&
+            startMonth < props.today.month) ||
+          (startYear === props.today.year &&
+            startMonth === props.today.month &&
+            startDate &&
+            startDate <= Number(props.children))
+        ) {
+          return colorPalette.lightColor;
+        } else if (
+          (endYear === props.today.year &&
+            Number(props.children) !== 0 &&
+            endMonth &&
+            endMonth > props.today.month) ||
+          (endYear === props.today.year &&
+            endMonth === props.today.month &&
+            endDate &&
+            endDate >= Number(props.children) &&
+            Number(props.children) !== 0)
+        ) {
+          return colorPalette.lightColor;
+        }
+        if (endYear && startYear && endYear - startYear > 1) {
+          return props.today.year > startYear &&
+            props.today.year < endYear &&
+            Number(props.children) !== 0
+            ? colorPalette.lightColor
             : 'white';
         }
       }

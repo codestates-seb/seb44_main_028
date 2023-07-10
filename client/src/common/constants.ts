@@ -47,42 +47,52 @@ export const PRODUCT_FILTER_OPTIONS: SelectOption[] = [
 
 export const CATEGORY: CategoryProps[] = [
   {
+    id: '1',
     image: climbing,
     name: '등산',
   },
   {
+    id: '2',
     image: camping,
     name: '캠핑',
   },
   {
+    id: '3',
     image: ski,
     name: '스키',
   },
   {
+    id: '4',
     image: waterPlay,
     name: '물놀이',
   },
   {
+    id: '5',
     image: forLiving,
     name: '생활용품',
   },
   {
+    id: '6',
     image: forShooting,
     name: '촬영용품',
   },
   {
+    id: '7',
     image: play,
     name: '놀거리',
   },
   {
+    id: '8',
     image: clothes,
     name: '의류',
   },
   {
+    id: '9',
     image: accessory,
     name: '액서서리',
   },
   {
+    id: '10',
     image: others,
     name: '기타',
   },
