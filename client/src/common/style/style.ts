@@ -64,6 +64,7 @@ export const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: ${fontSize.basic};
+  z-index: 6;
   box-shadow: 0 10px 24px hsla(0, 0%, 0%, 0.05),
     0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
   & svg {
@@ -80,6 +81,7 @@ export const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
 `;
 export const ModalButtonWrapper = styled.div`
   display: flex;
