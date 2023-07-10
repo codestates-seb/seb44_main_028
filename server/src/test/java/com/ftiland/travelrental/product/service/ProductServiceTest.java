@@ -4,7 +4,7 @@ import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.member.entity.Member;
-import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.dto.CreateProduct;
 import com.ftiland.travelrental.product.dto.UpdateProduct;
 import com.ftiland.travelrental.product.entity.Product;
@@ -34,7 +34,7 @@ class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
-    private MemberRepository memberRepository;
+    private MemberService memberService;
     @Mock
     private ProductCategoryService productCategoryService;
 
@@ -45,11 +45,12 @@ class ProductServiceTest {
     @DisplayName("상품 생성 성공")
     void createProduct_SUCCESS() {
         // given
-        Member member = new Member(1L,
-                "test@test.com",
-                "이명규",
-                37.5793493362539,
-                126.91794995956589);
+        Member member = Member.builder()
+                .memberId(1L)
+                .email("test@test.com")
+                .displayName("이명규")
+                .latitude(37.5793493362539)
+                .longitude(126.91794995956589).build();
 
         Product product = Product.builder()
                 .title("제목입니다.")
@@ -64,8 +65,8 @@ class ProductServiceTest {
                         .categoryId("7c08b19f-5846-4b6b-a11e-861d004f8151")
                         .title("캠핑").build());
 
-        given(memberRepository.findByEmail(anyString()))
-                .willReturn(Optional.of(member));
+        given(memberService.findMember(any()))
+                .willReturn(member);
 
         given(productRepository.save(any()))
                 .willReturn(product);
@@ -76,9 +77,8 @@ class ProductServiceTest {
         ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
         ArgumentCaptor<List<String>> captor2 = ArgumentCaptor.forClass(List.class);
         CreateProduct.Request request = new CreateProduct.Request(
-                "제목", 1000, 500, 1000, "내용", 3, 0, 0,
-                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151"),
-                "aa@aa.com"
+                "제목", 1000, 500, 1000, "내용", 3,
+                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151")
         );
 
         // when
@@ -107,19 +107,19 @@ class ProductServiceTest {
     @DisplayName("상품 생성 실패 - 멤버 위치정보 없을 때")
     void createProduct_FAIL_NOT_FOUND_LOCATION() {
         // given
-        Member member = new Member(1L,
-                "test@test.com",
-                "이명규",
-                null,
-                null);
+        Member member = Member.builder()
+                .memberId(1L)
+                .email("test@test.com")
+                .displayName("이명규")
+                .latitude(null)
+                .longitude(null).build();
 
-        given(memberRepository.findByEmail(anyString()))
-                .willReturn(Optional.of(member));
+        given(memberService.findMember(any()))
+                .willReturn(member);
 
         CreateProduct.Request request = new CreateProduct.Request(
-                "제목", 1000, 500, 1000, "내용", 3, 0, 0,
-                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151"),
-                "aa@aa.com"
+                "제목", 1000, 500, 1000, "내용", 3,
+                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151")
         );
 
         // when
@@ -133,11 +133,12 @@ class ProductServiceTest {
     @DisplayName("상품 수정 성공")
     void updateProduct_SUCCESS() {
         // given
-        Member member = new Member(1L,
-                "test@test.com",
-                "이명규",
-                37.5793493362539,
-                126.91794995956589);
+        Member member = Member.builder()
+                .memberId(1L)
+                .email("test@test.com")
+                .displayName("이명규")
+                .latitude(37.5793493362539)
+                .longitude(126.91794995956589).build();
 
         Product product = Product.builder()
                 .productId("91052a17-bca6-4fde-a586-a1d179ad3463")
@@ -155,8 +156,8 @@ class ProductServiceTest {
                         .categoryId("7c08b19f-5846-4b6b-a11e-861d004f8151")
                         .title("캠핑").build());
 
-        given(memberRepository.findByEmail(anyString()))
-                .willReturn(Optional.of(member));
+        given(memberService.findMember(any()))
+                .willReturn(member);
 
         given(productRepository.findById(anyString()))
                 .willReturn(Optional.of(product));
@@ -165,8 +166,7 @@ class ProductServiceTest {
         ArgumentCaptor<List<String>> captor2 = ArgumentCaptor.forClass(List.class);
         UpdateProduct.Request request = new UpdateProduct.Request(
                 "제목", 1000, 500, 1000, "내용", 3,
-                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151"),
-                "aa@aa.com"
+                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151")
         );
 
         // when
@@ -202,17 +202,19 @@ class ProductServiceTest {
     @DisplayName("상품 수정 실패 - 작성자일치하지 않음")
     void updateProduct_FAIL_() {
         // given
-        Member member1 = new Member(1L,
-                "test@test.com",
-                "이명규",
-                37.5793493362539,
-                126.91794995956589);
+        Member member1 = Member.builder()
+                .memberId(1L)
+                .email("test@test.com")
+                .displayName("이명규")
+                .latitude(37.5793493362539)
+                .longitude(126.91794995956589).build();
 
-        Member member2 = new Member(2L,
-                "test@test.com",
-                "이명규",
-                37.5793493362539,
-                126.91794995956589);
+        Member member2 = Member.builder()
+                .memberId(2L)
+                .email("test2@test.com")
+                .displayName("이명규2")
+                .latitude(37.5793493362539)
+                .longitude(126.91794995956589).build();
 
         Product product = Product.builder()
                 .productId("91052a17-bca6-4fde-a586-a1d179ad3463")
@@ -230,16 +232,15 @@ class ProductServiceTest {
                         .categoryId("7c08b19f-5846-4b6b-a11e-861d004f8151")
                         .title("캠핑").build());
 
-        given(memberRepository.findByEmail(anyString()))
-                .willReturn(Optional.of(member1));
+        given(memberService.findMember(any()))
+                .willReturn(member1);
 
         given(productRepository.findById(anyString()))
                 .willReturn(Optional.of(product));
 
         UpdateProduct.Request request = new UpdateProduct.Request(
                 "제목", 1000, 500, 1000, "내용", 3,
-                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151"),
-                "aa@aa.com"
+                List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151")
         );
 
         // when

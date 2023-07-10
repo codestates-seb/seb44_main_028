@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 export type CategoryButtonProps = {
+  ImageId: number;
   imageUrl: string;
   imageName: string;
 };
@@ -18,6 +19,7 @@ export type SelectOption = {
   label: string;
 };
 export type CategoryProps = {
+  id: number;
   image: string;
   name: string;
 };
@@ -26,6 +28,7 @@ export type CheckBoxProps = {
   selectedCategories: string[];
   setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
 };
+
 export type ModalButtonProps = {
   children?: ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -36,4 +39,22 @@ export type ModalTitleProps = {
 export type ModalMainProps = {
   children?: ReactNode;
   isOpen?: boolean;
+};
+
+export type ItemCardListProps = {
+  itemCardListTitle: string;
+  itemCardListContentData: ItemCardProps[];
+};
+export type ItemCardProps = {
+  id: number;
+  title: string;
+  baseFee: number;
+  feePerDay: number;
+  overdueFee: number;
+  content: string;
+  minimumRentalPeriod: number;
+  category: number[];
+  location: string;
+  minRental: number;
+  imageUrl: string;
 };

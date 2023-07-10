@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/Main/views/MainPage';
 import MyPage from './pages/MyPage/views/MyPage';
 import LoginPage from './pages/Login/views/LoginPage';
@@ -11,19 +11,17 @@ import BookingPage from './pages/Booking/views/BookingPage';
 
 function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/itemlist/:categoryId" element={<ItemListPage />} />
-        <Route path="/booking/:itemId" element={<BookingPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/detail/:itemId" element={<DetailPage />} />
-        <Route path="/create" element={<CreatePage />} />
-        <Route path="/update/:itemId" element={<UpdatePage />} />
-        <Route path="/chatting" element={<ChattingPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/itemlist/:categoryId" element={<ItemListPage />} />
+      <Route path="/booking/:itemId" element={<BookingPage />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/detail/:itemId" element={<DetailPage />} />
+      <Route path="/create" element={<CreatePage />} />
+      <Route path="/update/:itemId" element={<UpdatePage />} />
+      <Route path="/chatting" element={<ChattingPage />} />
+    </Routes>
   );
 }
 export default Router;

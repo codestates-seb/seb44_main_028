@@ -12,4 +12,6 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, String> {
     boolean existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNot(LocalDate endDate, LocalDate startDate, ReservationStatus status);
     List<Reservation> findAllByMemberMemberIdAndStatus(Long memberId, ReservationStatus status);
+
+    List<Reservation> findAllByProductProductIdAndStatus(String productId, ReservationStatus status);
 }
