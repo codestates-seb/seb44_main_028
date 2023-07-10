@@ -7,14 +7,12 @@ import com.ftiland.travelrental.reservation.service.ReservationService;
 import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -60,11 +58,22 @@ public class ReservationController {
 
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getReservationByBorrower(
-            @RequestParam  ReservationStatus status) {
+            @RequestParam ReservationStatus status) {
         log.info("[ReservationController] getReservationByBorrower called");
 
         Long memberId = 2L;
 
         return ResponseEntity.ok(reservationService.getReservationByBorrower(memberId, status));
+    }
+
+    @GetMapping("/products/{product-id}")
+    public ResponseEntity<List<ReservationDto>> getReservationByLender(
+            @PathVariable("product-id") String productId,
+            @RequestParam ReservationStatus status) {
+        log.info("[ReservationController] getReservationByLender called");
+
+        Long memberId = 2L;
+
+        return ResponseEntity.ok(reservationService.getReservationByLender(memberId, productId, status));
     }
 }
