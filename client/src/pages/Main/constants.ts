@@ -32,7 +32,7 @@ export const ITEMCARDLIST_TITLE: string[] = [
 ];
 export const ITEMCARD_DATA: ItemCardProps[] = [
   {
-    id: 1,
+    id: '1',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -47,7 +47,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 2,
+    id: '2',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -62,7 +62,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 3,
+    id: '3',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -79,7 +79,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
 ];
 export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
   {
-    id: 1,
+    id: '1',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -94,7 +94,7 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 2,
+    id: '2',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -109,7 +109,7 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 3,
+    id: '3',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -124,7 +124,7 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 4,
+    id: '4',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -139,7 +139,7 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 5,
+    id: '5',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -154,7 +154,7 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 6,
+    id: '6',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,

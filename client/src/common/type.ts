@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 export type CategoryButtonProps = {
-  ImageId: number;
+  ImageId: string;
   imageUrl: string;
   imageName: string;
 };
@@ -19,7 +19,7 @@ export type SelectOption = {
   label: string;
 };
 export type CategoryProps = {
-  id: number;
+  id: string;
   image: string;
   name: string;
 };
@@ -46,7 +46,7 @@ export type ItemCardListProps = {
   itemCardListContentData: ItemCardProps[];
 };
 export type ItemCardProps = {
-  id: number;
+  id: string;
   title: string;
   baseFee: number;
   feePerDay: number;
