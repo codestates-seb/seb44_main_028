@@ -10,7 +10,7 @@ function LendList() {
       try {
         const response = await axios.get(
           '/api/reservations/products/${products-id}',
-        ); // 실제 API 엔드포인트에 맞게 수정
+        );
         setLendList(response.data);
       } catch (error) {
         console.error('Error fetching lend list:', error);
@@ -35,5 +35,5 @@ function LendList() {
     </div>
   );
 }
-        
+
 export default LendList;

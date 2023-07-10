@@ -74,7 +74,7 @@ export const PagingWrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-top: 1.5em;
+  margin-top: 5em;
   ul {
     list-style: none;
     padding: 0;
