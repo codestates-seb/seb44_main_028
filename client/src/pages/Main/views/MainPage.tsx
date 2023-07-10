@@ -27,7 +27,7 @@ function MainPage() {
     //         <ModalMain.Button>예약하기</ModalMain.Button>
     //       </ModalMain>
     //     )} */}
-    //   </>
+    //     </>
 
     <MainPageContainer>
       <Category />
