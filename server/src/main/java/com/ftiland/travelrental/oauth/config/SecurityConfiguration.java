@@ -80,6 +80,8 @@ public class SecurityConfiguration {
         configuration.setExposedHeaders(Arrays.asList("Authorization","Refresh","MemberId"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+        configuration.setAllowCredentials(true);
+        
         return source;
     }
 
