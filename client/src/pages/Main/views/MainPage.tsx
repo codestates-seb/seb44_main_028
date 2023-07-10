@@ -1,3 +1,4 @@
+import React from 'react';
 import ScrollToTop from '../../../common/components/ScrollToTop';
 
 function MainPage() {

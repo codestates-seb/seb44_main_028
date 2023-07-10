@@ -9,16 +9,15 @@ import { store } from './common/store/RootStore';
 
 function App() {
   const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
-      <Container maxWidth="xs">
-        <Header />
+      <Header />
+      <Container maxWidth="lg">
         <Provider store={store}>
           <Router />
         </Provider>
-        <Footer prop1={'로고'}/>
       </Container>
+      <Footer prop1={'플레이 팩'} />
     </QueryClientProvider>
   );
 }

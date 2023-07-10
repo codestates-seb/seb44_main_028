@@ -24,9 +24,9 @@ public class ProductController {
     public ResponseEntity<CreateProduct.Response> createProduct(@Valid @RequestBody CreateProduct.Request request) {
         log.info("[ProductController] createProduct called");
 
-        String memberEmail = request.getMemberEmail();
+        Long memberId = 1L;
 
-        CreateProduct.Response response = productService.createProduct(request, memberEmail);
+        CreateProduct.Response response = productService.createProduct(request, memberId);
 
         URI uri = URI.create(String.format("/api/products/%s", response.getProductId()));
         return ResponseEntity.created(uri).body(response);
@@ -36,16 +36,16 @@ public class ProductController {
     public ResponseEntity<UpdateProduct.Response> updateProduct(@PathVariable("product-id") String productId,
                                                                 @Valid @RequestBody UpdateProduct.Request request) {
         log.info("[ProductController] updateProduct called");
-        String memberEmail = request.getMemberEmail();
+        Long memberId = 1L;
 
-        return ResponseEntity.ok(productService.updateProduct(request, productId, memberEmail));
+        return ResponseEntity.ok(productService.updateProduct(request, productId, memberId));
     }
 
     @DeleteMapping("/{product-id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("product-id") String productId) {
         log.info("[ProductController] delete called");
-        String memberEmail = "test@test.com";
-        productService.deleteProduct(productId, memberEmail);
+        Long memberId = 1L;
+        productService.deleteProduct(productId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

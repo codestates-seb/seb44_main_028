@@ -5,6 +5,7 @@ import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Reservation extends BaseEntity {
 
     @Id
@@ -34,4 +36,8 @@ public class Reservation extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
+    }
 }
