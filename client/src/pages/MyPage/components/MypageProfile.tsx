@@ -20,7 +20,7 @@ function MypageProfile() {
           <img src={ProfileImage0} alt="Profile Image" />
         </MypageImage>
         <MypageInfo>
-          <div style={{ fontWeight: 'bold' }}>김민트</div>
+          <div style={{ fontWeight: 'bold', fontSize: 20 }}>김민트</div>
           <Location>
             <span>
               <FaMapMarkerAlt />

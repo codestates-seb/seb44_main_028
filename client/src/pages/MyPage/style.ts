@@ -42,7 +42,7 @@ export const MypageRight = styled.div`
   margin-top: -0.5rem;
 `;
 export const MypageImage = styled.div`
-  margin-right: 2rem;
+  margin-right: 1.5rem;
   img {
     border-radius: 50px;
     width: 86px;
@@ -62,6 +62,7 @@ export const Location = styled.div`
   font-size: ${fontSize.small};
   span {
     margin-right: 5px;
+    margin-top: -5px;
   }
 `;
 export const EvaluationItem = styled.div`
