@@ -22,7 +22,7 @@ function App() {
             element={
               <>
                 <Carousel />
-                <Container maxWidth="lg" style={{ paddingTop: '4.5rem' }}>
+                <Container maxWidth="lg">
                   <Provider store={store}>
                     <Router />
                   </Provider>
