@@ -72,6 +72,6 @@ cloud:
         false
 
 kakao:
-  restApi : ${KAKAO_REST_API}
+  restapi : ${KAKAO_REST_API}
 
 
