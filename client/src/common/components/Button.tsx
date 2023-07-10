@@ -27,6 +27,7 @@ const BigDefaultBtn = styled(DefaultBtn)<BigDefaultBtnProps>`
   width: ${(props) => props.width}px;
   font-size: ${(props) => props.height / 3}px;
 `;
+
 function BigBtn({
   height,
   width,

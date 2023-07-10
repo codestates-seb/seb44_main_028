@@ -38,14 +38,7 @@ public interface ImageMapper {
         imageMember.setImageId(UUID.randomUUID().toString());
         imageMember.setFileName(multipartFile.getOriginalFilename());
         imageMember.setFileType(multipartFile.getContentType());
-        /*
 
-        Member member = new Member(1L,
-                "test@test.com",
-                "둘리",
-                37.5793493362539,
-                126.91794995956589);
-        */
         // service 구현 필요
         Member member = memberRepository.findById(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
         imageMember.setMember(member);
