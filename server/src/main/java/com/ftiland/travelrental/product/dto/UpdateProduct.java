@@ -26,9 +26,6 @@ public class UpdateProduct {
         private Integer minimumRentalPeriod;
 
         private List<String> categoryIds;
-
-        // test를 위해 memberEmail을 받는다.
-        private String memberEmail;
     }
 
     @Getter
