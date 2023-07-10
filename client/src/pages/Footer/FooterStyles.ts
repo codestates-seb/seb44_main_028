@@ -4,10 +4,11 @@ import { colorPalette } from '../../common/utils/enum/colorPalette';
 export const FooterWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  position: fixed;
+  position: relative;
+  transform: translateY(500%);
   bottom: 0;
   width: 100%;
-  height: 70px;
+  min-height: 70px;
   background-color: #cecece;
 `;
 

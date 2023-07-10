@@ -1,4 +1,4 @@
-import { Container, TopButton } from '../../pages/Main/style';
+import { ScrollToTopButtonContainer, TopButton } from '../style/style';
 
 function scrollToTop(): void {
   window.scrollTo({
@@ -9,11 +9,11 @@ function scrollToTop(): void {
 
 function scrollToTopButton() {
   return (
-    <Container>
+    <ScrollToTopButtonContainer>
       <TopButton onClick={scrollToTop} id="top" type="button">
         Top
       </TopButton>
-    </Container>
+    </ScrollToTopButtonContainer>
   );
 }
 
