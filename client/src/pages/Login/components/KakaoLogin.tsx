@@ -8,6 +8,23 @@ import { createUserInfo } from '../../../common/store/UserInfoStore';
 import useEncryptToken from '../../../common/utils/customHooks/useEncryptToken';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
+const AUTHORIZATION_CODE_API =
+  'http://localhost:8080/oauth2/authorization/kakao';
+
+const REDIRECT_URI = 'http://localhost:3000/login/callback';
+
+const fetchAccessToken = async (code: string | null) => {
+  if (!code) return;
+  try {
+    const { data } = await axios.post('http://localhost:8080/api/token', {
+      code,
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // const fetchUserData = async (code: string | null) => {
 //   if (!code) return;
 //   try {
@@ -29,13 +46,10 @@ function KakaoLogin() {
   // 1. 카카오 로그인 버튼 클릭 시 응답으로 반환 받은 redirect uri로 이동
   const handleKakaoLogin = async () => {
     try {
-      const response = await axios.get(
-        'http://localhost:8080/login/oauth2/code/kakao',
-      );
-      console.log(
-        '1. 카카오 로그인 버튼 클릭 시 반환 받은 access token',
-        response.headers,
-      );
+      // const response = await axios.get(
+      //   'http://localhost:8080/login/oauth2/code/kakao',
+      // );
+      window.location.href = `${AUTHORIZATION_CODE_API}?redirect_uri=${REDIRECT_URI}`;
 
       // if (response.status === 200) {
       //   window.location.href = response.data.uri;
@@ -46,36 +60,55 @@ function KakaoLogin() {
   };
 
   // 3. redirect uri에서 인가 코드를 추출하여 state에 저장
-  // const getAuthorizationCode = () => {
-  //   const authorizationCode: string | null = new URLSearchParams(
-  //     location.search,
-  //   ).get('code');
-  //   if (authorizationCode) {
-  //     console.log('2. uri에서 추출한 인가 코드', authorizationCode);
-  //     localStorage.setItem('authorizationCode', encrypt(authorizationCode));
-  //   } else {
-  //     console.log('no authorizationCode');
-  //   }
-  // };
+  const getAuthorizationCode = () => {
+    const authorizationCode: string | null = new URLSearchParams(
+      location.search,
+    ).get('code');
 
-  // // 2. redirect uri로 이동 후 인가 코드 추출하는 함수 호출
-  // useEffect(() => {
-  //   getAuthorizationCode();
-  // }, [location]);
+    if (authorizationCode) {
+      console.log('2. uri에서 추출한 인가 코드', authorizationCode);
+      localStorage.setItem('authorizationCode', encrypt(authorizationCode));
+    } else {
+      console.log('no authorizationCode');
+    }
+  };
 
-  // // 4. 인가 코드를 복호화하여 유저 정보를 가져옴
-  // const encryptedAuthorizationCode: string | null =
-  //   localStorage.getItem('authorizationCode');
-  // let authorizationCode: string | null = null;
+  // 2. redirect uri로 이동 후 인가 코드 추출하는 함수 호출
+  useEffect(() => {
+    getAuthorizationCode();
+  }, [location]);
 
-  // if (encryptedAuthorizationCode) {
-  //   authorizationCode = decrypt(encryptedAuthorizationCode);
-  // }
+  // 4. 인가 코드를 복호화하여 유저 정보를 가져옴
+  const encryptedAuthorizationCode: string | null =
+    localStorage.getItem('authorizationCode');
+  let authorizationCode: string | null = null;
 
-  // console.log(
-  //   '3. localStorage에서 가져온 authorizationCode',
-  //   authorizationCode,
-  // );
+  if (encryptedAuthorizationCode) {
+    authorizationCode = decrypt(encryptedAuthorizationCode);
+  }
+
+  console.log(
+    '3. localStorage에서 가져온 authorizationCode',
+    authorizationCode,
+  );
+
+  const {
+    data: tokenData,
+    isError,
+    error,
+  } = useQuery(
+    ['token', authorizationCode],
+    () => fetchAccessToken(authorizationCode),
+    {
+      enabled: !!authorizationCode,
+    },
+  );
+
+  console.log('4. 아영님께 받아온 토큰 정보', tokenData);
+
+  if (isError) {
+    console.log(error);
+  }
 
   // const {
   //   data: userData,
