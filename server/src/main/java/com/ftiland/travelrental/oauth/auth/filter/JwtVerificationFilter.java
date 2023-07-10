@@ -1,5 +1,6 @@
 package com.ftiland.travelrental.oauth.auth.filter;
 
+import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.oauth.jwt.JwtTokenizer;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -53,8 +54,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("username");
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null);
+
+        Integer memberId = (Integer) claims.get("memberId");
+        Long memberIdLong = memberId != null ? memberId.longValue() : null;
+        Authentication authentication = new UsernamePasswordAuthenticationToken(claims, null, null);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

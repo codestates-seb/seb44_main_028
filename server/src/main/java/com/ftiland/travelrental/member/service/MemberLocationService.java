@@ -37,7 +37,7 @@ public class MemberLocationService {
 
         member.setLatitude(latitude);
         member.setLongitude(longitude);
-        member.setAddr(getLocation(member));
+        member.setAddress(getLocation(member));
 
         return memberRepository.save(member);
     }
