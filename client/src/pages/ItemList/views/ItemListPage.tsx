@@ -12,8 +12,10 @@ import {
   PRODUCT_FILTER_OPTIONS,
 } from '../../../common/constants';
 import { ItemCardProps } from '../../../common/type';
+import { useParams } from 'react-router-dom';
 
 function ItemListPage() {
+  const params = useParams();
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const {
@@ -26,7 +28,7 @@ function ItemListPage() {
         params: {
           page: page,
           size: size,
-          category: 'sdkfj234',
+          category: params.id,
         },
       });
       return res.data;
