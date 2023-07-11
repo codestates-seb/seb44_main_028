@@ -15,7 +15,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 @Builder
-@ToString
 public class Member extends BaseEntity {
 
     @Id // 멤버의 경우 숫자형식의 id 사용
@@ -35,7 +34,5 @@ public class Member extends BaseEntity {
         this.email = email;
         this.displayName = displayName;
     }
-/*    private Double totalRateScore;
-    private Double totalRateCount;*/
 
 }
