@@ -13,7 +13,7 @@ const sendReservationData = async ({
 }: IReservationData) => {
   try {
     const response = await axios.post(
-      `https://playpack.shop/api/reservations/products/${productId}`,
+      `${process.env.REACT_APP_API_URL}/api/reservations/products/${productId}`,
       {
         startDate: startDate,
         endDate: endDate,

@@ -175,7 +175,7 @@ function KakaoLogin() {
 
   // 1. 카카오 로그인 버튼 클릭 시 응답으로 반환 받은 redirect uri로 이동
   const handleKakaoLogin = () => {
-    window.location.href = 'https://playpack.shop/oauth2/authorization/kakao';
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
 
   // 3. redirect uri에서 인가 코드를 추출하여 state에 저장
@@ -196,9 +196,12 @@ function KakaoLogin() {
     console.log('test', access_token);
     if (access_token) {
       try {
-        const { data } = await axios.get(`https://playpack.shop/api/members`, {
-          headers: { Authorization: 'Bearer ' + access_token },
-        });
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/members`,
+          {
+            headers: { Authorization: 'Bearer ' + access_token },
+          },
+        );
         console.log('data:', data);
         return data;
       } catch (error) {
