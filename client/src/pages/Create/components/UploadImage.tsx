@@ -48,7 +48,8 @@ const UploadImages = () => {
         />
         <BiSolidCameraPlus />
         <UploadImageCountWrapper>
-          <p>{`${showImages.length}/${MAX_IMAGE_COUNT}`}</p>
+          <span>{`${showImages.length}`}</span>
+          <span>{`/${MAX_IMAGE_COUNT}`}</span>
         </UploadImageCountWrapper>
       </UploadImageLabel>
       {showImages.map((image, index) => (

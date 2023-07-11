@@ -16,7 +16,7 @@ export const UploadImageLabel = styled.label`
   align-items: center;
   justify-content: center;
   color: ${colorPalette.CaemeraIconColor};
-  margin-right: 1.25rem;
+  margin-right: 1rem;
   cursor: pointer;
   & svg {
     width: 2.563rem;
@@ -29,7 +29,10 @@ export const UploadImageWrapper = styled.input`
 `;
 export const UploadImageCountWrapper = styled.div`
   font-size: ${fontSize.basic};
-  transform: translateY(-0.1rem);
+  & span:first-child {
+    color: ${colorPalette.accentColor};
+    font-weight: bold;
+  }
 `;
 export const PreImageWrapper = styled.div`
   & img {
@@ -40,7 +43,7 @@ export const PreImageWrapper = styled.div`
   }
   width: 9.875rem;
   height: 7.875rem;
-  margin: 0 1.25rem;
+  margin: 0 1rem;
   border: ${border.basic};
   border-radius: ${borderRadius.basicRadius};
 `;
