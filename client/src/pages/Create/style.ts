@@ -30,3 +30,9 @@ export const UploadImageCountWrapper = styled.div`
   font-size: ${fontSize.basic};
   transform: translateY(-0.1rem);
 `;
+export const PreImageWrapper = styled.div`
+  width: 2.563rem;
+  height: 2.313rem;
+  border: ${border.basic};
+  border-radius: ${borderRadius.basicRadius};
+`;
