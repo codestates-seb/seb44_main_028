@@ -1,6 +1,10 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { INPUT_FIELD, INPUT_FIELD_TITLE } from '../constants';
+import {
+  CONTENT_DESCRIPTION,
+  INPUT_FIELD,
+  INPUT_FIELD_TITLE,
+} from '../constants';
 import InputField from './InputField';
 import { WritePostContainer, WritePriceWrapper } from '../style';
 
@@ -20,7 +24,11 @@ const WritePost = () => {
         label={INPUT_FIELD_TITLE[0].title}
       />
       <label>내용</label>
-      <ReactQuill theme="snow" onChange={handleQuillChange} />
+      <ReactQuill
+        theme="snow"
+        onChange={handleQuillChange}
+        placeholder={CONTENT_DESCRIPTION}
+      />
     </WritePostContainer>
   );
 };
