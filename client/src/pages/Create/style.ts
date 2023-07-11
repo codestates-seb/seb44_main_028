@@ -81,7 +81,6 @@ export const InputFieldWrapper = styled.div`
     border: ${border.basic};
     border-radius: ${borderRadius.basicRadius};
     margin-top: 0.75rem;
-    margin-right: 2rem;
     color: ${colorPalette.grayTextColor};
   }
   & input:not([id='${INPUT_FIELD_TITLE[0].id}']) {
@@ -92,4 +91,5 @@ export const WritePriceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 1.875rem;
+  gap: 2rem;
 `;
