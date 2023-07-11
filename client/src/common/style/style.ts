@@ -301,7 +301,7 @@ export const CheckBoxWrapper = styled.div<{ isSelected: boolean }>`
     isSelected && `${colorPalette.tagColor}`};
   color: ${({ isSelected }) => isSelected && `${colorPalette.whiteColor}`};
   border: ${({ isSelected }) =>
-    isSelected && `1px solid ${colorPalette.deepMintColor}`};
+    isSelected && `1px solid ${colorPalette.tagColor}`};
 `;
 
 // Loading 컴포넌트의 스타일을 정의
