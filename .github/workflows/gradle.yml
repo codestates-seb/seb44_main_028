@@ -34,6 +34,8 @@ jobs:
         env:
           spring.datasource.username: ${{secrets.RDS_MYSQL_ADMIN_ID}}
           spring.datasource.password: ${{secrets.RDS_MYSQL_ADMIN_PASSWORD}}
+          spring.security.oauth2.client.registration.kakao.clientId: ${{secrets.CLIENT_ID}}
+          spring.security.oauth2.client.registration.kakao.clientSecret: ${{secrets.CLIENT_SECRET}}
           spring.security.oauth2.client.registration.kakao.redirect-uri: ${{secrets.REDIRECT_URL}}
           spring.datasource.url: ${{secrets.RDS_END_POINT}}
           cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
