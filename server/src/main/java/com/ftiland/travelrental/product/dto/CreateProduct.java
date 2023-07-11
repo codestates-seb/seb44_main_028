@@ -17,6 +17,7 @@ public class CreateProduct {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class Request {
         @NotNull
         private String title;

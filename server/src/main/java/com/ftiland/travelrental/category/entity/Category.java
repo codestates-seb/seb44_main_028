@@ -1,16 +1,14 @@
 package com.ftiland.travelrental.category.entity;
 
 import com.ftiland.travelrental.image.entity.ImageCategory;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Category {
     @Id
@@ -18,6 +16,7 @@ public class Category {
 
     private String title;
 
-    /*@OneToOne
-    private ImageCategory image;*/
+    @OneToOne
+    @JoinColumn
+    private ImageCategory image;
 }

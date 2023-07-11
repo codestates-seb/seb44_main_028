@@ -4,8 +4,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.image.entity.ImageCategory;
+import com.ftiland.travelrental.image.repository.ImageCategoryRepository;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.mapper.ImageMapper;
@@ -16,7 +19,6 @@ import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,21 +44,27 @@ public class ImageService {
     private ImageMemberRepository imageMemberRepository;
     private ProductRepository productRepository;
     private MemberRepository memberRepository;
+    private final CategoryRepository categoryRepository;
+    private final ImageCategoryRepository imageCategoryRepository;
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
                         ImageMemberRepository imageMemberRepository, MemberRepository memberRepository,
-                        ProductRepository productRepository) {
+                        ProductRepository productRepository,
+                        CategoryRepository categoryRepository,
+                        ImageCategoryRepository imageCategoryRepository) {
         this.amazonS3 = amazonS3;
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
         this.productRepository = productRepository;
         this.memberRepository = memberRepository;
+        this.categoryRepository = categoryRepository;
+        this.imageCategoryRepository = imageCategoryRepository;
     }
 
     // 이미지 업로드(카테고리) (png,jpg만 저장가능) -> 구현 필요
-    public ImageProduct storeImageCategory(MultipartFile file, String productId) {
+    public ImageCategory storeImageCategory(MultipartFile file, String categoryId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
@@ -74,10 +82,10 @@ public class ImageService {
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
-        ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
-        createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
+        ImageCategory imageCategory = imageMapper.fileToImageCategory(file, categoryRepository, categoryId);
+        imageCategory.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
 
-        return imageProductRepository.save(createdImageProduct);
+        return imageCategoryRepository.save(imageCategory);
     }
 
     public List<ImageProduct> storeImageProducts(List<MultipartFile> files, String productId) {
@@ -89,7 +97,6 @@ public class ImageService {
     // 이미지 업로드(상품) (png,jpg만 저장가능) -> 구현 필요
     public ImageProduct storeImageProduct(MultipartFile file, String productId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
 
         try {
             // 파일이 비었을 때 예외처리
