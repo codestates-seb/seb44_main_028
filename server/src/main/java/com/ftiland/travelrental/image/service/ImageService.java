@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-
 @Service
 public class ImageService {
 
@@ -54,6 +53,31 @@ public class ImageService {
         this.imageMemberRepository = imageMemberRepository;
         this.productRepository = productRepository;
         this.memberRepository = memberRepository;
+    }
+
+    // 이미지 업로드(카테고리) (png,jpg만 저장가능) -> 구현 필요
+    public ImageProduct storeImageCategory(MultipartFile file, String productId) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        try {
+            // 파일이 비었을 때 예외처리
+            if (file.isEmpty()) {
+                throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
+            }
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+            metadata.setContentLength(file.getSize());
+            metadata.setContentDisposition("inline");
+            //S3 버킷에 파일 업로드
+            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+        }
+        ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
+        createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
+
+        return imageProductRepository.save(createdImageProduct);
     }
 
     public List<ImageProduct> storeImageProducts(List<MultipartFile> files, String productId) {
@@ -108,8 +132,8 @@ public class ImageService {
             throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
         }
 
-        ImageMember createdImage= imageMapper.fileToImageMember(file,memberRepository,memberId);
-        createdImage.setImageUrl(amazonS3.getUrl(buckName,fileName).toString());
+        ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
+        createdImage.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
 
 
         return imageMemberRepository.save(createdImage);
@@ -129,7 +153,6 @@ public class ImageService {
 
     // 이미지 삭제(맴버)
     public void deleteImageMember(String imageId) {
-
         ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
         try {
             amazonS3.deleteObject(buckName, imageMember.getFileName());

@@ -24,15 +24,12 @@ public class Member extends BaseEntity {
     private String displayName;
 
     // 이미지 필드 필요
-
     private Double latitude;
     private Double longitude;
-
     private String address;
 
     public Member(String email, String displayName) {
         this.email = email;
         this.displayName = displayName;
     }
-
 }
