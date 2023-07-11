@@ -63,3 +63,7 @@ export const PreViewImageWrapper = styled.div`
     top: -0.5rem;
   }
 `;
+export const WritePostContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
