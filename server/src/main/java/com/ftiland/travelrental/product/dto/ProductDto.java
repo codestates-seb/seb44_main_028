@@ -31,7 +31,7 @@ public class ProductDto {
                 .baseFee(product.getBaseFee())
                 .feePerDay(product.getFeePerDay())
                 .minimumRentalPeriod(product.getMinimumRentalPeriod())
-                //                .address(product.getAddress())
+                .address(product.getAddress())
                 .image(null).build();
 
     }
