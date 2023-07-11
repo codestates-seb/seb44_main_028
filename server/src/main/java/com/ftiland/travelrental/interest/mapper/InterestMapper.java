@@ -15,8 +15,8 @@ public interface InterestMapper {
         InterestDto.ResponseDto response = new InterestDto.ResponseDto();
 
         response.setInterestId(interest.getInterestId());
-        response.setProductId(interest.getProduct().getProductId());
-        response.setMemberId(interest.getMember().getMemberId());
+        response.setProduct(interest.getProduct());
+        response.setMember(interest.getMember());
 
         return response;
     }
