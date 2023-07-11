@@ -110,10 +110,10 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("access_token", accessToken);
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
-                .host("playpack-e541f.web.app")
-                .port(443)
-                .path("/")
+                .scheme("http")
+                .host("localhost")
+                .port(3000)
+                .path("/auth/callback")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
