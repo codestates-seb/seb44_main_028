@@ -148,10 +148,9 @@
  * 여기서부터 임시 코드
  */
 
-import { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { KakaoLoginBtn } from '../style';
+import { ACCESS_TOKEN } from '../constants';
 
 // const fetchUserData = async (code: string | null) => {
 //   if (!code) return;
@@ -166,11 +165,24 @@ import { KakaoLoginBtn } from '../style';
 // };
 
 function KakaoLogin() {
+  const navigate = useNavigate();
   // 1. 카카오 로그인 버튼 클릭 시 응답으로 반환 받은 redirect uri로 이동
   const handleKakaoLogin = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
 
-  return <KakaoLoginBtn onClick={handleKakaoLogin} />;
+  return (
+    <>
+      <KakaoLoginBtn onClick={handleKakaoLogin} />
+      <button
+        onClick={() => {
+          localStorage.removeItem(ACCESS_TOKEN);
+          navigate('/');
+        }}
+      >
+        log out
+      </button>
+    </>
+  );
 }
 export default KakaoLogin;
