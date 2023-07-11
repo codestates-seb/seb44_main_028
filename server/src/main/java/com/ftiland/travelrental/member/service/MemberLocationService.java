@@ -20,7 +20,7 @@ import java.util.Optional;
 public class MemberLocationService {
 
 
-    @Value("${kakao.restApi}")
+    @Value("${kakao.restapi}")
     private String restApi;
 
     private MemberService memberService;

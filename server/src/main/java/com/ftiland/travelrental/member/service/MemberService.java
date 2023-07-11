@@ -34,7 +34,6 @@ public class MemberService {
         return member.isPresent();
     }
 
-    // 명규 님이 작성
     public Member findMember(Long memberId){
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
