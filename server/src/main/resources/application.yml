@@ -5,12 +5,6 @@ spring:
     username: ${RDS_MYSQL_ADMIN_ID}
     password: ${RDS_MYSQL_ADMIN_PASSWORD}
 
-
-    # LOCAL 접근 설정
-#    url: ${LOCAL_END_POINT}
-#    username: ${LOCAL_MYSQL_ADMIN_ID}
-#    password: ${LOCAL_MYSQL_ADMIN_PASSWORD}
-
     driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
@@ -72,7 +66,7 @@ cloud:
         false
 
 kakao:
-  restApi : ${KAKAO_REST_API}
+  restapi : ${KAKAO_REST_API}
 
 
 category:

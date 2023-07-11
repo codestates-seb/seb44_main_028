@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 public class MemberLocationService {
 
 
-    @Value("${kakao.restApi}")
+    @Value("${kakao.restapi}")
     private String restApi;
 
     private MemberService memberService;
