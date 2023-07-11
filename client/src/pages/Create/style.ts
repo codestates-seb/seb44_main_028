@@ -81,6 +81,7 @@ export const WritePostContainer = styled.form`
     border-bottom-left-radius: ${borderRadius.basicRadius};
     height: 25.25rem;
     margin-bottom: 5rem;
+    font-size: ${fontSize.headerIconSize};
   }
 `;
 export const InputFieldWrapper = styled.div`
