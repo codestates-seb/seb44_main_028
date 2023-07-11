@@ -3,3 +3,7 @@ export type PreImageProps = {
   ImageId: number;
   handleDeleteImage: (id: number) => void;
 };
+export type InputFieldData = {
+  id: string;
+  title: string;
+};

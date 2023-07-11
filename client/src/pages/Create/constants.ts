@@ -1,6 +1,8 @@
+import { InputFieldData } from './type';
+
 export const MAX_IMAGE_COUNT = 5;
 
-export const INPUT_FIELD = [
+export const INPUT_FIELD: InputFieldData[] = [
   {
     id: 'minRentalPeriod',
     title: '최소 대여시간',
