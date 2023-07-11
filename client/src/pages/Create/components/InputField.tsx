@@ -1,11 +1,11 @@
 import { InputFieldWrapper } from '../style';
 import { InputFieldProps } from '../type';
 
-const InputField = ({ id, title, label, ...inputProps }: InputFieldProps) => {
+const InputField = ({ id, label, ...inputProps }: InputFieldProps) => {
   return (
     <InputFieldWrapper>
-      <label>{label}</label>
-      <input type="text" {...inputProps} />
+      <label htmlFor={id}>{label}</label>
+      <input id={id} type="text" {...inputProps} />
     </InputFieldWrapper>
   );
 };
