@@ -69,8 +69,8 @@ public class InterestControllerTest {
 
         InterestDto.ResponseDto response = new InterestDto.ResponseDto();
         response.setInterestId("1234");
-        response.setProductId("91052a17-bca6-4fde-a586-a1d179ad3463");
-        response.setMemberId(1L);
+        response.setProduct(product);
+        response.setMember(member);
 
 
 
@@ -86,9 +86,7 @@ public class InterestControllerTest {
 
         // then
         postActions
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("memberId").value(member.getMemberId()))
-                .andExpect(jsonPath("productId").value(product.getProductId()));
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -113,8 +111,8 @@ public class InterestControllerTest {
 
         InterestDto.ResponseDto response = new InterestDto.ResponseDto();
         response.setInterestId("1234");
-        response.setProductId("91052a17-bca6-4fde-a586-a1d179ad3463");
-        response.setMemberId(1L);
+        response.setProduct(product);
+        response.setMember(member);
 
         // when
         ResultActions postActions = mockMvc.perform(
@@ -157,17 +155,19 @@ public class InterestControllerTest {
         ArrayList<Interest> interests = new ArrayList<>();
         interests.add(interest2);
         interests.add(interest);
-        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(interests);
+        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(interests,1,2);
 
         int size = interests.size();
-        given(interestService.findInterest(Mockito.anyLong())).willReturn(interests);
-        given(interestMapper.interestsToResponsesDto(Mockito.any(ArrayList.class))).willReturn(responses);
+        given(interestService.findInterest(Mockito.anyLong(),Mockito.anyInt(),Mockito.anyInt())).willReturn(interests);
+        given(interestMapper.interestsToResponsesDto(Mockito.any(ArrayList.class),Mockito.anyInt(),Mockito.anyInt())).willReturn(responses);
 
 
         // when
         ResultActions getActions = mockMvc.perform(
                 get("/api/members/interests")
                         .param("memberId",member.getMemberId().toString())
+                        .param("page","1")
+                        .param("size","2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()));
 
