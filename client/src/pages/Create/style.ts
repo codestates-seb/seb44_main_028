@@ -3,6 +3,11 @@ import { border } from '../../common/utils/enum/border';
 import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
+import { INPUT_FIELD_TITLE } from './constants';
+
+export const CreatePageContainer = styled.div`
+  margin-top: 4.125rem;
+`;
 export const UploadContainer = styled.div`
   display: flex;
   margin: 1.875rem 0;
@@ -78,6 +83,8 @@ export const InputFieldWrapper = styled.div`
     margin-top: 0.75rem;
     margin-right: 2rem;
     color: ${colorPalette.grayTextColor};
+  }
+  & input:not([id='${INPUT_FIELD_TITLE[0].id}']) {
     text-align: end;
   }
 `;
