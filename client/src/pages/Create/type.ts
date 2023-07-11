@@ -9,6 +9,8 @@ export type InputFieldData = {
   title: string;
 };
 export type InputFieldProps = {
+  id: string;
+  title: string;
   label: string;
   inputProps: UseFormRegister<FieldValues>;
 };
