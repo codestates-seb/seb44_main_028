@@ -18,7 +18,7 @@ public class MemberDto {
         private String displayName;
 
         // 이미지 필드 필요
-        private String addr;
+        private String address;
         private Double latitude;
         private Double longitude;
 
@@ -26,7 +26,7 @@ public class MemberDto {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
-                    .addr(member.getAddress())
+                    .address(member.getAddress())
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
