@@ -1,6 +1,11 @@
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-
+import UploadImage from '../components/UploadImage';
 function CreatePage() {
-  return <CheckBoxList />;
+  return (
+    <>
+      <UploadImage />
+      <CheckBoxList />
+    </>
+  );
 }
 export default CreatePage;

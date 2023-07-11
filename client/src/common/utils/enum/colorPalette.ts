@@ -16,4 +16,5 @@ export enum colorPalette {
   itemCardHeartColor = '#DEDEDE',
   selectListHoverColor = '#F2F7FF',
   loadingColor = '#00ffcc',
+  CaemeraIconColor = '#737373',
 }
