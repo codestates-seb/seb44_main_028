@@ -41,13 +41,11 @@ const MyPage = () => {
 
   return (
     <div>
-      {/* <h2>My Page</h2>
-      <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
-        솔직한 별점을 남겨주세요.
-      </Modal>
+      <h2>My Page</h2>
+
       <ProfileWrapper>
         <ProfileEdit />
-      </ProfileWrapper> */}
+      </ProfileWrapper>
       <ProfileWrapper>
         <ProfileDataWrapper>
           <MypageProfile />
@@ -61,7 +59,7 @@ const MyPage = () => {
         </ProfileDataWrapper>
       </ProfileWrapper>
       <EditWrapper>
-        <Link to="/edit">회원 정보 수정</Link>
+        <Link to="/mypage/edit">회원 정보 수정</Link>
       </EditWrapper>
       <ParentTap />
     </div>
