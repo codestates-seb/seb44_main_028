@@ -150,7 +150,7 @@
 
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { KakaoLoginBtn } from '../style';
 import { useDispatch } from 'react-redux';
@@ -171,7 +171,9 @@ import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 // };
 
 function KakaoLogin() {
+  localStorage.clear();
   const location = useLocation();
+  const { access_token } = useParams<{ access_token: string }>();
 
   // 1. 카카오 로그인 버튼 클릭 시 응답으로 반환 받은 redirect uri로 이동
   const handleKakaoLogin = () => {
@@ -180,6 +182,7 @@ function KakaoLogin() {
 
   // 3. redirect uri에서 인가 코드를 추출하여 state에 저장
   const getAccessToken = () => {
+    console.log('location', location);
     const access_token: string | null = new URLSearchParams(
       location.search,
     ).get('access_token');
@@ -212,9 +215,12 @@ function KakaoLogin() {
 
   // 2. redirect uri로 이동 후 인가 코드 추출하는 함수 호출
   useEffect(() => {
-    getAccessToken();
+    if (window.location.pathname === '/auth/callback') {
+      console.log('/auth/callback');
+      getAccessToken();
+    }
     getMember();
-  }, [location]);
+  }, [window.location.pathname]);
 
   // // 4. 인가 코드를 back으로 보냄
   // const encryptedAuthorizationCode: string | null =

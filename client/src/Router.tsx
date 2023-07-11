@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/Main/views/MainPage';
 import MyPage from './pages/MyPage/views/MyPage';
 import LoginPage from './pages/Login/views/LoginPage';
+import RedirectPage from './pages/Login/views/RedirectPage';
 import ItemListPage from './pages/ItemList/views/ItemListPage';
 import DetailPage from './pages/Detail/views/DetailPage';
 import CreatePage from './pages/Create/views/CreatePage';
@@ -14,6 +15,7 @@ function Router() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/auth/callback" element={<RedirectPage />} />
       <Route path="/itemlist/:categoryId" element={<ItemListPage />} />
       <Route path="/booking/:itemId" element={<BookingPage />} />
       <Route path="/mypage" element={<MyPage />} />
