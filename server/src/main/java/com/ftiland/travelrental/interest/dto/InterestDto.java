@@ -1,5 +1,7 @@
 package com.ftiland.travelrental.interest.dto;
 
+import com.ftiland.travelrental.member.entity.Member;
+import com.ftiland.travelrental.product.entity.Product;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +12,8 @@ public class InterestDto {
     @Setter
     public static class ResponseDto{
         private String interestId;
-        private Long memberId;
-        private String productId;
+        private Member member;
+        private Product product;
     }
 
     @Getter
