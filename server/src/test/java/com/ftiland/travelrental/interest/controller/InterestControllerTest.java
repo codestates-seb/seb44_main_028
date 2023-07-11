@@ -12,11 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.MediaType;
@@ -51,7 +48,7 @@ public class InterestControllerTest {
     @Test
     @DisplayName("찜하기 생성 컨트롤러 성공")
     @WithMockUser(username = "사용자", roles = {"USER"})
-    void CreateInterest_SUCCESS() throws Exception{
+    void CreateInterest_SUCCESS() throws Exception {
 
         // given
         Member member = Member.builder()
@@ -75,15 +72,14 @@ public class InterestControllerTest {
         response.setMemberId(1L);
 
 
-
-        given(interestService.createInterest(Mockito.anyLong(),Mockito.anyString())).willReturn(interest);
+        given(interestService.createInterest(Mockito.anyLong(), Mockito.anyString())).willReturn(interest);
         given(interestMapper.interestToResponseDto(Mockito.any())).willReturn(response);
 
         // when
         ResultActions postActions = mockMvc.perform(
                 post("/api/members/interests")
-                        .param("memberId",member.getMemberId().toString())
-                        .param("productId",product.getProductId().toString())
+                        .param("memberId", member.getMemberId().toString())
+                        .param("productId", product.getProductId().toString())
                         .with(csrf()));
 
         // then
@@ -96,7 +92,7 @@ public class InterestControllerTest {
     @Test
     @DisplayName("찜하기 해제 컨트롤러 성공")
     @WithMockUser(username = "사용자", roles = {"USER"})
-    void DeleteInterest_Success() throws Exception{
+    void DeleteInterest_Success() throws Exception {
         // given
         Member member = Member.builder()
                 .memberId(1L)
@@ -121,8 +117,8 @@ public class InterestControllerTest {
         // when
         ResultActions postActions = mockMvc.perform(
                 delete("/api/members/interests")
-                        .param("memberId",member.getMemberId().toString())
-                        .param("interestId",interest.getInterestId().toString())
+                        .param("memberId", member.getMemberId().toString())
+                        .param("interestId", interest.getInterestId().toString())
                         .with(csrf()));
 
         // then
@@ -130,10 +126,11 @@ public class InterestControllerTest {
                 .andExpect(status().isOk());
 
     }
+
     @Test
     @DisplayName("찜목록 조회 컨트롤러 성공")
     @WithMockUser(username = "사용자", roles = {"USER"})
-    void GetInterest_Success()throws Exception{
+    void GetInterest_Success() throws Exception {
 
         // given
         Member member = Member.builder()
@@ -169,7 +166,7 @@ public class InterestControllerTest {
         // when
         ResultActions getActions = mockMvc.perform(
                 get("/api/members/interests")
-                        .param("memberId",member.getMemberId().toString())
+                        .param("memberId", member.getMemberId().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()));
 
@@ -178,3 +175,4 @@ public class InterestControllerTest {
                 .andExpect(status().isOk());
 
     }
+}
