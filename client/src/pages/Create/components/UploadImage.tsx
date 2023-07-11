@@ -1,13 +1,14 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { BiSolidCameraPlus } from 'react-icons/bi';
 import PreImage from './PreImage';
+import { MAX_IMAGE_COUNT } from '../constants';
 import {
   UploadContainer,
   UploadImageLabel,
   UploadImageWrapper,
   UploadImageCountWrapper,
+  PreViewImageWrapper,
 } from '../style';
-import { MAX_IMAGE_COUNT } from '../constants';
 const UploadImages = () => {
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
@@ -15,13 +16,12 @@ const UploadImages = () => {
   const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
     let imageUrlLists: string[] = [...showImages];
-    console.log(imageLists);
     if (imageLists) {
       for (let i = 0; i < imageLists.length; i++) {
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
         imageUrlLists.push(currentImageUrl);
       }
-      console.log(e.target.files);
+
       if (imageUrlLists.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         imageUrlLists = imageUrlLists.slice(0, MAX_IMAGE_COUNT);
@@ -29,6 +29,7 @@ const UploadImages = () => {
       setShowImages([...imageUrlLists]);
     }
   };
+
   useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
       setImageOverflow(true);
@@ -53,7 +54,9 @@ const UploadImages = () => {
         </UploadImageCountWrapper>
       </UploadImageLabel>
       {showImages.map((image, index) => (
-        <PreImage imageSrc={image} key={index} />
+        <PreViewImageWrapper>
+          <PreImage imageSrc={image} key={index} />
+        </PreViewImageWrapper>
       ))}
       {imageOverflow && <p>이미지는 최대 5까지 첨부할 수 있어요.</p>}
     </UploadContainer>

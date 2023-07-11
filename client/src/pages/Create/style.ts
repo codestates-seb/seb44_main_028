@@ -5,6 +5,7 @@ import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
 export const UploadContainer = styled.div`
   display: flex;
+  margin: 1.875rem 0;
 `;
 export const UploadImageLabel = styled.label`
   width: 9.875rem;
@@ -41,9 +42,24 @@ export const PreImageWrapper = styled.div`
     overflow: hidden;
     border-radius: ${borderRadius.basicRadius};
   }
+  position: relative;
   width: 9.875rem;
   height: 7.875rem;
   margin: 0 1rem;
   border: ${border.basic};
   border-radius: ${borderRadius.basicRadius};
+`;
+export const PreViewImageWrapper = styled.div`
+  & .closeIcon {
+    background-color: ${colorPalette.whiteColor};
+    color: ${colorPalette.basicTextColor};
+    border-radius: 50%;
+    border: 1px solid ${colorPalette.basicTextColor};
+    cursor: pointer;
+    width: 1.25rem;
+    height: 1.25rem;
+    position: absolute;
+    right: -0.5rem;
+    top: -0.5rem;
+  }
 `;
