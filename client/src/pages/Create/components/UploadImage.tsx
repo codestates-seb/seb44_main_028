@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { BiSolidCameraPlus } from 'react-icons/bi';
+import PreImage from './PreImage';
 import {
   UploadContainer,
   UploadImageLabel,
@@ -50,6 +51,9 @@ const UploadImages = () => {
           <p>{`${showImages.length}/${MAX_IMAGE_COUNT}`}</p>
         </UploadImageCountWrapper>
       </UploadImageLabel>
+      {showImages.map((image, index) => (
+        <PreImage imageSrc={image} key={index} />
+      ))}
       {imageOverflow && <p>이미지는 최대 5까지 첨부할 수 있어요.</p>}
     </UploadContainer>
   );

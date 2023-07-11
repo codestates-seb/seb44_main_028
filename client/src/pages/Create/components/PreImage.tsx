@@ -1,8 +1,8 @@
 import { PreImageWrapper } from '../style';
-const PreImage = ({ imageSrc }) => {
+const PreImage = ({ imageSrc }: { imageSrc: string }) => {
   return (
     <PreImageWrapper>
-      <img src={ImageSrc} />
+      <img src={imageSrc} />
     </PreImageWrapper>
   );
 };

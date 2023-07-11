@@ -16,6 +16,7 @@ export const UploadImageLabel = styled.label`
   align-items: center;
   justify-content: center;
   color: ${colorPalette.CaemeraIconColor};
+  margin-right: 1.25rem;
   cursor: pointer;
   & svg {
     width: 2.563rem;
@@ -31,8 +32,15 @@ export const UploadImageCountWrapper = styled.div`
   transform: translateY(-0.1rem);
 `;
 export const PreImageWrapper = styled.div`
-  width: 2.563rem;
-  height: 2.313rem;
+  & img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: ${borderRadius.basicRadius};
+  }
+  width: 9.875rem;
+  height: 7.875rem;
+  margin: 0 1.25rem;
   border: ${border.basic};
   border-radius: ${borderRadius.basicRadius};
 `;
