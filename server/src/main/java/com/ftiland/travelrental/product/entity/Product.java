@@ -46,8 +46,8 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private Double longitude;
 
-    @Column(nullable = false)
-    private String address;
+    /*@Column(nullable = false)
+    private String address;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

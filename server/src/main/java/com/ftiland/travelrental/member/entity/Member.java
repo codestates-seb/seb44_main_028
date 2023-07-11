@@ -4,10 +4,7 @@ package com.ftiland.travelrental.member.entity;
 import com.ftiland.travelrental.common.aduit.BaseEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -21,6 +18,8 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
     private String email;
+
+    @Column(nullable = false)
     private String displayName;
 
     // 이미지 필드 필요

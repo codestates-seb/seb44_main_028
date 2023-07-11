@@ -42,7 +42,7 @@ public class ProductDetailDto {
                 .rate((double) product.getTotalRateScore() / product.getTotalRateCount())
                 .viewCount(product.getViewCount())
                 .username(product.getMember().getDisplayName())
-                .address(product.getAddress())
+//                .address(product.getAddress())
                 .images(null)
                 .categories(categories).build();
     }
