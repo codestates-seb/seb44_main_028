@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { KakaoLoginBtn } from '../style';
+import { ACCESS_TOKEN } from '../constants';
 
 function RedirectPage() {
   const navigate = useNavigate();
+
   const getAccessToken = () => {
     console.log('location', location);
     const access_token: string | null = new URLSearchParams(
@@ -13,7 +13,7 @@ function RedirectPage() {
     ).get('access_token');
     console.log(access_token);
     if (access_token) {
-      localStorage.setItem('playback-token', access_token);
+      localStorage.setItem(ACCESS_TOKEN, access_token);
     } else {
       console.log('no authorizationCode');
     }
@@ -21,7 +21,7 @@ function RedirectPage() {
   };
 
   const getMember = async () => {
-    const access_token = localStorage.getItem('playback-token');
+    const access_token = localStorage.getItem(ACCESS_TOKEN);
     console.log('test', access_token);
     if (access_token) {
       try {
@@ -43,6 +43,49 @@ function RedirectPage() {
     getAccessToken();
     getMember();
   }, [window.location.pathname]);
+  // // 4. 인가 코드를 back으로 보냄
+  // const encryptedAuthorizationCode: string | null =
+  //   localStorage.getItem('authorizationCode');
+  // let authorizationCode: string | null = null;
+
+  // if (encryptedAuthorizationCode) {
+  //   authorizationCode = decrypt(encryptedAuthorizationCode);
+  // }
+
+  // console.log(
+  //   '3. localStorage에서 가져온 authorizationCode',
+  //   authorizationCode,
+  // );
+
+  // const {
+  //   data: userData,
+  //   isError,
+  //   error,
+  // } = useQuery(
+  //   ['user', authorizationCode],
+  //   () => fetchUserData(authorizationCode),
+  //   {
+  //     enabled: !!authorizationCode,
+  //   },
+  // );
+  // console.log('4. 서버에서 받아온 유저 정보', userData);
+
+  // if (isError) {
+  //   console.log(error);
+  // }
+
+  // // 5. 유저 정보를 store에 저장
+  // useEffect(() => {
+  //   if (userData) {
+  //     dispatch(
+  //       createUserInfo({
+  //         displayName: userData.displayName,
+  //         latitude: userData.latitude,
+  //         longitude: userData.longitude,
+  //       }),
+  //     );
+  //   }
+  // }, [userData]);
   return null;
 }
 export default RedirectPage;
