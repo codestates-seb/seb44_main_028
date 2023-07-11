@@ -29,7 +29,9 @@ const UploadImages = () => {
       setShowImages([...imageUrlLists]);
     }
   };
-
+  const handleDeleteImage = (index: number) => {
+    setShowImages((prev) => prev.filter((_, i) => i !== index));
+  };
   useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
       setImageOverflow(true);
@@ -55,7 +57,12 @@ const UploadImages = () => {
       </UploadImageLabel>
       {showImages.map((image, index) => (
         <PreViewImageWrapper>
-          <PreImage imageSrc={image} key={index} />
+          <PreImage
+            imageSrc={image}
+            key={index}
+            ImageId={index}
+            handleDeleteImage={handleDeleteImage}
+          />
         </PreViewImageWrapper>
       ))}
       {imageOverflow && <p>이미지는 최대 5까지 첨부할 수 있어요.</p>}
