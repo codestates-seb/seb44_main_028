@@ -166,100 +166,10 @@ import { KakaoLoginBtn } from '../style';
 // };
 
 function KakaoLogin() {
-  localStorage.clear();
-  const location = useLocation();
-  const { access_token } = useParams<{ access_token: string }>();
-
   // 1. 카카오 로그인 버튼 클릭 시 응답으로 반환 받은 redirect uri로 이동
   const handleKakaoLogin = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
-
-  // 3. redirect uri에서 인가 코드를 추출하여 state에 저장
-  const getAccessToken = () => {
-    console.log('location', location);
-    const access_token: string | null = new URLSearchParams(
-      location.search,
-    ).get('access_token');
-    console.log(access_token);
-    if (access_token) {
-      localStorage.setItem('playback-token', access_token);
-    } else {
-      console.log('no authorizationCode');
-    }
-  };
-
-  const getMember = async () => {
-    const access_token = localStorage.getItem('playback-token');
-    console.log('test', access_token);
-    if (access_token) {
-      try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members`,
-          {
-            headers: { Authorization: 'Bearer ' + access_token },
-          },
-        );
-        console.log('data:', data);
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  // 2. redirect uri로 이동 후 인가 코드 추출하는 함수 호출
-  useEffect(() => {
-    if (window.location.pathname === '/auth/callback') {
-      console.log('/auth/callback');
-      getAccessToken();
-    }
-    getMember();
-  }, [window.location.pathname]);
-
-  // // 4. 인가 코드를 back으로 보냄
-  // const encryptedAuthorizationCode: string | null =
-  //   localStorage.getItem('authorizationCode');
-  // let authorizationCode: string | null = null;
-
-  // if (encryptedAuthorizationCode) {
-  //   authorizationCode = decrypt(encryptedAuthorizationCode);
-  // }
-
-  // console.log(
-  //   '3. localStorage에서 가져온 authorizationCode',
-  //   authorizationCode,
-  // );
-
-  // const {
-  //   data: userData,
-  //   isError,
-  //   error,
-  // } = useQuery(
-  //   ['user', authorizationCode],
-  //   () => fetchUserData(authorizationCode),
-  //   {
-  //     enabled: !!authorizationCode,
-  //   },
-  // );
-  // console.log('4. 서버에서 받아온 유저 정보', userData);
-
-  // if (isError) {
-  //   console.log(error);
-  // }
-
-  // // 5. 유저 정보를 store에 저장
-  // useEffect(() => {
-  //   if (userData) {
-  //     dispatch(
-  //       createUserInfo({
-  //         displayName: userData.displayName,
-  //         latitude: userData.latitude,
-  //         longitude: userData.longitude,
-  //       }),
-  //     );
-  //   }
-  // }, [userData]);
 
   return <KakaoLoginBtn onClick={handleKakaoLogin} />;
 }
