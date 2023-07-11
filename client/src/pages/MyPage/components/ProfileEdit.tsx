@@ -16,8 +16,6 @@ import {
 import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
 
-const API_HOST = 'https://playpack.shop';
-
 function ProfileEdit() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -103,38 +101,25 @@ function ProfileEdit() {
     [previewImage, nickname],
   );
 
-  // 회원정보 업데이트
-  //     const nickname = formData.get('nickname') as string;
-  //     axios({
-  //       baseURL: API_HOST,
-  //       url: '/user/update',
-  //       method: 'POST',
-  //       data: {
-  //         profileImage: previewImage,
-  //         nickname: nickname,
-  //         // 추가 정보들...
-  //       },
-  //     })
-  //       .then((response) => {
-  //         console.log(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   },
-  //   [previewImage],
-  // );
-
-  const onDeleteUser = useCallback(() => {
+  const onDeleteUser = useCallback(async () => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/user`,
+      );
+      console.log('User deleted successfully');
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
     //회원정보 삭제
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/user`)
-      .then((resopnse) => {
-        console.log('User deleted successfully');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    // axios
+    //   .delete(`${process.env.REACT_APP_API_URL}/user`)
+    //   .then((resopnse) => {
+    //     console.log('User deleted successfully');
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   }, []);
   return (
     <MyPageEdit>
