@@ -19,6 +19,8 @@ public class InterestDto {
     @Getter
     @Setter
     public static class ResponsesDto{
+        private long page;
+        private long size;
         private ArrayList<ResponseDto> responses = new ArrayList<>();
         public void addResponse(ResponseDto responseDto){
             this.responses.add(responseDto);
