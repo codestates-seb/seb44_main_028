@@ -1,13 +1,12 @@
+import { INPUT_FIELD } from '../constants';
 import { WritePostContainer } from '../style';
+import InputField from './InputField';
 const WritePost = () => {
   return (
     <WritePostContainer>
-      <label htmlFor="minRentalPeriod">최소 대여시간</label>
-      <input type="text" id="minRentalPeriod" />
-      <label htmlFor="baseFee">고정금액</label>
-      <input type="text" id="baseFee" />
-      <label htmlFor="feePerDay">1일 당 추가금액</label>
-      <input type="text" id="feePerDay" />
+      {INPUT_FIELD.map((input) => (
+        <InputField id={input.id} label={input.title} />
+      ))}
     </WritePostContainer>
   );
 };

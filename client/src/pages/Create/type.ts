@@ -1,4 +1,3 @@
-import { UseFormRegister, FieldValues } from 'react-hook-form';
 export type PreImageProps = {
   imageSrc: string;
   ImageId: number;
@@ -11,5 +10,4 @@ export type InputFieldData = {
 export type InputFieldProps = {
   id: string;
   label: string;
-  inputProps: UseFormRegister<FieldValues>;
 };
