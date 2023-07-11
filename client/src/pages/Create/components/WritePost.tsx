@@ -19,6 +19,7 @@ const WritePost = () => {
         id={INPUT_FIELD_TITLE[0].id}
         label={INPUT_FIELD_TITLE[0].title}
       />
+      <label>내용</label>
       <ReactQuill theme="snow" onChange={handleQuillChange} />
     </WritePostContainer>
   );

@@ -6,6 +6,7 @@ import { fontSize } from '../../common/utils/enum/fontSize';
 import { INPUT_FIELD_TITLE } from './constants';
 
 export const CreatePageContainer = styled.div`
+  font-size: ${fontSize.headerIconSize};
   margin-top: 4.125rem;
 `;
 export const UploadContainer = styled.div`
@@ -34,7 +35,6 @@ export const UploadImageWrapper = styled.input`
   display: none;
 `;
 export const UploadImageCountWrapper = styled.div`
-  font-size: ${fontSize.basic};
   & span:first-child {
     color: ${colorPalette.accentColor};
     font-weight: bold;
@@ -71,6 +71,17 @@ export const PreViewImageWrapper = styled.div`
 export const WritePostContainer = styled.form`
   display: flex;
   flex-direction: column;
+  & .ql-snow:first-child {
+    margin-top: 0.75rem;
+    border-top-right-radius: ${borderRadius.basicRadius};
+    border-top-left-radius: ${borderRadius.basicRadius};
+  }
+  & .ql-snow:last-child {
+    border-bottom-right-radius: ${borderRadius.basicRadius};
+    border-bottom-left-radius: ${borderRadius.basicRadius};
+    height: 25.25rem;
+    margin-bottom: 5rem;
+  }
 `;
 export const InputFieldWrapper = styled.div`
   display: flex;
