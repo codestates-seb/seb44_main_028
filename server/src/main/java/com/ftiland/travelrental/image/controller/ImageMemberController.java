@@ -17,32 +17,33 @@ public class ImageMemberController {
     private ImageMapper imageMapper;
 
     @Autowired
-    public void imageController(ImageService imageService,ImageMapper imageMapper){
+    public void imageController(ImageService imageService, ImageMapper imageMapper) {
         this.imageService = imageService;
         this.imageMapper = imageMapper;
     }
 
     // 사진 등록 ( 맴버 프로필 , Post)
     @PostMapping
-    public ResponseEntity postImageMember(@RequestParam("imageFile") MultipartFile multipartFile, @RequestParam("memberId")Long memberId){
-        ImageMember imageMember = imageService.storeImageMember(multipartFile,memberId);
+    public ResponseEntity postImageMember(@RequestParam("imageFile") MultipartFile multipartFile, @RequestParam("memberId") Long memberId) {
+        ImageMember imageMember = imageService.storeImageMember(multipartFile, memberId);
         ImageDto.ResponseForMember response = imageMapper.imageMemberToResponse(imageMember);
 
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
+
     // 사진 삭제 ( 맴버 프로필 , Delete)
     @DeleteMapping
-    public HttpStatus deleteImageMember(@RequestParam("imageId") String imageId){
+    public HttpStatus deleteImageMember(@RequestParam("imageId") String imageId) {
         imageService.deleteImageMember(imageId);
         return HttpStatus.OK;
     }
 
     // 사진 조회 ( 맴버 , Get )
     @GetMapping
-    public ResponseEntity getImageMember (@RequestParam("memberId") Long memberId){
+    public ResponseEntity getImageMember(@RequestParam("memberId") Long memberId) {
         ImageMember image = imageService.findImageMember(memberId);
         ImageDto.ResponseForMember response = imageMapper.imageMemberToResponse(image);
 
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

@@ -17,6 +17,7 @@ public class Member extends BaseEntity {
     @Id // 멤버의 경우 숫자형식의 id 사용
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)

@@ -20,6 +20,7 @@ public class ImageProduct extends BaseEntity {
 
     private String fileName;
 
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
     private String fileType;
@@ -28,7 +29,4 @@ public class ImageProduct extends BaseEntity {
     @JoinColumn(name = "product_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
-
-
-
 }
