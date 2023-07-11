@@ -13,7 +13,7 @@ import {
   StyledForm,
   MyPageEdit,
 } from '../style';
-// import axios from 'axios';
+import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
 
 function ProfileEdit() {
@@ -31,24 +31,22 @@ function ProfileEdit() {
       // formData.append('file', e.target.files[0]);
 
       // 서버 연결 시
-      //     axios({
-      //       baseURL: API_HOST,
-      //       url: '/images/:username/thumbnail',
-      //       method: 'POST',
-      //       data: formData,
-      //       headers: {
-      //         'Content-Type': 'multipart/form-data',
-      //       },
-      //     })
-      //       .then((response) => {
-      //         console.log(response.data);
-      //       })
-      //       .catch((error) => {
-      //         console.error(error);
-      //       });
-      //   },
-      //   [],
-      // );
+      axios({
+        baseURL: API_HOST,
+        url: '/images/:username/thumbnail',
+        method: 'POST',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result as string);
@@ -72,22 +70,22 @@ function ProfileEdit() {
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
       // 서버로 전송하는 로직을 구현합니다.
-      // axios({
-      //   baseURL: API_HOST,
-      //   url: '/user/update',
-      //   method: 'POST',
-      //   data: {
-      //     profileImage: previewImage,
-      //     nickname: e.target.elements.nickname.value,
-      //     // 추가 정보들...
-      //   },
-      // })
-      //   .then((response) => {
-      //     console.log(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      axios({
+        baseURL: API_HOST,
+        url: '/user/update',
+        method: 'POST',
+        data: {
+          profileImage: previewImage,
+          nickname: e.target.elements.nickname.value,
+          // 추가 정보들...
+        },
+      })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     [],
     // [previewImage],

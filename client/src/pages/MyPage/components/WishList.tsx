@@ -4,8 +4,23 @@ import axios from 'axios';
 import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 import { ITEMCARD_DATA } from '../constants';
+
+// export type ItemCardProps = {
+//   id: string;
+//   title: string;
+//   baseFee: number;
+//   feePerDay: number;
+//   overdueFee: number;
+//   content: string;
+//   minimumRentalPeriod: number;
+//   category: number[];
+//   location: string;
+//   minRental: number;
+//   imageUrl: string;
+// };
+
 function WishList() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(ITEMCARD_DATA);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   useEffect(() => {
@@ -13,8 +28,11 @@ function WishList() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'https://playpack.shop/api/members/interests',
+          'https://playpack.shop/api/members/interests/',
+          { params: { memberId: 1 } },
         ); // 실제 API 엔드포인트에 맞게 수정
+        console.log(response.data);
+        console.log(items);
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching wishlist:', error);
@@ -28,7 +46,12 @@ function WishList() {
   const getCurrentItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return ITEMCARD_DATA.slice(startIndex, endIndex);
+    // return ITEMCARD_DATA.slice(startIndex, endIndex);
+    // console.log(startIndex, endIndex);
+    // console.log(items.slice(startIndex, endIndex));
+    // console.log('items', items);
+    // return items.slice(startIndex, endIndex);
+    return items;
   };
   // 페이지 변경 시 호출되는 함수
   const handelPageChange = (page: number) => {
@@ -39,15 +62,22 @@ function WishList() {
       {/* {items.map((item) => (
         <ItemCard key={item.id} item={item} />
       ))} */}
-      <ItemCardList
+      {/* <ItemCardList
         itemCardListTitle="관심목록"
         itemCardListContentData={getCurrentItems()}
+      /> */}
+      <ItemCardList
+        itemCardListTitle="관심목록"
+        itemCardListContentData={
+          Array.isArray(getCurrentItems()) ? getCurrentItems() : []
+        }
       />
+
       <Paging
         currentPage={currentPage}
         onPageChange={handelPageChange}
         itemsPerPage={itemsPerPage}
-        totalItemsCount={ITEMCARD_DATA.length}
+        totalItemsCount={items.length}
       />
     </div>
   );
