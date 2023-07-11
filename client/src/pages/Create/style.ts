@@ -3,7 +3,10 @@ import { border } from '../../common/utils/enum/border';
 import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
-export const UploadImageContainer = styled.label`
+export const UploadContainer = styled.div`
+  display: flex;
+`;
+export const UploadImageLabel = styled.label`
   width: 9.875rem;
   height: 7.875rem;
   border: ${border.basic};
