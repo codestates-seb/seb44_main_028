@@ -70,4 +70,16 @@ export const WritePostContainer = styled.form`
 export const InputFieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  & input {
+    padding: 0.5rem;
+    border: ${border.basic};
+    border-radius: ${borderRadius.basicRadius};
+    margin-right: 2rem;
+    color: ${colorPalette.grayTextColor};
+    text-align: end;
+  }
+`;
+export const WritePriceWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 `;

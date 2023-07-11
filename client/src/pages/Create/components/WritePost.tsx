@@ -1,12 +1,15 @@
 import { INPUT_FIELD } from '../constants';
-import { WritePostContainer } from '../style';
 import InputField from './InputField';
+import { WritePostContainer, WritePriceWrapper } from '../style';
+
 const WritePost = () => {
   return (
     <WritePostContainer>
-      {INPUT_FIELD.map((input) => (
-        <InputField id={input.id} label={input.title} />
-      ))}
+      <WritePriceWrapper>
+        {INPUT_FIELD.map((input) => (
+          <InputField id={input.id} label={input.title} />
+        ))}
+      </WritePriceWrapper>
     </WritePostContainer>
   );
 };
