@@ -67,3 +67,7 @@ export const WritePostContainer = styled.form`
   display: flex;
   flex-direction: column;
 `;
+export const InputFieldWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
