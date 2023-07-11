@@ -149,14 +149,9 @@
  */
 
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { KakaoLoginBtn } from '../style';
-import { useDispatch } from 'react-redux';
-import { createUserInfo } from '../../../common/store/UserInfoStore';
-import useEncryptToken from '../../../common/utils/customHooks/useEncryptToken';
-import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 // const fetchUserData = async (code: string | null) => {
 //   if (!code) return;
