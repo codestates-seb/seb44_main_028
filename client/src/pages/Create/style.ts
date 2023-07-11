@@ -54,7 +54,7 @@ export const PreViewImageWrapper = styled.div`
     background-color: ${colorPalette.whiteColor};
     color: ${colorPalette.basicTextColor};
     border-radius: 50%;
-    border: 1px solid ${colorPalette.basicTextColor};
+    border: ${border.basic};
     cursor: pointer;
     width: 1.25rem;
     height: 1.25rem;
