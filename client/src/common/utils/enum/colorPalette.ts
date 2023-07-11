@@ -2,6 +2,7 @@ export enum colorPalette {
   lightColor = '#B0F4E6',
   accentColor = '#12D3CF',
   heavyColor = '#0D4C92',
+  lightNavyColor = '#1d5799',
   deepMintColor = '#3AA6B9',
   grayColor = '#cecece',
   basicTextColor = '#333',
@@ -17,4 +18,5 @@ export enum colorPalette {
   selectListHoverColor = '#F2F7FF',
   loadingColor = '#00ffcc',
   CaemeraIconColor = '#737373',
+  ModalBackgroundColor = 'rgba(0, 0, 0, 0.5)',
 }

@@ -17,16 +17,16 @@ export const TopButton = styled.button`
   font-weight: bold;
   font-size: 15px;
   padding: 15px 10px;
-  background-color: #12d3cf;
-  color: #fff;
+  background-color: ${colorPalette.accentColor};
+  color: ${colorPalette.whiteColor};
   border: none;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
 
   &:hover {
-    background-color: #b0f4e6;
-    color: #12d3cf;
+    background-color: ${colorPalette.lightColor};
+    color: ${colorPalette.accentColor};
   }
 `;
 // Modal 컴포넌트의 스타일을 정의
@@ -64,8 +64,7 @@ export const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: ${fontSize.basic};
-  box-shadow: 0 10px 24px hsla(0, 0%, 0%, 0.05),
-    0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
+  box-shadow: ${BoxShadow.Basic};
   & svg {
     font-size: 4rem;
     color: ${colorPalette.modalIconColor};
@@ -79,7 +78,7 @@ export const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${colorPalette.ModalBackgroundColor};
 `;
 export const ModalButtonWrapper = styled.div`
   display: flex;
@@ -176,15 +175,15 @@ export const ItemPrice = styled.div`
 `;
 // Button
 export const DefaultBtn = styled.button`
-  background-color: #0d4c92;
-  color: #fff;
+  background-color: ${colorPalette.heavyColor};
+  color: ${colorPalette.whiteColor};
   height: 28px;
   width: 80px;
   border-radius: 5px;
   border: none;
   box-shadow: ${BoxShadow.Basic};
   &:hover {
-    background-color: #1d5799;
+    background-color: ${colorPalette.lightNavyColor};
   }
   &:active {
     transform: scale(0.98);
