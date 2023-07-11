@@ -1,6 +1,6 @@
 package com.ftiland.travelrental.oauth.auth.controller;
 
-import com.ftiland.travelrental.member.dto.GetMember;
+import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class authController {
     private final MemberService memberService;
 
     @GetMapping("/me")
-    public ResponseEntity<GetMember.Response> getMember() {
+    public ResponseEntity<MemberDto.Response> getMember() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(principal.toString());
@@ -28,7 +28,7 @@ public class authController {
 
         Member member = memberService.findMember(memberId);
 
-        GetMember.Response response = GetMember.Response.from(member);
+        MemberDto.Response response = MemberDto.Response.from(member);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

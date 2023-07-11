@@ -1,25 +1,18 @@
 package com.ftiland.travelrental.interest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.interest.dto.InterestDto;
 import com.ftiland.travelrental.interest.entity.Interest;
 import com.ftiland.travelrental.interest.mapper.InterestMapper;
 import com.ftiland.travelrental.interest.service.InterestService;
 import com.ftiland.travelrental.member.entity.Member;
-import com.ftiland.travelrental.product.dto.CreateProduct;
-import com.ftiland.travelrental.product.dto.UpdateProduct;
 import com.ftiland.travelrental.product.entity.Product;
-import com.ftiland.travelrental.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;

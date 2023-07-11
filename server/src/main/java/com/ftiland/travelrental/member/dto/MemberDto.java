@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class GetMember {
+public class MemberDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
@@ -22,7 +22,7 @@ public class GetMember {
         private Double latitude;
         private Double longitude;
 
-        public static GetMember.Response from(Member member) {
+        public static MemberDto.Response from(Member member) {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
