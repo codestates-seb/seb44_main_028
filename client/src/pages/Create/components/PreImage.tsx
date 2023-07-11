@@ -1,14 +1,7 @@
 import { IoIosClose } from 'react-icons/io';
+import { PreImageProps } from '../type';
 import { PreImageWrapper } from '../style';
-const PreImage = ({
-  imageSrc,
-  ImageId,
-  handleDeleteImage,
-}: {
-  imageSrc: string;
-  ImageId: number;
-  handleDeleteImage: (id: number) => void;
-}) => {
+const PreImage = ({ imageSrc, ImageId, handleDeleteImage }: PreImageProps) => {
   return (
     <PreImageWrapper>
       <img src={imageSrc} />
