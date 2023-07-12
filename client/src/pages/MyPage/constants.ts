@@ -4,7 +4,7 @@ export const TAP = ['빌려준내역', '빌린내역', '관심 목록'];
 export const ITEMCARD_DATA: ItemCardProps[] = [
   {
     id: '1',
-    title: '다이슨 빌려줍니다.1',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -19,7 +19,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '2',
-    title: '다이슨 빌려줍니다.2',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -34,7 +34,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '3',
-    title: '다이슨 빌려줍니다.3',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -49,7 +49,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '4',
-    title: '다이슨 빌려줍니다.4',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -64,7 +64,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '5',
-    title: '다이슨 빌려줍니다.5',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -79,7 +79,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '6',
-    title: '다이슨 빌려줍니다6.',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -94,7 +94,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '7',
-    title: '다이슨 빌려줍니다7.',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -109,7 +109,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '8',
-    title: '다이슨 빌려줍니다.8',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -124,7 +124,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '9',
-    title: '다이슨 빌려줍니다9.',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -139,7 +139,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '10',
-    title: '다이슨 빌려줍니다10.',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -154,7 +154,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '11',
-    title: '다이슨 빌려줍니다11.',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,
@@ -169,7 +169,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
   },
   {
     id: '12',
-    title: '다이슨 빌려줍니다12.',
+    title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
     overdueFee: 1000,

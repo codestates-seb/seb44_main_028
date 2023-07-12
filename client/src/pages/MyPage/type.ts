@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 export type ProfileDataType = {
-  nickname: string;
+  name: string;
+  age: number;
 };
 
 export type RatingStarType = {
