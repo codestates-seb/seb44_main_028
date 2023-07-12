@@ -1,30 +1,55 @@
 package com.ftiland.travelrental.interest.mapper;
 
+import com.ftiland.travelrental.image.entity.ImageProduct;
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.interest.dto.InterestDto;
 import com.ftiland.travelrental.interest.entity.Interest;
+import com.ftiland.travelrental.product.entity.Product;
 import org.mapstruct.Mapper;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 
 
 import java.util.ArrayList;
 
 @Mapper(componentModel = "spring")
 public interface InterestMapper {
-
-    default InterestDto.ResponseDto interestToResponseDto(Interest interest){
-        InterestDto.ResponseDto response = new InterestDto.ResponseDto();
+    default InterestDto.PostResponseDto interestToPostResponseDto(Interest interest){
+        InterestDto.PostResponseDto response = new InterestDto.PostResponseDto();
 
         response.setInterestId(interest.getInterestId());
-        response.setProduct(interest.getProduct());
-        response.setMember(interest.getMember());
+        response.setMemberId(interest.getMember().getMemberId());
+        response.setProductId(interest.getProduct().getProductId());
+
 
         return response;
     }
 
-    default InterestDto.ResponsesDto interestsToResponsesDto (ArrayList<Interest> interests,long page,long size){
+    default InterestDto.GetResponseDto interestToGetResponseDto(Interest interest){
+        InterestDto.GetResponseDto response = new InterestDto.GetResponseDto();
+        Product product = interest.getProduct();
+        response.setInterestId(interest.getInterestId());
+        response.setProductId(product.getProductId());
+        response.setTitle(product.getTitle());
+        response.setContent(product.getContent());
+        response.setAddress(product.getAddress());
+        response.setMinimumRentalPeriod(product.getMinimumRentalPeriod());
+        response.setBaseFee(product.getBaseFee());
+        response.setFeePerDay(product.getFeePerDay());
+
+
+        return response;
+    }
+
+    default InterestDto.ResponsesDto interestsToResponsesDto (ImageService imageService,ArrayList<Interest> interests,long page,long size){
         InterestDto.ResponsesDto responses = new InterestDto.ResponsesDto();
         for(Interest interest : interests){
-            InterestDto.ResponseDto response = interestToResponseDto(interest);
+            InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
+            ArrayList<ImageProduct> images = imageService.findImageProduct(interest.getProduct().getProductId());
+
+            // response 에 image 추가
+            for(ImageProduct image : images){
+                response.addImageProduct(image.getImageUrl());
+            }
             responses.addResponse(response);
         }
         responses.setPage(page);
