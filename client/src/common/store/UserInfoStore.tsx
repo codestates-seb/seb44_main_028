@@ -1,5 +1,6 @@
 import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit';
 import { IUserInfo } from '../model/IUserInfo';
+import { ACCESS_TOKEN } from '../constants';
 
 const initialState: { isLoggedIn: boolean; userInfo: IUserInfo | undefined } = {
   isLoggedIn: false,
@@ -17,6 +18,7 @@ export const userInfo = createSlice({
       console.log('5. login 되었습니까?', state.isLoggedIn);
     },
     deleteUserInfo: () => {
+      localStorage.removeItem(ACCESS_TOKEN);
       return initialState;
     },
   },
