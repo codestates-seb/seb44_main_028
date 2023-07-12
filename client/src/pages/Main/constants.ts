@@ -5,6 +5,7 @@ import SkiImage from '../../assets/image_slider/SkiImage.svg';
 import { ImageData } from './type';
 import { ItemCardProps } from '../../common/type';
 
+export const INTEREST_KEY = 'interest';
 export const IMAGE_SLIDER: ImageData[] = [
   {
     image: MainImage,
@@ -32,7 +33,7 @@ export const ITEMCARDLIST_TITLE: string[] = [
 ];
 export const ITEMCARD_DATA: ItemCardProps[] = [
   {
-    id: 'a4d59c7d-c8ec-47f2-b587-35d75905b808',
+    id: '86911664-5691-4fb3-b441-04e1eca38fb7',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -47,7 +48,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: '666fcda2-c743-4412-af15-a27ad16dd4eb',
+    id: '97c61b71-f91f-47f8-8737-7e4e15cdb36f',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
