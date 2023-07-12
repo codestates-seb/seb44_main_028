@@ -184,7 +184,6 @@ export const UploadBtn = styled.button`
   background-color: ${colorPalette.whiteColor};
   border-radius: 3px;
   border: 1px solid ${colorPalette.grayTextColor};
-  cursor: pointer;
 `;
 export const ProfilerEdit = styled.div`
   display: none;
