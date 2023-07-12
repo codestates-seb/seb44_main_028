@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   UploadBtn,
   ProfileEditWrapper,
@@ -17,6 +18,7 @@ import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
 
 function ProfileEdit() {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string>('');
@@ -85,6 +87,7 @@ function ProfileEdit() {
       const formData = new FormData(e.currentTarget);
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
+      navigate('/mypage');
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/members`,
@@ -109,18 +112,10 @@ function ProfileEdit() {
       console.log('User deleted successfully');
       console.log(response.data);
     } catch (error) {
-      console.error(error);
+      console.error('delete error:', error);
     }
-    //회원정보 삭제
-    // axios
-    //   .delete(`${process.env.REACT_APP_API_URL}/user`)
-    //   .then((resopnse) => {
-    //     console.log('User deleted successfully');
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
   }, []);
+
   return (
     <MyPageEdit>
       <ProfileEditWrapper>
@@ -164,8 +159,7 @@ function ProfileEdit() {
         </TextWrapper>
       </ProfileEditWrapper>
       <StyledForm onSubmit={onSubmitForm}>
-        <input
-          type="button"
+        <button
           value="돌아가기"
           style={{ backgroundColor: '#CDDBF0', color: '#333' }}
           onClick={onDeleteUser}

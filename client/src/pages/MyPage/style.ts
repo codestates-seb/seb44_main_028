@@ -241,7 +241,8 @@ export const StyledForm = styled.form`
   justify-content: center;
   height: 15rem;
 
-  input {
+  input,
+  button {
     background-color: #0d4c92;
     color: #fff;
     height: 28px;
@@ -250,6 +251,7 @@ export const StyledForm = styled.form`
     border-radius: 5px;
     border: none;
     box-shadow: ${BoxShadow.Basic};
+    cursor: pointer;
     &:hover {
       background-color: #1d5799;
     }

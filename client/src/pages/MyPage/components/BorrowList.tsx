@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
+import Modal from './Modal';
+
 // import ItemCard from '../../../common/components/ItemCard/ItemCard';
 
 function BorrowList() {
+  const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -36,6 +39,9 @@ function BorrowList() {
       {/* {borrowList.map((item) => (
         <div key={item.id}>{item.title}</div>
       ))} */}
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        솔직한 별점을 입력해주세요.
+      </Modal>
       <Paging
         currentPage={currentPage}
         onPageChange={handlePageChange}

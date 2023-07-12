@@ -28,7 +28,6 @@ function WishList() {
       setItems(response.data.responses);
       setTotalItemsCount(response.data.responses);
       console.log('totalElements:', response.data);
-
       console.log('response:', response.data.responses);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
