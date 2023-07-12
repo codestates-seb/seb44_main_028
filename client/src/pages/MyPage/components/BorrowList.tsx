@@ -9,7 +9,7 @@ function BorrowList() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'https://playpack.shop/api/reservations',
+          `${process.env.REACT_APP_API_URL}/api/reservations`,
         );
         setBorrowList(response.data);
       } catch (error) {

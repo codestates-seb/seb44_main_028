@@ -24,6 +24,20 @@ function WishList() {
     fetchData(); // API 데이터 가져오기 함수 호출
   }, []);
 
+  const fetchItemsForPage = async (page: number) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members/interests/`,
+        { params: { memberId: 1, page, itemsPerPage } },
+      ); // 실제 API 엔드포인트에 맞게 수정
+      console.log(response.data);
+      console.log(items);
+      setItems(response.data);
+    } catch (error) {
+      console.error('Error fetching wishlist:', error);
+    }
+  };
+
   // 현재 페이지에 해당하는 아이템을 가져오는 함수
   const getCurrentItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
