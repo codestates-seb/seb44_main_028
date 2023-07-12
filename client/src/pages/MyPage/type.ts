@@ -29,10 +29,12 @@ export type TapButtonType = {
 };
 export type WishListType = {
   item: string[];
+  interestId: number[];
 };
 export type PagingType = {
   currentPage: number;
   onPageChange: (page: number) => void;
   itemsPerPage: number;
   totalItemsCount: number;
+  totalPages: number;
 };

@@ -317,3 +317,12 @@ export const Close = styled(DefaultBtn)`
   }
 `;
 export const Rating = styled(DefaultBtn)``;
+
+//WishList
+
+export const WishListWrapper = styled.div`
+  display: grid;
+  justify-content: center;
+  div {
+  }
+`;

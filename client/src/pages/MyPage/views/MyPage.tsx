@@ -33,16 +33,9 @@ const MyPage = () => {
 
   return (
     <div>
-<<<<<<< HEAD
-      {/* <h2>My Page</h2>
-      <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
-        솔직한 별점을 남겨주세요.
-      </Modal>
-=======
->>>>>>> 622b49e (🎨MyPage optional chaining추가)
       <ProfileWrapper>
         <ProfileEdit />
-      </ProfileWrapper> */}
+      </ProfileWrapper>
       <ProfileWrapper>
         <ProfileDataWrapper>
           <MypageProfile />
