@@ -1,14 +1,9 @@
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 export type ProfileDataType = {
-<<<<<<< HEAD
-  name: string;
-  age: number;
-=======
   displayName: string;
   latitude: string;
   longitude: string;
->>>>>>> 622b49e (🎨MyPage optional chaining추가)
 };
 
 export type RatingStarType = {

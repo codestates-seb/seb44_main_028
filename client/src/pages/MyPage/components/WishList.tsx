@@ -2,32 +2,17 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
-<<<<<<< HEAD
-import ItemCard from '../../../common/components/ItemCard/ItemCard';
-import { ITEMCARD_DATA } from '../constants';
-=======
 
->>>>>>> 622b49e (🎨MyPage optional chaining추가)
 function WishList() {
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const totalItemsCount = items.length;
+
   useEffect(() => {
-    // 서버에 API 요청을 보내는 비동기 함수
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'https://playpack.shop/api/members/interests',
-        ); // 실제 API 엔드포인트에 맞게 수정
-        setItems(response.data);
-      } catch (error) {
-        console.error('Error fetching wishlist:', error);
-      }
-    };
-
-    fetchData(); // API 데이터 가져오기 함수 호출
+    fetchItemsForPage(currentPage);
+    // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
   }, []);
-
   const fetchItemsForPage = async (page: number) => {
     try {
       const response = await axios.get(
@@ -42,16 +27,11 @@ function WishList() {
     }
   };
 
-  // 현재 페이지에 해당하는 아이템을 가져오는 함수
-  const getCurrentItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return ITEMCARD_DATA.slice(startIndex, endIndex);
-  };
-  // 페이지 변경 시 호출되는 함수
-  const handelPageChange = (page: number) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    fetchItemsForPage(page);
   };
+
   return (
     <div>
       {/* {items.map((item) => (
@@ -59,13 +39,14 @@ function WishList() {
       ))} */}
       <ItemCardList
         itemCardListTitle="관심목록"
-        itemCardListContentData={getCurrentItems()}
+        itemCardListContentData={Array.isArray(items) ? items : []}
       />
+
       <Paging
         currentPage={currentPage}
-        onPageChange={handelPageChange}
+        onPageChange={handlePageChange}
         itemsPerPage={itemsPerPage}
-        totalItemsCount={ITEMCARD_DATA.length}
+        totalItemsCount={totalItemsCount}
       />
     </div>
   );
