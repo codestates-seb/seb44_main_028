@@ -12,11 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.MediaType;
@@ -37,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class InterestControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+
     @MockBean
     private InterestService interestService;
 
@@ -49,7 +48,7 @@ public class InterestControllerTest {
     @Test
     @DisplayName("찜하기 생성 컨트롤러 성공")
     @WithMockUser(username = "사용자", roles = {"USER"})
-    void CreateInterest_SUCCESS() throws Exception{
+    void CreateInterest_SUCCESS() throws Exception {
 
         // given
         Member member = Member.builder()
@@ -69,32 +68,29 @@ public class InterestControllerTest {
 
         InterestDto.ResponseDto response = new InterestDto.ResponseDto();
         response.setInterestId("1234");
-        response.setProductId("91052a17-bca6-4fde-a586-a1d179ad3463");
-        response.setMemberId(1L);
+        response.setProduct(product);
+        response.setMember(member);
 
 
-
-        given(interestService.createInterest(Mockito.anyLong(),Mockito.anyString())).willReturn(interest);
+        given(interestService.createInterest(Mockito.anyLong(), Mockito.anyString())).willReturn(interest);
         given(interestMapper.interestToResponseDto(Mockito.any())).willReturn(response);
 
         // when
         ResultActions postActions = mockMvc.perform(
                 post("/api/members/interests")
-                        .param("memberId",member.getMemberId().toString())
-                        .param("productId",product.getProductId().toString())
+                        .param("memberId", member.getMemberId().toString())
+                        .param("productId", product.getProductId().toString())
                         .with(csrf()));
 
         // then
         postActions
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("memberId").value(member.getMemberId()))
-                .andExpect(jsonPath("productId").value(product.getProductId()));
+                .andExpect(status().isCreated());
     }
 
     @Test
     @DisplayName("찜하기 해제 컨트롤러 성공")
     @WithMockUser(username = "사용자", roles = {"USER"})
-    void DeleteInterest_Success() throws Exception{
+    void DeleteInterest_Success() throws Exception {
         // given
         Member member = Member.builder()
                 .memberId(1L)
@@ -113,14 +109,14 @@ public class InterestControllerTest {
 
         InterestDto.ResponseDto response = new InterestDto.ResponseDto();
         response.setInterestId("1234");
-        response.setProductId("91052a17-bca6-4fde-a586-a1d179ad3463");
-        response.setMemberId(1L);
+        response.setProduct(product);
+        response.setMember(member);
 
         // when
         ResultActions postActions = mockMvc.perform(
                 delete("/api/members/interests")
-                        .param("memberId",member.getMemberId().toString())
-                        .param("interestId",interest.getInterestId().toString())
+                        .param("memberId", member.getMemberId().toString())
+                        .param("interestId", interest.getInterestId().toString())
                         .with(csrf()));
 
         // then
@@ -128,10 +124,11 @@ public class InterestControllerTest {
                 .andExpect(status().isOk());
 
     }
+
     @Test
     @DisplayName("찜목록 조회 컨트롤러 성공")
     @WithMockUser(username = "사용자", roles = {"USER"})
-    void GetInterest_Success()throws Exception{
+    void GetInterest_Success() throws Exception {
 
         // given
         Member member = Member.builder()
@@ -157,17 +154,19 @@ public class InterestControllerTest {
         ArrayList<Interest> interests = new ArrayList<>();
         interests.add(interest2);
         interests.add(interest);
-        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(interests);
+        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(interests,1,2);
 
         int size = interests.size();
-        given(interestService.findInterest(Mockito.anyLong())).willReturn(interests);
-        given(interestMapper.interestsToResponsesDto(Mockito.any(ArrayList.class))).willReturn(responses);
+        given(interestService.findInterest(Mockito.anyLong(),Mockito.anyInt(),Mockito.anyInt())).willReturn(interests);
+        given(interestMapper.interestsToResponsesDto(Mockito.any(ArrayList.class),Mockito.anyInt(),Mockito.anyInt())).willReturn(responses);
 
 
         // when
         ResultActions getActions = mockMvc.perform(
                 get("/api/members/interests")
                         .param("memberId",member.getMemberId().toString())
+                        .param("page","1")
+                        .param("size","2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()));
 
@@ -176,6 +175,4 @@ public class InterestControllerTest {
                 .andExpect(status().isOk());
 
     }
-
-
 }

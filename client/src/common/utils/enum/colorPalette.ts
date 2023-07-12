@@ -13,7 +13,9 @@ export enum colorPalette {
   tagColor = '#74D4E4',
   modalIconColor = '#D0E2Ef',
   modalCancelButtonColor = '#CDDBF0',
+  modalCancelHoverColor = '#C3D1E7',
   itemCardHeartColor = '#DEDEDE',
   selectListHoverColor = '#F2F7FF',
   loadingColor = '#00ffcc',
+  rightButtonHoverColor = '#1d5799',
 }

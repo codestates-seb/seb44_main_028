@@ -5,7 +5,6 @@ import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 
 
-import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
 import com.ftiland.travelrental.member.entity.Member;
@@ -68,8 +67,6 @@ public class ProductService {
 
         List<CategoryDto> productCategories =
                 productCategoryService.createProductCategories(product, request.getCategoryIds());
-
-        // 이미지 저장
 
         return CreateProduct.Response.from(product, productCategories);
     }

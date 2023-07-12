@@ -183,3 +183,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
 ];
+export const ERROR_MESSAGE: string[] = [
+  "The page you were looking for doesn't exist",
+  'You may have mistyped the address or the page may have moved.',
+];

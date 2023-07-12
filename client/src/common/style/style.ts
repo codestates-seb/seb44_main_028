@@ -29,7 +29,6 @@ export const TopButton = styled.button`
     color: #12d3cf;
   }
 `;
-// Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
   padding: 0 10rem;
@@ -49,7 +48,7 @@ export const CategoryButtonWrapper = styled.div`
     margin-bottom: 20px;
   }
 `;
-
+// Modal 컴포넌트의 스타일을 정의
 export const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,12 +63,16 @@ export const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: ${fontSize.basic};
-  box-shadow: 0 10px 24px hsla(0, 0%, 0%, 0.05),
-    0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
+  z-index: 6;
+  box-shadow: ${BoxShadow.Basic};
   & svg {
     font-size: 4rem;
     color: ${colorPalette.modalIconColor};
     margin-bottom: 1rem;
+  }
+  & button {
+    margin-right: 0.438rem;
+    margin-top: 0.938rem;
   }
 `;
 
@@ -80,6 +83,7 @@ export const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
 `;
 export const ModalButtonWrapper = styled.div`
   display: flex;
@@ -99,6 +103,14 @@ export const ModalButtonWrapper = styled.div`
     background-color: ${colorPalette.heavyColor};
     color: ${colorPalette.whiteColor};
   }
+`;
+export const ModalInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+export const ModalChildrenWrapper = styled.div`
+  display: flex;
 `;
 // ItemCardList 컴포넌트의 스타일을 정의
 export const ItemCardListWrapper = styled.div`
@@ -320,5 +332,23 @@ export const LoadingWrapper = styled.div`
     margin-top: 2.2rem;
     font-size: ${fontSize.NoDataText};
     color: ${colorPalette.lightGrayTextColor};
+  }
+`;
+// Error 컴포넌트의 스타일을 정의
+export const ErrorWrapper = styled.div`
+  margin-top: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: ${fontSize.NoDataText};
+  color: ${colorPalette.grayTextColor};
+  & img {
+    width: 13.75rem;
+    height: 16.063rem;
+    margin-bottom: 3.188rem;
+  }
+  p:first-of-type {
+    font-weight: 700;
   }
 `;

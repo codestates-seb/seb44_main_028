@@ -33,15 +33,15 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        var oAuth2User = (OAuth2User)authentication.getPrincipal();
-        Map<String, Object> kakaoAccount = (Map<String, Object>)oAuth2User.getAttribute("kakao_account");
+        var oAuth2User = (OAuth2User) authentication.getPrincipal();
+        Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttribute("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
         String email = String.valueOf(kakaoAccount.get("email"));
         String displayName = (String) profile.get("nickname");
 
         Long memberId;
-        if(!memberService.existsEmail(email)) {
+        if (!memberService.existsEmail(email)) {
             Member savedMember = saveMember(email, displayName);
             memberId = savedMember.getMemberId();
         } else {
@@ -110,10 +110,10 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("access_token", accessToken);
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
-                .host("playpack-e541f.web.app")
-                .port(443)
-                .path("/")
+                .scheme("http")
+                .host("localhost")
+                .port(3000)
+                .path("/auth/callback")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
