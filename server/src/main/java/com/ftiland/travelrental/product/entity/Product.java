@@ -2,12 +2,10 @@ package com.ftiland.travelrental.product.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
-import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter

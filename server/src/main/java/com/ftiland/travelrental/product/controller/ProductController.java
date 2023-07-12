@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -68,9 +67,9 @@ public class ProductController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<List<ProductDto>> findProducts() {
+    public ResponseEntity<List<ProductDto>> findProducts(@RequestParam int size, @RequestParam int page) {
         log.info("[ProductController] findProducts called");
         Long memberId = 2L;
-        return ResponseEntity.ok(productService.findProducts(memberId));
+        return ResponseEntity.ok(productService.findProducts(memberId, size, page));
     }
 }

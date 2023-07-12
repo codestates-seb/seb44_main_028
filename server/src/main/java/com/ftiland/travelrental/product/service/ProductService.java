@@ -17,6 +17,8 @@ import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -132,10 +134,10 @@ public class ProductService {
         return ProductDetailDto.from(product, categories);
     }
 
-    public List<ProductDto> findProducts(Long memberId) {
+    public List<ProductDto> findProducts(Long memberId, int size, int page) {
         Member member = memberService.findMember(memberId);
 
-        List<Product> products = productRepository.findByMemberMemberId(memberId);
+        Page<Product> products = productRepository.findByMemberMemberId(memberId, PageRequest.of(page, size));
 
         return products.stream()
                 .map(ProductDto::from)
