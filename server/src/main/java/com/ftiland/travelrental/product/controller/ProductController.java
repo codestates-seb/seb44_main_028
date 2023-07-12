@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -60,9 +63,15 @@ public class ProductController {
     }
 
     @GetMapping("/{product-id}")
-    public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId) {
+    public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId,
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) {
         log.info("[ProductController] findProductDetail called");
         Long memberId = 1L;
+
+        // 조회수 로직
+        countView(productId, request, response);
+
         return ResponseEntity.ok(productService.findProductDetail(productId));
     }
 
@@ -70,6 +79,36 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> findProducts(@RequestParam int size, @RequestParam int page) {
         log.info("[ProductController] findProducts called");
         Long memberId = 2L;
+
         return ResponseEntity.ok(productService.findProducts(memberId, size, page));
+    }
+
+    private void countView(String productId, HttpServletRequest request, HttpServletResponse response) {
+        /* 조회수 로직 */
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("postView")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("["+ productId +"]")) {
+                productService.updateView(productId);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + productId + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24); 							// 쿠키 시간
+                response.addCookie(oldCookie);
+            }
+        } else {
+            productService.updateView(productId);
+            Cookie newCookie = new Cookie("postView", "[" + productId + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24); 								// 쿠키 시간
+            response.addCookie(newCookie);
+        }
     }
 }

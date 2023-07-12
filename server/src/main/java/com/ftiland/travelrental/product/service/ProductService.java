@@ -143,4 +143,10 @@ public class ProductService {
                 .map(ProductDto::from)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void updateView(String productId) {
+        Product product = findProduct(productId);
+        product.setViewCount(product.getViewCount() + 1);
+    }
 }
