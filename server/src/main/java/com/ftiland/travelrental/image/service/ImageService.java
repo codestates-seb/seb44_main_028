@@ -63,7 +63,7 @@ public class ImageService {
         this.imageCategoryRepository = imageCategoryRepository;
     }
 
-    // 이미지 업로드(카테고리) (png,jpg만 저장가능) -> 구현 필요
+    // 이미지 업로드(카테고리)
     public ImageCategory storeImageCategory(MultipartFile file, String categoryId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -94,7 +94,7 @@ public class ImageService {
                 .collect(Collectors.toList());
     }
 
-    // 이미지 업로드(상품) (png,jpg만 저장가능) -> 구현 필요
+    // 이미지 업로드(상품)
     public ImageProduct storeImageProduct(MultipartFile file, String productId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -119,7 +119,7 @@ public class ImageService {
         return imageProductRepository.save(createdImageProduct);
     }
 
-    // 이미지 업로드(맴버) (png,jpg만 저장가능) -> 구현 필요
+    // 이미지 업로드(맴버)
     public ImageMember storeImageMember(MultipartFile file, Long memberId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
