@@ -18,7 +18,7 @@ function WishList() {
   const fetchItemsForPage = async (page: number) => {
     try {
       const response = await axios.get(
-        'https://playpack.shop/api/members/interests/',
+        `${process.env.REACT_APP_API_URL}/api/members/interests/`,
         { params: { memberId: 1, page, itemsPerPage } },
       ); // 실제 API 엔드포인트에 맞게 수정
       console.log(response.data);
