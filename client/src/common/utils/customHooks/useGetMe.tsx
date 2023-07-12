@@ -8,6 +8,8 @@ import useDecryptToken from './useDecryptToken';
 import { ACCESS_TOKEN } from '../../constants';
 import { RootState } from '../../store/RootStore';
 
+// 추후 React Query 사용하여 유저 정보 캐싱하는 로직으로 변경 예정
+
 function useGetMe(): UseQueryResult<IUserInfo | null> {
   const dispatch = useDispatch();
   const encryptToken = useEncryptToken();
