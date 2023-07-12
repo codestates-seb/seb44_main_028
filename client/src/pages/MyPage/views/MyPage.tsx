@@ -12,24 +12,16 @@ const MyPage = () => {
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
   );
-  //instance방식
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await instance.get('/members');//instance 만들어놓기
-  //       setProfileData(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching user data:', error);
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/api/members');
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/members`,
+          {
+            params: { memberId: 1 },
+          },
+        );
         setProfileData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -41,23 +33,26 @@ const MyPage = () => {
 
   return (
     <div>
+<<<<<<< HEAD
       {/* <h2>My Page</h2>
       <Modal setIsOpen={setIsOpen} isOpen={isOpen}>
         솔직한 별점을 남겨주세요.
       </Modal>
+=======
+>>>>>>> 622b49e (🎨MyPage optional chaining추가)
       <ProfileWrapper>
         <ProfileEdit />
       </ProfileWrapper> */}
       <ProfileWrapper>
         <ProfileDataWrapper>
           <MypageProfile />
-          {/* {profileData && (
+          {profileData && (
             <>
-              <div>{profileData.displayName}</div>
-              <div>{profileData.latitude}</div>
-              <div>{profileData.longitude}</div>
+              <div>{profileData?.displayName}</div>
+              <div>{profileData?.latitude}</div>
+              <div>{profileData?.longitude}</div>
             </>
-          )} */}
+          )}
         </ProfileDataWrapper>
       </ProfileWrapper>
       <EditWrapper>

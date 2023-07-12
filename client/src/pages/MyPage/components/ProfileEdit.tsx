@@ -118,10 +118,8 @@ function ProfileEdit() {
         </ProfileSection>
         <TextWrapper>
           <NameWrapper>
-            <ol>
-              <li>닉네임</li>
-              <li>내 동네</li>
-            </ol>
+            <div>닉네임</div>
+            <div>내 동네</div>
           </NameWrapper>
           <InputWrapper>
             <InputBox>

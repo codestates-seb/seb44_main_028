@@ -2,8 +2,12 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
+<<<<<<< HEAD
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 import { ITEMCARD_DATA } from '../constants';
+=======
+
+>>>>>>> 622b49e (🎨MyPage optional chaining추가)
 function WishList() {
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
