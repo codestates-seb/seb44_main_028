@@ -8,7 +8,9 @@ import { ICategory } from '../../model/ICategory';
 
 const Category = () => {
   const fetchCategoryData = async () => {
-    const response = await axios.get('/api/categories');
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/categories`,
+    );
     return response.data;
   };
   const {
