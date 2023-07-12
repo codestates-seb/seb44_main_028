@@ -43,8 +43,8 @@ public class InterestMemberController {
 
     // 관심 목록에 추가 ( * , Post )
     @PostMapping
-    public ResponseEntity postInterest(@Param("memberId") Long memberId, @Param("productId") String productId) {
-        Interest interest = interestService.createInterest(memberId, productId);
+    public ResponseEntity postInterest(@RequestBody InterestDto.PostRequestDto requestBody) {
+        Interest interest = interestService.createInterest(requestBody.getMemberId(), requestBody.getProductId());
         InterestDto.PostResponseDto response = interestMapper.interestToPostResponseDto(interest);
 
         return new ResponseEntity(response, HttpStatus.CREATED);
@@ -52,8 +52,8 @@ public class InterestMemberController {
 
     // 관심 해제 ( 맴버 , Delete )
     @DeleteMapping
-    public HttpStatus deleteInterest(@Param("memberId") Long memberId, @Param("interestId") String interestId) {
-        interestService.deleteInterest(memberId, interestId);
+    public HttpStatus deleteInterest(@RequestBody InterestDto.DeleteRequestDto requestBody) {
+        interestService.deleteInterest(requestBody.getMemberId(), requestBody.getInterestId());
 
         return HttpStatus.OK;
     }
