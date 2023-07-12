@@ -22,7 +22,7 @@ public class InterestMemberController {
     private InterestMapper interestMapper;
 
     @Autowired
-    public InterestMemberController(InterestService interestService,InterestMapper interestMapper){
+    public InterestMemberController(InterestService interestService, InterestMapper interestMapper) {
         this.interestService = interestService;
         this.interestMapper = interestMapper;
     }
@@ -35,22 +35,22 @@ public class InterestMemberController {
         ArrayList<Interest> interests = interestService.findInterest(memberId,page,size);
         InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(interests,page,size);
 
-        return new ResponseEntity(responses,HttpStatus.OK);
+        return new ResponseEntity(responses, HttpStatus.OK);
     }
 
     // 관심 목록에 추가 ( * , Post )
     @PostMapping
-    public ResponseEntity postInterest(@Param("memberId")Long memberId,@Param("productId")String productId){
-        Interest interest = interestService.createInterest(memberId,productId);
+    public ResponseEntity postInterest(@Param("memberId") Long memberId, @Param("productId") String productId) {
+        Interest interest = interestService.createInterest(memberId, productId);
         InterestDto.ResponseDto response = interestMapper.interestToResponseDto(interest);
 
-        return new ResponseEntity(response,HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     // 관심 해제 ( 맴버 , Delete )
     @DeleteMapping
-    public HttpStatus deleteInterest(@Param("memberId")Long memberId,@Param("interestId")String interestId){
-        interestService.deleteInterest(memberId,interestId);
+    public HttpStatus deleteInterest(@Param("memberId") Long memberId, @Param("interestId") String interestId) {
+        interestService.deleteInterest(memberId, interestId);
 
         return HttpStatus.OK;
     }

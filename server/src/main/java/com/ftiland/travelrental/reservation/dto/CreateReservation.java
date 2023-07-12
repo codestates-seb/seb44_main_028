@@ -17,8 +17,6 @@ public class CreateReservation {
     @AllArgsConstructor
     public static class Request {
         @NotNull
-        private Integer totalFee;
-        @NotNull
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         private LocalDate startDate;
         @NotNull
