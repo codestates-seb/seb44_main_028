@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { addInterest, removeInterest } from '../../store/InterestStore';
 import axios from 'axios';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
@@ -14,11 +16,22 @@ import {
   PriceFavoriteWrapper,
 } from '../../style/style';
 import { ItemCardProps } from '../../type';
+import { INTEREST_KEY } from '../../../pages/Main/constants';
 
 const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
-  const [isHeartClicked, setIsHeartClicked] = useState(false);
+  const storedInterest = localStorage.getItem(INTEREST_KEY);
+  const initialFavorites = storedInterest ? JSON.parse(storedInterest) : [];
+  const [interestItems, setInterestItems] =
+    useState<string[]>(initialFavorites);
+  const dispatch = useDispatch();
+
   const [interestId, setInterestId] = useState('');
 
+  useEffect(() => {
+    localStorage.setItem(INTEREST_KEY, JSON.stringify(interestItems));
+  }, [interestItems]);
+
+  const isInterest = interestItems.includes(itemCardData.id);
   const addInterestMutation = useMutation((productId: string) =>
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/members/interests`, {
@@ -41,18 +54,20 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
       }),
     {
       onError: (error) => {
-        // 에러 처리 로직 추가
         console.error('removeInterestMutation error:', error);
       },
     },
   );
   const handleHeartClick = () => {
-    if (isHeartClicked) {
+    if (isInterest) {
       removeInterestMutation.mutate(interestId);
+      dispatch(removeInterest(interestId));
+      setInterestItems(interestItems.filter((id) => id !== itemCardData.id));
     } else {
       addInterestMutation.mutate(itemCardData.id);
+      dispatch(addInterest(itemCardData.id));
+      setInterestItems([...interestItems, itemCardData.id]);
     }
-    setIsHeartClicked(!isHeartClicked);
   };
 
   return (
@@ -66,7 +81,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
           <span>{itemCardData.location}</span>
         </ItemLocationWrapper>
       </ItemInfo>
-      <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>
+      <PriceFavoriteWrapper isHeartClicked={isInterest}>
         <ItemPrice>
           {`최소 대여기간 ${itemCardData.minimumRentalPeriod}일 고정금 ${itemCardData.baseFee}
           만원 / ${itemCardData.feePerDay}일 ${itemCardData.overdueFee}만원`}
