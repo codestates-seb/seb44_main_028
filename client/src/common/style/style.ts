@@ -334,3 +334,21 @@ export const LoadingWrapper = styled.div`
     color: ${colorPalette.lightGrayTextColor};
   }
 `;
+// Error 컴포넌트의 스타일을 정의
+export const ErrorWrapper = styled.div`
+  margin-top: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: ${fontSize.NoDataText};
+  color: ${colorPalette.grayTextColor};
+  & img {
+    width: 13.75rem;
+    height: 16.063rem;
+    margin-bottom: 3.188rem;
+  }
+  p:first-of-type {
+    font-weight: 700;
+  }
+`;
