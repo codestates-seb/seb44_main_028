@@ -2,10 +2,12 @@ package com.ftiland.travelrental.product.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
+import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +16,6 @@ import javax.persistence.*;
 @Entity
 @Builder
 public class Product extends BaseEntity {
-
     @Id
     private String productId;
 
@@ -42,10 +43,8 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false)
     private Double latitude;
-
     @Column(nullable = false)
     private Double longitude;
-
     @Column(nullable = false)
     private String address;
 

@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -29,15 +28,16 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<CreateProduct.Response> createProduct(
-            @Valid @RequestPart(required = false) CreateProduct.Request request,
-            @RequestPart(required = false) List<MultipartFile> images) {
+            @Valid @RequestBody CreateProduct.Request request
+            /*@Valid @RequestPart(required = false) CreateProduct.Request request,
+            @RequestPart(required = false) List<MultipartFile> images*/) {
         log.info("[ProductController] createProduct called");
         Long memberId = 1L;
 
         CreateProduct.Response response = productService.createProduct(request, memberId);
 
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.storeImageProducts(i, response.getProductId()));
+        /*Optional.ofNullable(images)
+                .ifPresent(i -> imageService.storeImageProducts(i, response.getProductId()));*/
 
         URI uri = URI.create(String.format("/api/products/%s", response.getProductId()));
         return ResponseEntity.created(uri).body(response);
