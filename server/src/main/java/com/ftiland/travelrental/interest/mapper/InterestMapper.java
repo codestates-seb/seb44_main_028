@@ -15,19 +15,20 @@ public interface InterestMapper {
         InterestDto.ResponseDto response = new InterestDto.ResponseDto();
 
         response.setInterestId(interest.getInterestId());
-        response.setProductId(interest.getProduct().getProductId());
-        response.setMemberId(interest.getMember().getMemberId());
+        response.setProduct(interest.getProduct());
+        response.setMember(interest.getMember());
 
         return response;
     }
 
-    default InterestDto.ResponsesDto interestsToResponsesDto (ArrayList<Interest> interests){
+    default InterestDto.ResponsesDto interestsToResponsesDto (ArrayList<Interest> interests,long page,long size){
         InterestDto.ResponsesDto responses = new InterestDto.ResponsesDto();
         for(Interest interest : interests){
             InterestDto.ResponseDto response = interestToResponseDto(interest);
             responses.addResponse(response);
         }
-
+        responses.setPage(page);
+        responses.setSize(size);
         return responses;
     }
 }
