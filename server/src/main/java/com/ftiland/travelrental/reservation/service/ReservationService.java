@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.*;
 import static com.ftiland.travelrental.reservation.status.ReservationStatus.CANCELED;
+import static com.ftiland.travelrental.reservation.status.ReservationStatus.RESERVED;
 
 
 @Service
@@ -114,6 +115,20 @@ public class ReservationService {
     }
 
     @Transactional
+    public AcceptReservation.Response acceptReservationByLender(String reservationId, String productId, Long memberId) {
+        Member member = memberService.findMember(memberId);
+        Reservation reservation = findReservation(reservationId);
+
+        Product product = productService.findProduct(productId);
+
+        validateOwner(reservation, member, product);
+
+        reservation.setStatus(RESERVED);
+
+        return AcceptReservation.Response.from(reservation);
+    }
+
+    @Transactional
     public CancelReservation.Response cancelReservationByLender(String reservationId, String productId, Long memberId) {
         Member member = memberService.findMember(memberId);
         Reservation reservation = findReservation(reservationId);
@@ -122,9 +137,8 @@ public class ReservationService {
 
         validateOwner(reservation, member, product);
 
-        LocalDate date = LocalDate.now().plusDays(7);
-        // 예약 시작일 일주일 전부터는 예약취소 불가능
-        if (date.isAfter(reservation.getStartDate())) {
+        // 예약상태가 Requested가 아니면 취소 불가능
+        if (reservation.getStatus() != ReservationStatus.REQUESTED) {
             throw new BusinessLogicException(NOT_POSSIBLE_CANCEL);
         }
         reservation.setStatus(CANCELED);
@@ -199,5 +213,17 @@ public class ReservationService {
         List<ReservationCalendarDto> reservationDate2 = getReservationByMonth(productId, date2);
 
         return GetReservationsMonth.Response.from(product, reservationDate1, reservationDate2);
+    }
+
+    @Transactional
+    public void rateReservation(String reservationId, Long memberId, int score) {
+        Member member = memberService.findMember(memberId);
+        Reservation reservation = findReservation(reservationId);
+
+        validateOwner(reservation, member);
+
+        Product product = reservation.getProduct();
+        product.setTotalRateCount(product.getTotalRateCount() + 1);
+        product.setTotalRateScore(product.getTotalRateScore() + score);
     }
 }
