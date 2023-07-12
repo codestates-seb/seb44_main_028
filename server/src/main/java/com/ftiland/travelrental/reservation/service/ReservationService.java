@@ -2,6 +2,7 @@ package com.ftiland.travelrental.reservation.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.common.utils.mail.MailService;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
@@ -35,6 +36,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final MemberService memberService;
     private final ProductService productService;
+    private final MailService mailService;
 
     @Transactional
     public CreateReservation.Response createReservation(CreateReservation.Request request,
@@ -77,7 +79,11 @@ public class ReservationService {
                 .member(member)
                 .product(product).build();
 
-        return CreateReservation.Response.from(reservationRepository.save(reservation));
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+//        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
+
+        return CreateReservation.Response.from(savedReservation);
     }
 
     public boolean checkReservationDuplication(LocalDate startDate, LocalDate endDate) {
