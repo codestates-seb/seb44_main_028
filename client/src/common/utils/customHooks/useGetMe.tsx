@@ -1,11 +1,12 @@
 import { UseQueryResult, useQuery } from 'react-query';
 import axios, { AxiosError } from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createUserInfo, deleteUserInfo } from '../../store/UserInfoStore';
 import { IUserInfo } from '../../model/IUserInfo';
 import useEncryptToken from './useEncryptToken';
 import useDecryptToken from './useDecryptToken';
 import { ACCESS_TOKEN } from '../../constants';
+import { RootState } from '../../store/RootStore';
 
 function useGetMe(): UseQueryResult<IUserInfo | null> {
   const dispatch = useDispatch();
@@ -27,23 +28,6 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
     const accessToken: string = decryptToken(encryptedAccessToken);
     console.log('2. 복호화된 accessToken:', accessToken);
 
-    //       const { data } = await axios.get(
-    //         `${process.env.REACT_APP_API_URL}/api/members`,
-    //         {
-    //           headers: { Authorization: 'Bearer ' + accessToken },
-    //         },
-    //       );
-    //       console.log('data:', data);
-
-    // 복호화된 accessToken으로 getMe 호출
-    // try {
-    // const response = await axios.get(
-    //   `${process.env.REACT_APP_SECRET_KEY}/api/members`,
-    //   {
-    //     headers,
-    //     // withCredentials: true,
-    //   },
-    // );
     const { data } = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/members`,
       {
@@ -53,9 +37,8 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
 
     console.log('3. getMe response:', data);
 
-    //   const userData = response.data;
-    //   // 유저 정보 store에 저장
-    //   dispatch(createUserInfo(userData));
+    // 유저 정보 store에 저장
+    dispatch(createUserInfo(data));
 
     //   if (!userData || !response?.headers.authorization) {
     //     return null;
