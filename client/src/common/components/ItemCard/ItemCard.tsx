@@ -20,7 +20,9 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const [interestId, setInterestId] = useState('');
 
   const fetchInterestId = async () => {
-    const response = await axios.get('https://playpack.shop/members/interests');
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/members/interests`,
+    );
     return response.data?.interestId;
   };
   const { data: interestIdData } = useQuery('interestId', fetchInterestId);
@@ -36,14 +38,16 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   }, [interestIdData]);
 
   const addInterestMutation = useMutation((productId: string) =>
-    axios.post('https://playpack.shop/interests', {
+    axios.post(`${process.env.REACT_APP_API_URL}/interests`, {
       //memberId: '1', // 멤버 id는 임시로 1로 설정
       productId: productId,
     }),
   );
 
   const removeInterestMutation = useMutation((interestId: string) =>
-    axios.delete(`https://playpack.shop/interests?interestId=${interestId}`),
+    axios.delete(
+      `${process.env.REACT_APP_API_URL}/interests?interestId=${interestId}`,
+    ),
   );
 
   const handleHeartClick = () => {
