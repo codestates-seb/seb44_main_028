@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useState } from 'react';
+import { useMutation } from 'react-query';
 import axios from 'axios';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
@@ -19,43 +19,40 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const [isHeartClicked, setIsHeartClicked] = useState(false);
   const [interestId, setInterestId] = useState('');
 
-  const fetchInterestId = async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/members/interests`,
-    );
-    return response.data?.interestId;
-  };
-  const { data: interestIdData } = useQuery('interestId', fetchInterestId);
-
-  useEffect(() => {
-    if (interestIdData) {
-      setInterestId(interestIdData);
-      setIsHeartClicked(true);
-    } else {
-      setInterestId('');
-      setIsHeartClicked(false);
-    }
-  }, [interestIdData]);
-
   const addInterestMutation = useMutation((productId: string) =>
-    axios.post(`${process.env.REACT_APP_API_URL}/interests`, {
-      //memberId: '1', // 멤버 id는 임시로 1로 설정
-      productId: productId,
-    }),
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/members/interests`, {
+        memberId: '1',
+        productId: productId,
+      })
+      .then((res) => {
+        const { data } = res;
+        setInterestId(data.interestId);
+      }),
   );
 
-  const removeInterestMutation = useMutation((interestId: string) =>
-    axios.delete(
-      `${process.env.REACT_APP_API_URL}/interests?interestId=${interestId}`,
-    ),
+  const removeInterestMutation = useMutation(
+    (interestId: string) =>
+      axios.delete(`${process.env.REACT_APP_API_URL}/api/members/interests`, {
+        data: {
+          memberId: '1', // 멤버 id는 임시로 1로 설정
+          interestId: interestId,
+        },
+      }),
+    {
+      onError: (error) => {
+        // 에러 처리 로직 추가
+        console.error('removeInterestMutation error:', error);
+      },
+    },
   );
-
   const handleHeartClick = () => {
     if (isHeartClicked) {
       removeInterestMutation.mutate(interestId);
     } else {
       addInterestMutation.mutate(itemCardData.id);
     }
+    setIsHeartClicked(!isHeartClicked);
   };
 
   return (

@@ -11,7 +11,7 @@ const ItemCardList = ({
       <p>{itemCardListTitle}</p>
       <ItemCardWrapper>
         {itemCardListContentData.map((itemcard) => (
-          <ItemCard itemCardData={itemcard} />
+          <ItemCard key={itemcard.id} itemCardData={itemcard} />
         ))}
       </ItemCardWrapper>
     </ItemCardListWrapper>
