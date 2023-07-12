@@ -9,6 +9,20 @@ import java.util.ArrayList;
 public class InterestDto {
     @Getter
     @Setter
+    public static class PostRequestDto{
+        private long memberId;
+        private String productId;
+    }
+
+    @Getter
+    @Setter
+    public static class DeleteRequestDto{
+        private long memberId;
+        private String interestId;
+    }
+
+    @Getter
+    @Setter
     public static class PostResponseDto {
         private String interestId;
         private long memberId;
