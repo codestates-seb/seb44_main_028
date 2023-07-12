@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import KakaoLogin from '../components/KakaoLogin';
+import { LoginPageContainer } from '../style';
 
 function LoginPage() {
   // const fetchMyData = async () => {
@@ -37,12 +38,12 @@ function LoginPage() {
   // }
 
   return (
-    <>
+    <LoginPageContainer>
       <KakaoLogin />
       {/* <div>{data}</div>
       <input type="file" id="myFile" />
       <button onClick={() => fetchMyData()}>보내기</button> */}
-    </>
+    </LoginPageContainer>
   );
 }
 export default LoginPage;
