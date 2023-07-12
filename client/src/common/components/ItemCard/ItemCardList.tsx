@@ -6,6 +6,7 @@ const ItemCardList = ({
   itemCardListTitle,
   itemCardListContentData,
 }: ItemCardListProps) => {
+  console.log(itemCardListContentData);
   return (
     <ItemCardListWrapper>
       <p>{itemCardListTitle}</p>
