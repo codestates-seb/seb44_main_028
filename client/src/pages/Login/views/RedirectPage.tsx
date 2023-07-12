@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useEncryptToken from '../../../common/utils/customHooks/useEncryptToken';
 import { ACCESS_TOKEN } from '../constants';
-import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 function RedirectPage() {
   const navigate = useNavigate();
