@@ -41,7 +41,7 @@ jobs:
           cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
           cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           jwt.key.secret: ${{secrets.JWT_SECRET_KEY}}
-          jwt.redirect.scheme: ${{secrets.REDIRECT_SCHEMA}}
+          jwt.redirect.scheme: ${{secrets.REDIRECT_SCHEME}}
           jwt.redirect.host: ${{secrets.REDIRECT_HOST}}
           jwt.redirect.port: ${{secrets.REDIRECT_PORT}}
           jwt.redirect.path: ${{secrets.REDIRECT_PATH}}
