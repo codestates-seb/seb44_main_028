@@ -91,27 +91,49 @@ export const WritePostContainer = styled.form`
     margin-top: 0.75rem;
     color: ${colorPalette.grayTextColor};
   }
-  & input:not([id='${INPUT_FIELD[3].id}']) {
-    text-align: end;
-  }
+
   & small {
     margin-top: 0.5rem;
     color: ${colorPalette.basicTextColor};
     font-size: ${fontSize.small};
   }
 `;
-
 export const WritePriceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 1.875rem;
   gap: 2rem;
   margin-bottom: 2.875rem;
-  & div {
-    display: flex;
-    flex-direction: column;
+`;
+export const PriceInput = styled.div<{ isInputChange: boolean }>`
+  display: flex;
+  flex-direction: column;
+  input:focus {
+    outline: none !important;
+    border-color: ${({ isInputChange }) =>
+      isInputChange ? '#61cf5f' : '#f44336'};
+    box-shadow: ${({ isInputChange }) =>
+      isInputChange ? '0 0 3px #61cf5f' : '0 0 3px #f44336'};
+  }
+  svg {
+    color: ${({ isInputChange }) => (isInputChange ? '#61cf5f' : '#f44336')};
   }
 `;
+export const TitleInput = styled.div<{ isInputChange: boolean }>`
+  display: flex;
+  flex-direction: column;
+  input:focus {
+    outline: none !important;
+    border-color: ${({ isInputChange }) =>
+      isInputChange ? '#61cf5f' : '#f44336'};
+    box-shadow: ${({ isInputChange }) =>
+      isInputChange ? '0 0 3px #61cf5f' : '0 0 3px #f44336'};
+  }
+  svg {
+    color: ${({ isInputChange }) => (isInputChange ? '#61cf5f' : '#f44336')};
+  }
+`;
+
 export const CheckBoxTitle = styled.div`
   margin-bottom: 1.5rem;
 `;
