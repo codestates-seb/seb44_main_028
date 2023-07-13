@@ -26,10 +26,10 @@ public class UrlConfig {
     public String createURI() {
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
-                .host("localhost")
-                .port(3000)
-                .path("/login")
+                .scheme(scheme)
+                .host(host)
+                .port(port)
+                .path(path)
                 .build()
                 .toUriString();
     }
