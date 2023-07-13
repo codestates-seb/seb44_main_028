@@ -50,9 +50,14 @@ jobs:
           jwt.redirect.port: ${{secrets.REDIRECT_PORT}}
           jwt.redirect.path: ${{secrets.REDIRECT_PATH}}
           kakao.restapi: ${{secrets.KAKAO_REST_API}}
+<<<<<<< HEAD
           spring.mail.smtp.username: ${{EMAIL_USERNAME}}
           spring.mail.smtp.password: ${{EMAIL_PASSWORD}}
 >>>>>>> 3a073d5 (Update gradle.yml)
+=======
+          spring.mail.smtp.username: ${{secrets.EMAIL_USERNAME}}
+          spring.mail.smtp.password: ${{secrets.EMAIL_PASSWORD}}
+>>>>>>> 0383d36 (Update gradle.yml)
           
       - name: Build with Gradle
         run: |
