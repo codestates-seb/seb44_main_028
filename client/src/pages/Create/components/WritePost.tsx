@@ -1,6 +1,6 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { BsCheck2 } from 'react-icons/bs';
+import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
 import { useForm } from 'react-hook-form';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
@@ -89,7 +89,7 @@ const WritePost = () => {
             onChange={(e) => handleInputChange(e, 0)}
             onBlur={(e) => handleInputBlur(e, 0)}
           />
-          {isInputChange[0] && <BsCheck2 />}
+          {isInputChange[0] && <BsCheckLg />}
           {!isInputValid[0] && <BiErrorCircle />}
           {errors[INPUT_FIELD[0].id] && (
             <small role="alert">{INPIT_VALIDATION}</small>
@@ -111,7 +111,7 @@ const WritePost = () => {
             onChange={(e) => handleInputChange(e, 1)}
             onBlur={(e) => handleInputBlur(e, 1)}
           />
-          {isInputChange[1] && <BsCheck2 />}
+          {isInputChange[1] && <BsCheckLg />}
           {!isInputValid[1] && <BiErrorCircle />}
           {errors[INPUT_FIELD[1].id] && (
             <small role="alert">{INPIT_VALIDATION}</small>
@@ -133,7 +133,7 @@ const WritePost = () => {
             onChange={(e) => handleInputChange(e, 2)}
             onBlur={(e) => handleInputBlur(e, 2)}
           />
-          {isInputChange[2] && <BsCheck2 />}
+          {isInputChange[2] && <BsCheckLg />}
           {!isInputValid[2] && <BiErrorCircle />}
           {errors[INPUT_FIELD[2].id] && (
             <small role="alert">{INPIT_VALIDATION}</small>
@@ -152,7 +152,7 @@ const WritePost = () => {
           onChange={(e) => handleInputChange(e, 3)}
           onBlur={(e) => handleInputBlur(e, 3)}
         />
-        {isInputChange[3] && <BsCheck2 />}
+        {isInputChange[3] && <BsCheckLg />}
         {!isInputValid[3] && <BiErrorCircle />}
         {errors[INPUT_FIELD[3].id] && (
           <small role="alert">{INPIT_VALIDATION}</small>
