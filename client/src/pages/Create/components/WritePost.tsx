@@ -2,7 +2,11 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import { CONTENT_DESCRIPTION, INPUT_FIELD } from '../constants';
+import {
+  CONTENT_DESCRIPTION,
+  INPIT_VALIDATION,
+  INPUT_FIELD,
+} from '../constants';
 import { WritePostContainer, WritePriceWrapper, ButtonWrapper } from '../style';
 
 const WritePost = () => {
@@ -38,7 +42,7 @@ const WritePost = () => {
             {...register(`${INPUT_FIELD[0].id}`, { required: true })}
           />
           {errors[INPUT_FIELD[0].id] && (
-            <small role="alert">필수 입력사항입니다.</small>
+            <small role="alert">{INPIT_VALIDATION}</small>
           )}
         </div>
         <div>
@@ -56,7 +60,7 @@ const WritePost = () => {
             {...register(`${INPUT_FIELD[1].id}`, { required: true })}
           />
           {errors[INPUT_FIELD[1].id] && (
-            <small role="alert">필수 입력사항입니다.</small>
+            <small role="alert">{INPIT_VALIDATION}</small>
           )}
         </div>
         <div>
@@ -74,7 +78,7 @@ const WritePost = () => {
             {...register(`${INPUT_FIELD[2].id}`, { required: true })}
           />
           {errors[INPUT_FIELD[2].id] && (
-            <small role="alert">필수 입력사항입니다.</small>
+            <small role="alert">{INPIT_VALIDATION}</small>
           )}
         </div>
       </WritePriceWrapper>
@@ -89,7 +93,7 @@ const WritePost = () => {
         {...register(`${INPUT_FIELD[3].id}`, { required: true })}
       />
       {errors[INPUT_FIELD[3].id] && (
-        <small role="alert">필수 입력사항입니다.</small>
+        <small role="alert">{INPIT_VALIDATION}</small>
       )}
       <ReactQuill
         theme="snow"
