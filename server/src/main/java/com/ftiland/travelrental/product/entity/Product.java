@@ -5,6 +5,8 @@ import com.ftiland.travelrental.common.aduit.BaseEntity;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.member.entity.Member;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -50,5 +52,6 @@ public class Product extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 }
