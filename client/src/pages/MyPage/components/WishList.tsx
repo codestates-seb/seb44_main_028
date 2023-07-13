@@ -8,7 +8,7 @@ import ItemCard from '../../../common/components/ItemCard/ItemCard';
 function WishList() {
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [itemsPerPage] = useState(6);
+  const [itemsPerPage] = useState(3);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
@@ -20,23 +20,22 @@ function WishList() {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/members/interests`,
-        {
-          params: { memberId: 1, page: currentPage, size: itemsPerPage },
-        },
+        { params: { memberId: 1, page: currentPage, size: itemsPerPage } },
       ); // 실제 API 엔드포인트에 맞게 수정
       // console.log(Array.isArray(response.data));
 
-      setItems(response.data.items);
-      setTotalItemsCount(response.data.totalElements);
+      setItems(response.data.responses);
+      setTotalItemsCount(response.data.listSize);
 
-      console.log('totalElements:', response.data.listSize);
-      console.log('response:', response.data);
+      console.log('currentPage:', currentPage);
+      console.log('totalElements:', response.data);
+      console.log('response:', response.data.responses);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
     }
   };
   // console.log('items:', items);
-  console.log('items의 0번째 인덱스:', items[0]);
+  // console.log('items의 0번째 인덱스:', items[0]);
   // console.log(Array.isArray(items));
   // console.log('totalItemsCount:', totalItemsCount);
 
@@ -49,11 +48,9 @@ function WishList() {
       {/* {renderItems()} */}
 
       <div>
-        {items
-          .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-          .map((item, index) => (
-            <ItemCard key={index} itemCardData={item} />
-          ))}
+        {items.map((item, index) => (
+          <ItemCard key={index} itemCardData={item} />
+        ))}
       </div>
       <div>
         <Paging
