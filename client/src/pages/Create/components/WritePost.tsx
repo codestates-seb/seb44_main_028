@@ -47,9 +47,15 @@ const WritePost = () => {
     e: ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
+    const newValue = e.target.value.length > 0;
     setIsInputChange((prevState) => {
       const newState = [...prevState];
-      newState[index] = e.target.value.length > 0;
+      newState[index] = newValue;
+      return newState;
+    });
+    setIsInputValid((prevState) => {
+      const newState = [...prevState];
+      newState[index] = newValue && !errors[INPUT_FIELD[index].id];
       return newState;
     });
   };
@@ -63,11 +69,14 @@ const WritePost = () => {
   useEffect(() => {
     setIsInputValid((prevState) => {
       const newState = [...prevState];
-      newState[0] = !errors[INPUT_FIELD[0].id];
+      for (let i = 0; i < INPUT_FIELD.length; i++) {
+        newState[i] = !errors[INPUT_FIELD[i].id];
+      }
       return newState;
     });
   }, [errors]);
-  console.log(isInputChange);
+  console.log('check', isInputChange);
+  console.log('error', isInputValid);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <WritePriceWrapper>
