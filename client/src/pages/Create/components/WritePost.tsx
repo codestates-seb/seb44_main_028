@@ -7,7 +7,12 @@ import {
   INPIT_VALIDATION,
   INPUT_FIELD,
 } from '../constants';
-import { WritePostContainer, WritePriceWrapper, ButtonWrapper } from '../style';
+import {
+  WritePostContainer,
+  WritePriceWrapper,
+  ButtonWrapper,
+  CheckBoxTitle,
+} from '../style';
 
 const WritePost = () => {
   const {
@@ -100,6 +105,7 @@ const WritePost = () => {
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}
       />
+      <CheckBoxTitle>카테고리</CheckBoxTitle>
       <CheckBoxList />
       <ButtonWrapper>
         <button>취소</button>

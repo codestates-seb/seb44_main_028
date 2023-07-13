@@ -125,6 +125,9 @@ export const WritePriceWrapper = styled.div`
     flex-direction: column;
   }
 `;
+export const CheckBoxTitle = styled.div`
+  margin-bottom: 1.5rem;
+`;
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
