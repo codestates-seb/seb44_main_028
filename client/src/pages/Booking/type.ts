@@ -7,14 +7,14 @@ export type CalendarProps = {
 };
 
 export type EachDatesProps = {
-  today: {
+  current: {
     year: number;
     month: number;
     date: number;
   };
   row: {
     week: number;
-    lastWeek: number;
+    finalWeek: number;
   };
   day: number;
 };
