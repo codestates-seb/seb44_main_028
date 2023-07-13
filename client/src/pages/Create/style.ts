@@ -14,6 +14,7 @@ export const UploadContainer = styled.div`
   margin: 1.875rem 0;
 `;
 export const UploadImageLabel = styled.label`
+  margin-top: 1rem;
   width: 9.875rem;
   height: 7.875rem;
   border: ${border.basic};
@@ -117,6 +118,7 @@ export const CheckBoxTitle = styled.div`
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 4rem;
   & button {
     font-size: ${fontSize.headerIconSize};
     width: 10.938rem;
