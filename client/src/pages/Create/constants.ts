@@ -15,8 +15,6 @@ export const INPUT_FIELD: InputFieldData[] = [
     id: 'feePerDay',
     title: '1일 당 추가금액',
   },
-];
-export const INPUT_FIELD_TITLE: InputFieldData[] = [
   {
     id: 'title',
     title: '제목',

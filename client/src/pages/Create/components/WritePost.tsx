@@ -2,7 +2,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import { CONTENT_DESCRIPTION } from '../constants';
+import { CONTENT_DESCRIPTION, INPUT_FIELD } from '../constants';
 import { WritePostContainer, WritePriceWrapper, ButtonWrapper } from '../style';
 
 const WritePost = () => {
@@ -17,58 +17,80 @@ const WritePost = () => {
   const onSubmit = async (data: any) => {
     alert(JSON.stringify(data));
   };
-  console.log('error', errors);
+
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <WritePriceWrapper>
         <div>
-          <label htmlFor="minRentalPeriod">최소 대여시간</label>
+          <label htmlFor={`${INPUT_FIELD[0].id}}`}>
+            {INPUT_FIELD[0].title}
+          </label>
           <input
-            id="minRentalPeriod"
+            id={`${INPUT_FIELD[0].id}}`}
             type="text"
             aria-invalid={
-              !isDirty ? undefined : errors.password ? 'true' : 'false'
+              !isDirty
+                ? undefined
+                : errors[INPUT_FIELD[0].id]
+                ? 'true'
+                : 'false'
             }
-            {...register('minRentalPeriod', { required: true })}
+            {...register(`${INPUT_FIELD[0].id}`, { required: true })}
           />
-          {errors.minRentalPeriod && (
+          {errors[INPUT_FIELD[0].id] && (
             <small role="alert">필수 입력사항입니다.</small>
           )}
         </div>
         <div>
-          <label>고정금액</label>
+          <label>{INPUT_FIELD[1].title}</label>
           <input
-            id="baseFee"
+            id={`${INPUT_FIELD[1].id}}`}
             type="text"
             aria-invalid={
-              !isDirty ? undefined : errors.password ? 'true' : 'false'
+              !isDirty
+                ? undefined
+                : errors[INPUT_FIELD[1].id]
+                ? 'true'
+                : 'false'
             }
-            {...register('baseFee', { required: true })}
+            {...register(`${INPUT_FIELD[1].id}`, { required: true })}
           />
-          {errors.baseFee && <small role="alert">필수 입력사항입니다.</small>}
+          {errors[INPUT_FIELD[1].id] && (
+            <small role="alert">필수 입력사항입니다.</small>
+          )}
         </div>
         <div>
-          <label>1일 당 추가금액</label>
+          <label>{INPUT_FIELD[2].title}</label>
           <input
-            id="feePerDay"
+            id={`${INPUT_FIELD[2].id}}`}
             type="text"
             aria-invalid={
-              !isDirty ? undefined : errors.password ? 'true' : 'false'
+              !isDirty
+                ? undefined
+                : errors[INPUT_FIELD[2].id]
+                ? 'true'
+                : 'false'
             }
-            {...register('feePerDay', { required: true })}
+            {...register(`${INPUT_FIELD[2].id}`, { required: true })}
           />
-          {errors.feePerDay && <small role="alert">필수 입력사항입니다.</small>}
+          {errors[INPUT_FIELD[2].id] && (
+            <small role="alert">필수 입력사항입니다.</small>
+          )}
         </div>
       </WritePriceWrapper>
 
-      <label>제목</label>
+      <label>{INPUT_FIELD[3].title}</label>
       <input
-        id="title"
+        id={`${INPUT_FIELD[3].id}}`}
         type="text"
-        aria-invalid={!isDirty ? undefined : errors.password ? 'true' : 'false'}
-        {...register('title', { required: true })}
+        aria-invalid={
+          !isDirty ? undefined : errors[INPUT_FIELD[3].id] ? 'true' : 'false'
+        }
+        {...register(`${INPUT_FIELD[3].id}`, { required: true })}
       />
-      {errors.title && <small role="alert">필수 입력사항입니다.</small>}
+      {errors[INPUT_FIELD[3].id] && (
+        <small role="alert">필수 입력사항입니다.</small>
+      )}
       <ReactQuill
         theme="snow"
         onChange={handleQuillChange}

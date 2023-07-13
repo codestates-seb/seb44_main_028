@@ -3,7 +3,7 @@ import { border } from '../../common/utils/enum/border';
 import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
-import { INPUT_FIELD_TITLE } from './constants';
+import { INPUT_FIELD } from './constants';
 
 export const CreatePageContainer = styled.div`
   font-size: ${fontSize.headerIconSize};
@@ -90,7 +90,7 @@ export const WritePostContainer = styled.form`
     margin-top: 0.75rem;
     color: ${colorPalette.grayTextColor};
   }
-  & input:not([id='${INPUT_FIELD_TITLE[0].id}']) {
+  & input:not([id='${INPUT_FIELD[3].id}']) {
     text-align: end;
   }
   & small {
@@ -110,7 +110,7 @@ export const InputFieldWrapper = styled.div`
     margin-top: 0.75rem;
     color: ${colorPalette.grayTextColor};
   }
-  & input:not([id='${INPUT_FIELD_TITLE[0].id}']) {
+  & input:not([id='${INPUT_FIELD[3].id}']) {
     text-align: end;
   }
 `;
