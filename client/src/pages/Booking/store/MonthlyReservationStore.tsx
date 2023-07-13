@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StartEndDateProps } from '../model/IStartEndDateProps';
 
 const turnStringArrIntoDateObjectArr = (
   date: { startDate: string; endDate: string }[],
@@ -20,19 +21,6 @@ const turnStringArrIntoDateObjectArr = (
   );
   return dateObjectArr;
 };
-
-interface StartEndDateProps {
-  startDate: {
-    year: number;
-    month: number;
-    day: number;
-  };
-  endDate: {
-    year: number;
-    month: number;
-    day: number;
-  };
-}
 
 interface MonthlyReservationProps {
   productTitle: string;
