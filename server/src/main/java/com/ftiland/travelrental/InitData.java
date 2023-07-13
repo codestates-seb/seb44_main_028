@@ -104,13 +104,13 @@ public class InitData {
 
         List<Member> members = List.of(
                 Member.builder()
-                        .email("test@test.com")
+                        .email("skdlaudrb@naver.com")
                         .displayName("이명규")
                         .latitude(37.57508267834743)
                         .longitude(126.93693887661931)
                         .address("서울 서대문구 연희동 138-33").build(),
                 Member.builder()
-                        .email("test2@test2.com")
+                        .email("mgl960502@gmail.com")
                         .displayName("변상욱")
                         .latitude(37.5801843431236)
                         .longitude(126.97665788258321)

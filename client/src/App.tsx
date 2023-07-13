@@ -15,33 +15,33 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Carousel />
+        <Provider store={store}>
+          <Header />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Carousel />
+                  <Container maxWidth="lg">
+                    <Provider store={store}>
+                      <Router />
+                    </Provider>
+                  </Container>
+                </>
+              }
+            />
+            <Route
+              path="/*"
+              element={
                 <Container maxWidth="lg" style={{ paddingTop: '4.5rem' }}>
-                  <Provider store={store}>
-                    <Router />
-                  </Provider>
-                </Container>
-              </>
-            }
-          />
-          <Route
-            path="/*"
-            element={
-              <Container maxWidth="lg" style={{ paddingTop: '4.5rem' }}>
-                <Provider store={store}>
                   <Router />
-                </Provider>
-              </Container>
-            }
-          />
-        </Routes>
-        <Footer prop1={'플레이 팩'} />
+                </Container>
+              }
+            />
+          </Routes>
+          <Footer prop1={'플레이 팩'} />
+        </Provider>
       </BrowserRouter>
     </QueryClientProvider>
   );

@@ -14,6 +14,9 @@ export type ModalFrameProps = {
   children: React.ReactNode;
   setOnModal: (state: boolean) => void;
 };
+export type ModalAdditionalProps = {
+  children: React.ReactNode;
+};
 export type SelectOption = {
   value: string;
   label: string;
@@ -30,6 +33,9 @@ export type CheckBoxProps = {
 };
 
 export type ModalButtonProps = {
+  color: string;
+  backgroundColor: string;
+  hoverBackgroundColor?: string;
   children?: ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };

@@ -9,6 +9,20 @@ import java.util.ArrayList;
 public class InterestDto {
     @Getter
     @Setter
+    public static class PostRequestDto{
+        private long memberId;
+        private String productId;
+    }
+
+    @Getter
+    @Setter
+    public static class DeleteRequestDto{
+        private long memberId;
+        private String interestId;
+    }
+
+    @Getter
+    @Setter
     public static class PostResponseDto {
         private String interestId;
         private long memberId;
@@ -35,6 +49,7 @@ public class InterestDto {
     public static class ResponsesDto{
         private long page;
         private long size;
+        private Integer listSize;
         private ArrayList<GetResponseDto> responses = new ArrayList<>();
         public void addResponse(GetResponseDto responseDto){
             this.responses.add(responseDto);

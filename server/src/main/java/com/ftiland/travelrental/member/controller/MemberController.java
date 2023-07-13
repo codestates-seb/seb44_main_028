@@ -1,5 +1,7 @@
 package com.ftiland.travelrental.member.controller;
 
+import com.ftiland.travelrental.common.annotation.CurrentMemberId;
+import com.ftiland.travelrental.common.utils.JwtUtils;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,26 +27,10 @@ public class MemberController {
     private final JwtTokenizer jwtTokenizer;
 
     @GetMapping
-    public ResponseEntity<MemberDto.Response> getMember(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<MemberDto.Response> getMember(@CurrentMemberId Long memberId) {
 
-//        공통 utility로 추출
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String memberId = null;
-//
-//        if (authentication != null && authentication.getPrincipal() instanceof Map) {
-//            Map<String, Object> principalMap = (Map<String, Object>) authentication.getPrincipal();
-//            memberId = principalMap.get("memberId").toString();
-//        }
-
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String jws = authorizationHeader.substring(7);
-            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-            Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
-            Integer memberId = (Integer) claims.get("memberId");
-            Long memberIdLong = memberId != null ? memberId.longValue() : null;
-
-            Member member = memberService.findMember(memberIdLong);
-
+        if(memberId != null) {
+            Member member = memberService.findMember(memberId);
             MemberDto.Response response = MemberDto.Response.from(member);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -52,19 +40,25 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@RequestHeader("Authorization") String authorizationHeader,
-                                                          @Valid @RequestBody MemberPatchDto.Request request) {
+    public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request request) {
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String jws = authorizationHeader.substring(7);
-            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-            Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
-            Integer memberId = (Integer) claims.get("memberId");
-            Long memberIdLong = memberId != null ? memberId.longValue() : null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long memberId = JwtUtils.extractMemberIdFromAuthentication(authentication);
 
-            MemberDto.Response response = memberService.updateMember(request, memberIdLong);
+        if(memberId != null) {
+            MemberDto.Response response = memberService.updateMember(request, memberId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteMember() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long memberId = JwtUtils.extractMemberIdFromAuthentication(authentication);
+
+        memberService.deleteMember(memberId);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

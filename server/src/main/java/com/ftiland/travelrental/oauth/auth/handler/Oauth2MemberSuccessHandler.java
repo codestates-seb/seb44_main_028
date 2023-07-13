@@ -2,8 +2,10 @@ package com.ftiland.travelrental.oauth.auth.handler;
 
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
+import com.ftiland.travelrental.oauth.config.UrlConfig;
 import com.ftiland.travelrental.oauth.jwt.JwtTokenizer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -24,24 +26,26 @@ import java.util.*;
 public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
+    private final UrlConfig urlConfig;
 
-    public Oauth2MemberSuccessHandler(JwtTokenizer jwtTokenizer, MemberService memberService) {
+    public Oauth2MemberSuccessHandler(JwtTokenizer jwtTokenizer, MemberService memberService, UrlConfig urlConfig) {
         this.jwtTokenizer = jwtTokenizer;
         this.memberService = memberService;
+        this.urlConfig = urlConfig;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        var oAuth2User = (OAuth2User) authentication.getPrincipal();
-        Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttribute("kakao_account");
+        var oAuth2User = (OAuth2User)authentication.getPrincipal();
+        Map<String, Object> kakaoAccount = (Map<String, Object>)oAuth2User.getAttribute("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
         String email = String.valueOf(kakaoAccount.get("email"));
         String displayName = (String) profile.get("nickname");
 
         Long memberId;
-        if (!memberService.existsEmail(email)) {
+        if(!memberService.existsEmail(email)) {
             Member savedMember = saveMember(email, displayName);
             memberId = savedMember.getMemberId();
         } else {
@@ -70,13 +74,17 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         refreshTokenCookie.setMaxAge(30 * 24 * 60 * 60);
         response.addCookie(refreshTokenCookie);
 
-        String uri = createURI(accessToken).toString();
+        String uri = urlConfig.createURI();
+
+        String redirectUri = UriComponentsBuilder.fromUriString(uri)
+                .queryParam("access_token", accessToken).toUriString();
+
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + uri);
+            logger.debug("Response has already been committed. Unable to redirect to " + redirectUri);
             return;
         }
 
-        getRedirectStrategy().sendRedirect(request, response, uri);
+        getRedirectStrategy().sendRedirect(request, response, redirectUri);
     }
 
     private String delegateAccessToken(String displayName, Long memberId, String email) {
@@ -103,19 +111,5 @@ public class Oauth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
         return refreshToken;
-    }
-
-    private URI createURI(String accessToken) {
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", accessToken);
-        return UriComponentsBuilder
-                .newInstance()
-                .scheme("http")
-                .host("localhost")
-                .port(3000)
-                .path("/auth/callback")
-                .queryParams(queryParams)
-                .build()
-                .toUri();
     }
 }

@@ -32,8 +32,20 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
-
     show-sql: true
+
+  mail:
+    smtp:
+      host: smtp.gmail.com
+      port: 587
+      username: ${EMAIL_USERNAME} # Gmail email
+      password: ${EMAIL_PASSWORD} # Google 계정 2단계 인증 생성 후 앱 비밀번호 생성
+      auth: true
+      starttls:
+        enable: true #일부 SMTP 서버에는 TLS 연결이 필요하므로 TLS 보호 연결을 활성화한다
+    subject:
+      member:
+        registration: Thank you for joining our cafe!
 
 jwt:
   key:
@@ -74,3 +86,8 @@ kakao:
 category:
   image:
     path: ${CATEGORY.IMAGE.PATH}
+
+
+
+
+

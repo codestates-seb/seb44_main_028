@@ -1,5 +1,8 @@
 export interface IUserInfo {
+  address: string | null;
   displayName: string;
-  latitude: number;
-  longitude: number;
+  email: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  memberId: number;
 }
