@@ -44,7 +44,6 @@ jobs:
           kakao.restapi: ${{secrets.KAKAO_REST_API}}
           
           
-          
       - name: Build with Gradle
         run: |
           cd server
