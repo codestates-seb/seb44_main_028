@@ -41,8 +41,7 @@ jobs:
           cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
           cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           jwt.key.secret: ${{secrets.JWT_SECRET_KEY}}
-          kakao.restapi: ${{secrets.KAKAO_REST_API}}
-          
+          kakao.restapi: ${{secrets.KAKAO_REST_API}}   
           
       - name: Build with Gradle
         run: |
