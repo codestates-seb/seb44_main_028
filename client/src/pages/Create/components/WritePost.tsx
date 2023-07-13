@@ -75,8 +75,6 @@ const WritePost = () => {
       return newState;
     });
   }, [errors]);
-  console.log('check', isInputChange);
-  console.log('error', isInputValid);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <WritePriceWrapper>
