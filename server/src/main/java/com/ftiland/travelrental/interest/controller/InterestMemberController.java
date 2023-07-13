@@ -1,6 +1,6 @@
 package com.ftiland.travelrental.interest.controller;
 
-import com.ftiland.travelrental.image.service.ImageService;
+
 import com.ftiland.travelrental.interest.dto.InterestDto;
 import com.ftiland.travelrental.interest.entity.Interest;
 import com.ftiland.travelrental.interest.mapper.InterestMapper;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
+
 
 @RestController
 @RequestMapping("/api/members/interests")
@@ -20,14 +20,14 @@ public class InterestMemberController {
 
     private InterestService interestService;
     private InterestMapper interestMapper;
-    private ImageService imageService;
+
 
     @Autowired
-    public InterestMemberController(InterestService interestService, InterestMapper interestMapper,ImageService imageService) {
+    public InterestMemberController(InterestService interestService, InterestMapper interestMapper) {
 
         this.interestService = interestService;
         this.interestMapper = interestMapper;
-        this.imageService = imageService;
+
     }
 
 
@@ -35,8 +35,7 @@ public class InterestMemberController {
     @GetMapping
     public ResponseEntity getInterest(@Param("memberId")Long memberId, @Param("page")@Positive int page, @Param("size")@Positive int size){
 
-        ArrayList<Interest> interests = interestService.findInterest(memberId,page,size);
-        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(imageService,interests,page,size);
+        InterestDto.ResponsesDto responses = interestService.findInterest(memberId,page,size);
 
         return new ResponseEntity(responses, HttpStatus.OK);
     }

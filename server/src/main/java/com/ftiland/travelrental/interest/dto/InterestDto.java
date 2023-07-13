@@ -49,6 +49,7 @@ public class InterestDto {
     public static class ResponsesDto{
         private long page;
         private long size;
+        private Integer listSize;
         private ArrayList<GetResponseDto> responses = new ArrayList<>();
         public void addResponse(GetResponseDto responseDto){
             this.responses.add(responseDto);

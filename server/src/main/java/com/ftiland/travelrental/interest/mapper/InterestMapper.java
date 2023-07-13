@@ -40,7 +40,7 @@ public interface InterestMapper {
         return response;
     }
 
-    default InterestDto.ResponsesDto interestsToResponsesDto (ImageService imageService,ArrayList<Interest> interests,long page,long size){
+    default InterestDto.ResponsesDto interestsToResponsesDto (ImageService imageService,ArrayList<Interest> interests,long page,long size,int listSize){
         InterestDto.ResponsesDto responses = new InterestDto.ResponsesDto();
         for(Interest interest : interests){
             InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
@@ -52,6 +52,7 @@ public interface InterestMapper {
             }
             responses.addResponse(response);
         }
+        responses.setListSize(listSize);
         responses.setPage(page);
         responses.setSize(size);
         return responses;
