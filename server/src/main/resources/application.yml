@@ -52,6 +52,12 @@ jwt:
     secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+  redirect:
+    scheme: ${REDIRECT_SCHEMA}
+    host: ${REDIRECT_HOST}
+    port: ${REDIRECT_PORT}
+    path: ${REDIRECT_PATH}
+
 
 logging:
   level:

@@ -30,10 +30,12 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
 
     private final MemberService memberService;
+    private final UrlConfig urlConfig;
 
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, MemberService memberService) {
+    public SecurityConfiguration(JwtTokenizer jwtTokenizer, MemberService memberService, UrlConfig urlConfig) {
         this.jwtTokenizer = jwtTokenizer;
         this.memberService = memberService;
+        this.urlConfig = urlConfig;
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,7 +59,7 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new Oauth2MemberSuccessHandler(jwtTokenizer, memberService))
+                        .successHandler(new Oauth2MemberSuccessHandler(jwtTokenizer, memberService, urlConfig))
                 );
         return http.build();
     }
@@ -78,13 +80,8 @@ public class SecurityConfiguration {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST" ,"PATCH", "DELETE","OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization","Refresh","MemberId"));
-         configuration.setAllowCredentials(true);
-
-        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-       
-        
         return source;
     }
 
