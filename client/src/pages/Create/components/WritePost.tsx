@@ -2,11 +2,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import {
-  CONTENT_DESCRIPTION,
-  INPUT_FIELD,
-  INPUT_FIELD_TITLE,
-} from '../constants';
+import { CONTENT_DESCRIPTION } from '../constants';
 import { WritePostContainer, WritePriceWrapper, ButtonWrapper } from '../style';
 
 const WritePost = () => {
