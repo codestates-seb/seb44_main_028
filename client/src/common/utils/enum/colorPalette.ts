@@ -21,4 +21,6 @@ export enum colorPalette {
   CaemeraIconColor = '#737373',
   ModalBackgroundColor = 'rgba(0, 0, 0, 0.5)',
   rightButtonHoverColor = '#1d5799',
+  checkColor = '#61cf5f',
+  errorColor = '#f44336',
 }

@@ -111,12 +111,19 @@ export const PriceInput = styled.div<{ isInputChange: boolean }>`
   input:focus {
     outline: none !important;
     border-color: ${({ isInputChange }) =>
-      isInputChange ? '#61cf5f' : '#f44336'};
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
     box-shadow: ${({ isInputChange }) =>
-      isInputChange ? '0 0 3px #61cf5f' : '0 0 3px #f44336'};
+      isInputChange
+        ? `0 0 3px ${colorPalette.checkColor}`
+        : `0 0 3px ${colorPalette.errorColor}`};
   }
   svg {
-    color: ${({ isInputChange }) => (isInputChange ? '#61cf5f' : '#f44336')};
+    color: ${({ isInputChange }) =>
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
   }
 `;
 export const TitleInput = styled.div<{ isInputChange: boolean }>`
@@ -125,12 +132,19 @@ export const TitleInput = styled.div<{ isInputChange: boolean }>`
   input:focus {
     outline: none !important;
     border-color: ${({ isInputChange }) =>
-      isInputChange ? '#61cf5f' : '#f44336'};
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
     box-shadow: ${({ isInputChange }) =>
-      isInputChange ? '0 0 3px #61cf5f' : '0 0 3px #f44336'};
+      isInputChange
+        ? `0 0 3px ${colorPalette.checkColor}`
+        : `0 0 3px ${colorPalette.errorColor}`};
   }
   svg {
-    color: ${({ isInputChange }) => (isInputChange ? '#61cf5f' : '#f44336')};
+    color: ${({ isInputChange }) =>
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
   }
 `;
 
