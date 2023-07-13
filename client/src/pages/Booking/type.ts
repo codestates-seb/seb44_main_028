@@ -1,9 +1,12 @@
+import { StartEndDateProps } from './model/IStartEndDateProps';
+
 export type CalendarProps = {
   calendar: {
     year: number;
     month: number;
     date: number;
   };
+  reservationData: StartEndDateProps[];
 };
 
 export type EachDatesProps = {
@@ -16,5 +19,6 @@ export type EachDatesProps = {
     week: number;
     finalWeek: number;
   };
+  reservationData: StartEndDateProps[];
   day: number;
 };
