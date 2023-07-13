@@ -5,8 +5,12 @@ import MypageProfile from '../components/MypageProfile';
 import { ProfileWrapper, EditWrapper, ProfileDataWrapper } from '../style';
 import { ProfileDataType } from '../type';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../common/store/RootStore';
 
 const MyPage = () => {
+  const state = useSelector((state: RootState) => state.userInfo);
+  console.log(state);
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
   );
