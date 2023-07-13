@@ -8,6 +8,8 @@ import axios from 'axios';
 import { RootState } from '../../../common/store/RootStore';
 import { useSelector } from 'react-redux';
 import { ACCESS_TOKEN } from '../../Login/constants';
+// import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
+// import { BorrowCardProps } from '../../../common/type';
 
 const MyPage = () => {
   const navigator = useNavigate();
@@ -54,6 +56,7 @@ const MyPage = () => {
         </ProfileDataWrapper>
       </ProfileWrapper>
       <EditWrapper onClick={handleEditProfile}>회원 정보 수정</EditWrapper>
+
       <ParentTap />
     </div>
   );

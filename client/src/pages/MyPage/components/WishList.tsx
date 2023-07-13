@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper } from '../style';
-// import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 
 function WishList() {

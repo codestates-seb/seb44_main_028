@@ -364,13 +364,17 @@ export const CardWrapper = styled.div`
   width: 23rem;
 `;
 export const ImgWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-left: 1rem;
-  border: 1px solid blue;
   height: 9rem;
   width: 9rem;
+  img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 9rem;
+    width: 9rem;
+  }
 `;
 export const ContentWrapper = styled.div`
   display: flex;
@@ -397,7 +401,7 @@ export const TitleWrapper = styled.div`
   height: 2rem;
   width: 10rem;
   font-weight: 700;
-  font-size: ${fontSize.cardTitle};
+  font-size: ${fontSize.basic};
 `;
 
 export const ButtonWapper = styled.div`

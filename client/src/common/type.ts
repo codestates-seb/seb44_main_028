@@ -60,7 +60,18 @@ export type ItemCardProps = {
   content: string;
   minimumRentalPeriod: number;
   category: number[];
-  location: string;
+  address: string;
   minRental: number;
-  imageUrl: string;
+  images: string;
+};
+
+export type BorrowCardProps = {
+  id: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  images: string;
+  content: string;
+  category: number[];
+  address: string;
 };

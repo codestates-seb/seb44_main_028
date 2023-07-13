@@ -7,11 +7,10 @@ import {
   ITEMCARD_DATA,
   ITEMCARD_DEVELOPMENT_DATA,
 } from '../constants';
-import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
+
 function MainPage() {
   return (
     <MainPageContainer>
-      <BorrowCard />
       <Category />
       <ScrollToTop />
       <ItemCardList

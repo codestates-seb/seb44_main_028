@@ -324,9 +324,8 @@ export const Rating = styled(DefaultBtn)``;
 
 //WishList
 
-export const WishListWrapper = styled.div`
-  display: grid;
-  justify-content: center;
-  div {
-  }
+export const WishListWrapper = styled.div``;
+export const LendListWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;

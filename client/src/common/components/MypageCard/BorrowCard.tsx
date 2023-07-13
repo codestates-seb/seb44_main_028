@@ -1,7 +1,9 @@
-import { Button } from '@mui/base';
-import { red } from '@mui/material/colors';
 import React from 'react';
 import { colorPalette } from '../../utils/enum/colorPalette';
+import { useEffect, useState } from 'react';
+import { DefaultBtn } from '../Button';
+import { BorrowCardProps } from '../../type';
+import axios from 'axios';
 import {
   CardWrapper,
   DatesWrapper,
@@ -9,19 +11,49 @@ import {
   TitleWrapper,
   ImgWrapper,
   ContentWrapper,
+  ItemImage,
 } from '../../style/style';
-import { DefaultBtn } from '../Button';
 
-const BorrowCard = () => {
+const BorrowCard = ({ itemCardData }: { itemCardData: BorrowCardProps }) => {
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/reservations/members`,
+        );
+        setItems(response.data);
+      } catch (error) {
+        console.error('아이템을 불러올 수없습니다.', error);
+      }
+    };
+    fetchItems();
+  }, []);
+
+  useEffect(() => {
+    const fetchDates = () => {
+      const start = '2023.07.09';
+      const end = '2023.07.11';
+      setStartDate(start);
+      setEndDate(end);
+    };
+    fetchDates();
+  }, []);
+
   return (
     <>
       <CardWrapper>
-        <ImgWrapper></ImgWrapper>
+        <ImgWrapper>
+          <ItemImage src={itemCardData.images} />
+        </ImgWrapper>
         <ContentWrapper>
-          <TitleWrapper>감자 빌려드려요</TitleWrapper>
+          <TitleWrapper>{itemCardData.title}</TitleWrapper>
           <DatesWrapper>
             <div>예약기간</div>
-            <div>2023.07.09 - 2023.07.11</div>
+            <div>{`${startDate} - ${endDate}`}</div>
           </DatesWrapper>
           <ButtonWapper>
             <DefaultBtn
@@ -42,5 +74,4 @@ const BorrowCard = () => {
     </>
   );
 };
-
 export default BorrowCard;
