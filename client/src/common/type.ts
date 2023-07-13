@@ -5,18 +5,6 @@ export type CategoryButtonProps = {
   imageUrl: string;
   imageName: string;
 };
-export type ModalPortalProps = {
-  children: React.ReactNode;
-};
-export type ModalFrameProps = {
-  leftButtonText: string;
-  rightButtonText: string;
-  children: React.ReactNode;
-  setOnModal: (state: boolean) => void;
-};
-export type ModalAdditionalProps = {
-  children: React.ReactNode;
-};
 export type SelectOption = {
   value: string;
   label: string;
@@ -41,6 +29,10 @@ export type ModalButtonProps = {
 };
 export type ModalTitleProps = {
   children?: ReactNode;
+};
+
+export type ModalAdditionalProps = {
+  children: React.ReactNode;
 };
 export type ModalMainProps = {
   children?: ReactNode;
