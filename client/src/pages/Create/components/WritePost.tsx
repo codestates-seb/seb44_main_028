@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useForm } from 'react-hook-form';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
 import BigBtn from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
@@ -12,11 +13,17 @@ import InputField from './InputField';
 import { WritePostContainer, WritePriceWrapper, ButtonWrapper } from '../style';
 
 const WritePost = () => {
+  const { register, handleSubmit } = useForm();
   const handleQuillChange = (value: string) => {
     console.log(value);
   };
   return (
-    <WritePostContainer>
+    <WritePostContainer
+      onSubmit={handleSubmit(async (data) => {
+        await new Promise((r) => setTimeout(r, 1000));
+        alert(JSON.stringify(data));
+      })}
+    >
       <WritePriceWrapper>
         {INPUT_FIELD.map((input) => (
           <InputField id={input.id} label={input.title} />
@@ -34,22 +41,8 @@ const WritePost = () => {
       />
       <CheckBoxList />
       <ButtonWrapper>
-        <BigBtn
-          color="inherit"
-          backgroundColor={colorPalette.modalCancelButtonColor}
-          hoverBackgroundColor={colorPalette.modalCancelHoverColor}
-          height={57}
-          width={175}
-          children={'취소'}
-        />
-        <BigBtn
-          color={colorPalette.whiteColor}
-          backgroundColor={colorPalette.heavyColor}
-          hoverBackgroundColor={colorPalette.rightButtonHoverColor}
-          height={57}
-          width={175}
-          children={'등록'}
-        />
+        <button>취소</button>
+        <button type="submit">등록</button>
       </ButtonWrapper>
     </WritePostContainer>
   );

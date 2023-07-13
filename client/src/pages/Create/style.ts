@@ -110,8 +110,27 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   & button {
+    font-size: ${fontSize.headerIconSize};
+    width: 10.938rem;
+    height: 3.563rem;
     margin: 0 1rem;
     margin-top: 5rem;
-    transform: translateY(4rem);
+    border-radius: ${borderRadius.basicRadius};
+    border: none;
+    cursor: pointer;
+  }
+  & button:first-child {
+    background-color: ${colorPalette.modalCancelButtonColor};
+    color: 'inherit';
+  }
+  & button:first-child:hover {
+    background-color: ${colorPalette.modalCancelHoverColor};
+  }
+  & button:last-child {
+    background-color: ${colorPalette.heavyColor};
+    color: ${colorPalette.whiteColor};
+  }
+  & button:last-child:hover {
+    background-color: ${colorPalette.rightButtonHoverColor};
   }
 `;
