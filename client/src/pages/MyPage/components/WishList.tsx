@@ -9,7 +9,7 @@ function WishList() {
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const [totalItemsCount, setTotalItemsCount] = useState(0);
+  const [totalItemsCount, setTotalItemsCount] = useState(40);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
   useEffect(() => {
@@ -34,8 +34,8 @@ function WishList() {
     }
   };
   console.log('items:', items);
-  // console.log('items의 0번째 인덱스:', items[0]);
-  // console.log(Array.isArray(items));
+  console.log('items의 0번째 인덱스:', items[0]);
+  console.log(Array.isArray(items));
   console.log('totalItemsCount:', totalItemsCount);
 
   const handlePageChange = (page: number) => {

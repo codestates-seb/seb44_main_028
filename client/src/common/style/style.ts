@@ -353,3 +353,60 @@ export const ErrorWrapper = styled.div`
     font-weight: 700;
   }
 `;
+
+//BorrowCard
+
+export const CardWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  box-shadow: ${BoxShadow.Basic};
+  height: 11rem;
+  width: 23rem;
+`;
+export const ImgWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  border: 1px solid blue;
+  height: 9rem;
+  width: 9rem;
+`;
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+`;
+export const DatesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  /* border: 1px solid gray; */
+  height: 4rem;
+  width: 10rem;
+  font-size: ${fontSize.small};
+  color: ${colorPalette.grayTextColor};
+`;
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  /* border: 1px solid black; */
+  height: 2rem;
+  width: 10rem;
+  font-weight: 700;
+  font-size: ${fontSize.cardTitle};
+`;
+
+export const ButtonWapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  /* border: 1px solid brown; */
+  height: 2rem;
+  width: 10rem;
+
+  button {
+    width: 4rem;
+    font-weight: lighter;
+    font-size: ${fontSize.small};
+  }
+`;
