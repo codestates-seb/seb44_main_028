@@ -1,8 +1,37 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+const turnStringArrIntoDateObjectArr = (
+  date: { startDate: string; endDate: string }[],
+) => {
+  const dateObjectArr = date.map(
+    (dateObj: { startDate: string; endDate: string }) => {
+      const startDate = {
+        year: Number(dateObj.startDate.slice(0, 4)),
+        month: Number(dateObj.startDate.slice(5, 7)),
+        day: Number(dateObj.startDate.slice(8, 10)),
+      };
+      const endDate = {
+        year: Number(dateObj.endDate.slice(0, 4)),
+        month: Number(dateObj.endDate.slice(5, 7)),
+        day: Number(dateObj.endDate.slice(8, 10)),
+      };
+      return { startDate, endDate };
+    },
+  );
+  return dateObjectArr;
+};
+
 interface StartEndDateProps {
-  startDate: string;
-  endDate: string;
+  startDate: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  endDate: {
+    year: number;
+    month: number;
+    day: number;
+  };
 }
 
 interface MonthlyReservationProps {
@@ -21,22 +50,54 @@ const initialMonthlyReservationState: MonthlyReservationProps = {
   minimumRentalPeriod: 3,
   reservationsDate1: [
     {
-      startDate: '2023-02-03',
-      endDate: '2023-02-06',
+      startDate: {
+        year: 2023,
+        month: 7,
+        day: 15,
+      },
+      endDate: {
+        year: 2023,
+        month: 7,
+        day: 20,
+      },
     },
     {
-      startDate: '2023-02-07',
-      endDate: '2023-02-13',
+      startDate: {
+        year: 2023,
+        month: 7,
+        day: 22,
+      },
+      endDate: {
+        year: 2023,
+        month: 7,
+        day: 29,
+      },
     },
   ],
   reservationsDate2: [
     {
-      startDate: '2023-02-03',
-      endDate: '2023-02-06',
+      startDate: {
+        year: 2023,
+        month: 8,
+        day: 2,
+      },
+      endDate: {
+        year: 2023,
+        month: 8,
+        day: 9,
+      },
     },
     {
-      startDate: '2023-02-07',
-      endDate: '2023-02-13',
+      startDate: {
+        year: 2023,
+        month: 8,
+        day: 22,
+      },
+      endDate: {
+        year: 2023,
+        month: 9,
+        day: 1,
+      },
     },
   ],
 };
@@ -56,10 +117,25 @@ export const monthlyReservation = createSlice({
       state.reservationsDate1 = action.payload.reservationsDate1;
       state.reservationsDate2 = action.payload.reservationsDate2;
     },
+    clickRightArrow: (
+      state,
+      action: PayloadAction<{ startDate: string; endDate: string }[]>,
+    ) => {
+      state.reservationsDate1 = state.reservationsDate2;
+      state.reservationsDate2 = turnStringArrIntoDateObjectArr(action.payload);
+    },
+    clickLeftArrow: (
+      state,
+      action: PayloadAction<{ startDate: string; endDate: string }[]>,
+    ) => {
+      state.reservationsDate1 = turnStringArrIntoDateObjectArr(action.payload);
+      state.reservationsDate2 = state.reservationsDate1;
+    },
   },
 });
 
 export const monthlyReservationStore = configureStore({
   reducer: monthlyReservation.reducer,
 });
-export const { setMonthlyReservation } = monthlyReservation.actions;
+export const { setMonthlyReservation, clickLeftArrow, clickRightArrow } =
+  monthlyReservation.actions;
