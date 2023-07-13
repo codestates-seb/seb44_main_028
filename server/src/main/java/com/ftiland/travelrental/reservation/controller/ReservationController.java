@@ -1,20 +1,16 @@
 package com.ftiland.travelrental.reservation.controller;
 
-import com.ftiland.travelrental.reservation.dto.CreateReservation;
-import com.ftiland.travelrental.reservation.dto.CancelReservation;
-import com.ftiland.travelrental.reservation.dto.ReservationDto;
+import com.ftiland.travelrental.reservation.dto.*;
 import com.ftiland.travelrental.reservation.service.ReservationService;
 import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -59,12 +55,48 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReservationDto>> getReservationByBorrower(
-            @RequestParam  ReservationStatus status) {
-        log.info("[ReservationController] getReservationByBorrower called");
+    public ResponseEntity<GetReservations> getReservationsByBorrower(
+            @RequestParam ReservationStatus status,
+            @RequestParam int size,
+            @RequestParam int page) {
+        log.info("[ReservationController] getReservationsByBorrower called");
 
         Long memberId = 2L;
 
-        return ResponseEntity.ok(reservationService.getReservationByBorrower(memberId, status));
+        return ResponseEntity.ok(reservationService.getReservationByBorrower(memberId, status, size, page));
+    }
+
+    @GetMapping("/products/{product-id}")
+    public ResponseEntity<GetReservations> getReservationsByLender(
+            @PathVariable("product-id") String productId,
+            @RequestParam ReservationStatus status,
+            @RequestParam int size,
+            @RequestParam int page) {
+        log.info("[ReservationController] getReservationsByLender called");
+
+        Long memberId = 2L;
+
+        return ResponseEntity.ok(reservationService.getReservationByLender(memberId, productId, status, size, page));
+    }
+
+    @GetMapping("/products/{product-id}/calendar")
+    public ResponseEntity<GetReservationsMonth.Response> getReservationsByMonth(
+            @PathVariable("product-id") String productId,
+            @RequestParam String date1,
+            @RequestParam String date2) {
+        log.info("[ReservationController] getReservationsByMonth called");
+
+        return ResponseEntity.ok(reservationService.getReservationsByMonth(productId, date1, date2));
+    }
+
+    @GetMapping("/products/{product-id}/moreCalendar")
+    public ResponseEntity<List<ReservationCalendarDto>> getReservationsByMoreMonth(
+            @PathVariable("product-id") String productId,
+            @RequestParam String date) {
+        log.info("[ReservationController] getReservationsByMoreMonth called");
+
+        Long memberId = 2L;
+
+        return ResponseEntity.ok(reservationService.getReservationByMonth(productId, date));
     }
 }

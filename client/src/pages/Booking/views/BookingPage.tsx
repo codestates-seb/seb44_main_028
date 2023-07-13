@@ -1,6 +1,6 @@
-import { DefaultBtn } from '../../../common/style/style';
 import BookingDates from '../components/BookingDates';
 import Calendars from '../components/Calendars';
+import ReservationBtn from '../components/ReservationBtn';
 import { BookingPageContainer } from '../style';
 
 function BookingPage() {
@@ -8,7 +8,7 @@ function BookingPage() {
     <BookingPageContainer>
       <BookingDates />
       <Calendars />
-      <DefaultBtn>예약하기</DefaultBtn>
+      <ReservationBtn />
     </BookingPageContainer>
   );
 }

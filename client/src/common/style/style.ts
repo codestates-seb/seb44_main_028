@@ -5,11 +5,36 @@ import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
 import { borderRadius } from '../utils/enum/borderRadius';
 
+// ScrollToTop 컴포넌트의 스타일을 정의
+export const ScrollToTopButtonContainer = styled.div`
+  position: fixed;
+  right: 3rem;
+  bottom: 2rem;
+  z-index: 1;
+`;
+
+export const TopButton = styled.button`
+  font-weight: bold;
+  font-size: 15px;
+  padding: 15px 10px;
+  background-color: #12d3cf;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #b0f4e6;
+    color: #12d3cf;
+  }
+`;
 // Modal 컴포넌트의 스타일을 정의
 export const CategoryContainer = styled.div`
   display: grid;
+  padding: 0 10rem;
   grid-template-columns: repeat(5, 1fr);
-  gap: 4.275rem 2.4rem;
+  gap: 2rem 0;
 `;
 
 export const CategoryButtonWrapper = styled.div`
@@ -19,8 +44,8 @@ export const CategoryButtonWrapper = styled.div`
   font-size: ${fontSize.basic};
   cursor: pointer;
   & img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 20px;
   }
 `;
@@ -75,13 +100,27 @@ export const ModalButtonWrapper = styled.div`
     color: ${colorPalette.whiteColor};
   }
 `;
-
+// ItemCardList 컴포넌트의 스타일을 정의
+export const ItemCardListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 8.063rem;
+  & p {
+    font-size: 24px;
+    margin-bottom: 1.25rem;
+  }
+`;
+export const ItemCardWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+`;
 // ItemCard 컴포넌트의 스타일을 정의
 export const ItemCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 22.5rem;
-  height: 21rem;
+  height: 22rem;
   border-bottom: 1px solid ${colorPalette.borderColor};
   cursor: pointer;
   & img:hover {
@@ -102,8 +141,10 @@ export const ItemName = styled.p`
   margin-bottom: 4.15px;
 `;
 export const ItemDescription = styled.div`
-  height: 0.97rem;
   overflow: hidden;
+  height: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 11px;
   color: ${colorPalette.grayTextColor};
 `;
@@ -119,6 +160,7 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   justify-content: space-between;
   font-size: 12px;
   color: ${colorPalette.heavyColor};
+  margin-bottom: 1.248rem;
   & svg {
     color: ${(prop) =>
       prop.isHeartClicked
@@ -129,8 +171,9 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
     transition: color 0.2s ease-in-out;
   }
 `;
-export const ItemPrice = styled.div``;
-
+export const ItemPrice = styled.div`
+  font-weight: 500;
+`;
 // Button
 export const DefaultBtn = styled.button`
   background-color: #0d4c92;
@@ -155,6 +198,7 @@ export const SelectBoxWrapper = styled.div`
   border: ${border.basic};
   border-radius: 5px;
   font-weight: 700;
+  margin-right: 2.75rem;
 `;
 const onRotate = keyframes`
   from {

@@ -1,17 +1,18 @@
 package com.ftiland.travelrental.reservation.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
+import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.service.ProductService;
-import com.ftiland.travelrental.reservation.dto.CancelReservation;
-import com.ftiland.travelrental.reservation.dto.CreateReservation;
-import com.ftiland.travelrental.reservation.dto.ReservationDto;
+import com.ftiland.travelrental.reservation.dto.*;
 import com.ftiland.travelrental.reservation.entity.Reservation;
 import com.ftiland.travelrental.reservation.repository.ReservationRepository;
 import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.*;
+import static com.ftiland.travelrental.reservation.status.ReservationStatus.CANCELED;
 
 
 @Service
@@ -62,9 +64,13 @@ public class ReservationService {
             throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
         }
 
+        // 비용계산
+        int overDays = period.getDays() + 1 - product.getMinimumRentalPeriod();
+        int totalFee = product.getBaseFee() + overDays * product.getFeePerDay();
+
         Reservation reservation = Reservation.builder()
                 .reservationId(UUID.randomUUID().toString())
-                .totalFee(request.getTotalFee())
+                .totalFee(totalFee)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate().plusDays(1))
                 .status(ReservationStatus.REQUESTED)
@@ -75,7 +81,7 @@ public class ReservationService {
     }
 
     public boolean checkReservationDuplication(LocalDate startDate, LocalDate endDate) {
-        return reservationRepository.existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNot(startDate, endDate, ReservationStatus.CANCELED);
+        return reservationRepository.existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNot(startDate, endDate, CANCELED);
     }
 
     @Transactional
@@ -85,12 +91,18 @@ public class ReservationService {
 
         validateOwner(reservation, member);
 
-        LocalDate date = LocalDate.now().plusDays(7);
+//        LocalDate date = LocalDate.now().plusDays(7);
         // 예약 시작일 일주일 전부터는 예약취소 불가능
-        if (date.isAfter(reservation.getStartDate())) {
+        /*if (date.isAfter(reservation.getStartDate())) {
+            throw new BusinessLogicException(NOT_POSSIBLE_CANCEL);
+        }*/
+
+        // 예약상태가 Requested가 아니면 취소 불가능
+        if (reservation.getStatus() != ReservationStatus.REQUESTED) {
             throw new BusinessLogicException(NOT_POSSIBLE_CANCEL);
         }
-        reservation.setStatus(ReservationStatus.CANCELED);
+
+        reservation.setStatus(CANCELED);
 
         return CancelReservation.Response.from(reservation);
     }
@@ -109,7 +121,7 @@ public class ReservationService {
         if (date.isAfter(reservation.getStartDate())) {
             throw new BusinessLogicException(NOT_POSSIBLE_CANCEL);
         }
-        reservation.setStatus(ReservationStatus.CANCELED);
+        reservation.setStatus(CANCELED);
 
         return CancelReservation.Response.from(reservation);
     }
@@ -134,13 +146,52 @@ public class ReservationService {
         }
     }
 
-    public List<ReservationDto> getReservationByBorrower(Long memberId, ReservationStatus status) {
+    private void validateOwner(Product product, Member member) {
+        if (!Objects.equals(product.getMember().getMemberId(), member.getMemberId())) {
+            throw new BusinessLogicException(UNAUTHORIZED);
+        }
+    }
+
+    public GetReservations getReservationByBorrower(Long memberId, ReservationStatus status,
+                                                         int size, int page) {
         Member member = memberService.findMember(memberId);
 
-        List<Reservation> reservations = reservationRepository.findAllByMemberMemberIdAndStatus(memberId, status);
+        Page<Reservation> reservations = reservationRepository
+                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page, size));
+
+        return GetReservations.from(reservations);
+    }
+
+    public GetReservations getReservationByLender(Long memberId, String productId,
+                                                       ReservationStatus status, int size, int page) {
+        Member member = memberService.findMember(memberId);
+        Product product = productService.findProduct(productId);
+
+        validateOwner(product, member);
+
+        Page<Reservation> reservations = reservationRepository
+                .findAllByProductProductIdAndStatus(productId, status, PageRequest.of(page, size));
+
+        return GetReservations.from(reservations);
+    }
+
+    public List<ReservationCalendarDto> getReservationByMonth(String productId, String date) {
+        LocalDate startDate = LocalDate.parse(date + "-01");
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        List<Reservation> reservations = reservationRepository.findReservationByDate(productId, CANCELED, startDate, endDate);
 
         return reservations.stream()
-                .map(r -> ReservationDto.from(r))
+                .map(ReservationCalendarDto::from)
                 .collect(Collectors.toList());
+    }
+
+    public GetReservationsMonth.Response getReservationsByMonth(String productId, String date1, String date2) {
+        Product product = productService.findProduct(productId);
+
+        List<ReservationCalendarDto> reservationDate1 = getReservationByMonth(productId, date1);
+        List<ReservationCalendarDto> reservationDate2 = getReservationByMonth(productId, date2);
+
+        return GetReservationsMonth.Response.from(product, reservationDate1, reservationDate2);
     }
 }

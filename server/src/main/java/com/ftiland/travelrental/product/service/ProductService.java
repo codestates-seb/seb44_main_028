@@ -7,10 +7,11 @@ import com.ftiland.travelrental.common.exception.ExceptionCode;
 
 import com.ftiland.travelrental.member.service.MemberService;
 
-import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.entity.Member;
 
 import com.ftiland.travelrental.product.dto.CreateProduct;
+import com.ftiland.travelrental.product.dto.ProductDetailDto;
+import com.ftiland.travelrental.product.dto.ProductDto;
 import com.ftiland.travelrental.product.dto.UpdateProduct;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.*;
 
@@ -57,6 +59,7 @@ public class ProductService {
                 .viewCount(0)
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
+                .address(member.getAddress())
                 .member(member).build();
 
         // save시에 id를 기준으로 insert쿼리나 update쿼리를 생성해야하기 때문에 select를 먼저 실행한다.
@@ -120,5 +123,22 @@ public class ProductService {
     public Product findProduct(String productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
+    }
+
+    public ProductDetailDto findProductDetail(String productId) {
+        Product product = findProduct(productId);
+
+        List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
+        return ProductDetailDto.from(product, categories);
+    }
+
+    public List<ProductDto> findProducts(Long memberId) {
+        Member member = memberService.findMember(memberId);
+
+        List<Product> products = productRepository.findByMemberMemberId(memberId);
+
+        return products.stream()
+                .map(ProductDto::from)
+                .collect(Collectors.toList());
     }
 }

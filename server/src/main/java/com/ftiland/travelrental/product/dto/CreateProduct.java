@@ -17,6 +17,7 @@ public class CreateProduct {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class Request {
         @NotNull
         private String title;
@@ -30,16 +31,9 @@ public class CreateProduct {
         private String content;
         @NotNull
         private Integer minimumRentalPeriod;
-        @NotNull
-        private Integer totalRateScore;
-        @NotNull
-        private Integer totalRateCount;
 
         @NotNull
         private List<String> categoryIds;
-
-        // test를 위해 memberEmail을 받는다.
-        private String memberEmail;
     }
 
     @Getter
