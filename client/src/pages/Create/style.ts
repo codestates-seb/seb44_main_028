@@ -4,6 +4,7 @@ import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
 import { INPUT_FIELD_TITLE } from './constants';
+import { Button } from '@mui/base';
 
 export const CreatePageContainer = styled.div`
   font-size: ${fontSize.headerIconSize};
@@ -104,4 +105,13 @@ export const WritePriceWrapper = styled.div`
   grid-template-columns: repeat(3, 1fr);
   margin-top: 1.875rem;
   gap: 2rem;
+`;
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  & button {
+    margin: 0 1rem;
+    margin-top: 5rem;
+    transform: translateY(4rem);
+  }
 `;
