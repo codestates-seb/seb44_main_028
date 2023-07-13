@@ -219,11 +219,7 @@ export const EachDate = styled.th<EachDatesProps>`
       endYear === currentYear && endMonth === currentMonth && endDate >= date;
 
     if (startYear === endYear) {
-      if (
-        startMonth === endMonth &&
-        isLaterThanStartDate &&
-        isEarlierThanEndDate
-      ) {
+      if (startMonth === endMonth) {
         return isLaterThanStartDate && isEarlierThanEndDate
           ? colorPalette.lightColor
           : 'white';
