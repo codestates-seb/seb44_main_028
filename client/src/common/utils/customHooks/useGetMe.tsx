@@ -30,17 +30,21 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
     const accessToken: string = decryptToken(encryptedAccessToken);
     console.log('2. 복호화된 accessToken:', accessToken);
 
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/members`,
-      {
-        headers: { Authorization: 'Bearer ' + accessToken },
-      },
-    );
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        {
+          headers: { Authorization: 'Bearer ' + accessToken },
+        },
+      );
 
-    console.log('3. getMe response:', data);
+      console.log('3. getMe response:', data);
 
-    // 유저 정보 store에 저장
-    dispatch(createUserInfo(data));
+      // 유저 정보 store에 저장
+      dispatch(createUserInfo(data));
+    } catch (error) {
+      console.log('error가 난거니? 뭠미?', error);
+    }
 
     //   if (!userData || !response?.headers.authorization) {
     //     return null;
