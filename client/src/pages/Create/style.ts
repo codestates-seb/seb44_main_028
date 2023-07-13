@@ -99,21 +99,7 @@ export const WritePostContainer = styled.form`
     font-size: ${fontSize.small};
   }
 `;
-export const InputFieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 3.875rem;
-  & input {
-    padding: 0.8rem;
-    border: ${border.basic};
-    border-radius: ${borderRadius.basicRadius};
-    margin-top: 0.75rem;
-    color: ${colorPalette.grayTextColor};
-  }
-  & input:not([id='${INPUT_FIELD[3].id}']) {
-    text-align: end;
-  }
-`;
+
 export const WritePriceWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
