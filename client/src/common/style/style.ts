@@ -380,12 +380,15 @@ export const ContentWrapper = styled.div`
 export const DatesWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
   /* border: 1px solid gray; */
   height: 4rem;
   width: 10rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
+  div {
+    margin-bottom: -0.5rem;
+    transform: translateY(1rem);
+  }
 `;
 
 export const TitleWrapper = styled.div`
@@ -399,13 +402,16 @@ export const TitleWrapper = styled.div`
 
 export const ButtonWapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  align-items: center;
   /* border: 1px solid brown; */
   height: 2rem;
   width: 10rem;
 
   button {
+    flex: 1;
+    margin-right: 0.3rem;
     width: 4rem;
+    height: 1.7rem;
     font-weight: lighter;
     font-size: ${fontSize.small};
   }

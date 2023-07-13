@@ -9,8 +9,8 @@ import {
   TitleWrapper,
   ImgWrapper,
   ContentWrapper,
-  DefaultBtn,
 } from '../../style/style';
+import { DefaultBtn } from '../Button';
 
 const BorrowCard = () => {
   return (
@@ -21,16 +21,21 @@ const BorrowCard = () => {
           <TitleWrapper>감자 빌려드려요</TitleWrapper>
           <DatesWrapper>
             <div>예약기간</div>
-            <div>2023.07.11 - 2023.07.11</div>
+            <div>2023.07.09 - 2023.07.11</div>
           </DatesWrapper>
           <ButtonWapper>
             <DefaultBtn
               color={colorPalette.whiteColor}
-              background-color={colorPalette.cancleButtonColor}
+              backgroundColor={colorPalette.deepMintColor}
             >
               예약 확정
             </DefaultBtn>
-            <DefaultBtn>거절 하기</DefaultBtn>
+            <DefaultBtn
+              color={colorPalette.whiteColor}
+              backgroundColor={colorPalette.cancleButtonColor}
+            >
+              거절 하기
+            </DefaultBtn>
           </ButtonWapper>
         </ContentWrapper>
       </CardWrapper>
