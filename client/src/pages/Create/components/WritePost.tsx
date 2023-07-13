@@ -7,13 +7,13 @@ import {
   INPUT_FIELD,
   INPUT_FIELD_TITLE,
 } from '../constants';
-import InputField from './InputField';
 import { WritePostContainer, WritePriceWrapper, ButtonWrapper } from '../style';
 
 const WritePost = () => {
   const {
+    register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isDirty },
   } = useForm();
   const handleQuillChange = (value: string) => {
     console.log(value);
@@ -21,25 +21,58 @@ const WritePost = () => {
   const onSubmit = async (data: any) => {
     alert(JSON.stringify(data));
   };
-  console.log(errors);
+  console.log('error', errors);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <WritePriceWrapper>
-        {INPUT_FIELD.map((input) => (
-          <InputField
-            key={input.id}
-            id={input.id}
-            label={input.title}
-            formErrors={errors}
+        <div>
+          <label htmlFor="minRentalPeriod">최소 대여시간</label>
+          <input
+            id="minRentalPeriod"
+            type="text"
+            aria-invalid={
+              !isDirty ? undefined : errors.password ? 'true' : 'false'
+            }
+            {...register('minRentalPeriod', { required: true })}
           />
-        ))}
+          {errors.minRentalPeriod && (
+            <small role="alert">필수 입력사항입니다.</small>
+          )}
+        </div>
+        <div>
+          <label>고정금액</label>
+          <input
+            id="baseFee"
+            type="text"
+            aria-invalid={
+              !isDirty ? undefined : errors.password ? 'true' : 'false'
+            }
+            {...register('baseFee', { required: true })}
+          />
+          {errors.baseFee && <small role="alert">필수 입력사항입니다.</small>}
+        </div>
+        <div>
+          <label>1일 당 추가금액</label>
+          <input
+            id="feePerDay"
+            type="text"
+            aria-invalid={
+              !isDirty ? undefined : errors.password ? 'true' : 'false'
+            }
+            {...register('feePerDay', { required: true })}
+          />
+          {errors.feePerDay && <small role="alert">필수 입력사항입니다.</small>}
+        </div>
       </WritePriceWrapper>
-      <InputField
-        id={INPUT_FIELD_TITLE[0].id}
-        label={INPUT_FIELD_TITLE[0].title}
-        formErrors={errors}
+
+      <label>제목</label>
+      <input
+        id="title"
+        type="text"
+        aria-invalid={!isDirty ? undefined : errors.password ? 'true' : 'false'}
+        {...register('title', { required: true })}
       />
-      <label>내용</label>
+      {errors.title && <small role="alert">필수 입력사항입니다.</small>}
       <ReactQuill
         theme="snow"
         onChange={handleQuillChange}
