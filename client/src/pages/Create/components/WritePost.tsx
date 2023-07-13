@@ -90,7 +90,7 @@ const WritePost = () => {
 
       <label>{INPUT_FIELD[3].title}</label>
       <input
-        id={`${INPUT_FIELD[3].id}}`}
+        id={`${INPUT_FIELD[3].id}`}
         type="text"
         aria-invalid={
           !isDirty ? undefined : errors[INPUT_FIELD[3].id] ? 'true' : 'false'
