@@ -32,7 +32,7 @@ export type ModalTitleProps = {
 };
 
 export type ModalAdditionalProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 export type ModalMainProps = {
   children?: ReactNode;

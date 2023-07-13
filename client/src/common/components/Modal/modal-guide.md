@@ -10,20 +10,20 @@
 > `ModalMain` 
   ```ts
   export type ModalMainProps = {
-  children?: PropsWithChildren;
+  children?: ReactNode;
   isOpen?: boolean;
   };
 ```
 > `ModalAdditional`
 ```ts
 export type ModalAdditionalProps = {
-  children: PropsWithChildren;
+  children: ReactNode;
 };
 ```
 > `ModalTitle`
 ```ts
 export type ModalTitleProps = {
-  children?: PropsWithChildren;
+  children?: ReactNode;
 };
 ```
 > `ModalButton`
@@ -32,7 +32,7 @@ export type ModalButtonProps = {
   color: string;
   backgroundColor: string;
   hoverBackgroundColor?: string;
-  children?: PropsWithChildren;
+  children?: ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 ```
