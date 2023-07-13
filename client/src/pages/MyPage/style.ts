@@ -191,32 +191,45 @@ export const ProfilerEdit = styled.div`
 export const TextWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 export const NameWrapper = styled.div`
-  margin: 40px;
+  display: grid;
+  align-items: center;
+  margin: 1.3rem 1rem 0rem 3rem;
+
+  font-size: 14px;
+  font-weight: 600;
+  div {
+    align-items: center;
+    margin-top: 0.3rem;
+  }
 `;
 export const InputWrapper = styled.div`
-  padding: 20px;
+  display: grid;
+  align-items: center;
 `;
 export const InputBox = styled.div`
+  margin-bottom: 0.4rem;
+  margin-top: 1rem;
   input {
-    width: 200px;
+    align-items: center;
+    width: 180px;
     height: 25px;
     padding-left: 10px;
   }
 `;
 export const TownBtn = styled(DefaultBtn)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 10px;
   width: 80px;
   height: 22px;
 `;
 export const ProfileImg = styled.div`
+  margin-top: 2rem;
+  margin-bottom: -0.2rem;
   img {
-    height: 100px;
-    width: 100px;
+    height: 90px;
+    width: 90px;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -228,7 +241,8 @@ export const StyledForm = styled.form`
   justify-content: center;
   height: 15rem;
 
-  input {
+  input,
+  button {
     background-color: #0d4c92;
     color: #fff;
     height: 28px;
@@ -237,6 +251,7 @@ export const StyledForm = styled.form`
     border-radius: 5px;
     border: none;
     box-shadow: ${BoxShadow.Basic};
+    cursor: pointer;
     &:hover {
       background-color: #1d5799;
     }
@@ -304,3 +319,12 @@ export const Close = styled(DefaultBtn)`
   }
 `;
 export const Rating = styled(DefaultBtn)``;
+
+//WishList
+
+export const WishListWrapper = styled.div`
+  display: grid;
+  justify-content: center;
+  div {
+  }
+`;

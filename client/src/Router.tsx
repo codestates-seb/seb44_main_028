@@ -10,6 +10,7 @@ import UpdatePage from './pages/Update/views/UpdatePage';
 import ChattingPage from './pages/Chatting/views/ChattingPage';
 import BookingPage from './pages/Booking/views/BookingPage';
 import PrivateRoutes from './PrivateRoutes';
+import ProfileEdit from './pages/MyPage/components/ProfileEdit';
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route element={<PrivateRoutes />}>
         <Route path="/booking/:itemId" element={<BookingPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/edit" element={<ProfileEdit />} />
         <Route path="/create" element={<CreatePage />} />
         <Route path="/update/:itemId" element={<UpdatePage />} />
         <Route path="/chatting" element={<ChattingPage />} />
