@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ParentTap from '../components/ParentTap';
 import MypageProfile from '../components/MypageProfile';
 import { ProfileWrapper, EditWrapper, ProfileDataWrapper } from '../style';
 import { ProfileDataType } from '../type';
 import axios from 'axios';
+import { RootState } from '../../../common/store/RootStore';
+import { useSelector } from 'react-redux';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 const MyPage = () => {
+  const navigator = useNavigate();
+  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
+  console.log('유저 정보gg', userInfo);
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.userInfo.isLoggedIn,
+  );
+  console.log('로그인 상태인가?', isLoggedIn);
+  console.log('유저 정보', userInfo);
+
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
   );
@@ -18,7 +30,7 @@ const MyPage = () => {
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
             },
           },
         );
@@ -31,6 +43,9 @@ const MyPage = () => {
     fetchUserData();
   }, []);
 
+  const handleEditProfile = () => {
+    navigator('/mypage/edit');
+  };
   return (
     <div>
       <ProfileWrapper>
@@ -38,9 +53,7 @@ const MyPage = () => {
           <MypageProfile></MypageProfile>
         </ProfileDataWrapper>
       </ProfileWrapper>
-      <EditWrapper>
-        <Link to="/mypage/edit">회원 정보 수정</Link>
-      </EditWrapper>
+      <EditWrapper onClick={handleEditProfile}>회원 정보 수정</EditWrapper>
       <ParentTap />
     </div>
   );
