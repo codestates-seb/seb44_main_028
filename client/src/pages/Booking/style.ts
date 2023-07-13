@@ -3,6 +3,7 @@ import { EachDatesProps } from './type';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../common/store/RootStore';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
+import { StartEndDateProps } from './model/IStartEndDateProps';
 
 export const BookingPageContainer = styled.div`
   display: flex;
@@ -136,6 +137,26 @@ export const DatesContainer = styled.tbody`
   margin-top: 105px;
 `;
 
+const isWithinReservationPeriods = (
+  dateInfo: { year: number; month: number; date: number },
+  reservationData: StartEndDateProps[],
+) => {
+  const currentDate = new Date(
+    dateInfo.year,
+    dateInfo.month - 1,
+    dateInfo.date,
+  );
+  for (const reservation of reservationData) {
+    const { startDate, endDate } = reservation;
+    const start = new Date(startDate.year, startDate.month - 1, startDate.day);
+    const end = new Date(endDate.year, endDate.month - 1, endDate.day);
+    if (currentDate >= start && currentDate <= end && dateInfo.date) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const EachDate = styled.th<EachDatesProps>`
   font-size: 20px;
   font-weight: 400;
@@ -143,6 +164,22 @@ export const EachDate = styled.th<EachDatesProps>`
   padding: 11px;
   border-radius: 10px;
   ${(props) => {
+    // 기예약된 날짜
+    const dateInfo = {
+      year: props.current.year,
+      month: props.current.month,
+      date: Number(props.children),
+    };
+
+    if (isWithinReservationPeriods(dateInfo, props.reservationData)) {
+      return css`
+        color: ${colorPalette.lightColor};
+        background-color: ${colorPalette.grayColor};
+        cursor: 'not-allowed';
+      `;
+    }
+
+    // 유저가 클릭한 날짜
     const today = new Date();
     const todaysYear = today.getFullYear();
     const todaysMonth = today.getMonth() + 1;
