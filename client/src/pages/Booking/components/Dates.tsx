@@ -4,7 +4,7 @@ import { CalendarProps } from '../type';
 import { RootState } from '../../../common/store/RootStore';
 import { setEndDate, setStartDate } from '../store/ReservationDateStore';
 
-function Dates({ calendar }: CalendarProps) {
+function Dates({ calendar, reservationData }: CalendarProps) {
   const dispatch = useDispatch();
   const reservationState = useSelector((state: RootState) => state.reservation);
 
@@ -62,6 +62,7 @@ function Dates({ calendar }: CalendarProps) {
             ),
           }}
           day={j}
+          reservationData={reservationData}
           onClick={() => {
             console.log({ ...calendar, date });
             if (!reservationState.startDate) {
