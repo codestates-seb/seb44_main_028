@@ -54,10 +54,10 @@ function Dates({ calendar }: CalendarProps) {
       {week.map((date, j) => (
         <EachDate
           key={j}
-          today={calendar}
+          current={calendar}
           row={{
             week: i,
-            lastWeek: dates.findIndex(
+            finalWeek: dates.findIndex(
               (week, index) => index !== 0 && week.includes(1),
             ),
           }}
