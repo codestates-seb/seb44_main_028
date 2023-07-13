@@ -7,9 +7,9 @@ import ItemCard from '../../../common/components/ItemCard/ItemCard';
 
 function WishList() {
   const [items, setItems] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-  const [totalItemsCount, setTotalItemsCount] = useState(40);
+  const [currentPage, setCurrentPage] = useState(1); //현재페이지
+  const [itemsPerPage] = useState(6);
+  const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
   useEffect(() => {
@@ -21,22 +21,24 @@ function WishList() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/members/interests`,
         {
-          params: { memberId: 1, page: page, size: itemsPerPage },
+          params: { memberId: 1, page: currentPage, size: itemsPerPage },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       // console.log(Array.isArray(response.data));
-      setItems(response.data.responses);
-      setTotalItemsCount(response.data.responses);
-      console.log('totalElements:', response.data);
-      console.log('response:', response.data.responses);
+
+      setItems(response.data.items);
+      setTotalItemsCount(response.data.totalElements);
+
+      console.log('totalElements:', response.data.listSize);
+      console.log('response:', response.data);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
     }
   };
-  console.log('items:', items);
+  // console.log('items:', items);
   console.log('items의 0번째 인덱스:', items[0]);
-  console.log(Array.isArray(items));
-  console.log('totalItemsCount:', totalItemsCount);
+  // console.log(Array.isArray(items));
+  // console.log('totalItemsCount:', totalItemsCount);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
