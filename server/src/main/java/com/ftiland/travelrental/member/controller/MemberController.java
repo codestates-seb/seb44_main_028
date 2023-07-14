@@ -1,22 +1,21 @@
 package com.ftiland.travelrental.member.controller;
 
-import com.ftiland.travelrental.common.annotation.CurrentMemberId;
 import com.ftiland.travelrental.common.utils.JwtUtils;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
-import com.ftiland.travelrental.oauth.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 @Slf4j
 @RequestMapping("/api/members")
@@ -24,15 +23,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final JwtTokenizer jwtTokenizer;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @GetMapping
-    public ResponseEntity<MemberDto.Response> getMember(@CurrentMemberId Long memberId) {
+    public ResponseEntity<MemberDto.Response> getMember() {
+        Long memberId = (Long) request.getAttribute("memberId");
 
-        if(memberId != null) {
+        if (memberId != null) {
             Member member = memberService.findMember(memberId);
             MemberDto.Response response = MemberDto.Response.from(member);
-
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
@@ -40,13 +41,11 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request request) {
+    public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request patchRequest) {
+        Long memberId = (Long) request.getAttribute("memberId");
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long memberId = JwtUtils.extractMemberIdFromAuthentication(authentication);
-
-        if(memberId != null) {
-            MemberDto.Response response = memberService.updateMember(request, memberId);
+        if (memberId != null) {
+            MemberDto.Response response = memberService.updateMember(patchRequest, memberId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,11 +53,12 @@ public class MemberController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteMember() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long memberId = JwtUtils.extractMemberIdFromAuthentication(authentication);
+        Long memberId = (Long) request.getAttribute("memberId");
 
-        memberService.deleteMember(memberId);
-
+        if (memberId != null) {
+            memberService.deleteMember(memberId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
