@@ -31,7 +31,7 @@ const MyPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members`,
+          `${process.env.REACT_APP_API_URL}/api/members/`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
