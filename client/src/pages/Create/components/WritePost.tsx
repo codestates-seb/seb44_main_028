@@ -73,7 +73,7 @@ const WritePost = () => {
       images: [...uploadImages],
     });
   }, [selectedtCategory, uploadImages]);
-  //console.log('checkobx', selectedtCategory);
+  console.log('checkobx', selectedtCategory);
   // console.log('value', inputValues);
   //console.log('images', uploadImages);
   console.log('errors', !!errors);

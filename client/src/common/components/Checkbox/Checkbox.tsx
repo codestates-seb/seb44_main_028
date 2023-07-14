@@ -1,28 +1,33 @@
 import { CheckBoxWrapper } from '../../style/style';
 import { CheckBoxProps } from '../../type';
 
+type CheckBox = {
+  categoryId: string;
+  title: string;
+  image: string;
+};
 const CheckBox = ({
-  categoryData,
+  categoryTitle,
+  categoryId,
   selectedtCategory,
   setSelectedCategory,
 }: CheckBoxProps) => {
-  const isSelected = selectedtCategory.includes(categoryData);
+  //console.log(categoryData.categoryId);
+
+  const isSelected = selectedtCategory.includes(categoryId);
 
   const handleIsClick = () => {
-    if (selectedtCategory.includes(categoryData)) {
+    if (selectedtCategory.includes(categoryId)) {
       setSelectedCategory((prevCategories) =>
-        prevCategories.filter((category) => category !== categoryData),
+        prevCategories.filter((category) => category !== categoryId),
       );
     } else {
-      setSelectedCategory((prevCategories) => [
-        ...prevCategories,
-        categoryData,
-      ]);
+      setSelectedCategory((prevCategories) => [...prevCategories, categoryId]);
     }
   };
   return (
     <CheckBoxWrapper onClick={handleIsClick} isSelected={isSelected}>
-      {categoryData}
+      {categoryTitle}
     </CheckBoxWrapper>
   );
 };

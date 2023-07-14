@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ICategory } from './model/ICategory';
 
 export type CategoryButtonProps = {
   ImageId: string;
@@ -19,7 +20,8 @@ export type CategoryListProps = {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
 };
 export type CheckBoxProps = {
-  categoryData: string;
+  categoryTitle: string;
+  categoryId: string;
   selectedtCategory: string[];
   setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
 };
