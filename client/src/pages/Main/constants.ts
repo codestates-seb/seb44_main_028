@@ -42,9 +42,9 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -57,9 +57,9 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -72,9 +72,9 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
 ];
@@ -89,9 +89,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -104,9 +104,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -119,9 +119,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -134,9 +134,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -149,9 +149,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -164,9 +164,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
 ];

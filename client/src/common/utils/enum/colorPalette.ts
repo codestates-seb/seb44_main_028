@@ -23,4 +23,5 @@ export enum colorPalette {
   rightButtonHoverColor = '#1d5799',
   checkColor = '#61cf5f',
   errorColor = '#f44336',
+  cancleButtonColor = '#FF7B69',
 }
