@@ -1,11 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
+import { MdError } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
+import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
   WritePostContainer,
   PriceInput,
@@ -15,10 +18,13 @@ import {
   Input,
 } from '../style';
 import { CONTENT_DESCRIPTION } from '../constants';
+import ModalMain from '../../../common/components/Modal/ModalMain';
 
 const WritePost = () => {
+  const navigate = useNavigate();
   const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
   const [uploadImages, setUploadImages] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -47,7 +53,12 @@ const WritePost = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const handleCancel = () => {
+    setShowModal(!showModal);
+  };
+  const handelExit = () => {
+    navigate('/');
+  };
   const onSubmit = (data: object) => {
     const submitData = {
       ...data,
@@ -183,11 +194,38 @@ const WritePost = () => {
       />
 
       <ButtonWrapper>
-        <button>취소</button>
+        <button onClick={handleCancel}>취소</button>
         <button type="submit" disabled={isSubmitting}>
           등록
         </button>
       </ButtonWrapper>
+      {showModal && (
+        <ModalMain isOpen={showModal}>
+          <ModalMain.Additional>
+            <MdError />
+          </ModalMain.Additional>
+          <ModalMain.Title>작성 중인 내용이 있습니다.</ModalMain.Title>
+          <ModalMain.Title>나가시겠습니까?</ModalMain.Title>
+          <div>
+            <ModalMain.Button
+              color="inherit"
+              backgroundColor={colorPalette.modalCancelButtonColor}
+              hoverBackgroundColor={colorPalette.modalCancelHoverColor}
+              onClick={() => setShowModal(false)}
+            >
+              머무르기
+            </ModalMain.Button>
+            <ModalMain.Button
+              color={colorPalette.whiteColor}
+              backgroundColor={colorPalette.heavyColor}
+              hoverBackgroundColor={colorPalette.rightButtonHoverColor}
+              onClick={handelExit}
+            >
+              이동하기
+            </ModalMain.Button>
+          </div>
+        </ModalMain>
+      )}
     </WritePostContainer>
   );
 };
