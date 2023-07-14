@@ -3,7 +3,6 @@ import { border } from '../../common/utils/enum/border';
 import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
-import { FieldError } from 'react-hook-form';
 
 export const CreatePageContainer = styled.div`
   font-size: ${fontSize.headerIconSize};
