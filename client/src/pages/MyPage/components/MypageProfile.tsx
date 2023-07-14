@@ -39,7 +39,9 @@ function MypageProfile() {
     const fetchUserData = async () => {
       try {
         const headers = {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          // Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization:
+            'Bearer eyJhbGciOiJIUzUxMiJ9.eyJkaXNwbGF5TmFtZSI6IuuvvO2KuCIsImVtYWlsIjoia2V1bWhlMDExMEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MjksInN1YiI6ImtldW1oZTAxMTBAZ21haWwuY29tIiwiaWF0IjoxNjg5MzUyNjIxLCJleHAiOjE2ODkzNTQ0MjF9.iMhA53ykisxHc0bFuQgIC5aH-7BDyvOay4NKiogasBR8zyw6oPEh-Q8Q08rE9uyyHPEHRomvI_ZRk9qZiLy8IA',
         };
 
         const response = await axios.get(
