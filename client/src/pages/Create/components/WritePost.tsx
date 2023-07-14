@@ -29,10 +29,11 @@ const WritePost = () => {
     content: '',
   });
   const handleQuillChange = (value: string) => {
-    console.log(value);
+    // console.log(value);
+    const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
     setInputValues((prev) => ({
       ...prev,
-      content: value,
+      content: strippedValue,
     }));
   };
   const handleInputChange = (e: any) => {
@@ -126,7 +127,6 @@ const WritePost = () => {
       </PriceInput>
       <ReactQuill
         theme="snow"
-        value={inputValues.content}
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}
       />
