@@ -1,4 +1,6 @@
+import ChatIcon from '../components/ChatIcon';
+
 function DetailPage() {
-  return <div>detail page</div>;
+  return <ChatIcon />;
 }
 export default DetailPage;
