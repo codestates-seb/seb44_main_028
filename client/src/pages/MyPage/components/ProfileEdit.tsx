@@ -13,12 +13,15 @@ import {
   InputBox,
   StyledForm,
   MyPageEdit,
+  DelBtn,
 } from '../style';
 import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../common/store/RootStore';
 import { setName } from '../store/ProfileSlice';
+import { colorPalette } from '../../../common/utils/enum/colorPalette';
+import { DefaultBtn } from '../../../common/components/Button';
 
 function ProfileEdit() {
   const navigate = useNavigate();
@@ -31,22 +34,23 @@ function ProfileEdit() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string>('');
-
+  const [userData, setUserData] = useState({});
   useEffect(() => {
     //회원 정보 조회 Read
-    getUserInfo();
+    updateUserInfo();
   });
 
-  const getUserInfo = useCallback(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/api/members`)
-      .then((response) => {
-        const userInfo = response.data;
-        setNickname(userInfo.nickname);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const updateUserInfo = useCallback(async () => {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+      );
+      const userInfo = response.data;
+      setNickname(userInfo.displayName);
+      console.log('회원 정보가 성공적으로 수정되었습니다.');
+    } catch (error) {
+      console.log('회원 정보가 업데이트 되지 않았습니다.', error);
+    }
   }, []);
 
   const onUploadImage = useCallback(
@@ -72,7 +76,7 @@ function ProfileEdit() {
         );
         console.log(response.data);
       } catch (error) {
-        console.error(error);
+        console.error('이미지 업로드 중에 오류발생', error);
       }
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -93,34 +97,30 @@ function ProfileEdit() {
   const onSubmitForm = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const formData = new FormData(e.currentTarget);
-      console.log('Form data:', Object.fromEntries(formData));
-      console.log('Form submitted!');
-      navigate('/mypage');
+      // const formData = new FormData(e.currentTarget);
+      // console.log('Form data:', Object.fromEntries(formData));
+      // console.log('Form submitted!');
       try {
-        const response = await axios.post(
+        const response = await axios.patch(
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
-            profileImage: previewImage,
-            nickname: nickname,
+            displayName: nickname,
           },
         );
-        console.log(response.data);
-        navigate('/mypage');
-
+        console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
         dispatch(setName(nickname));
+        navigate('/mypage');
       } catch (error) {
-        console.error(error);
+        console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
       }
     },
-
-    [previewImage, dispatch],
+    [nickname, dispatch, navigate],
   );
 
   const onDeleteUser = useCallback(async () => {
     try {
       const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/user`,
+        `${process.env.REACT_APP_API_URL}/api/members`,
       );
       console.log('User deleted successfully');
       console.log(response.data);
@@ -171,13 +171,20 @@ function ProfileEdit() {
           </InputWrapper>
         </TextWrapper>
       </ProfileEditWrapper>
+      <DelBtn>탈퇴 하기</DelBtn>
       <StyledForm onSubmit={onSubmitForm}>
-        <button
-          value="돌아가기"
-          style={{ backgroundColor: '#CDDBF0', color: '#333' }}
-          onClick={onDeleteUser}
-        />
-        <input type="submit" value="정보 수정" />
+        <DefaultBtn
+          color={colorPalette.grayTextColor}
+          backgroundColor={colorPalette.modalCancelButtonColor}
+        >
+          돌아가기
+        </DefaultBtn>
+        <DefaultBtn
+          color={colorPalette.whiteColor}
+          backgroundColor={colorPalette.heavyColor}
+        >
+          수정
+        </DefaultBtn>
       </StyledForm>
     </MyPageEdit>
   );
