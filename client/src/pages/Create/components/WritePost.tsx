@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useForm } from 'react-hook-form';
+import { useForm, set } from 'react-hook-form';
 import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
+import UploadImage from '../components/UploadImage';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
 import {
   WritePostContainer,
@@ -16,6 +17,7 @@ import { CONTENT_DESCRIPTION } from '../constants';
 
 const WritePost = () => {
   const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
+  const [uploadImages, setUploadImages] = useState<string[]>([]);
   const {
     register,
     handleSubmit,
@@ -23,12 +25,13 @@ const WritePost = () => {
   } = useForm();
 
   const [inputValues, setInputValues] = useState({
+    images: [] as string[],
     minRentalPeriod: '',
     baseFee: '',
     feePerDay: '',
     title: '',
     content: '',
-    category: '',
+    categoryIds: [] as string[],
   });
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
@@ -52,12 +55,13 @@ const WritePost = () => {
     alert(JSON.stringify(submitData));
   };
   useEffect(() => {
-    setInputValues({ ...inputValues, category: selectedtCategory.join(',') });
+    setInputValues({ ...inputValues, categoryIds: [...selectedtCategory] });
   }, [selectedtCategory]);
   console.log('checkobx', selectedtCategory);
   console.log('value', inputValues);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
+      <UploadImage setUploadImages={setUploadImages} />
       <WritePriceWrapper>
         <PriceInput>
           최소 대여시간

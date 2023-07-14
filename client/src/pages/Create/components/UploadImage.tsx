@@ -12,7 +12,7 @@ import {
   UploadImageCountWrapper,
   PreViewImageWrapper,
 } from '../style';
-const UploadImages = () => {
+const UploadImages = ({ setUploadImages }) => {
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
@@ -32,10 +32,12 @@ const UploadImages = () => {
         imageUrlLists = imageUrlLists.slice(0, MAX_IMAGE_COUNT);
       }
       setShowImages([...imageUrlLists]);
+      setUploadImages([...imageUrlLists]);
     }
   };
   const handleDeleteImage = (index: number) => {
     setShowImages((prev) => prev.filter((_, i) => i !== index));
+    setUploadImages((prev) => prev.filter((_, i) => i !== index));
   };
   useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
@@ -43,8 +45,8 @@ const UploadImages = () => {
     } else {
       setImageOverflow(false);
     }
-    console.log(showImages);
   }, [imageOverflow, showImages]);
+  console.log(showImages);
   return (
     <UploadContainer>
       <UploadImageLabel htmlFor="input-file">
