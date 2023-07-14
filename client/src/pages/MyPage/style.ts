@@ -16,11 +16,11 @@ export const ProfileWrapper = styled.div`
 export const EditWrapper = styled.button`
   display: flex;
   justify-content: flex-end;
-  margin-right: -111rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
   border-style: none;
   cursor: pointer;
+  transform: translateX(59rem);
 `;
 export const ProfileDataWrapper = styled.div`
   display: flex;
@@ -265,12 +265,9 @@ export const DelBtn = styled.button`
   background-color: transparent;
   color: ${colorPalette.grayTextColor};
 
-  transform: translate(-0.8rem, 4.5rem);
+  transform: translate(-0.8rem, 15rem);
 
   cursor: pointer;
-  &:active {
-    transform: scale(0.98);
-  }
 `;
 
 //RatingStar

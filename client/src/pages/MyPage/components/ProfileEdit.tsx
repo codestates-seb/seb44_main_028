@@ -117,18 +117,6 @@ function ProfileEdit() {
     [nickname, dispatch, navigate],
   );
 
-  const onDeleteUser = useCallback(async () => {
-    try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/members`,
-      );
-      console.log('User deleted successfully');
-      console.log(response.data);
-    } catch (error) {
-      console.error('delete error:', error);
-    }
-  }, []);
-
   return (
     <MyPageEdit>
       <ProfileEditWrapper>
@@ -171,7 +159,6 @@ function ProfileEdit() {
           </InputWrapper>
         </TextWrapper>
       </ProfileEditWrapper>
-      <DelBtn>탈퇴 하기</DelBtn>
       <StyledForm onSubmit={onSubmitForm}>
         <DefaultBtn
           color={colorPalette.grayTextColor}
@@ -186,6 +173,7 @@ function ProfileEdit() {
           수정
         </DefaultBtn>
       </StyledForm>
+      <DelBtn>탈퇴 하기</DelBtn>
     </MyPageEdit>
   );
 }
