@@ -55,11 +55,15 @@ const WritePost = () => {
     alert(JSON.stringify(submitData));
   };
   useEffect(() => {
-    setInputValues({ ...inputValues, categoryIds: [...selectedtCategory] });
-  }, [selectedtCategory]);
-  console.log('checkobx', selectedtCategory);
+    setInputValues({
+      ...inputValues,
+      categoryIds: [...selectedtCategory],
+      images: [...uploadImages],
+    });
+  }, [selectedtCategory, uploadImages]);
+  //console.log('checkobx', selectedtCategory);
   console.log('value', inputValues);
-  console.log('images', uploadImages);
+  //console.log('images', uploadImages);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage setUploadImages={setUploadImages} />
