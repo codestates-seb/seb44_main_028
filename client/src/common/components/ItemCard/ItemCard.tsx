@@ -72,13 +72,13 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
 
   return (
     <ItemCardContainer>
-      <ItemImage src={itemCardData.imageUrl}></ItemImage>
+      <ItemImage src={itemCardData.images}></ItemImage>
       <ItemInfo>
         <ItemName>{itemCardData.title}</ItemName>
         <ItemDescription>{itemCardData.content}</ItemDescription>
         <ItemLocationWrapper>
           <MdLocationOn />
-          <span>{itemCardData.location}</span>
+          <span>{itemCardData.address}</span>
         </ItemLocationWrapper>
       </ItemInfo>
       <PriceFavoriteWrapper isHeartClicked={isInterest}>

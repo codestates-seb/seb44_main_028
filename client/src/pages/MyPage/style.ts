@@ -13,12 +13,14 @@ export const ProfileWrapper = styled.div`
   box-shadow: ${BoxShadow.Basic};
   border-radius: 3px;
 `;
-export const EditWrapper = styled.div`
+export const EditWrapper = styled.button`
   display: flex;
   justify-content: flex-end;
-  padding-right: 5px;
+  margin-right: -111rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
+  border-style: none;
+  cursor: pointer;
 `;
 export const ProfileDataWrapper = styled.div`
   display: flex;
@@ -322,9 +324,8 @@ export const Rating = styled(DefaultBtn)``;
 
 //WishList
 
-export const WishListWrapper = styled.div`
-  display: grid;
-  justify-content: center;
-  div {
-  }
+export const WishListWrapper = styled.div``;
+export const LendListWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
