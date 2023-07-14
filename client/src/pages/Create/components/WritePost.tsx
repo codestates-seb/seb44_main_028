@@ -41,14 +41,14 @@ const WritePost = () => {
       content: strippedValue,
     }));
   };
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValues({
       ...inputValues,
       [e.target.name]: e.target.value,
     });
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: object) => {
     const submitData = {
       ...data,
       content: inputValues.content,
