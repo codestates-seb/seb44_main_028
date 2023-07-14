@@ -110,7 +110,6 @@ export const PriceInput = styled.label`
   position: relative;
   input:focus {
     outline: none !important;
-    /*  */
   }
   svg {
     position: absolute;
@@ -119,7 +118,6 @@ export const PriceInput = styled.label`
     position: absolute;
     right: 0.7rem;
     bottom: 0.6rem;
-    /*  */
   }
 `;
 export const TitleInput = styled.div<{ isInputChange: boolean }>`
