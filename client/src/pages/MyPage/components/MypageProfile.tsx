@@ -14,8 +14,7 @@ import GradeIcon from './GradeIcon';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import axios from 'axios';
 import { ACCESS_TOKEN } from '../../Login/constants';
-import { RootState } from '../../../common/store/RootStore';
-import { useSelector } from 'react-redux';
+
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
@@ -63,15 +62,6 @@ function MypageProfile() {
       fetchUserData();
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     setDisplayName(user.displayName || '');
-  //     setAddress(user.address || '');
-  //     console.log('user상태 :', user);
-  //   }
-  // }, [user]);
-  // console.log('user상태 :', user);
 
   useEffect(() => {
     getUserInfo();

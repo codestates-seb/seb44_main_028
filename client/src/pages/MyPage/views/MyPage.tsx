@@ -20,22 +20,22 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
-            },
-          },
-        );
-        setProfileData(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
+      // try {
+      //   const response = await axios.get(
+      //     `${process.env.REACT_APP_API_URL}/api/members/`,
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
+      //       },
+      //     },
+      //   );
+      //   setProfileData(response.data);
+      // } catch (error) {
+      //   console.error('Error fetching user data:', error);
+      // }
     };
 
-    fetchUserData();
+    // fetchUserData();
   }, []);
 
   const handleEditProfile = () => {

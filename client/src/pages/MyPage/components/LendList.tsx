@@ -18,11 +18,11 @@ function LendList() {
   const fetchItemsForPage = async (page: number) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/members/interests`,
+        `${process.env.REACT_APP_API_URL}/api/reservations/products/`,
         { params: { memberId: 1, page, size: itemsPerPage } },
       ); // 실제 API 엔드포인트에 맞게 수정
-      console.log(Array.isArray(response.data));
-      setItems(response.data.responses);
+      console.log(Array.isArray(response.data.reservations));
+      setItems(response.data.reservations);
       setTotalItemsCount(response.data.listSize);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
