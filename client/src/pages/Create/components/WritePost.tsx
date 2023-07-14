@@ -59,6 +59,7 @@ const WritePost = () => {
   }, [selectedtCategory]);
   console.log('checkobx', selectedtCategory);
   console.log('value', inputValues);
+  console.log('images', uploadImages);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage setUploadImages={setUploadImages} />

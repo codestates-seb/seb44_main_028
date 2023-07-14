@@ -64,10 +64,9 @@ const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
         </UploadImageCountWrapper>
       </UploadImageLabel>
       {showImages.map((image, index) => (
-        <PreViewImageWrapper>
+        <PreViewImageWrapper key={index}>
           <PreImage
             imageSrc={image}
-            key={index}
             ImageId={index}
             handleDeleteImage={handleDeleteImage}
           />
