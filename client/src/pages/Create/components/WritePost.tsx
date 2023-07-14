@@ -47,11 +47,21 @@ const WritePost = () => {
       content: strippedValue,
     }));
   };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValues({
-      ...inputValues,
-      [e.target.name]: e.target.value,
-    });
+    const inputValue = e.target.value;
+    let newValue: string | number;
+
+    if (e.target.name === 'minRentalPeriod') {
+      newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
+    } else {
+      newValue = inputValue;
+    }
+
+    setInputValues((prev) => ({
+      ...prev,
+      [e.target.name]: newValue,
+    }));
   };
   const handleCancel = () => {
     setShowModal(!showModal);
@@ -73,8 +83,8 @@ const WritePost = () => {
       images: [...uploadImages],
     });
   }, [selectedtCategory, uploadImages]);
-  console.log('checkobx', selectedtCategory);
-  // console.log('value', inputValues);
+  //console.log('checkobx', selectedtCategory);
+  console.log('value', inputValues);
   //console.log('images', uploadImages);
   console.log('errors', !!errors);
   return (
@@ -85,10 +95,11 @@ const WritePost = () => {
           최소 대여시간
           <Input
             type="text"
-            {...register('minRentalPeriod', { required: true })}
-            value={inputValues.minRentalPeriod}
+            {...register('minRentalPeriod', {
+              required: true,
+            })}
             onChange={handleInputChange}
-            // className={errors.minRentalPeriod ? 'error' : ''}
+            //className={errors.minRentalPeriod ? 'error' : ''}
             className={
               inputValues.minRentalPeriod
                 ? 'success'
