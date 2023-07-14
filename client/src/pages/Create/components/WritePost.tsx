@@ -12,6 +12,7 @@ import {
   WritePriceWrapper,
   ButtonWrapper,
   CheckBoxTitle,
+  Input,
 } from '../style';
 import { CONTENT_DESCRIPTION } from '../constants';
 
@@ -70,12 +71,19 @@ const WritePost = () => {
       <WritePriceWrapper>
         <PriceInput>
           최소 대여시간
-          <input
+          <Input
             type="text"
             {...register('minRentalPeriod', { required: true })}
             value={inputValues.minRentalPeriod}
             onChange={handleInputChange}
-            className={errors.minRentalPeriod ? 'error' : ''}
+            // className={errors.minRentalPeriod ? 'error' : ''}
+            className={
+              inputValues.minRentalPeriod
+                ? 'success'
+                : errors.minRentalPeriod
+                ? 'error'
+                : ''
+            }
           />
           {inputValues.minRentalPeriod && <BsCheckLg className="check-icon" />}
           {!inputValues.minRentalPeriod &&
@@ -88,12 +96,14 @@ const WritePost = () => {
         </PriceInput>
         <PriceInput>
           고정금액
-          <input
+          <Input
             type="text"
             {...register('baseFee', { required: true })}
             value={inputValues.baseFee}
             onChange={handleInputChange}
-            className={errors.baseFee ? 'error' : ''}
+            className={
+              inputValues.baseFee ? 'success' : errors.baseFee ? 'error' : ''
+            }
           />
           {inputValues.baseFee && <BsCheckLg className="check-icon" />}
           {!inputValues.baseFee && inputValues.baseFee === '' && (
@@ -105,12 +115,18 @@ const WritePost = () => {
         </PriceInput>
         <PriceInput>
           1일 당 추가금액
-          <input
+          <Input
             type="text"
             {...register('feePerDay', { required: true })}
             value={inputValues.feePerDay}
             onChange={handleInputChange}
-            className={errors.feePerDay ? 'error' : ''}
+            className={
+              inputValues.feePerDay
+                ? 'success'
+                : errors.feePerDay
+                ? 'error'
+                : ''
+            }
           />
           {inputValues.feePerDay && <BsCheckLg className="check-icon" />}
           {!inputValues.feePerDay && inputValues.feePerDay === '' && (
@@ -124,11 +140,13 @@ const WritePost = () => {
 
       <PriceInput>
         제목
-        <input
+        <Input
           {...register('title', { required: true })}
           value={inputValues.title}
           onChange={handleInputChange}
-          className={errors.title ? 'error' : ''}
+          className={
+            inputValues.title ? 'success' : errors.title ? 'error' : ''
+          }
         />
         {inputValues.title && <BsCheckLg className="check-icon" />}
         {!inputValues.title && inputValues.title === '' && (

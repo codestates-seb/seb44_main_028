@@ -119,6 +119,27 @@ export const PriceInput = styled.label`
     right: 0.7rem;
     bottom: 0.6rem;
   }
+  & .error-icon {
+    color: ${colorPalette.errorColor};
+  }
+  & .check-icon {
+    color: ${colorPalette.checkColor};
+  }
+`;
+export const Input = styled.input`
+  padding: 0.8rem;
+  border: ${border.basic};
+  border-radius: ${borderRadius.basicRadius};
+  margin-top: 0.75rem;
+  color: ${colorPalette.grayTextColor};
+  &.error {
+    border-color: ${colorPalette.errorColor};
+    box-shadow: 0 0 3px ${colorPalette.errorColor};
+  }
+  &.success {
+    border-color: ${colorPalette.checkColor};
+    box-shadow: 0 0 3px ${colorPalette.checkColor};
+  }
 `;
 export const TitleInput = styled.div<{ isInputChange: boolean }>`
   display: flex;
