@@ -91,7 +91,7 @@ const WritePost = () => {
               <BiErrorCircle className="error-icon" />
             )}
           {errors.minRentalPeriod && (
-            <span className="error-message">필수 입력사항입니다.</span>
+            <small className="error-message">필수 입력사항입니다.</small>
           )}
         </PriceInput>
         <PriceInput>
@@ -110,7 +110,7 @@ const WritePost = () => {
             <BiErrorCircle className="error-icon" />
           )}
           {errors.baseFee && (
-            <span className="error-message">필수 입력사항입니다.</span>
+            <small className="error-message">필수 입력사항입니다.</small>
           )}
         </PriceInput>
         <PriceInput>
@@ -133,7 +133,7 @@ const WritePost = () => {
             <BiErrorCircle className="error-icon" />
           )}
           {errors.feePerDay && (
-            <span className="error-message">필수 입력사항입니다.</span>
+            <small className="error-message">필수 입력사항입니다.</small>
           )}
         </PriceInput>
       </WritePriceWrapper>
@@ -153,7 +153,7 @@ const WritePost = () => {
           <BiErrorCircle className="error-icon" />
         )}
         {errors.title && (
-          <span className="error-message">필수 입력사항입니다.</span>
+          <small className="error-message">필수 입력사항입니다.</small>
         )}
       </PriceInput>
       <ReactQuill
