@@ -12,7 +12,8 @@ import {
   UploadImageCountWrapper,
   PreViewImageWrapper,
 } from '../style';
-const UploadImages = ({ setUploadImages }) => {
+import { UploadImagesProps } from '../type';
+const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
