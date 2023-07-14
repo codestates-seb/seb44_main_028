@@ -1,9 +1,9 @@
-import { ItemCardProps } from '../../common/type';
+import { ItemCardProps, BorrowCardProps } from '../../common/type';
 export const TAP = ['빌려준내역', '빌린내역', '관심 목록'];
 
 export const ITEMCARD_DATA: ItemCardProps[] = [
   {
-    id: 1,
+    id: '1',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -12,13 +12,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 2,
+    id: '2',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -27,13 +27,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 3,
+    id: '3',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -42,13 +42,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 4,
+    id: '4',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -57,13 +57,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 5,
+    id: '5',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -72,13 +72,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 6,
+    id: '6',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -87,13 +87,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 7,
+    id: '7',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -102,13 +102,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 8,
+    id: '8',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -117,13 +117,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 9,
+    id: '9',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -132,13 +132,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 10,
+    id: '10',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -147,13 +147,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 11,
+    id: '11',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -162,13 +162,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: 12,
+    id: '12',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -177,9 +177,27 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
+];
+export const BORROW_DATA: BorrowCardProps[] = [
+  {
+    id: '1',
+    title: '다이슨 빌려줍니다.',
+    content:
+      '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
+    category: [1, 2, 3],
+    startDate: '2023.07.09',
+    endDate: '2023.07.11',
+    address: '동대문구 마장동',
+    images:
+      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+  },
+];
+export const ERROR_MESSAGE: string[] = [
+  "The page you were looking for doesn't exist",
+  'You may have mistyped the address or the page may have moved.',
 ];

@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 export type ProfileDataType = {
-  name: string;
-  age: number;
+  displayName: string;
+  latitude: string;
+  longitude: string;
 };
 
 export type RatingStarType = {
@@ -28,10 +29,12 @@ export type TapButtonType = {
 };
 export type WishListType = {
   item: string[];
+  interestId: number[];
 };
 export type PagingType = {
   currentPage: number;
   onPageChange: (page: number) => void;
   itemsPerPage: number;
   totalItemsCount: number;
+  totalPages: number;
 };

@@ -1,4 +1,5 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   UploadBtn,
   ProfileEditWrapper,
@@ -13,15 +14,43 @@ import {
   StyledForm,
   MyPageEdit,
 } from '../style';
-// import axios from 'axios';
+import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../common/store/RootStore';
+import { setName } from '../store/ProfileSlice';
 
 function ProfileEdit() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const displayName = useSelector(
+    (state: RootState) => state.mypageProfileSlice.name,
+  );
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [nickname, setNickname] = useState<string>('');
+
+  useEffect(() => {
+    //회원 정보 조회 Read
+    getUserInfo();
+  });
+
+  const getUserInfo = useCallback(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/members`)
+      .then((response) => {
+        const userInfo = response.data;
+        setNickname(userInfo.nickname);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const onUploadImage = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!e.target.files) {
         return;
       }
@@ -31,24 +60,20 @@ function ProfileEdit() {
       // formData.append('file', e.target.files[0]);
 
       // 서버 연결 시
-      //     axios({
-      //       baseURL: API_HOST,
-      //       url: '/images/:username/thumbnail',
-      //       method: 'POST',
-      //       data: formData,
-      //       headers: {
-      //         'Content-Type': 'multipart/form-data',
-      //       },
-      //     })
-      //       .then((response) => {
-      //         console.log(response.data);
-      //       })
-      //       .catch((error) => {
-      //         console.error(error);
-      //       });
-      //   },
-      //   [],
-      // );
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/members`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result as string);
@@ -66,32 +91,44 @@ function ProfileEdit() {
   }, []);
 
   const onSubmitForm = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
-      // 서버로 전송하는 로직을 구현합니다.
-      // axios({
-      //   baseURL: API_HOST,
-      //   url: '/user/update',
-      //   method: 'POST',
-      //   data: {
-      //     profileImage: previewImage,
-      //     nickname: e.target.elements.nickname.value,
-      //     // 추가 정보들...
-      //   },
-      // })
-      //   .then((response) => {
-      //     console.log(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      navigate('/mypage');
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/members`,
+          {
+            profileImage: previewImage,
+            nickname: nickname,
+          },
+        );
+        console.log(response.data);
+        navigate('/mypage');
+
+        dispatch(setName(nickname));
+      } catch (error) {
+        console.error(error);
+      }
     },
-    [],
-    // [previewImage],
+
+    [previewImage, dispatch],
   );
+
+  const onDeleteUser = useCallback(async () => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/user`,
+      );
+      console.log('User deleted successfully');
+      console.log(response.data);
+    } catch (error) {
+      console.error('delete error:', error);
+    }
+  }, []);
+
   return (
     <MyPageEdit>
       <ProfileEditWrapper>
@@ -112,16 +149,19 @@ function ProfileEdit() {
               accept="image/*"
               onChange={onUploadImage}
             />
+            <input
+              type="text"
+              placeholder="닉네임"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
           </ProfilerEdit>
-
           <UploadBtn onClick={onInputButtonClick}>파일 선택</UploadBtn>
         </ProfileSection>
         <TextWrapper>
           <NameWrapper>
-            <ol>
-              <li>닉네임</li>
-              <li>내 동네</li>
-            </ol>
+            <div>닉네임</div>
+            <div>내 동네</div>
           </NameWrapper>
           <InputWrapper>
             <InputBox>
@@ -132,10 +172,10 @@ function ProfileEdit() {
         </TextWrapper>
       </ProfileEditWrapper>
       <StyledForm onSubmit={onSubmitForm}>
-        <input
-          type="submit"
+        <button
           value="돌아가기"
           style={{ backgroundColor: '#CDDBF0', color: '#333' }}
+          onClick={onDeleteUser}
         />
         <input type="submit" value="정보 수정" />
       </StyledForm>

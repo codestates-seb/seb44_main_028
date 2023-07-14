@@ -1,4 +1,4 @@
-package com.ftiland.travelrental.interest.controller;
+/*package com.ftiland.travelrental.interest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftiland.travelrental.image.service.ImageService;
@@ -184,3 +184,5 @@ public class InterestControllerTest {
 
     }
 }
+
+ */

@@ -1,14 +1,16 @@
 import { useQuery } from 'react-query';
 import CategoryButton from './CategoryButton';
-import { CATEGORY } from '../../constants';
 import { CategoryContainer } from '../../style/style';
 import axios from 'axios';
 import Loading from '../Loading';
 import { ICategory } from '../../model/ICategory';
+import ErrorPage from '../ErrorPage';
 
 const Category = () => {
   const fetchCategoryData = async () => {
-    const response = await axios.get('/api/categories');
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/categories`,
+    );
     return response.data;
   };
   const {
@@ -17,24 +19,20 @@ const Category = () => {
     isError,
   } = useQuery<ICategory[]>('categories', fetchCategoryData);
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
-  //   <CategoryContainer>
-  //   {category.map((categoryBtn) => (
-  //     <CategoryButton
-  //       imageUrl={categoryBtn.image}
-  //       imageName={categoryBtn.title}
-  //     />
-  //   ))}
-  // </CategoryContainer>
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
   return (
     <CategoryContainer>
-      {CATEGORY.map((categoryBtn) => (
+      {category?.map((categoryBtn) => (
         <CategoryButton
-          ImageId={categoryBtn.id}
+          key={categoryBtn.categoryId}
+          ImageId={categoryBtn.categoryId}
           imageUrl={categoryBtn.image}
-          imageName={categoryBtn.name}
+          imageName={categoryBtn.title}
         />
       ))}
     </CategoryContainer>
