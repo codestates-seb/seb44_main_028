@@ -3,18 +3,18 @@ import { CheckBoxProps } from '../../type';
 
 const CheckBox = ({
   categoryData,
-  selectedCategories,
-  setSelectedCategories,
+  selectedtCategory,
+  setSelectedCategory,
 }: CheckBoxProps) => {
-  const isSelected = selectedCategories.includes(categoryData);
+  const isSelected = selectedtCategory.includes(categoryData);
 
   const handleIsClick = () => {
-    if (selectedCategories.includes(categoryData)) {
-      setSelectedCategories((prevCategories) =>
+    if (selectedtCategory.includes(categoryData)) {
+      setSelectedCategory((prevCategories) =>
         prevCategories.filter((category) => category !== categoryData),
       );
     } else {
-      setSelectedCategories((prevCategories) => [
+      setSelectedCategory((prevCategories) => [
         ...prevCategories,
         categoryData,
       ]);

@@ -15,6 +15,7 @@ import {
 import { CONTENT_DESCRIPTION } from '../constants';
 
 const WritePost = () => {
+  const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
   const {
     register,
     handleSubmit,
@@ -27,9 +28,9 @@ const WritePost = () => {
     feePerDay: '',
     title: '',
     content: '',
+    category: '',
   });
   const handleQuillChange = (value: string) => {
-    // console.log(value);
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
     setInputValues((prev) => ({
       ...prev,
@@ -50,8 +51,11 @@ const WritePost = () => {
     };
     alert(JSON.stringify(submitData));
   };
-
-  console.log(inputValues);
+  useEffect(() => {
+    setInputValues({ ...inputValues, category: selectedtCategory.join(',') });
+  }, [selectedtCategory]);
+  console.log('checkobx', selectedtCategory);
+  console.log('value', inputValues);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <WritePriceWrapper>
@@ -131,7 +135,10 @@ const WritePost = () => {
         placeholder={CONTENT_DESCRIPTION}
       />
       <CheckBoxTitle>카테고리</CheckBoxTitle>
-      <CheckBoxList />
+      <CheckBoxList
+        selectedtCategory={selectedtCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
 
       <ButtonWrapper>
         <button>취소</button>
