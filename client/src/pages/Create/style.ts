@@ -11,9 +11,9 @@ export const CreatePageContainer = styled.div`
 export const UploadContainer = styled.div`
   display: flex;
   margin: 1.875rem 0;
+  margin-top: 3rem;
 `;
 export const UploadImageLabel = styled.label`
-  margin-top: 1rem;
   width: 9.875rem;
   height: 7.875rem;
   border: ${border.basic};
