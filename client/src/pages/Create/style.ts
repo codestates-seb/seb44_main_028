@@ -3,6 +3,7 @@ import { border } from '../../common/utils/enum/border';
 import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
+import { FieldError } from 'react-hook-form';
 
 export const CreatePageContainer = styled.div`
   font-size: ${fontSize.headerIconSize};
@@ -89,6 +90,17 @@ export const WritePostContainer = styled.form`
     color: ${colorPalette.basicTextColor};
     font-size: ${fontSize.small};
   }
+  & .error-message {
+    margin-top: 0.5rem;
+    color: ${colorPalette.basicTextColor};
+    font-size: ${fontSize.small};
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  & .error-message.show {
+    opacity: 1;
+    position: relative;
+  }
 `;
 export const WritePriceWrapper = styled.div`
   display: grid;
@@ -97,7 +109,9 @@ export const WritePriceWrapper = styled.div`
   gap: 2rem;
   margin-bottom: 2.875rem;
 `;
-export const PriceInput = styled.label`
+export const PriceInput = styled.label<{
+  errorMessage: boolean;
+}>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -110,7 +124,9 @@ export const PriceInput = styled.label`
     height: 1.5rem;
     position: absolute;
     right: 0.7rem;
-    bottom: 0.6rem;
+    bottom: ${({ errorMessage }) => (errorMessage ? '0.6rem' : '2rem')};
+    top: ${({ errorMessage }) => (errorMessage ? '2.6rem' : '0.6rem')};
+    transition: bottom 0.3s ease;
   }
   & .error-icon {
     color: ${colorPalette.errorColor};

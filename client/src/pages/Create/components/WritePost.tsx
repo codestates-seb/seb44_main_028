@@ -63,13 +63,14 @@ const WritePost = () => {
     });
   }, [selectedtCategory, uploadImages]);
   //console.log('checkobx', selectedtCategory);
-  console.log('value', inputValues);
+  // console.log('value', inputValues);
   //console.log('images', uploadImages);
+  console.log('errors', !!errors);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage setUploadImages={setUploadImages} />
       <WritePriceWrapper>
-        <PriceInput>
+        <PriceInput errorMessage={!!errors}>
           최소 대여시간
           <Input
             type="text"
@@ -91,10 +92,16 @@ const WritePost = () => {
               <BiErrorCircle className="error-icon" />
             )}
           {errors.minRentalPeriod && (
-            <small className="error-message">필수 입력사항입니다.</small>
+            <small
+              className={`error-message ${
+                errors.minRentalPeriod ? 'show' : ''
+              }`}
+            >
+              필수 입력사항입니다.
+            </small>
           )}
         </PriceInput>
-        <PriceInput>
+        <PriceInput errorMessage={!!errors}>
           고정금액
           <Input
             type="text"
@@ -110,10 +117,12 @@ const WritePost = () => {
             <BiErrorCircle className="error-icon" />
           )}
           {errors.baseFee && (
-            <small className="error-message">필수 입력사항입니다.</small>
+            <small className={`error-message ${errors.baseFee ? 'show' : ''}`}>
+              필수 입력사항입니다.
+            </small>
           )}
         </PriceInput>
-        <PriceInput>
+        <PriceInput errorMessage={!!errors}>
           1일 당 추가금액
           <Input
             type="text"
@@ -133,12 +142,16 @@ const WritePost = () => {
             <BiErrorCircle className="error-icon" />
           )}
           {errors.feePerDay && (
-            <small className="error-message">필수 입력사항입니다.</small>
+            <small
+              className={`error-message ${errors.feePerDay ? 'show' : ''}`}
+            >
+              필수 입력사항입니다.
+            </small>
           )}
         </PriceInput>
       </WritePriceWrapper>
 
-      <PriceInput>
+      <PriceInput errorMessage={!!errors}>
         제목
         <Input
           {...register('title', { required: true })}
@@ -153,7 +166,9 @@ const WritePost = () => {
           <BiErrorCircle className="error-icon" />
         )}
         {errors.title && (
-          <small className="error-message">필수 입력사항입니다.</small>
+          <small className={`error-message ${errors.title ? 'show' : ''}`}>
+            필수 입력사항입니다.
+          </small>
         )}
       </PriceInput>
       <ReactQuill
