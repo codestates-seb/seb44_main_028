@@ -38,10 +38,11 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
         },
       );
 
-      console.log('3. getMe response:', data === '');
+      console.log('3. getMe response:', data);
 
       // 유저 정보 store에 저장
       dispatch(createUserInfo(data));
+      return data;
     } catch (error) {
       console.log('error가 난거니? 뭠미?', error);
     }
