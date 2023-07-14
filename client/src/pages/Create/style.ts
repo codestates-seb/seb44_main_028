@@ -83,13 +83,6 @@ export const WritePostContainer = styled.form`
     margin-bottom: 5rem;
     font-size: ${fontSize.headerIconSize};
   }
-  & input {
-    padding: 0.8rem;
-    border: ${border.basic};
-    border-radius: ${borderRadius.basicRadius};
-    margin-top: 0.75rem;
-    color: ${colorPalette.grayTextColor};
-  }
 
   & small {
     margin-top: 0.5rem;
@@ -139,33 +132,6 @@ export const Input = styled.input`
   &.success {
     border-color: ${colorPalette.checkColor};
     box-shadow: 0 0 3px ${colorPalette.checkColor};
-  }
-`;
-export const TitleInput = styled.div<{ isInputChange: boolean }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  input:focus {
-    outline: none !important;
-    border-color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
-    box-shadow: ${({ isInputChange }) =>
-      isInputChange
-        ? `0 0 3px ${colorPalette.checkColor}`
-        : `0 0 3px ${colorPalette.errorColor}`};
-  }
-  svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    position: absolute;
-    right: 0.7rem;
-    bottom: 0.6rem;
-    color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
   }
 `;
 
