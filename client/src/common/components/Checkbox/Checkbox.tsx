@@ -12,8 +12,6 @@ const CheckBox = ({
   selectedtCategory,
   setSelectedCategory,
 }: CheckBoxProps) => {
-  //console.log(categoryData.categoryId);
-
   const isSelected = selectedtCategory.includes(categoryId);
 
   const handleIsClick = () => {
