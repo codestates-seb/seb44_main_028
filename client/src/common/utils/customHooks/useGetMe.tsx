@@ -42,6 +42,7 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
 
       // 유저 정보 store에 저장
       dispatch(createUserInfo(data));
+      return data;
     } catch (error) {
       console.log('error가 난거니? 뭠미?', error);
     }

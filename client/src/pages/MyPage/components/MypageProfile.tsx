@@ -16,28 +16,17 @@ import axios from 'axios';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import { RootState } from '../../../common/store/RootStore';
 import { useSelector } from 'react-redux';
-
-interface Member {
-  memberId: number;
-  email: string;
-  displayName: string;
-  address: string | null;
-  latitude: number | null;
-  longitude: number | null;
-}
+import { IUserInfo } from '../../../common/model/IUserInfo';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 function MypageProfile() {
-  const member: Member = {
-    memberId: 27,
-    email: 'keumhe0110@gmail.com',
-    displayName: '민트',
-    address: null,
-    latitude: null,
-    longitude: null,
-  };
+  const { data: userData } = useGetMe();
+  console.log('userData', userData);
+
   const iconProps = { itemCount: 0 };
-  const [user, setUser] = useState<Member | null>(null);
-  const { memberId, email, displayName, address, latitude, longitude } = member;
+  const [user, setUser] = useState<IUserInfo | null>(null);
+  const [displayName, setDisplayName] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
 
   const getUserInfo = useCallback(() => {
     const token = localStorage.getItem(ACCESS_TOKEN);
@@ -47,39 +36,42 @@ function MypageProfile() {
       console.log('토큰이 없습니다.', token);
       return;
     }
-    if (!user) {
-      return <div>로그인 정보 왜 안떠?!!</div>;
-    }
+
+    const fetchUserData = async () => {
+      try {
+        const headers = {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        };
+
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/members/`,
+          { headers: headers },
+        );
+        setUser(response.data);
+        console.log(response);
+        setUser(response.data);
+
+        if (response.data) {
+          setDisplayName(response.data.displayName || '');
+          setAddress(response.data.address || '');
+          console.log('유저정보 ', user);
+        }
+      } catch (error) {
+        console.error('유저 정보를 가져오는데 실패했습니다.', error);
+        console.error('Error:', (error as Error).message);
+      }
+      fetchUserData();
+    };
   }, []);
-
-  // const fetchUserData = async () => {
-  //   try {
-  //     const headers = {
-  //       Authorization: `Bearer ${token}`,
-  //     };
-
-  //     const response = await axios.get(
-  //       `${process.env.REACT_APP_API_URL}/api/members`,
-  //       { headers: headers },
-  //     );
-  //     setUser(response.data);
-  //     console.log(response);
-  //     setUser(response.data);
-  //     console.log(user);
-  //   } catch (error) {
-  //     console.error('유저 정보를 가져오는데 실패했습니다.', error);
-  //     console.error('Error:', (error as Error).message);
-  //   }
-  // };
-
-  // fetchUserData();
-  // }, []);
 
   // useEffect(() => {
   //   if (user) {
-  //     console.log(user);
+  //     setDisplayName(user.displayName || '');
+  //     setAddress(user.address || '');
+  //     console.log('user상태 :', user);
   //   }
   // }, [user]);
+  // console.log('user상태 :', user);
 
   useEffect(() => {
     getUserInfo();
@@ -93,14 +85,16 @@ function MypageProfile() {
         </MypageImage>
         <MypageInfo>
           <div style={{ fontWeight: 'bold', fontSize: 20 }}>
-            <span>{displayName}</span>
+            <span>
+              <h4>{userData?.displayName}</h4>
+            </span>
           </div>
           <Location>
             <span>
               <FaMapMarkerAlt />
             </span>
             {/**유저위치입력 */}
-            <span>주소내놔{address}</span>
+            <span>{userData?.address}</span>
           </Location>
         </MypageInfo>
       </MypageLeft>

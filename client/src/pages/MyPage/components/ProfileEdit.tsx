@@ -22,6 +22,7 @@ import { RootState } from '../../../common/store/RootStore';
 import { setName } from '../store/ProfileSlice';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { DefaultBtn } from '../../../common/components/Button';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 function ProfileEdit() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function ProfileEdit() {
   const updateUserInfo = useCallback(async () => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/api/members`,
+        `${process.env.REACT_APP_API_URL}/api/members/`,
       );
       const userInfo = response.data;
       setNickname(userInfo.displayName);
@@ -66,7 +67,7 @@ function ProfileEdit() {
       // 서버 연결 시
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/members`,
+          `${process.env.REACT_APP_API_URL}/api/members/`,
           formData,
           {
             headers: {
@@ -102,19 +103,18 @@ function ProfileEdit() {
       // console.log('Form submitted!');
       try {
         const response = await axios.patch(
-          `${process.env.REACT_APP_API_URL}/api/members`,
+          `${process.env.REACT_APP_API_URL}/api/members/`,
           {
-            displayName: nickname,
+            displayName: '민트바꿈',
           },
           {
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Bearer ', // 필요한 경우 토큰을 추가해야 합니다.
+              Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
           },
         );
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
-        dispatch(setName(nickname));
+        dispatch(setName(displayName));
         navigate('/mypage');
       } catch (error) {
         console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
@@ -122,6 +122,35 @@ function ProfileEdit() {
     },
     [nickname, dispatch, navigate],
   );
+
+  // const onSubmitForm = useCallback(
+  //   async (e: React.FormEvent<HTMLFormElement>) => {
+  //     e.preventDefault();
+  //     // const formData = new FormData(e.currentTarget);
+  //     // console.log('Form data:', Object.fromEntries(formData));
+  //     // console.log('Form submitted!');
+  //     try {
+  //       const response = await axios.patch(
+  //         `${process.env.REACT_APP_API_URL}/api/members`,
+  //         {
+  //           displayName: nickname,
+  //         },
+  //         {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             Authorization: 'Bearer ', // 필요한 경우 토큰을 추가해야 합니다.
+  //           },
+  //         },
+  //       );
+  //       console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
+  //       dispatch(setName(nickname));
+  //       navigate('/mypage');
+  //     } catch (error) {
+  //       console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
+  //     }
+  //   },
+  //   [nickname, dispatch, navigate],
+  // );
 
   return (
     <MyPageEdit>
@@ -179,7 +208,7 @@ function ProfileEdit() {
           수정
         </DefaultBtn>
       </StyledForm>
-      <DelBtn>탈퇴 하기</DelBtn>
+      <DelBtn>회원 탈퇴</DelBtn>
     </MyPageEdit>
   );
 }
