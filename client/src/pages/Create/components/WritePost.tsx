@@ -99,7 +99,6 @@ const WritePost = () => {
               required: true,
             })}
             onChange={handleInputChange}
-            //className={errors.minRentalPeriod ? 'error' : ''}
             className={
               inputValues.minRentalPeriod
                 ? 'success'
