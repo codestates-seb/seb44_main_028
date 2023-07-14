@@ -106,6 +106,12 @@ function ProfileEdit() {
           {
             displayName: nickname,
           },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ', // 필요한 경우 토큰을 추가해야 합니다.
+            },
+          },
         );
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
         dispatch(setName(nickname));
