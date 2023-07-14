@@ -47,7 +47,7 @@ const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
       setImageOverflow(false);
     }
   }, [imageOverflow, showImages]);
-  console.log(showImages);
+
   return (
     <UploadContainer>
       <UploadImageLabel htmlFor="input-file">
