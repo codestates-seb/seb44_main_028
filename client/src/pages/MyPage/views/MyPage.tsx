@@ -5,13 +5,15 @@ import MypageProfile from '../components/MypageProfile';
 import { ProfileWrapper, EditWrapper, ProfileDataWrapper } from '../style';
 import { ProfileDataType } from '../type';
 import axios from 'axios';
-import { RootState } from '../../../common/store/RootStore';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../../common/store/RootStore';
 import { ACCESS_TOKEN } from '../../Login/constants';
 // import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 // import { BorrowCardProps } from '../../../common/type';
 
 const MyPage = () => {
+  const state = useSelector((state: RootState) => state.userInfo);
+  console.log(state);
   const navigator = useNavigate();
   const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
   console.log('유저 정보gg', userInfo);
@@ -20,6 +22,7 @@ const MyPage = () => {
   );
   console.log('로그인 상태인가?', isLoggedIn);
   console.log('유저 정보', userInfo);
+
 
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
