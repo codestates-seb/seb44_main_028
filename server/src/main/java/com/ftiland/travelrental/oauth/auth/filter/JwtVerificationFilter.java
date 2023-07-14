@@ -38,9 +38,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             Map<String, Object> claims = verifyJws(request);
-            String refreshToken = getRefreshTokenFromCookie(request, "refreshToken");
-            logger.debug("refreshToken {}", refreshToken);
-            if(refreshToken == null) response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            //String refreshToken = getRefreshTokenFromCookie(request, "refreshToken");
+            //if(refreshToken == null) response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
