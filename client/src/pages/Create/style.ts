@@ -104,20 +104,13 @@ export const WritePriceWrapper = styled.div`
   gap: 2rem;
   margin-bottom: 2.875rem;
 `;
-export const PriceInput = styled.div<{ isInputChange: boolean }>`
+export const PriceInput = styled.label`
   display: flex;
   flex-direction: column;
   position: relative;
   input:focus {
     outline: none !important;
-    border-color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
-    box-shadow: ${({ isInputChange }) =>
-      isInputChange
-        ? `0 0 3px ${colorPalette.checkColor}`
-        : `0 0 3px ${colorPalette.errorColor}`};
+    /*  */
   }
   svg {
     position: absolute;
@@ -126,10 +119,7 @@ export const PriceInput = styled.div<{ isInputChange: boolean }>`
     position: absolute;
     right: 0.7rem;
     bottom: 0.6rem;
-    color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
+    /*  */
   }
 `;
 export const TitleInput = styled.div<{ isInputChange: boolean }>`

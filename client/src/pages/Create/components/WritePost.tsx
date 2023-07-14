@@ -1,177 +1,138 @@
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useForm } from 'react-hook-form';
 import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
-import { useForm } from 'react-hook-form';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
 import {
-  CONTENT_DESCRIPTION,
-  INPIT_VALIDATION,
-  INPUT_FIELD,
-} from '../constants';
-import {
   WritePostContainer,
+  PriceInput,
   WritePriceWrapper,
   ButtonWrapper,
   CheckBoxTitle,
-  PriceInput,
-  TitleInput,
 } from '../style';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { CONTENT_DESCRIPTION } from '../constants';
 
 const WritePost = () => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors, isDirty },
+    formState: { isSubmitting, errors },
   } = useForm();
-  const [isInputChange, setIsInputChange] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [isInputValid, setIsInputValid] = useState<boolean[]>([
-    true,
-    true,
-    true,
-    true,
-  ]);
+
+  const [inputValues, setInputValues] = useState({
+    minRentalPeriod: '',
+    baseFee: '',
+    feePerDay: '',
+    title: '',
+    content: '',
+  });
   const handleQuillChange = (value: string) => {
     console.log(value);
+    setInputValues((prev) => ({
+      ...prev,
+      content: value,
+    }));
   };
-  const onSubmit = async (data: any) => {
-    alert(JSON.stringify(data));
-  };
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const newValue = e.target.value.length > 0;
-    setIsInputChange((prevState) => {
-      const newState = [...prevState];
-      newState[index] = newValue;
-      return newState;
-    });
-    setIsInputValid((prevState) => {
-      const newState = [...prevState];
-      newState[index] = newValue && !errors[INPUT_FIELD[index].id];
-      return newState;
+  const handleInputChange = (e: any) => {
+    setInputValues({
+      ...inputValues,
+      [e.target.name]: e.target.value,
     });
   };
-  const handleInputBlur = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    setIsInputValid((prevState) => {
-      const newState = [...prevState];
-      newState[index] = !!e.target.value && !errors[INPUT_FIELD[index].id];
-      return newState;
-    });
+
+  const onSubmit = (data: any) => {
+    const submitData = {
+      ...data,
+      content: inputValues.content,
+    };
+    alert(JSON.stringify(submitData));
   };
-  useEffect(() => {
-    setIsInputValid((prevState) => {
-      const newState = [...prevState];
-      for (let i = 0; i < INPUT_FIELD.length; i++) {
-        newState[i] = !errors[INPUT_FIELD[i].id];
-      }
-      return newState;
-    });
-  }, [errors]);
+
+  console.log(inputValues);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <WritePriceWrapper>
-        <PriceInput className="priceInput" isInputChange={isInputChange[0]}>
-          <label htmlFor={`${INPUT_FIELD[0].id}}`}>
-            {INPUT_FIELD[0].title}
-          </label>
+        <PriceInput>
+          최소 대여시간
           <input
-            id={INPUT_FIELD[0].id}
             type="text"
-            aria-invalid={
-              !isDirty
-                ? undefined
-                : errors[INPUT_FIELD[0].id]
-                ? 'true'
-                : 'false'
-            }
-            {...register(`${INPUT_FIELD[0].id}`, { required: true })}
-            onChange={(e) => handleInputChange(e, 0)}
-            onBlur={(e) => handleInputBlur(e, 0)}
+            {...register('minRentalPeriod', { required: true })}
+            value={inputValues.minRentalPeriod}
+            onChange={handleInputChange}
+            className={errors.minRentalPeriod ? 'error' : ''}
           />
-          {isInputChange[0] && <BsCheckLg />}
-          {!isInputValid[0] && <BiErrorCircle />}
-          {errors[INPUT_FIELD[0].id] && (
-            <small role="alert">{INPIT_VALIDATION}</small>
+          {inputValues.minRentalPeriod && <BsCheckLg className="check-icon" />}
+          {!inputValues.minRentalPeriod &&
+            inputValues.minRentalPeriod === '' && (
+              <BiErrorCircle className="error-icon" />
+            )}
+          {errors.minRentalPeriod && (
+            <span className="error-message">필수 입력사항입니다.</span>
           )}
         </PriceInput>
-        <PriceInput className="priceInput" isInputChange={isInputChange[1]}>
-          <label>{INPUT_FIELD[1].title}</label>
+        <PriceInput>
+          고정금액
           <input
-            id={`${INPUT_FIELD[1].id}}`}
             type="text"
-            aria-invalid={
-              !isDirty
-                ? undefined
-                : errors[INPUT_FIELD[1].id]
-                ? 'true'
-                : 'false'
-            }
-            {...register(`${INPUT_FIELD[1].id}`, { required: true })}
-            onChange={(e) => handleInputChange(e, 1)}
-            onBlur={(e) => handleInputBlur(e, 1)}
+            {...register('baseFee', { required: true })}
+            value={inputValues.baseFee}
+            onChange={handleInputChange}
+            className={errors.baseFee ? 'error' : ''}
           />
-          {isInputChange[1] && <BsCheckLg />}
-          {!isInputValid[1] && <BiErrorCircle />}
-          {errors[INPUT_FIELD[1].id] && (
-            <small role="alert">{INPIT_VALIDATION}</small>
+          {inputValues.baseFee && <BsCheckLg className="check-icon" />}
+          {!inputValues.baseFee && inputValues.baseFee === '' && (
+            <BiErrorCircle className="error-icon" />
+          )}
+          {errors.baseFee && (
+            <span className="error-message">필수 입력사항입니다.</span>
           )}
         </PriceInput>
-        <PriceInput className="titleInput" isInputChange={isInputChange[2]}>
-          <label>{INPUT_FIELD[2].title}</label>
+        <PriceInput>
+          1일 당 추가금액
           <input
-            id={`${INPUT_FIELD[2].id}}`}
             type="text"
-            aria-invalid={
-              !isDirty
-                ? undefined
-                : errors[INPUT_FIELD[2].id]
-                ? 'true'
-                : 'false'
-            }
-            {...register(`${INPUT_FIELD[2].id}`, { required: true })}
-            onChange={(e) => handleInputChange(e, 2)}
-            onBlur={(e) => handleInputBlur(e, 2)}
+            {...register('feePerDay', { required: true })}
+            value={inputValues.feePerDay}
+            onChange={handleInputChange}
+            className={errors.feePerDay ? 'error' : ''}
           />
-          {isInputChange[2] && <BsCheckLg />}
-          {!isInputValid[2] && <BiErrorCircle />}
-          {errors[INPUT_FIELD[2].id] && (
-            <small role="alert">{INPIT_VALIDATION}</small>
+          {inputValues.feePerDay && <BsCheckLg className="check-icon" />}
+          {!inputValues.feePerDay && inputValues.feePerDay === '' && (
+            <BiErrorCircle className="error-icon" />
+          )}
+          {errors.feePerDay && (
+            <span className="error-message">필수 입력사항입니다.</span>
           )}
         </PriceInput>
       </WritePriceWrapper>
-      <TitleInput isInputChange={isInputChange[3]}>
-        <label>{INPUT_FIELD[3].title}</label>
+
+      <PriceInput>
+        제목
         <input
-          id={`${INPUT_FIELD[3].id}`}
-          type="text"
-          aria-invalid={
-            !isDirty ? undefined : errors[INPUT_FIELD[3].id] ? 'true' : 'false'
-          }
-          {...register(`${INPUT_FIELD[3].id}`, { required: true })}
-          onChange={(e) => handleInputChange(e, 3)}
-          onBlur={(e) => handleInputBlur(e, 3)}
+          {...register('title', { required: true })}
+          value={inputValues.title}
+          onChange={handleInputChange}
+          className={errors.title ? 'error' : ''}
         />
-        {isInputChange[3] && <BsCheckLg />}
-        {!isInputValid[3] && <BiErrorCircle />}
-        {errors[INPUT_FIELD[3].id] && (
-          <small role="alert">{INPIT_VALIDATION}</small>
+        {inputValues.title && <BsCheckLg className="check-icon" />}
+        {!inputValues.title && inputValues.title === '' && (
+          <BiErrorCircle className="error-icon" />
         )}
-      </TitleInput>
+        {errors.title && (
+          <span className="error-message">필수 입력사항입니다.</span>
+        )}
+      </PriceInput>
       <ReactQuill
         theme="snow"
+        value={inputValues.content}
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}
       />
       <CheckBoxTitle>카테고리</CheckBoxTitle>
       <CheckBoxList />
+
       <ButtonWrapper>
         <button>취소</button>
         <button type="submit" disabled={isSubmitting}>
