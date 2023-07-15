@@ -23,7 +23,6 @@ const MyPage = () => {
   console.log('로그인 상태인가?', isLoggedIn);
   console.log('유저 정보', userInfo);
 
-
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
   );
