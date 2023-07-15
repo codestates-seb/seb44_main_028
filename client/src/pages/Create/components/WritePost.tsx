@@ -37,6 +37,7 @@ const WritePost = () => {
     title: '',
     baseFee: '',
     feePerDay: '',
+    overdueFee: '',
     images: [] as File[],
     minRentalPeriod: '',
     content: '',
@@ -182,6 +183,33 @@ const WritePost = () => {
           {errors.feePerDay && (
             <small
               className={`error-message ${errors.feePerDay ? 'show' : ''}`}
+            >
+              필수 입력사항입니다.
+            </small>
+          )}
+        </PriceInput>
+        <PriceInput errorMessage={!!errors}>
+          연체료
+          <Input
+            type="text"
+            {...register('overdueFee', { required: true })}
+            value={inputValues.overdueFee}
+            onChange={handleInputChange}
+            className={
+              inputValues.overdueFee
+                ? 'success'
+                : errors.overdueFee
+                ? 'error'
+                : ''
+            }
+          />
+          {inputValues.overdueFee && <BsCheckLg className="check-icon" />}
+          {!inputValues.overdueFee && inputValues.overdueFee === '' && (
+            <BiErrorCircle className="error-icon" />
+          )}
+          {errors.overdueFee && (
+            <small
+              className={`error-message ${errors.overdueFee ? 'show' : ''}`}
             >
               필수 입력사항입니다.
             </small>
