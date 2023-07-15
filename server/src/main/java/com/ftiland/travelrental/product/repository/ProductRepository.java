@@ -14,6 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     Page<Product> findByMemberMemberId(Long memberId, Pageable pageable);
 
+    List<Product> findAllByMemberMemberId(Long memberId);
     List<Product> findTop3ByOrderByViewCountDesc();
 
     @Query("SELECT p FROM Product p ORDER BY p.totalRateScore / p.totalRateCount DESC")
