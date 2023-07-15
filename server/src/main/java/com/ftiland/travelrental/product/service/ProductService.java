@@ -172,6 +172,7 @@ public class ProductService {
 
     public List<Product> findProductByMemberId(Long memberId) {
         return productRepository.findAllByMemberMemberId(memberId);
+    }
 
     public List<Product> getTop3ByViewCount() {
         return productRepository.findTop3ByOrderByViewCountDesc();
