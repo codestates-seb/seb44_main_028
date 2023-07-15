@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { UseQueryResult, useQuery } from 'react-query';
 import axios, { AxiosError } from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,11 +12,13 @@ import { RootState } from '../../store/RootStore';
 // 추후 React Query 사용하여 유저 정보 캐싱하는 로직으로 변경 예정
 
 function useGetMe(): UseQueryResult<IUserInfo | null> {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const encryptToken = useEncryptToken();
   const decryptToken = useDecryptToken();
 
   const getMe = async (): Promise<IUserInfo | null | undefined> => {
+    console.log('getMe 호출');
     const encryptedAccessToken: string | null =
       localStorage.getItem(ACCESS_TOKEN);
 
@@ -23,7 +26,9 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
       '1. localstorage에서 꺼내온 accessToken:',
       encryptedAccessToken,
     );
+    // 1. 액세스 토큰이 없으면 로그인 페이지로 이동
     if (!encryptedAccessToken || !process.env.REACT_APP_SECRET_KEY) {
+      navigate('/login');
       return null;
     }
 
@@ -38,12 +43,12 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
         },
       );
 
-      console.log('3. getMe response:', data === '');
+      console.log('3. getMe response:', data);
 
       // 유저 정보 store에 저장
       dispatch(createUserInfo(data));
-    } catch (error) {
-      console.log('error가 난거니? 뭠미?', error);
+    } catch (error: AxiosError | any) {
+      console.log('error가 난거니? 뭠미?', error.response);
     }
 
     //   if (!userData || !response?.headers.authorization) {
