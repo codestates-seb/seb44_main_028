@@ -81,7 +81,12 @@ function MonthSwitchBtns() {
 
   return (
     <ButtonWrapper>
-      <Btn onClick={onClickBack}>◀️</Btn>
+      {new Date().getFullYear() === current.year &&
+      new Date().getMonth() + 1 === current.month ? (
+        <span />
+      ) : (
+        <Btn onClick={onClickBack}>◀️</Btn>
+      )}
       <Btn onClick={onClickNext}>▶️</Btn>
     </ButtonWrapper>
   );
