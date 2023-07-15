@@ -48,6 +48,12 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
         '4. Headers에 있는 Authorization:',
         response.headers?.Authorization,
       );
+      // 5. accessToken이 만료되었으면 재발급 받아서 localStorage에 저장
+      if (response.headers?.Authorization) {
+        const newAccessToken = response.headers.Authorization.split(' ')[1];
+        console.log('5. 재발급 받은 accessToken:', newAccessToken);
+        localStorage.setItem(ACCESS_TOKEN, encryptToken(newAccessToken));
+      }
     } catch (error: AxiosError | any) {
       console.log('error가 난거니? 뭠미?', error.response.status);
       const statusCode = error.response.status;
