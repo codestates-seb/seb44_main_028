@@ -25,7 +25,6 @@ import { useMutation } from 'react-query';
 const WritePost = () => {
   const navigate = useNavigate();
   const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
-  const [uploadImages, setUploadImages] = useState<File[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const {
     register,
@@ -38,11 +37,14 @@ const WritePost = () => {
     baseFee: '',
     feePerDay: '',
     overdueFee: '',
-    images: [] as File[],
     minRentalPeriod: '',
     content: '',
     categoryIds: [] as string[],
   });
+  const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
+    images: [],
+  });
+  //
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
     setInputValues((prev) => ({
@@ -72,39 +74,45 @@ const WritePost = () => {
   const handelExit = () => {
     navigate('/');
   };
-  // const newPost = useMutation((post: object) =>
-  //   axios
-  //     .post(
-  //       `${process.env.REACT_APP_API_URL}/api/products`,
-  //       JSON.stringify(post),
-  //       {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //       },
-  //     )
-  //     .then((res) => {
-  //       const { data } = res;
-  //       console.log('data', data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     }),
-  // );
+  const newPost = useMutation((post: object) =>
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/products`, post, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        const { data } = res;
+        console.log('data', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  );
   const onSubmit = (data: object) => {
-    const submitData = {
-      ...data,
-      content: inputValues.content,
-    };
-    console.log(inputValues);
-    // newPost.mutate(inputValues);
+    const formData = new FormData();
+    // formData.append('images', uploadImages);
+    const blobJson = new Blob([JSON.stringify(inputValues)], {
+      type: 'application/json',
+    });
+    formData.append('requestBody', blobJson);
+    for (const image of uploadImages.images) {
+      formData.append('images', image || null);
+    }
+    console.log(uploadImages);
+    console.log(formData);
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    newPost.mutate(formData);
   };
   useEffect(() => {
     setInputValues({
       ...inputValues,
       categoryIds: [...selectedtCategory],
-      images: uploadImages,
     });
+    // setUploadImages({ ...uploadImages, images: uploadImages });
   }, [selectedtCategory, uploadImages]);
   //console.log('checkobx', selectedtCategory);
   //console.log('value', inputValues);
