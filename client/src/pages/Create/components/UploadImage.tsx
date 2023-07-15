@@ -20,12 +20,9 @@ const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
 
   const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
-    // let uploadedImages: File[] = [];
-    //  const formData = new FormData();
     if (imageLists) {
       let newImages: File[] = [];
       for (let i = 0; i < imageLists.length; i++) {
-        // formData.append('images', imageLists[i]);
         newImages.push(imageLists[i]);
 
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
@@ -41,13 +38,10 @@ const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
       setUploadImages((prev) => ({ images: [...prev.images, ...newImages] }));
       console.log(newImages);
     }
-    // console.log(formData);
   };
 
   const handleDeleteImage = (index: number) => {
     setShowImages((prev) => prev.filter((_, i) => i !== index));
-    //setUploadImages({ images: uploadedImages });
-    //setUploadImages((prev) => prev.filter((_, i) => i !== index));
     setUploadImages((prev) => {
       const updatedImages = [...prev.images];
       updatedImages.splice(index, 1);

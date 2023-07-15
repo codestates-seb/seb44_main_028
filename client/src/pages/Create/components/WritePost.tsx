@@ -89,9 +89,8 @@ const WritePost = () => {
         console.log(err);
       }),
   );
-  const onSubmit = (data: object) => {
+  const onSubmit = () => {
     const formData = new FormData();
-    // formData.append('images', uploadImages);
     const blobJson = new Blob([JSON.stringify(inputValues)], {
       type: 'application/json',
     });
@@ -112,12 +111,8 @@ const WritePost = () => {
       ...inputValues,
       categoryIds: [...selectedtCategory],
     });
-    // setUploadImages({ ...uploadImages, images: uploadImages });
   }, [selectedtCategory, uploadImages]);
-  //console.log('checkobx', selectedtCategory);
-  //console.log('value', inputValues);
-  //console.log('images', uploadImages);
-  // console.log('errors', !!errors);
+
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage setUploadImages={setUploadImages} />
