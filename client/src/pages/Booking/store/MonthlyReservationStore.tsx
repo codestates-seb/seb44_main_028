@@ -116,8 +116,8 @@ export const monthlyReservation = createSlice({
       state,
       action: PayloadAction<{ startDate: string; endDate: string }[]>,
     ) => {
-      state.reservationsDate1 = turnStringArrIntoDateObjectArr(action.payload);
       state.reservationsDate2 = state.reservationsDate1;
+      state.reservationsDate1 = turnStringArrIntoDateObjectArr(action.payload);
     },
   },
 });
