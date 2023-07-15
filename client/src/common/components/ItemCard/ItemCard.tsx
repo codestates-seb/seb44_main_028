@@ -17,8 +17,10 @@ import {
 } from '../../style/style';
 import { ItemCardProps } from '../../type';
 import { INTEREST_KEY } from '../../../pages/Main/constants';
+import { useNavigate } from 'react-router-dom';
 
 const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
+  const navigate = useNavigate();
   const storedInterest = localStorage.getItem(INTEREST_KEY);
   const initialFavorites = storedInterest ? JSON.parse(storedInterest) : [];
   const [interestItems, setInterestItems] =
@@ -69,9 +71,11 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
       setInterestItems([...interestItems, itemCardData.id]);
     }
   };
-
+  const handleItemOnClick = () => {
+    navigate(`/detail/${itemCardData.id}`);
+  };
   return (
-    <ItemCardContainer>
+    <ItemCardContainer onClick={handleItemOnClick}>
       <ItemImage src={itemCardData.images}></ItemImage>
       <ItemInfo>
         <ItemName>{itemCardData.title}</ItemName>
