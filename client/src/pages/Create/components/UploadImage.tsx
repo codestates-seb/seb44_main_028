@@ -19,23 +19,32 @@ const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
   const [isClick, setIsClick] = useState<boolean>(false);
 
   const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
+    const formData = new FormData();
     const imageLists = e.target.files;
-    let imageUrlLists: string[] = [...showImages];
+    let uploadedImages: File[] = [];
+
     if (imageLists) {
       for (let i = 0; i < imageLists.length; i++) {
+        formData.append('images', imageLists[i]);
+        uploadedImages.push(imageLists[i]);
+
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        imageUrlLists.push(currentImageUrl);
+        setShowImages((prev) => [...prev, currentImageUrl]);
       }
 
-      if (imageUrlLists.length > MAX_IMAGE_COUNT) {
+      if (uploadedImages.length + showImages.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         setIsClick(true);
-        imageUrlLists = imageUrlLists.slice(0, MAX_IMAGE_COUNT);
+        uploadedImages = uploadedImages.slice(
+          0,
+          MAX_IMAGE_COUNT - showImages.length,
+        );
       }
-      setShowImages([...imageUrlLists]);
-      setUploadImages([...imageUrlLists]);
+
+      setUploadImages(uploadedImages);
     }
   };
+
   const handleDeleteImage = (index: number) => {
     setShowImages((prev) => prev.filter((_, i) => i !== index));
     setUploadImages((prev) => prev.filter((_, i) => i !== index));

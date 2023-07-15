@@ -25,7 +25,7 @@ import { useMutation } from 'react-query';
 const WritePost = () => {
   const navigate = useNavigate();
   const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
-  const [uploadImages, setUploadImages] = useState<string[]>([]);
+  const [uploadImages, setUploadImages] = useState<File[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const {
     register,
@@ -37,7 +37,7 @@ const WritePost = () => {
     title: '',
     baseFee: '',
     feePerDay: '',
-    images: [] as string[],
+    images: [] as File[],
     minRentalPeriod: '',
     content: '',
     categoryIds: [] as string[],
@@ -97,7 +97,7 @@ const WritePost = () => {
     setInputValues({
       ...inputValues,
       categoryIds: [...selectedtCategory],
-      images: [...uploadImages],
+      images: uploadImages,
     });
   }, [selectedtCategory, uploadImages]);
   //console.log('checkobx', selectedtCategory);
