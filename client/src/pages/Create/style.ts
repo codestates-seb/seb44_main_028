@@ -3,7 +3,6 @@ import { border } from '../../common/utils/enum/border';
 import { borderRadius } from '../../common/utils/enum/borderRadius';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { fontSize } from '../../common/utils/enum/fontSize';
-import { INPUT_FIELD_TITLE } from './constants';
 
 export const CreatePageContainer = styled.div`
   font-size: ${fontSize.headerIconSize};
@@ -14,6 +13,7 @@ export const UploadContainer = styled.div`
   margin: 1.875rem 0;
 `;
 export const UploadImageLabel = styled.label`
+  margin-top: 1rem;
   width: 9.875rem;
   height: 7.875rem;
   border: ${border.basic};
@@ -83,11 +83,6 @@ export const WritePostContainer = styled.form`
     margin-bottom: 5rem;
     font-size: ${fontSize.headerIconSize};
   }
-`;
-export const InputFieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 3.875rem;
   & input {
     padding: 0.8rem;
     border: ${border.basic};
@@ -95,8 +90,11 @@ export const InputFieldWrapper = styled.div`
     margin-top: 0.75rem;
     color: ${colorPalette.grayTextColor};
   }
-  & input:not([id='${INPUT_FIELD_TITLE[0].id}']) {
-    text-align: end;
+
+  & small {
+    margin-top: 0.5rem;
+    color: ${colorPalette.basicTextColor};
+    font-size: ${fontSize.small};
   }
 `;
 export const WritePriceWrapper = styled.div`
@@ -104,4 +102,93 @@ export const WritePriceWrapper = styled.div`
   grid-template-columns: repeat(3, 1fr);
   margin-top: 1.875rem;
   gap: 2rem;
+  margin-bottom: 2.875rem;
+`;
+export const PriceInput = styled.div<{ isInputChange: boolean }>`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  input:focus {
+    outline: none !important;
+    border-color: ${({ isInputChange }) =>
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
+    box-shadow: ${({ isInputChange }) =>
+      isInputChange
+        ? `0 0 3px ${colorPalette.checkColor}`
+        : `0 0 3px ${colorPalette.errorColor}`};
+  }
+  svg {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.6rem;
+    color: ${({ isInputChange }) =>
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
+  }
+`;
+export const TitleInput = styled.div<{ isInputChange: boolean }>`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  input:focus {
+    outline: none !important;
+    border-color: ${({ isInputChange }) =>
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
+    box-shadow: ${({ isInputChange }) =>
+      isInputChange
+        ? `0 0 3px ${colorPalette.checkColor}`
+        : `0 0 3px ${colorPalette.errorColor}`};
+  }
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.6rem;
+    color: ${({ isInputChange }) =>
+      isInputChange
+        ? `${colorPalette.checkColor}`
+        : `${colorPalette.errorColor}`};
+  }
+`;
+
+export const CheckBoxTitle = styled.div`
+  margin-bottom: 1.5rem;
+`;
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  & button {
+    font-size: ${fontSize.headerIconSize};
+    width: 10.938rem;
+    height: 3.563rem;
+    margin: 0 1rem;
+    margin-top: 5rem;
+    border-radius: ${borderRadius.basicRadius};
+    border: none;
+    cursor: pointer;
+  }
+  & button:first-child {
+    background-color: ${colorPalette.modalCancelButtonColor};
+    color: 'inherit';
+  }
+  & button:first-child:hover {
+    background-color: ${colorPalette.modalCancelHoverColor};
+  }
+  & button:last-child {
+    background-color: ${colorPalette.heavyColor};
+    color: ${colorPalette.whiteColor};
+  }
+  & button:last-child:hover {
+    background-color: ${colorPalette.rightButtonHoverColor};
+  }
 `;

@@ -7,6 +7,7 @@ import {
   ITEMCARD_DATA,
   ITEMCARD_DEVELOPMENT_DATA,
 } from '../constants';
+
 function MainPage() {
   return (
     <MainPageContainer>

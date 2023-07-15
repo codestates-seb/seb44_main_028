@@ -149,4 +149,20 @@ public class ProductService {
         Product product = findProduct(productId);
         product.setViewCount(product.getViewCount() + 1);
     }
+
+    public List<Product> getTop3ByViewCount() {
+        return productRepository.findTop3ByOrderByViewCountDesc();
+    }
+
+    public List<Product> getTop3ByTotalRateScoreRatio() {
+        //첫번째 페이지에서 3개의 product만 가져오도록
+        int PAGE = 0;
+        int SIZE = 3;
+
+        return productRepository.findTop3ByOrderByTotalRateScoreRatioDesc(PageRequest.of(PAGE, SIZE));
+    }
+
+    public List<Product> getTop3ByBaseFeeZero(int baseFee) {
+        return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
+    }
 }

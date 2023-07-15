@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import Modal from './Modal';
-
-// import ItemCard from '../../../common/components/ItemCard/ItemCard';
+import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
+import { BorrowCardProps } from '../../../common/type';
 
 function BorrowList() {
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-  const totalItemsCount = items.length;
+  const [itemsPerPage] = useState(3);
+  const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
   useEffect(() => {
@@ -21,10 +21,15 @@ function BorrowList() {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/members/interests`,
-        { params: { memberId: 1, page, size: itemsPerPage } },
+        { params: { memberId: 1, page: currentPage, size: itemsPerPage } },
       ); // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response.data));
+
       setItems(response.data.responses);
+      setTotalItemsCount(response.data.listSize);
+      console.log('currentPage:', currentPage);
+      console.log('totalElements:', response.data);
+      console.log('response:', response.data.responses);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
     }
@@ -36,9 +41,9 @@ function BorrowList() {
   return (
     <div>
       빌린 내역~!~!~!~!
-      {/* {borrowList.map((item) => (
-        <div key={item.id}>{item.title}</div>
-      ))} */}
+      {items.map((item, index) => (
+        <BorrowCard key={index} itemCardData={item} />
+      ))}
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal>

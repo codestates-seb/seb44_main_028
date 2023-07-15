@@ -5,18 +5,6 @@ export type CategoryButtonProps = {
   imageUrl: string;
   imageName: string;
 };
-export type ModalPortalProps = {
-  children: React.ReactNode;
-};
-export type ModalFrameProps = {
-  leftButtonText: string;
-  rightButtonText: string;
-  children: React.ReactNode;
-  setOnModal: (state: boolean) => void;
-};
-export type ModalAdditionalProps = {
-  children: React.ReactNode;
-};
 export type SelectOption = {
   value: string;
   label: string;
@@ -42,6 +30,10 @@ export type ModalButtonProps = {
 export type ModalTitleProps = {
   children?: ReactNode;
 };
+
+export type ModalAdditionalProps = {
+  children: ReactNode;
+};
 export type ModalMainProps = {
   children?: ReactNode;
   isOpen?: boolean;
@@ -60,7 +52,18 @@ export type ItemCardProps = {
   content: string;
   minimumRentalPeriod: number;
   category: number[];
-  location: string;
+  address: string;
   minRental: number;
-  imageUrl: string;
+  images: string;
+};
+
+export type BorrowCardProps = {
+  id: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  images: string;
+  content: string;
+  category: number[];
+  address: string;
 };
