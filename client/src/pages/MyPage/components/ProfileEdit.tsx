@@ -25,35 +25,81 @@ import { DefaultBtn } from '../../../common/components/Button';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import { displayName } from 'react-quill';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function ProfileEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const decrypt = useDecryptToken();
 
   const { data: userData } = useGetMe();
   console.log('userData', userData);
+
+  const Token = (value: string | null): string | undefined => {
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    if (encryptedAccessToken) {
+      return (value = decrypt(encryptedAccessToken));
+    } else {
+      return;
+    }
+  };
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-  // useEffect(() => {
-  //   //회원 정보 조회 Read
-  //   updateUserInfo();
-  // }, []);
+  const [newDisplayName, setNewDisplayName] = useState('');
 
-  // const updateUserInfo = useCallback(async () => {
-  //   try {
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_API_URL}/api/members/`,
-  //     );
-  //     setNickname(response.data.displayName || '');
-  //     setAddress(response.data.address || '');
-  //     console.log('회원 정보가 성공적으로 수정되었습니다.');
-  //   } catch (error) {
-  //     console.log('회원 정보가 업데이트 되지 않았습니다.', error);
-  //   }
-  // }, []);
+  useEffect(() => {
+    //회원 정보 조회 Read
+    updateUserInfo();
+  }, []);
+
+  const updateUserInfo = useCallback(async () => {
+    const requestData = {
+      displayName: nickname,
+    };
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    let accessToken: string | null = null;
+    if (encryptedAccessToken) {
+      accessToken = decrypt(encryptedAccessToken);
+    } else {
+      return;
+    }
+    try {
+      await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}}`,
+          },
+        },
+      );
+
+      // const accessToken: string | null = null;
+      // Token(accessToken);
+
+      console.log('회원 정보가 성공적으로 수정되었습니다.');
+      // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
+      const getResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members/`,
+        {
+          headers: {
+            displayName: `${newDisplayName}`,
+          },
+        },
+      );
+      const updatedUserInfo = getResponse.data;
+
+      setNickname(updatedUserInfo.displayName || '');
+      // setAddress(updatedUserInfo.address || '');
+    } catch (error) {
+      console.log('회원 정보가 업데이트 되지 않았습니다.', error);
+    }
+  }, [nickname, address]);
 
   const onUploadImage = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,24 +109,25 @@ function ProfileEdit() {
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append('file', file);
-      // formData.append('file', e.target.files[0]);
+      formData.append('file', e.target.files[0]);
 
       // 서버 연결 시
-      // try {
-      //   const response = await axios.post(
-      //     `${process.env.REACT_APP_API_URL}/api/members/`,
-      //     formData,
-      //     {
-      //       headers: {
-      //         'Content-Type': 'multipart/form-data',
-      //         'Access-Control-Allow-Headers': '*',
-      //       },
-      //     },
-      //   );
-      //   console.log(response.data);
-      // } catch (error) {
-      //   console.error('이미지 업로드 중에 오류발생', error);
-      // }
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/members/images/`,
+          formData,
+          {
+            params: { memberId: 1, imageFile: formData },
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Access-Control-Allow-Headers': '*',
+            },
+          },
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error('이미지 업로드 중에 오류발생', error);
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result as string);
@@ -100,49 +147,39 @@ function ProfileEdit() {
   const onSubmitForm = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // const formData = new FormData(e.currentTarget);
-      // console.log('Form data:', Object.fromEntries(formData));
-      // console.log('Form submitted!');
+      const formData = new FormData(e.currentTarget);
+      const encryptedAccessToken: string | null =
+        localStorage.getItem(ACCESS_TOKEN);
+      let accessToken: string | null = null;
+      if (encryptedAccessToken) {
+        accessToken = decrypt(encryptedAccessToken);
+      } else {
+        return;
+      }
+      console.log('Form data:', Object.fromEntries(formData));
+      console.log('Form submitted!');
       try {
         const response = await axios.patch(
-          `${process.env.REACT_APP_API_URL}/api/members`,
+          `${process.env.REACT_APP_API_URL}/api/members/`,
           {
-            displayName: 'nickname',
+            displayName: newDisplayName,
           },
           {
             headers: {
-              // Authorization: `Bearer ${ACCESS_TOKEN}`,
-              Authorization:
-                'Bearer eyJhbGciOiJIUzUxMiJ9.eyJkaXNwbGF5TmFtZSI6IuuvvO2KuCIsImVtYWlsIjoia2V1bWhlMDExMEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MjksInN1YiI6ImtldW1oZTAxMTBAZ21haWwuY29tIiwiaWF0IjoxNjg5MzUyNjIxLCJleHAiOjE2ODkzNTQ0MjF9.iMhA53ykisxHc0bFuQgIC5aH-7BDyvOay4NKiogasBR8zyw6oPEh-Q8Q08rE9uyyHPEHRomvI_ZRk9qZiLy8IA',
+              Authorization: `Bearer ${accessToken}}`,
             },
           },
         );
+        await updateUserInfo();
+        dispatch(setName(userData?.displayName));
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
         // dispatch(setName(userData?.displayName));
         navigate('/mypage');
       } catch (error) {
         console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
       }
-      // try {
-      //   const response = await axios.patch(
-      //     `${process.env.REACT_APP_API_URL}/api/members/`,
-      //     {
-      //       displayName: nickname,
-      //     },
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${ACCESS_TOKEN}`,
-      //       },
-      //     },
-      //   );
-      //   console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
-      //   dispatch(setName(userData?.displayName));
-      //   navigate('/mypage');
-      // } catch (error) {
-      //   console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
-      // }
     },
-    [nickname, dispatch, navigate],
+    [newDisplayName, dispatch, navigate, userData, decrypt, updateUserInfo],
   );
 
   return (

@@ -14,11 +14,12 @@ import GradeIcon from './GradeIcon';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import axios from 'axios';
 import { ACCESS_TOKEN } from '../../Login/constants';
-
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 function MypageProfile() {
+  const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);
 
@@ -37,11 +38,18 @@ function MypageProfile() {
     }
 
     const fetchUserData = async () => {
+      const encryptedAccessToken: string | null =
+        localStorage.getItem(ACCESS_TOKEN);
+      let accessToken: string | null = null;
+      if (encryptedAccessToken) {
+        accessToken = decrypt(encryptedAccessToken);
+      } else {
+        return;
+      }
+
       try {
         const headers = {
-          // Authorization: `Bearer ${ACCESS_TOKEN}`,
-          Authorization:
-            'Bearer eyJhbGciOiJIUzUxMiJ9.eyJkaXNwbGF5TmFtZSI6IuuvvO2KuCIsImVtYWlsIjoia2V1bWhlMDExMEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MjksInN1YiI6ImtldW1oZTAxMTBAZ21haWwuY29tIiwiaWF0IjoxNjg5MzUyNjIxLCJleHAiOjE2ODkzNTQ0MjF9.iMhA53ykisxHc0bFuQgIC5aH-7BDyvOay4NKiogasBR8zyw6oPEh-Q8Q08rE9uyyHPEHRomvI_ZRk9qZiLy8IA',
+          Authorization: `Bearer ${accessToken}`,
         };
 
         const response = await axios.get(
