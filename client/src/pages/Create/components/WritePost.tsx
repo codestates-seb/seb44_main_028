@@ -37,7 +37,7 @@ const WritePost = () => {
     baseFee: '',
     feePerDay: '',
     overdueFee: '',
-    minRentalPeriod: '',
+    minimumRentalPeriod: '',
     content: '',
     categoryIds: [] as string[],
   });
@@ -57,7 +57,7 @@ const WritePost = () => {
     const inputValue = e.target.value;
     let newValue: string | number;
 
-    if (e.target.name === 'minRentalPeriod') {
+    if (e.target.name === 'minimumRentalPeriod') {
       newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
     } else {
       newValue = inputValue;
@@ -95,7 +95,7 @@ const WritePost = () => {
     const blobJson = new Blob([JSON.stringify(inputValues)], {
       type: 'application/json',
     });
-    formData.append('requestBody', blobJson);
+    formData.append('request', blobJson);
     for (const image of uploadImages.images) {
       formData.append('images', image || null);
     }
@@ -126,27 +126,29 @@ const WritePost = () => {
           최소 대여시간
           <Input
             type="text"
-            {...register('minRentalPeriod', {
+            {...register('minimumRentalPeriod', {
               required: true,
             })}
             onChange={handleInputChange}
             className={
-              inputValues.minRentalPeriod
+              inputValues.minimumRentalPeriod
                 ? 'success'
-                : errors.minRentalPeriod
+                : errors.minimumRentalPeriod
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.minRentalPeriod && <BsCheckLg className="check-icon" />}
-          {!inputValues.minRentalPeriod &&
-            inputValues.minRentalPeriod === '' && (
+          {inputValues.minimumRentalPeriod && (
+            <BsCheckLg className="check-icon" />
+          )}
+          {!inputValues.minimumRentalPeriod &&
+            inputValues.minimumRentalPeriod === '' && (
               <BiErrorCircle className="error-icon" />
             )}
-          {errors.minRentalPeriod && (
+          {errors.minimumRentalPeriod && (
             <small
               className={`error-message ${
-                errors.minRentalPeriod ? 'show' : ''
+                errors.minimumRentalPeriod ? 'show' : ''
               }`}
             >
               필수 입력사항입니다.
