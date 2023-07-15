@@ -20,3 +20,7 @@ export const ProductInfo = styled.div``;
 export const ProductTitle = styled.div``;
 export const ProductContent = styled.div``;
 export const ProductBtn = styled.div``;
+
+export const ItemUserInfoContainer = styled.div``;
+export const ItemUserProfile = styled.div``;
+export const ItemUserInfoText = styled.div``;
