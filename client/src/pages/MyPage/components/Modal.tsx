@@ -38,21 +38,22 @@ function Modal({ children, setIsOpen }: ModalType) {
   return (
     <>
       {/* 별점 주기 모달 이런 식으로 사용하시면 됩니다~ */}
-      {/* {isOpen && (
+      {isOpen && (
         <ModalMain isOpen={isOpen}>
+          <ModalMain.Title>솔직한 별점을 입력해 주세요</ModalMain.Title>
           <ModalMain.Additional>
             <RatingStar
               ratingIndex={ratingIndex}
               setRatingIndex={setRatingIndex}
             />
           </ModalMain.Additional>
-          <ModalMain.Title>다이슨 예약하시겠습니까?</ModalMain.Title>
+
           <div>
             <ModalMain.Button
               color="inherit"
               backgroundColor={colorPalette.modalCancelButtonColor}
               hoverBackgroundColor={colorPalette.modalCancelHoverColor}
-              onClick={() => setIsOpenModal(false)}
+              onClick={() => handleGoBack()}
             >
               돌아가기
             </ModalMain.Button>
@@ -60,13 +61,13 @@ function Modal({ children, setIsOpen }: ModalType) {
               color={colorPalette.whiteColor}
               backgroundColor={colorPalette.heavyColor}
               hoverBackgroundColor={colorPalette.rightButtonHoverColor}
-              onClick={() => setIsOpenModal(false)}
+              onClick={() => handleGiveRating()}
             >
-              예약하기
+              별점 주기
             </ModalMain.Button>
           </div>
         </ModalMain>
-      )} */}
+      )}
       <div>
         <ButtonWapper2>
           <Rating onClick={handleOpenModal}>별점 주기</Rating>

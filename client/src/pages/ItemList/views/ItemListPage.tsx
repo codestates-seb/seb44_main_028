@@ -17,20 +17,24 @@ import { useParams } from 'react-router-dom';
 function ItemListPage() {
   const params = useParams();
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  console.log(params);
+  const size = 10;
   const {
     data: products,
     isLoading,
     error,
   } = useQuery('products', async () => {
     try {
-      const res = await axios.get(`https://playpack.shop/products`, {
-        params: {
-          page: page,
-          size: size,
-          category: params.id,
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/products`,
+        {
+          params: {
+            page: page,
+            size: size,
+            category: params.categoryId,
+          },
         },
-      });
+      );
       return res.data;
     } catch (err) {
       console.log(err);
@@ -44,13 +48,15 @@ function ItemListPage() {
   }
   return (
     <ItemListPageContainer>
-      <div>
-        <SelectBox
-          selectOptionData={DISTANCE_OPTIONS}
-          selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-        />
-        <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-      </div>
+      {
+        <div>
+          <SelectBox
+            selectOptionData={DISTANCE_OPTIONS}
+            selectDefaultOption={DISTANCE_DEFAULT_VALUE}
+          />
+          <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+        </div>
+      }
       {products.map((product: ItemCardProps) => (
         <ItemCard key={product.id} itemCardData={product} />
       ))}

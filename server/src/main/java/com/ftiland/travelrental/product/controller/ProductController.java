@@ -2,6 +2,8 @@ package com.ftiland.travelrental.product.controller;
 
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.product.dto.*;
+import com.ftiland.travelrental.product.entity.Product;
+import com.ftiland.travelrental.product.helper.FeaturedProductsHelper;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,6 +84,19 @@ public class ProductController {
         Long memberId = 2L;
 
         return ResponseEntity.ok(productService.findProducts(memberId, size, page));
+    }
+
+    @GetMapping("/featured")
+    public ResponseEntity<FeaturedProductsResponseDto> findFeaturedProducts() {
+
+        List<Product> top3ByViewCount = productService.getTop3ByViewCount();
+        List<Product> top3ByTotalRateScoreRatio = productService.getTop3ByTotalRateScoreRatio();
+        List<Product> top3ByBaseFeeZero = productService.getTop3ByBaseFeeZero(0);
+
+        FeaturedProductsResponseDto responseDTO =
+                FeaturedProductsHelper.createFeaturedProductsResponseDto(top3ByViewCount, top3ByTotalRateScoreRatio, top3ByBaseFeeZero);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     private void countView(String productId, HttpServletRequest request, HttpServletResponse response) {

@@ -1,4 +1,3 @@
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
 import UploadImage from '../components/UploadImage';
 import WritePost from '../components/WritePost';
 import { CreatePageContainer } from '../style';
@@ -7,7 +6,6 @@ function CreatePage() {
     <CreatePageContainer>
       <UploadImage />
       <WritePost />
-      <CheckBoxList />
     </CreatePageContainer>
   );
 }

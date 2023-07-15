@@ -1,8 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { EachDatesProps } from './type';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../common/store/RootStore';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
+import { StartEndDateProps } from './model/IStartEndDateProps';
 
 export const BookingPageContainer = styled.div`
   display: flex;
@@ -136,39 +137,85 @@ export const DatesContainer = styled.tbody`
   margin-top: 105px;
 `;
 
+const isWithinReservationPeriods = (
+  dateInfo: { year: number; month: number; date: number },
+  reservationData: StartEndDateProps[],
+) => {
+  const currentDate = new Date(
+    dateInfo.year,
+    dateInfo.month - 1,
+    dateInfo.date,
+  );
+  for (const reservation of reservationData) {
+    const { startDate, endDate } = reservation;
+    const start = new Date(startDate.year, startDate.month - 1, startDate.day);
+    const end = new Date(endDate.year, endDate.month - 1, endDate.day);
+    if (currentDate >= start && currentDate <= end && dateInfo.date) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const EachDate = styled.th<EachDatesProps>`
   font-size: 20px;
   font-weight: 400;
   height: 20px;
   padding: 11px;
   border-radius: 10px;
-  color: ${(props) => {
-    const thisMonth = new Date().getMonth() + 1;
-    return (props.row.week === 0 && Number(props.children) > 7) ||
-      (props.row.week === props.row.lastWeek && Number(props.children) < 8) ||
-      props.today.year < new Date().getFullYear() ||
-      (props.today.year === new Date().getFullYear() &&
-        props.today.month < thisMonth) ||
-      (props.today.year === new Date().getFullYear() &&
-        props.today.month === thisMonth &&
-        props.today.date > Number(props.children))
-      ? 'rgb(0, 0, 0, 0.1)'
-      : 'rgb(0, 0, 0, 0.6)';
+  ${(props) => {
+    // 기예약된 날짜
+    const dateInfo = {
+      year: props.current.year,
+      month: props.current.month,
+      date: Number(props.children),
+    };
+
+    if (isWithinReservationPeriods(dateInfo, props.reservationData)) {
+      return css`
+        color: ${colorPalette.lightColor};
+        background-color: ${colorPalette.grayColor};
+        cursor: 'not-allowed';
+      `;
+    }
+
+    // 유저가 클릭한 날짜
+    const today = new Date();
+    const todaysYear = today.getFullYear();
+    const todaysMonth = today.getMonth() + 1;
+
+    const currentYear = props.current.year;
+    const currentMonth = props.current.month;
+    const currentDate = props.current.date;
+
+    const week = props.row.week;
+    const finalWeek = props.row.finalWeek;
+    const date = Number(props.children);
+
+    const isPrevMonthDate = week === 0 && date > 7;
+    const isNextMonthDate = week === finalWeek && date < 8;
+    const isPrevYear = currentYear < todaysYear;
+    const isPrevMonth =
+      currentYear === todaysYear && currentMonth < todaysMonth;
+    const isPrevDate =
+      currentYear === todaysYear &&
+      currentMonth === todaysMonth &&
+      currentDate > date;
+
+    const isDisabled =
+      isPrevMonthDate ||
+      isNextMonthDate ||
+      isPrevYear ||
+      isPrevMonth ||
+      isPrevDate ||
+      date === 0;
+
+    return css`
+      color: ${isDisabled ? 'rgb(0, 0, 0, 0.1)' : 'rgb(0, 0, 0, 0.6)'};
+      cursor: ${isDisabled ? 'default' : 'pointer'};
+    `;
   }};
-  cursor: ${(props) => {
-    const thisMonth = new Date().getMonth() + 1;
-    return (props.row.week === 0 && Number(props.children) > 7) ||
-      (props.row.week === props.row.lastWeek && Number(props.children) < 8) ||
-      props.today.year < new Date().getFullYear() ||
-      (props.today.year === new Date().getFullYear() &&
-        props.today.month < thisMonth) ||
-      (props.today.year === new Date().getFullYear() &&
-        props.today.month === thisMonth &&
-        props.today.date > Number(props.children)) ||
-      Number(props.children) === 0
-      ? 'default'
-      : 'pointer';
-  }};
+
   background-color: ${(props) => {
     const start = useSelector(
       (state: RootState) => state.reservation.startDate,
@@ -178,80 +225,63 @@ export const EachDate = styled.th<EachDatesProps>`
     const startYear = start?.year;
     const startMonth = start?.month;
     const startDate = start?.date;
+    if (!startYear || !startMonth || !startDate) return;
 
     const endYear = end?.year;
     const endMonth = end?.month;
     const endDate = end?.date;
 
+    const currentYear = props.current.year;
+    const currentMonth = props.current.month;
+    const date = Number(props.children);
+
+    if (!date) return;
+
     if (start && !end) {
-      return startYear === props.today.year &&
-        startMonth === props.today.month &&
-        startDate === Number(props.children)
+      return startYear === currentYear &&
+        startMonth === currentMonth &&
+        startDate === date
         ? colorPalette.lightColor
         : 'white';
     }
 
-    if (startDate && endDate) {
-      if (startYear === endYear) {
-        if (startMonth === endMonth) {
-          return startYear === props.today.year &&
-            startMonth === props.today.month &&
-            startDate <= Number(props.children) &&
-            endDate >= Number(props.children)
-            ? colorPalette.lightColor
-            : 'white';
-        } else {
-          return ((startYear === props.today.year &&
-            startMonth === props.today.month &&
-            startDate <= Number(props.children)) ||
-            (endYear === props.today.year &&
-              endMonth === props.today.month &&
-              endDate >= Number(props.children))) &&
-            Number(props.children) !== 0
-            ? colorPalette.lightColor
-            : startYear === props.today.year &&
-              startMonth &&
-              endMonth &&
-              endMonth - startMonth > 1 &&
-              props.today.month > startMonth &&
-              props.today.month < endMonth &&
-              Number(props.children) !== 0
-            ? colorPalette.lightColor
-            : 'white';
-        }
+    if (!endYear || !endMonth || !endDate) return;
+
+    const isLaterThanStartDate =
+      startYear === currentYear &&
+      startMonth === currentMonth &&
+      startDate <= date;
+
+    const isEarlierThanEndDate =
+      endYear === currentYear && endMonth === currentMonth && endDate >= date;
+
+    if (startYear === endYear) {
+      if (startMonth === endMonth) {
+        return isLaterThanStartDate && isEarlierThanEndDate
+          ? colorPalette.lightColor
+          : 'white';
       } else {
-        if (
-          (startYear === props.today.year &&
-            Number(props.children) !== 0 &&
-            startMonth &&
-            startMonth < props.today.month) ||
-          (startYear === props.today.year &&
-            startMonth === props.today.month &&
-            startDate &&
-            startDate <= Number(props.children))
-        ) {
-          return colorPalette.lightColor;
-        } else if (
-          (endYear === props.today.year &&
-            Number(props.children) !== 0 &&
-            endMonth &&
-            endMonth > props.today.month) ||
-          (endYear === props.today.year &&
-            endMonth === props.today.month &&
-            endDate &&
-            endDate >= Number(props.children) &&
-            Number(props.children) !== 0)
-        ) {
-          return colorPalette.lightColor;
-        }
-        if (endYear && startYear && endYear - startYear > 1) {
-          return props.today.year > startYear &&
-            props.today.year < endYear &&
-            Number(props.children) !== 0
-            ? colorPalette.lightColor
-            : 'white';
-        }
+        return isLaterThanStartDate ||
+          isEarlierThanEndDate ||
+          (startYear === currentYear &&
+            endMonth - startMonth > 1 &&
+            currentMonth > startMonth &&
+            currentMonth < endMonth)
+          ? colorPalette.lightColor
+          : 'white';
       }
+    }
+
+    if (
+      isLaterThanStartDate ||
+      isEarlierThanEndDate ||
+      (startYear === currentYear && startMonth < currentMonth) ||
+      (endYear === currentYear && endMonth > currentMonth) ||
+      (endYear - startYear > 1 &&
+        currentYear > startYear &&
+        currentYear < endYear)
+    ) {
+      return colorPalette.lightColor;
     }
   }};
 `;
