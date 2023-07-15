@@ -77,6 +77,11 @@ const WritePost = () => {
   //     .post(
   //       `${process.env.REACT_APP_API_URL}/api/products`,
   //       JSON.stringify(post),
+  //       {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       },
   //     )
   //     .then((res) => {
   //       const { data } = res;
