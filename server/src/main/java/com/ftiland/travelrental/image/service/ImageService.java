@@ -175,6 +175,10 @@ public class ImageService {
         return imageProducts;
     }
 
+    public ImageProduct findFirstImageProduct(String productId){
+        return imageProductRepository.findFirstByProductProductId(productId);
+    }
+
     // 맴버 이미지
     public ImageMember findImageMember(Long memberId) {
         Optional<ImageMember> optionalImageMember = imageMemberRepository.findByMemberId(memberId);

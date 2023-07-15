@@ -25,7 +25,7 @@ public class GetReservations {
                 .map(ReservationDto::from)
                 .collect(Collectors.toList());
 
-        PageInfo pageInfo = new PageInfo(reservations.getNumber(), reservations.getSize(),
+        PageInfo pageInfo = new PageInfo(reservations.getNumber() + 1, reservations.getSize(),
                 reservations.getTotalElements(), reservations.getTotalPages());
 
         return GetReservations.builder()
