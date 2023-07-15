@@ -5,7 +5,7 @@ export const FooterWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   position: relative;
-  transform: translateY(500%);
+  transform: translateY(400%);
   bottom: 0;
   width: 100%;
   min-height: 70px;

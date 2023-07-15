@@ -16,9 +16,18 @@ import {
 } from '../style';
 import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../common/store/RootStore';
+import { setName } from '../store/ProfileSlice';
 
 function ProfileEdit() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const displayName = useSelector(
+    (state: RootState) => state.mypageProfileSlice.name,
+  );
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string>('');
@@ -97,11 +106,15 @@ function ProfileEdit() {
           },
         );
         console.log(response.data);
+        navigate('/mypage');
+
+        dispatch(setName(nickname));
       } catch (error) {
         console.error(error);
       }
     },
-    [previewImage, nickname],
+
+    [previewImage, dispatch],
   );
 
   const onDeleteUser = useCallback(async () => {
