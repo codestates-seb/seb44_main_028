@@ -83,6 +83,7 @@ const WritePost = () => {
       })
       .then((res) => {
         const { data } = res;
+        navigate(`/detail/${data.productId}`);
         console.log('data', data);
       })
       .catch((err) => {
