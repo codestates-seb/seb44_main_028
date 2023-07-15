@@ -19,6 +19,8 @@ import {
 } from '../style';
 import { CONTENT_DESCRIPTION } from '../constants';
 import ModalMain from '../../../common/components/Modal/ModalMain';
+import axios from 'axios';
+import { useMutation } from 'react-query';
 
 const WritePost = () => {
   const navigate = useNavigate();
@@ -32,11 +34,11 @@ const WritePost = () => {
   } = useForm();
 
   const [inputValues, setInputValues] = useState({
-    images: [] as string[],
-    minRentalPeriod: '',
+    title: '',
     baseFee: '',
     feePerDay: '',
-    title: '',
+    images: [] as string[],
+    minRentalPeriod: '',
     content: '',
     categoryIds: [] as string[],
   });
@@ -69,12 +71,27 @@ const WritePost = () => {
   const handelExit = () => {
     navigate('/');
   };
+  // const newPost = useMutation((post: object) =>
+  //   axios
+  //     .post(
+  //       `${process.env.REACT_APP_API_URL}/api/products`,
+  //       JSON.stringify(post),
+  //     )
+  //     .then((res) => {
+  //       const { data } = res;
+  //       console.log('data', data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     }),
+  // );
   const onSubmit = (data: object) => {
     const submitData = {
       ...data,
       content: inputValues.content,
     };
-    alert(JSON.stringify(submitData));
+    console.log(inputValues);
+    // newPost.mutate(inputValues);
   };
   useEffect(() => {
     setInputValues({
@@ -84,9 +101,9 @@ const WritePost = () => {
     });
   }, [selectedtCategory, uploadImages]);
   //console.log('checkobx', selectedtCategory);
-  console.log('value', inputValues);
+  //console.log('value', inputValues);
   //console.log('images', uploadImages);
-  console.log('errors', !!errors);
+  // console.log('errors', !!errors);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage setUploadImages={setUploadImages} />
