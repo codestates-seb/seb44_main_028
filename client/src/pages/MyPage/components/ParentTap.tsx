@@ -5,9 +5,11 @@ import { ParentWrapper, TapWrapper } from '../style';
 import LendList from './LendList';
 import BorrowList from './BorrowList';
 import WishList from './WishList';
+import { borrowCardProps } from '../../../common/type';
 
 function ParentTap() {
   const [tapList, setTapList] = useState<string[]>([]);
+  // const [reservations, setReservations] = useState<Reservation[]>([]);
 
   return (
     <>

@@ -8,18 +8,18 @@ import { BORROWCARD_DATA } from '../constants';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
-import { PiFileTextThin } from 'react-icons/pi';
 
 function BorrowList() {
   const [isOpen, setIsOpen] = useState(false);
-  // const [items, setItems] = useState([]);
   const [items, setItems] = useState<borrowCardProps[]>([]);
+  // const [items, setItems] = useState<borrowCardProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   // const [totalItemsCount, setTotalItemsCount] = useState(BORROWCARD_DATA.length);
-  const [currentStatus, setCurrentStatus] = useState('');
+  const [currentStatus, setCurrentStatus] = useState('REQUESTED');
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+  console.log('currentStatus:', currentStatus);
 
   useEffect(() => {
     fetchItemsForPage(currentPage, currentStatus);
@@ -38,25 +38,32 @@ function BorrowList() {
     // };
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/reservations/`,
+        `${process.env.REACT_APP_API_URL}/api/reservations`,
         {
           params: {
             size: itemsPerPage,
             page: currentPage,
-            status: status,
+            status: currentStatus,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response.data));
-      setItems(response.data.responses);
-      setTotalItemsCount(response.data.listSize);
+      setItems(response.data.reservations);
+      setTotalItemsCount(response.data.pageInfo.totalPages);
+      console.log('setItems:', response.data);
       console.log('currentPage:', currentPage);
-      console.log('totalElements:', response.data);
-      console.log('response:', response.data.responses);
+      // console.log('currentStatus:', currentStatus);
+      // console.log('totalElements:', response.data);
+      // console.log('totalItemsCount:', totalItemsCount);
+      // console.log('response:', response.data.responses);
     } catch (error) {
-      console.error('Error fetching wishlist:', error);
+      console.error('Error fetching reservations:', error);
     }
   };
+  useEffect(() => {
+    console.log('렌더링 될 items:', items);
+  }, [items]);
+
   console.log('items:', items);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -67,6 +74,12 @@ function BorrowList() {
     setCurrentPage(1);
     setIsOpen(true);
     console.log('예약요청:', items);
+  };
+  const handleReservedItems = () => {
+    setCurrentStatus('RESERVED');
+    setCurrentPage(1);
+    setIsOpen(true);
+    console.log('예약확정:', items);
   };
   const handleInUseItems = () => {
     setCurrentStatus('INUSE');
@@ -83,6 +96,14 @@ function BorrowList() {
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
+  const handleCanceledItems = () => {
+    setCurrentStatus('CANCELED');
+    setCurrentPage(1);
+    setIsOpen(true);
+    console.log('예약 취소한 내역:', items);
+    // handlePageChange(currentPage);
+    // setIsOpen(true);
+  };
   return (
     <div>
       <BorrowWrapper>
@@ -93,6 +114,14 @@ function BorrowList() {
         >
           예약요청
         </DefaultBtn>
+        <DefaultBtn
+          color={colorPalette.deepMintColor}
+          backgroundColor={colorPalette.whiteColor}
+          onClick={handleReservedItems}
+        >
+          예약확정
+        </DefaultBtn>
+
         <DefaultBtn
           color={colorPalette.deepMintColor}
           backgroundColor={colorPalette.whiteColor}
@@ -107,12 +136,26 @@ function BorrowList() {
         >
           사용 완료한 플레이팩
         </DefaultBtn>
+        <DefaultBtn
+          color={colorPalette.deepMintColor}
+          backgroundColor={colorPalette.whiteColor}
+          onClick={handleCanceledItems}
+        >
+          예약취소내역
+        </DefaultBtn>
       </BorrowWrapper>
-      빌린 내역~!~!~!~!
       <BorrowCardWrappre>
-        {items.map((item, index) => (
-          <BorrowCard key={index} borrowCardData={item} />
-        ))}
+        {/* {items &&
+          items.map((item, index) => (
+            <BorrowCard key={index} borrowCardData={item} />
+          ))} */}
+        {items.length > 0 ? (
+          items.map((item, index) => (
+            <BorrowCard key={index} borrowCardData={item} />
+          ))
+        ) : (
+          <div>데이터를 불러오는 중입니다...</div>
+        )}
       </BorrowCardWrappre>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
