@@ -10,6 +10,7 @@ export const ItemContentContainer = styled.div`
 `;
 export const ItemInfoWrapper = styled.div`
   display: flex;
+  align-items: center;
   height: 33.75rem;
   width: 100%;
   margin-bottom: 5rem;
@@ -26,7 +27,7 @@ export const ItemUserWrapper = styled.div`
   flex-direction: column;
   flex: 1;
   & .rate {
-    margin-top: 2.438rem;
+    margin-top: 1.438rem;
     margin-bottom: 1.75rem;
     color: ${colorPalette.detailPageGrayColor};
   }
@@ -36,7 +37,7 @@ export const ItemRate = styled.div`
 `;
 export const ItemActionBtn = styled.div`
   display: flex;
-  margin-top: 2.938rem;
+  margin-top: 1.938rem;
 `;
 export const ItemDescriptionWrapper = styled.div`
   display: flex;
@@ -90,7 +91,6 @@ export const ProductBtn = styled.div`
 
 export const ItemUserInfoContainer = styled.div`
   display: flex;
-  margin-top: 2.938rem;
   margin-bottom: 2.5rem;
 `;
 export const ItemUserProfile = styled.div`

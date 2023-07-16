@@ -29,11 +29,18 @@ import {
   ITEM_NOTICE,
   USER_BTN,
 } from '../constants';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
+  const navigate = useNavigate();
+  const param = useParams();
+
   const handleReservation = () => {
-    console.log('예약하기');
+    navigate(`/booking/${param.itemId}`);
+  };
+  const handleChatting = () => {
+    navigate(`/chatting/${param.itemId}`);
   };
   return (
     <ItemContentContainer>
@@ -67,7 +74,7 @@ const ItemContent = () => {
             >
               예약하기
             </BigDefaultBtn>
-            <div>채팅아이콘</div>
+            <div onClick={handleChatting}>채팅아이콘</div>
           </ItemActionBtn>
         </ItemUserWrapper>
       </ItemInfoWrapper>
