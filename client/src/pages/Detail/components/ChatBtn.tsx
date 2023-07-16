@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
-function ChatIcon() {
+function ChatBtn() {
   const navigate = useNavigate();
   const [senderId, setSenderId] = useState<number>(0);
   const { data: userData } = useGetMe();
@@ -62,4 +62,4 @@ function ChatIcon() {
 
   return <button onClick={createChatRoom}>채팅하기</button>;
 }
-export default ChatIcon;
+export default ChatBtn;
