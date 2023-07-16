@@ -57,13 +57,45 @@ export type ItemCardProps = {
   images: string;
 };
 
-export type BorrowCardProps = {
-  id: string;
-  title: string;
+// export type BorrowCardProps = {
+//   id: string;
+//   title: string;
+//   startDate: string;
+//   endDate: string;
+//   images: string;
+//   content: string;
+//   category: number[];
+//   address: string;
+// };
+
+// export type lendCardProps = {
+//   title: string;
+//   images: string;
+//   startDate: string;
+//   endDate: string;
+// };
+export type lendCardProps = {
+  reservationId: string;
+  status: string;
+  username: string;
+  totalFee: string;
   startDate: string;
   endDate: string;
   images: string;
-  content: string;
-  category: number[];
-  address: string;
 };
+export type borrowCardProps = {
+  title: string;
+  images: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+};
+// export type borrowCardProps = {
+//   reservationId: string;
+//   status: string;
+//   username: string;
+//   totalFee: string;
+//   startDate: string;
+//   endDate: string;
+//   images: string;
+// };

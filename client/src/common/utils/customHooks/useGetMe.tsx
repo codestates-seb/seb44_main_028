@@ -43,12 +43,9 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
       );
 
       const data = response.data;
-
-      console.log('3. getMe response:', data);
-
       // 유저 정보 store에 저장
-
       dispatch(createUserInfo(data));
+
       console.log('3. getMe response:', response);
       console.log(
         '4. Headers에 있는 Authorization:',
@@ -60,6 +57,7 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
         console.log('5. 재발급 받은 accessToken:', newAccessToken);
         localStorage.setItem(ACCESS_TOKEN, encryptToken(newAccessToken));
       }
+       return data;
     } catch (error: AxiosError | any) {
       console.log('error가 난거니? 뭠미?', error.response.status);
       const statusCode = error.response.status;
