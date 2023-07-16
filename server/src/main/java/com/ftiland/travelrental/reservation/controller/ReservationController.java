@@ -86,7 +86,7 @@ public class ReservationController {
             @RequestParam int page) {
         log.info("[ReservationController] getReservationsByLender called");
 
-        Long memberId = 2L;
+        Long memberId = 1L;
 
         return ResponseEntity.ok(reservationService.getReservationByLender(memberId, productId, status, size, page));
     }
@@ -112,16 +112,25 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservationByMonth(productId, date));
     }
 
-    @PatchMapping("/{reservation-id}/rate")
+    @PostMapping("/{reservation-id}/rate")
     public ResponseEntity<Void> rateReservation(
-            @RequestParam int score,
+            @Valid @RequestBody RateReservation.Request request,
             @Positive @PathVariable("reservation-id") String reservationId) {
         log.info("[ReservationController] getReservationsByMoreMonth called");
 
         Long memberId = 2L;
 
-        reservationService.rateReservation(reservationId, memberId, score);
+        reservationService.rateReservation(reservationId, memberId, request.getScore());
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/members")
+    public ResponseEntity<Long> countAllReservation() {
+        log.info("[ReservationController] countAllReservation called");
+
+        Long memberId = 1L;
+
+        return ResponseEntity.ok(reservationService.countAllReservation(memberId));
     }
 }

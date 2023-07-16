@@ -13,7 +13,6 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 
 const MyPage = () => {
   const navigator = useNavigate();
-
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
   );
