@@ -1,7 +1,6 @@
 package com.ftiland.travelrental.reservation.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
-import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.common.utils.mail.MailService;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
@@ -65,7 +64,7 @@ public class ReservationService {
         }
 
         // 예약 날짜가 겹치는 경우
-        if (checkReservationDuplication(request.getEndDate(), request.getStartDate())) {
+        if (checkReservationDuplication(request.getEndDate().plusDays(1), request.getStartDate())) {
             throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
         }
 
@@ -174,20 +173,18 @@ public class ReservationService {
         }
     }
 
-    public GetReservations getReservationByBorrower(Long memberId, ReservationStatus status,
-                                                    int size, int page) {
+    public GetMemberReservations getReservationByBorrower(Long memberId, ReservationStatus status,
+                                                          int size, int page) {
         Member member = memberService.findMember(memberId);
 
         Page<Reservation> reservations = reservationRepository
-                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page - 1, size));
+                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page, size));
 
-
-
-        return GetReservations.from(reservations);
+        return GetMemberReservations.from(reservations);
     }
 
-    public GetReservations getReservationByLender(Long memberId, String productId,
-                                                  ReservationStatus status, int size, int page) {
+    public GetMemberReservations getReservationByLender(Long memberId, String productId,
+                                                        ReservationStatus status, int size, int page) {
         Member member = memberService.findMember(memberId);
         Product product = productService.findProduct(productId);
 
@@ -196,7 +193,7 @@ public class ReservationService {
         Page<Reservation> reservations = reservationRepository
                 .findAllByProductProductIdAndStatus(productId, status, PageRequest.of(page, size));
 
-        return GetReservations.from(reservations);
+        return GetMemberReservations.from(reservations);
     }
 
     public List<ReservationCalendarDto> getReservationByMonth(String productId, String date) {

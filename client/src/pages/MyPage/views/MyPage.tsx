@@ -16,7 +16,6 @@ const MyPage = () => {
   const { data: userData } = useGetMe();
   console.log('userData', userData);
   const navigator = useNavigate();
-
   const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
   console.log('유저 정보gg', userInfo);
   const isLoggedIn = useSelector(
