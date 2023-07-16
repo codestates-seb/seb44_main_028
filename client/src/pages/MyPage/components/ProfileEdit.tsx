@@ -47,6 +47,7 @@ function ProfileEdit() {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [nickname, setNickname] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [newDisplayName, setNewDisplayName] = useState('');
 
@@ -55,14 +56,9 @@ function ProfileEdit() {
     updateUserInfo();
   }, []);
 
-  const onDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDisplayName(e.target.value);
-  };
-  console.log('수정 할 이름 :', newDisplayName);
-
   const updateUserInfo = useCallback(async () => {
     const requestData = {
-      displayName: newDisplayName,
+      displayName: nickname,
     };
     const encryptedAccessToken: string | null =
       localStorage.getItem(ACCESS_TOKEN);
@@ -78,7 +74,7 @@ function ProfileEdit() {
         requestData,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}}`,
           },
         },
       );
@@ -86,25 +82,24 @@ function ProfileEdit() {
       // const accessToken: string | null = null;
       // Token(accessToken);
 
-      // console.log('회원 정보가 성공적으로 수정되었습니다.');
-      //   // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
-      //   const getResponse = await axios.get(
-      //     `${process.env.REACT_APP_API_URL}/api/members/`,
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${accessToken}`,
-      //       },
-      //     },
-      //   );
-      //   const updatedUserInfo = getResponse.data;
+      console.log('회원 정보가 성공적으로 수정되었습니다.');
+      // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
+      const getResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members/`,
+        {
+          headers: {
+            displayName: `${newDisplayName}`,
+          },
+        },
+      );
+      const updatedUserInfo = getResponse.data;
 
-      //   // setNewDisplayName(updatedUserInfo.newDisplayName || '');
-      //   // setAddress(updatedUserInfo.address || '');
-      //   console.log('update유저정보 ', updatedUserInfo);
+      setNickname(updatedUserInfo.displayName || '');
+      // setAddress(updatedUserInfo.address || '');
     } catch (error) {
       console.log('회원 정보가 업데이트 되지 않았습니다.', error);
     }
-  }, [newDisplayName]);
+  }, [nickname, address]);
 
   const onUploadImage = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,14 +156,11 @@ function ProfileEdit() {
       } else {
         return;
       }
-
-      // if (!newDisplayName) {
-
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
       try {
         const response = await axios.patch(
-          `${process.env.REACT_APP_API_URL}/api/members`,
+          `${process.env.REACT_APP_API_URL}/api/members/`,
           {
             displayName: newDisplayName,
           },
@@ -179,10 +171,9 @@ function ProfileEdit() {
           },
         );
         await updateUserInfo();
-        // dispatch(setName(userData?.displayName));
+        dispatch(setName(userData?.displayName));
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
-        console.log('setNewDisplayName:', setNewDisplayName);
-
+        // dispatch(setName(userData?.displayName));
         navigate('/mypage');
       } catch (error) {
         console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
@@ -214,8 +205,8 @@ function ProfileEdit() {
             <input
               type="text"
               placeholder="닉네임"
-              value={newDisplayName}
-              onChange={onDisplayNameChange}
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
             />
           </ProfilerEdit>
           <UploadBtn onClick={onInputButtonClick}>파일 선택</UploadBtn>
