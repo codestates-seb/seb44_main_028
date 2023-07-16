@@ -1,7 +1,10 @@
 import styled from 'styled-components';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { fontSize } from '../../common/utils/enum/fontSize';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { border } from '../../common/utils/enum/border';
+import Slider from 'react-slick';
 
 export const ItemContentContainer = styled.div`
   display: flex;
@@ -150,4 +153,37 @@ export const ItemTagWrapper = styled.div`
   color: ${colorPalette.whiteColor};
   margin-right: 1rem;
 `;
-export const ImageCarouselContainer = styled.div``;
+export const StyledSlider = styled(Slider)`
+  width: 49.5rem;
+  height: 33.75rem;
+  margin-right: 0;
+
+  .slick-slide div {
+    cursor: pointer;
+  }
+  .slick-slide img {
+    object-fit: cover;
+  }
+  .slick-prev::before,
+  .slick-next::before {
+    width: 35px;
+    height: 35px;
+    z-index: 2;
+    background-color: black;
+  }
+`;
+
+export const ImageCarouselContainer = styled.div`
+  width: 49.5rem;
+  height: 33.75rem;
+  ul {
+    transform: translateY(-2.5rem);
+  }
+`;
+export const ItemImageBox = styled.div`
+  & img {
+    margin-right: 0;
+    width: 49.5rem;
+    height: 33.75rem;
+  }
+`;

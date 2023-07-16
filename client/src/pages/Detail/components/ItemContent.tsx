@@ -31,12 +31,13 @@ import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 import ChatBtn from './ChatBtn';
 import { ICategory } from '../type';
+import ImageCarousel from './ImageCarousel';
 
 const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
-  console.log(param);
+
   const handleReservation = () => {
     navigate(`/booking/${param.itemId}`);
   };
@@ -68,7 +69,7 @@ const ItemContent = () => {
       <ItemInfoWrapper>
         {/* <ItemImageWrapper images={data.images}> */}
         <ItemImageWrapper>
-          <img src={data.productImages[0]} />
+          <ImageCarousel images={data.productImages} />
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
@@ -126,8 +127,14 @@ const ItemContent = () => {
             ))}
           </ItemTagSection>
           <ProductBtn>
-            <div onClick={handleUpdate}>{USER_BTN[0]}</div>
-            <div onClick={handleDelete}>{USER_BTN[1]}</div>
+            {data.isOwner ? (
+              <>
+                <div onClick={handleUpdate}>{USER_BTN[0]}</div>
+                <div onClick={handleDelete}>{USER_BTN[1]}</div>
+              </>
+            ) : (
+              <div></div>
+            )}
           </ProductBtn>
         </ProductDescription>
       </ItemDescriptionWrapper>
