@@ -149,6 +149,7 @@ export const ItemInfo = styled.div`
   max-width: 13.266rem;
 `;
 export const ItemName = styled.p`
+  width: 22.5rem;
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 4.15px;

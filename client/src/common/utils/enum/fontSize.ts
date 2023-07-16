@@ -5,4 +5,5 @@ export enum fontSize {
   NoDataText = '24px',
   headerNavText = '24px',
   headerIconSize = '18px',
+  detailProductTitleSize = '36px',
 }
