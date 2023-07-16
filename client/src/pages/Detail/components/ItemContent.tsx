@@ -28,6 +28,7 @@ import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 import ChatBtn from './ChatBtn';
+import { ICategory } from '../type';
 
 const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
@@ -113,9 +114,9 @@ const ItemContent = () => {
           <ProductNotice>{ITEM_NOTICE}</ProductNotice>
           {/* 카테고리 */}
           <ItemTagSection>
-            {/* {data.categories.map((tag) => (
+            {data?.categories.map((tag: ICategory) => (
               <ItemTag key={tag.categoryId} itemtag={tag.title} />
-            ))} */}
+            ))}
           </ItemTagSection>
           <ProductBtn>
             <div onClick={handleUpdate}>{USER_BTN[0]}</div>
