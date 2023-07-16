@@ -1,7 +1,9 @@
 package com.ftiland.travelrental.product.controller;
 
+import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.product.dto.*;
+import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -83,18 +86,25 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProducts(memberId, size, page));
     }
 
-    /*@GetMapping("/featured")
+    @GetMapping("/featured")
     public ResponseEntity<FeaturedProductsResponseDto> findFeaturedProducts() {
 
-        List<Product> top3ByViewCount = productService.getTop3ByViewCount();
         List<Product> top3ByTotalRateScoreRatio = productService.getTop3ByTotalRateScoreRatio();
+        List<ProductDto> top3ByTotalRateScoreRatioDtoList = convertToProductDtoList(top3ByTotalRateScoreRatio);
+
+        List<Product> top3ByViewCount = productService.getTop3ByViewCount();
+        List<ProductDto> top3ByViewCountDtoList = convertToProductDtoList(top3ByViewCount);
+
         List<Product> top3ByBaseFeeZero = productService.getTop3ByBaseFeeZero(0);
+        List<ProductDto> top3ByBaseFeeZeroDtoList = convertToProductDtoList(top3ByBaseFeeZero);
 
-        FeaturedProductsResponseDto responseDTO =
-                FeaturedProductsHelper.createFeaturedProductsResponseDto(top3ByViewCount, top3ByTotalRateScoreRatio, top3ByBaseFeeZero);
+        FeaturedProductsResponseDto responseDto = new FeaturedProductsResponseDto();
+        responseDto.setTop3ByTotalRateScoreRatio(top3ByTotalRateScoreRatioDtoList);
+        responseDto.setTop3ByViewCount(top3ByViewCountDtoList);
+        responseDto.setTop3ByBaseFeeZero(top3ByBaseFeeZeroDtoList);
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }*/
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     private void countView(String productId, HttpServletRequest request, HttpServletResponse response) {
         /* 조회수 로직 */
@@ -123,5 +133,19 @@ public class ProductController {
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
+    }
+
+    private List<ProductDto> convertToProductDtoList(List<Product> products) {
+        return products.stream()
+                .map(product -> ProductDto.from(product, getImageUrlForProduct(product)))
+                .collect(Collectors.toList());
+    }
+
+    private String getImageUrlForProduct(Product product) {
+        ImageProduct imageProduct = imageService.findFirstImageProduct(product.getProductId());
+        if (imageProduct != null) {
+            return imageProduct.getImageUrl();
+        }
+        return null;
     }
 }

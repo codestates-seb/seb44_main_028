@@ -22,11 +22,13 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("SELECT p FROM Product p ORDER BY p.totalRateScore / p.totalRateCount DESC")
     List<Product> findTop3ByOrderByTotalRateScoreRatioDesc(Pageable pageable);
 
+    List<Product> findTop3ByBaseFeeOrderByCreatedAtDesc(Integer baseFee);
+
     @Query("SELECT new com.ftiland.travelrental.product.dto.ProductDto(p.title, p.content, p.baseFee, p.feePerDay, p.minimumRentalPeriod, ip.imageUrl, p.address) " +
             "FROM ImageProduct ip JOIN ip.product p " +
             "WHERE p.member.memberId = :memberId " +
             "GROUP BY p.productId")
     Page<ProductDto> findProductDtosByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
-    List<Product> findTop3ByBaseFeeOrderByCreatedAtDesc(Integer baseFee);
+
 }
