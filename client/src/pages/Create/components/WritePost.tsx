@@ -3,7 +3,7 @@ import 'react-quill/dist/quill.snow.css';
 import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
 import { useForm } from 'react-hook-form';
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
+import CheckBoxList from '../../../common/components/CheckBox/CheckBoxList';
 import {
   CONTENT_DESCRIPTION,
   INPIT_VALIDATION,
