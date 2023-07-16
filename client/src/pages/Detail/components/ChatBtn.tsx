@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 function makeChatRoomName(senderId: number, receiverId: number) {
@@ -9,6 +9,7 @@ function makeChatRoomName(senderId: number, receiverId: number) {
 }
 
 function ChatBtn() {
+  const { itemId } = useParams<{ itemId: string }>();
   const navigate = useNavigate();
   const [receiverId, setReceiverId] = useState<number>(0);
 
@@ -17,10 +18,11 @@ function ChatBtn() {
     const fetchReceiverId = async () => {
       try {
         const response = await axios.get(
-          process.env.REACT_APP_API_URL + '/chat',
+          process.env.REACT_APP_API_URL +
+            `/api/chat/seller?product-id=${itemId}`,
         );
         // 컴포넌트가 아직 마운트된 상태라면 상태를 설정
-        setReceiverId(response.data.id);
+        setReceiverId(response.data.sellerId);
       } catch (error) {
         console.error('Failed to fetch seller:', error);
       }
