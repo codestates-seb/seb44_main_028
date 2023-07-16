@@ -36,7 +36,7 @@ const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
-
+  console.log(param);
   const handleReservation = () => {
     navigate(`/booking/${param.itemId}`);
   };
@@ -51,7 +51,7 @@ const ItemContent = () => {
   };
   const { data, isLoading, error } = useQuery('productDtail', async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/products/018cc66f-9361-4fff-8a41-87ed5fd50d4b`,
+      `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
     );
     console.log(data);
     return data;
@@ -66,8 +66,9 @@ const ItemContent = () => {
   return (
     <ItemContentContainer>
       <ItemInfoWrapper>
+        {/* <ItemImageWrapper images={data.images}> */}
         <ItemImageWrapper>
-          <img src={data.images[0]} />
+          <img src={data.productImages[0]} />
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
@@ -101,7 +102,7 @@ const ItemContent = () => {
             >
               예약하기
             </BigDefaultBtn>
-            <ChatBtn />
+            {/* <ChatBtn /> */}
           </ItemActionBtn>
         </ItemUserWrapper>
       </ItemInfoWrapper>

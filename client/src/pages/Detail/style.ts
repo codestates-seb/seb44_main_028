@@ -150,3 +150,4 @@ export const ItemTagWrapper = styled.div`
   color: ${colorPalette.whiteColor};
   margin-right: 1rem;
 `;
+export const ImageCarouselContainer = styled.div``;
