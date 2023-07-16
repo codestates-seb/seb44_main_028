@@ -92,6 +92,16 @@ export const ProductBtn = styled.div`
   }
 `;
 
+export const ProductView = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  & div {
+    font-size: ${fontSize.small};
+    color: ${colorPalette.detailPageGrayColor};
+  }
+`;
 export const ItemUserInfoContainer = styled.div`
   display: flex;
   margin-bottom: 2.5rem;

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { GrFormView } from 'react-icons/gr';
 import ItemUserInfo from './ItemUserInfo';
 import ItemPrice from './ItemPrice';
 import RatingStar from '../../MyPage/components/RatingStar';
@@ -16,6 +17,7 @@ import {
   ItemRate,
   ItemTagSection,
   ItemActionBtn,
+  ProductView,
   ProductDescription,
   ProductInfo,
   ProductTitle,
@@ -108,6 +110,10 @@ const ItemContent = () => {
           <div>상품정보</div>
           <div></div>
         </ProductInfo>
+        <ProductView>
+          <GrFormView />
+          <div>{data.viewCount}</div>
+        </ProductView>
         <ProductDescription>
           <ProductTitle>{data.title}</ProductTitle>
           <ProductContent>{data.content}</ProductContent>
