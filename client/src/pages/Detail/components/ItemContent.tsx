@@ -24,7 +24,7 @@ import {
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 
@@ -32,7 +32,7 @@ const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
-
+  console.log(param.itemId);
   const handleReservation = () => {
     navigate(`/booking/${param.itemId}`);
   };
@@ -42,8 +42,24 @@ const ItemContent = () => {
   const handleUpdate = () => {
     navigate(`/update/${param.itemId}`);
   };
+  const removeItem = useMutation(
+    (productId: string | undefined) =>
+      axios
+        .delete(`${process.env.REACT_APP_API_URL}/api/products/${productId}`)
+        .then((res) => {
+          const { data } = res;
+          console.log(data);
+        }),
+    {
+      onError: (error) => {
+        console.error('removeItem error:', error);
+      },
+    },
+  );
   const handleDelete = () => {
     console.log('삭제');
+    removeItem.mutate(param.itemId);
+    navigate(`/`);
   };
   const { data, isLoading, error } = useQuery('productDtail', async () => {
     const { data } = await axios.get(
@@ -63,7 +79,7 @@ const ItemContent = () => {
     <ItemContentContainer>
       <ItemInfoWrapper>
         <ItemImageWrapper>
-          <img src={data.images[0]} />
+          {/* <img src={data.images[0]} /> */}
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
