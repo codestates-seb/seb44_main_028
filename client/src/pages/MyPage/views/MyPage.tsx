@@ -12,17 +12,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 // import { BorrowCardProps } from '../../../common/type';
 
 const MyPage = () => {
-  const state = useSelector((state: RootState) => state.userInfo);
-  console.log(state);
   const navigator = useNavigate();
-  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-  console.log('유저 정보gg', userInfo);
-  const isLoggedIn = useSelector(
-    (state: RootState) => state.userInfo.isLoggedIn,
-  );
-  console.log('로그인 상태인가?', isLoggedIn);
-  console.log('유저 정보', userInfo);
-
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
   );
@@ -31,7 +21,7 @@ const MyPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members`,
+          `${process.env.REACT_APP_API_URL}/api/members/`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
