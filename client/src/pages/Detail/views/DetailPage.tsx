@@ -1,6 +1,10 @@
-import ChatBtn from '../components/ChatBtn';
+import ItemContent from '../components/ItemContent';
 
 function DetailPage() {
-  return <ChatBtn />;
+  return (
+    <>
+      <ItemContent />
+    </>
+  );
 }
 export default DetailPage;
