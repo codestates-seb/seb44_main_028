@@ -1,14 +1,13 @@
-import ChatRoomList from '../components/ChatRoomList';
-import ChattingArea from '../components/ChattingArea';
+import ChatRoomList from './ChatRoomList';
+import ChatRoomArea from './ChatRoomArea';
+import { ChattingPageContainer } from '../style';
 
 function ChattingPage() {
   return (
-    <>
-      // ChatRoomList는 채팅방 목록을 보여줍니다.
+    <ChattingPageContainer>
       <ChatRoomList />
-      // ChattingArea는 ChatRoomList에서 선택한 채팅방의 roomId를 사용합니다.
-      <ChattingArea />
-    </>
+      <ChatRoomArea />
+    </ChattingPageContainer>
   );
 }
 export default ChattingPage;
