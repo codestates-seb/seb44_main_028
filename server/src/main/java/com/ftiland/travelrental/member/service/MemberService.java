@@ -52,6 +52,8 @@ public class MemberService {
         Optional.ofNullable(request.getDisplayName())
                 .ifPresent(displayName -> member.setDisplayName(displayName));
 
+        memberRepository.save(member);
+
         return MemberDto.Response.from(member);
     }
 
