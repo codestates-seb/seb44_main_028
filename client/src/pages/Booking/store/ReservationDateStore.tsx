@@ -117,4 +117,5 @@ export const reservation = createSlice({
 export const reservationStore = configureStore({
   reducer: reservation.reducer,
 });
-export const { setStartDate, setEndDate } = reservation.actions;
+export const { setStartDate, setEndDate, clearReservationDates } =
+  reservation.actions;
