@@ -34,6 +34,15 @@ public class CreateProduct {
 
         @NotNull
         private List<String> categoryIds;
+
+        @NotNull
+        private Integer viewCount;
+
+        @NotNull
+        private Integer totalRateScore;
+
+        @NotNull
+        private Integer totalRateCount;
     }
 
     @Getter

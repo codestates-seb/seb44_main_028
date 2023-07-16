@@ -41,7 +41,13 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
           headers: { Authorization: 'Bearer ' + accessToken },
         },
       );
+
       const data = response.data;
+
+      console.log('3. getMe response:', data);
+
+      // 유저 정보 store에 저장
+
       dispatch(createUserInfo(data));
       console.log('3. getMe response:', response);
       console.log(

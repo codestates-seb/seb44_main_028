@@ -7,7 +7,7 @@ function LoginPage() {
     try {
       console.log('회원탈퇴');
       const response = axios.delete(
-        process.env.REACT_APP_API_URL + '/api/members',
+        process.env.REACT_APP_API_URL + '/api/members/',
       );
       console.log(response);
     } catch (error) {
