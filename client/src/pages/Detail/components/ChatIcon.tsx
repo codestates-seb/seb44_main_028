@@ -7,7 +7,10 @@ function ChatIcon() {
   const navigate = useNavigate();
   const [senderId, setSenderId] = useState<number>(0);
   const { data: userData } = useGetMe();
-  if (!userData) return null;
+  if (!userData) {
+    navigate('/login');
+    return null;
+  }
   const receiverId = userData.memberId;
 
   console.log('리시버 아이디', receiverId);
@@ -22,10 +25,7 @@ function ChatIcon() {
   // let isMounted = true;
   const fetchSellerId = async () => {
     try {
-      const response = await axios.get(
-        process.env.REACT_APP_API_URL + '/chat/',
-      );
-
+      const response = await axios.get(process.env.REACT_APP_API_URL + '/chat');
       // 컴포넌트가 아직 마운트된 상태라면 상태를 설정
       setSenderId(response.data.id);
     } catch (error) {
@@ -56,6 +56,7 @@ function ChatIcon() {
       navigate(`/chat/${chatRoomId}`);
     } catch (error) {
       console.error('Failed to create chat room:', error);
+      // TODO: 상태코드에 따른 에러 처리
     }
   };
 
