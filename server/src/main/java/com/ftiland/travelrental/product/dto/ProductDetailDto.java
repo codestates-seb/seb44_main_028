@@ -31,7 +31,7 @@ public class ProductDetailDto {
     private String username;
     private String address;
 
-    public static ProductDetailDto from(Product product, List<CategoryDto> categories) {
+    public static ProductDetailDto from(Product product, List<CategoryDto> categories, List<String> images) {
         return ProductDetailDto.builder()
                 .title(product.getTitle())
                 .content(product.getContent())
@@ -43,7 +43,7 @@ public class ProductDetailDto {
                 .viewCount(product.getViewCount())
                 .username(product.getMember().getDisplayName())
                 .address(product.getAddress())
-                .images(null)
+                .images(images)
                 .categories(categories).build();
     }
 }

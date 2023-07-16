@@ -1,6 +1,6 @@
 package com.ftiland.travelrental.oauth.auth.interceptor;
 
-import com.ftiland.travelrental.common.utils.JwtUtils;
+import com.ftiland.travelrental.common.utils.MemberAuthUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class MemberIdInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long memberId = JwtUtils.extractMemberIdFromAuthentication(authentication);
+        Long memberId = MemberAuthUtils.extractMemberIdFromAuthentication(authentication);
         request.setAttribute("memberId", memberId);
         return true;
     }
