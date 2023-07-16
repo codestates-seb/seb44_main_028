@@ -336,3 +336,44 @@ export const LendListWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+//BorrowList
+
+export const BorrowWrapper = styled.div`
+  display: flex;
+  button {
+    border: 1px solid ${colorPalette.deepMintColor};
+    box-shadow: none;
+    border-radius: 20px;
+    margin-left: 1rem;
+    width: 10rem;
+    &:focus {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+    }
+    &:active {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+    }
+  }
+`;
+// LendList
+
+export const LendWrapper = styled.div`
+  button {
+    border: 1px solid ${colorPalette.deepMintColor};
+    box-shadow: none;
+    border-radius: 20px;
+    margin-left: 1rem;
+    width: 10rem;
+    &:focus {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+    }
+    &:active {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+    }
+  }
+`;

@@ -27,56 +27,48 @@ function MypageProfile() {
   const [user, setUser] = useState<IUserInfo | null>(null);
   const [displayName, setDisplayName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
+  const [profile, setProfile] = useState<string>('');
 
-  const getUserInfo = useCallback(() => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    console.log('토큰이 있습니다.', token);
-    if (!token) {
-      // 토큰이 없는 경우 처리
-      console.log('토큰이 없습니다.', token);
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
+  const fetchProfileData = async () => {
+    // const token = localStorage.getItem(ACCESS_TOKEN);
+    // console.log('토큰이 있습니다.', token);
+    // if (!token) {
+    //   // 토큰이 없는 경우 처리
+    //   console.log('토큰이 없습니다.', token);
+    //   return;
+    // }
+
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    let accessToken: string | null = null;
+    if (encryptedAccessToken) {
+      accessToken = decrypt(encryptedAccessToken);
+    } else {
       return;
     }
 
-    const fetchUserData = async () => {
-      const encryptedAccessToken: string | null =
-        localStorage.getItem(ACCESS_TOKEN);
-      let accessToken: string | null = null;
-      if (encryptedAccessToken) {
-        accessToken = decrypt(encryptedAccessToken);
-      } else {
-        return;
-      }
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      setProfile(response.data);
+      console.log('setProfile:', response.data);
 
-      try {
-        const headers = {
-          Authorization: `Bearer ${accessToken}`,
-        };
-
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/`,
-          { headers: headers },
-        );
-        setUser(response.data);
-        console.log(response);
-        setUser(response.data);
-
-        if (response.data) {
-          setDisplayName(response.data.displayName || '');
-          setAddress(response.data.address || '');
-          console.log('유저정보 ', user);
-        }
-      } catch (error) {
-        console.error('유저 정보를 가져오는데 실패했습니다.', error);
-        console.error('Error:', (error as Error).message);
-      }
-      fetchUserData();
-    };
-  }, []);
-
-  useEffect(() => {
-    getUserInfo();
-  }, [getUserInfo]);
-
+      console.log('유저정보 ', response.data);
+    } catch (error) {
+      console.error('유저 정보를 가져오는데 실패했습니다.', error);
+      console.error('Error:', (error as Error).message);
+    }
+  };
   return (
     <MypageProfileWrapper>
       <MypageLeft>
