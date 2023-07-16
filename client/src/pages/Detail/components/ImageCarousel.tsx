@@ -15,15 +15,17 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
     centerMode: true,
     centerPadding: '0px', // 0px 하면 슬라이드 사이에 여백이 없어짐
   };
-  // console.log(images);
+  console.log(images);
+  console.log(images.reverse());
+  //const reversedArray = array.map((_, index, arr) => arr[arr.length - 1 - index]);
   return (
     <ImageCarouselContainer>
       <div>
         <Slider {...settings}>
-          {images.map((image, index) => {
+          {images.map((_, index, image) => {
             return (
               <ItemImageBox key={index}>
-                <img src={image} />
+                <img src={image[image.length - 1 - index]} />
               </ItemImageBox>
             );
           })}
