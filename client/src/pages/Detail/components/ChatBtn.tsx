@@ -3,41 +3,39 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
+function makeChatRoomName(senderId: number, receiverId: number) {
+  const chatRoomName = [String(senderId), String(receiverId)].sort().join('');
+  return chatRoomName;
+}
+
 function ChatBtn() {
   const navigate = useNavigate();
-  const [senderId, setSenderId] = useState<number>(0);
+  const [receiverId, setReceiverId] = useState<number>(0);
+
+  // 판매자의 memberId를 가져온다.
+  useEffect(() => {
+    const fetchReceiverId = async () => {
+      try {
+        const response = await axios.get(
+          process.env.REACT_APP_API_URL + '/chat',
+        );
+        // 컴포넌트가 아직 마운트된 상태라면 상태를 설정
+        setReceiverId(response.data.id);
+      } catch (error) {
+        console.error('Failed to fetch seller:', error);
+      }
+    };
+    fetchReceiverId();
+  }, []);
+
   const { data: userData } = useGetMe();
   if (!userData) {
     navigate('/login');
     return null;
   }
-  const receiverId = userData.memberId;
+  const senderId = userData.memberId;
 
-  console.log('리시버 아이디', receiverId);
-
-  function makeChatRoomName(senderId: number, receiverId: number) {
-    const chatRoomName = [String(senderId), String(receiverId)].sort().join('');
-    return chatRoomName;
-  }
-
-  // 판매자의 memberId를 가져온다.
-  // useEffect(() => {
-  // let isMounted = true;
-  const fetchSellerId = async () => {
-    try {
-      const response = await axios.get(process.env.REACT_APP_API_URL + '/chat');
-      // 컴포넌트가 아직 마운트된 상태라면 상태를 설정
-      setSenderId(response.data.id);
-    } catch (error) {
-      console.error('Failed to fetch seller:', error);
-    }
-  };
-  fetchSellerId();
-
-  // return () => {
-  //   isMounted = false; // 컴포넌트가 unmount되었음을 나타냄
-  // };
-  // }, []);
+  console.log('내 아이디', senderId);
 
   // 판매자의 memberId를 이용해 채팅방을 생성한다. TODO: 추후 custom hook으로 분리할 예정
   const createChatRoom = async () => {
