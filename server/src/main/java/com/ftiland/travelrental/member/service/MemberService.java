@@ -5,6 +5,7 @@ import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

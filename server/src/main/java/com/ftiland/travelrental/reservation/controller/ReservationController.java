@@ -67,7 +67,7 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<GetReservations> getReservationsByBorrower(
+    public ResponseEntity<GetMemberReservations> getReservationsByBorrower(
             @RequestParam ReservationStatus status,
             @RequestParam int size,
             @RequestParam int page) {
@@ -79,7 +79,7 @@ public class ReservationController {
     }
 
     @GetMapping("/products/{product-id}")
-    public ResponseEntity<GetReservations> getReservationsByLender(
+    public ResponseEntity<GetMemberReservations> getReservationsByLender(
             @PathVariable("product-id") String productId,
             @RequestParam ReservationStatus status,
             @RequestParam int size,
