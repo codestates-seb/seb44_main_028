@@ -57,7 +57,6 @@ const ItemContent = () => {
     },
   );
   const handleDelete = () => {
-    console.log('삭제');
     removeItem.mutate(param.itemId);
     navigate(`/`);
   };
@@ -79,7 +78,7 @@ const ItemContent = () => {
     <ItemContentContainer>
       <ItemInfoWrapper>
         <ItemImageWrapper>
-          {/* <img src={data.images[0]} /> */}
+          <img src={data.images[0]} />
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
