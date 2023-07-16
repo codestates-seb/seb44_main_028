@@ -43,7 +43,7 @@ function ChatBtn() {
   const createChatRoom = async () => {
     try {
       const response = await axios.post(
-        process.env.REACT_APP_API_URL + '/chat',
+        process.env.REACT_APP_API_URL + '/api/chat',
         {
           senderId,
           receiverId,
@@ -53,7 +53,7 @@ function ChatBtn() {
 
       const chatRoomId = response.data.roomId;
       // post 요청을 보낸 후, 채팅방으로 이동한다.
-      navigate(`/chat/${chatRoomId}`);
+      navigate(`/chatting/${chatRoomId}`);
     } catch (error) {
       console.error('Failed to create chat room:', error);
       // TODO: 상태코드에 따른 에러 처리
