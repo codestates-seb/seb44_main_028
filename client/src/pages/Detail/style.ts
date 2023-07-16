@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { fontSize } from '../../common/utils/enum/fontSize';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { border } from '../../common/utils/enum/border';
+
 export const ItemContentContainer = styled.div`
   display: flex;
   flex-direction: column;

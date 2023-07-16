@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ICategory } from './model/ICategory';
 
 export type CategoryButtonProps = {
   ImageId: string;
@@ -14,10 +15,15 @@ export type CategoryProps = {
   image: string;
   name: string;
 };
+export type CategoryListProps = {
+  selectedtCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
+};
 export type CheckBoxProps = {
-  categoryData: string;
-  selectedCategories: string[];
-  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  categoryTitle: string;
+  categoryId: string;
+  selectedtCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export type ModalButtonProps = {

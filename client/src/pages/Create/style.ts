@@ -11,9 +11,9 @@ export const CreatePageContainer = styled.div`
 export const UploadContainer = styled.div`
   display: flex;
   margin: 1.875rem 0;
+  margin-top: 3rem;
 `;
 export const UploadImageLabel = styled.label`
-  margin-top: 1rem;
   width: 9.875rem;
   height: 7.875rem;
   border: ${border.basic};
@@ -83,41 +83,39 @@ export const WritePostContainer = styled.form`
     margin-bottom: 5rem;
     font-size: ${fontSize.headerIconSize};
   }
-  & input {
-    padding: 0.8rem;
-    border: ${border.basic};
-    border-radius: ${borderRadius.basicRadius};
-    margin-top: 0.75rem;
-    color: ${colorPalette.grayTextColor};
-  }
 
   & small {
     margin-top: 0.5rem;
     color: ${colorPalette.basicTextColor};
     font-size: ${fontSize.small};
   }
+  & .error-message {
+    margin-top: 0.5rem;
+    color: ${colorPalette.basicTextColor};
+    font-size: ${fontSize.small};
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  & .error-message.show {
+    opacity: 1;
+    position: relative;
+  }
 `;
 export const WritePriceWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin-top: 1.875rem;
   gap: 2rem;
   margin-bottom: 2.875rem;
 `;
-export const PriceInput = styled.div<{ isInputChange: boolean }>`
+export const PriceInput = styled.label<{
+  errorMessage: boolean;
+}>`
   display: flex;
   flex-direction: column;
   position: relative;
   input:focus {
     outline: none !important;
-    border-color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
-    box-shadow: ${({ isInputChange }) =>
-      isInputChange
-        ? `0 0 3px ${colorPalette.checkColor}`
-        : `0 0 3px ${colorPalette.errorColor}`};
   }
   svg {
     position: absolute;
@@ -125,38 +123,30 @@ export const PriceInput = styled.div<{ isInputChange: boolean }>`
     height: 1.5rem;
     position: absolute;
     right: 0.7rem;
-    bottom: 0.6rem;
-    color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
+    bottom: ${({ errorMessage }) => (errorMessage ? '0.6rem' : '2rem')};
+    top: ${({ errorMessage }) => (errorMessage ? '2.6rem' : '0.6rem')};
+    transition: bottom 0.3s ease;
+  }
+  & .error-icon {
+    color: ${colorPalette.errorColor};
+  }
+  & .check-icon {
+    color: ${colorPalette.checkColor};
   }
 `;
-export const TitleInput = styled.div<{ isInputChange: boolean }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  input:focus {
-    outline: none !important;
-    border-color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
-    box-shadow: ${({ isInputChange }) =>
-      isInputChange
-        ? `0 0 3px ${colorPalette.checkColor}`
-        : `0 0 3px ${colorPalette.errorColor}`};
+export const Input = styled.input`
+  padding: 0.8rem;
+  border: ${border.basic};
+  border-radius: ${borderRadius.basicRadius};
+  margin-top: 0.75rem;
+  color: ${colorPalette.grayTextColor};
+  &.error {
+    border-color: ${colorPalette.errorColor};
+    box-shadow: 0 0 3px ${colorPalette.errorColor};
   }
-  svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    position: absolute;
-    right: 0.7rem;
-    bottom: 0.6rem;
-    color: ${({ isInputChange }) =>
-      isInputChange
-        ? `${colorPalette.checkColor}`
-        : `${colorPalette.errorColor}`};
+  &.success {
+    border-color: ${colorPalette.checkColor};
+    box-shadow: 0 0 3px ${colorPalette.checkColor};
   }
 `;
 
