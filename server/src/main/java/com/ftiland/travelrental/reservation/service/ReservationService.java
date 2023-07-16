@@ -12,6 +12,7 @@ import com.ftiland.travelrental.reservation.entity.Reservation;
 import com.ftiland.travelrental.reservation.repository.ReservationRepository;
 import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ import static com.ftiland.travelrental.reservation.status.ReservationStatus.RESE
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class ReservationService {
 
@@ -173,17 +175,19 @@ public class ReservationService {
     }
 
     public GetReservations getReservationByBorrower(Long memberId, ReservationStatus status,
-                                                         int size, int page) {
+                                                    int size, int page) {
         Member member = memberService.findMember(memberId);
 
         Page<Reservation> reservations = reservationRepository
-                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page, size));
+                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page - 1, size));
+
+
 
         return GetReservations.from(reservations);
     }
 
     public GetReservations getReservationByLender(Long memberId, String productId,
-                                                       ReservationStatus status, int size, int page) {
+                                                  ReservationStatus status, int size, int page) {
         Member member = memberService.findMember(memberId);
         Product product = productService.findProduct(productId);
 
@@ -225,5 +229,19 @@ public class ReservationService {
         Product product = reservation.getProduct();
         product.setTotalRateCount(product.getTotalRateCount() + 1);
         product.setTotalRateScore(product.getTotalRateScore() + score);
+    }
+
+    public long countAllReservation(Long memberId) {
+        long borrowCount = reservationRepository.countByMemberMemberId(memberId);
+
+        log.info("borrowCount : {}", borrowCount);
+        List<Product> products = productService.findProductByMemberId(memberId);
+
+        long lenderCount = products.stream()
+                .mapToLong(p -> reservationRepository.countByProductProductId(p.getProductId()))
+                .sum();
+        log.info("borrowCount : {}", lenderCount);
+
+        return borrowCount + lenderCount;
     }
 }

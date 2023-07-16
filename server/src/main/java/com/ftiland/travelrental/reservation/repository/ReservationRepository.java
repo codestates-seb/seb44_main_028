@@ -22,7 +22,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
     @Query("SELECT r " +
             "FROM Reservation r " +
             "WHERE r.product.productId = :productId AND r.status != :status " +
-            "AND (r.startDate <= :startDate AND r.endDate >= :startDate) OR (r.startDate <= :endDate AND r.endDate >= :endDate)")
+            "AND r.startDate <= :endDate AND r.endDate >= :startDate")
     List<Reservation> findReservationByDate(@Param("productId") String productId, @Param("status") ReservationStatus status,
                                             @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    long countByMemberMemberId(Long memberId);
+
+    long countByProductProductId(String productId);
+
 }

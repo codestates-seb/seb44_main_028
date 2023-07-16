@@ -15,6 +15,8 @@ public class ReservationDto {
 
     private String reservationId;
     private Integer totalFee;
+
+    //
     private String username;
 
     private String startDate;
