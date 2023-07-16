@@ -2,7 +2,7 @@ import React from 'react';
 import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
 import { DefaultBtn } from '../Button';
-import { BorrowCardProps } from '../../type';
+import { borrowCardProps } from '../../type';
 import axios from 'axios';
 import {
   CardWrapper,
@@ -14,7 +14,11 @@ import {
   ItemImage,
 } from '../../style/style';
 
-const BorrowCard = ({ itemCardData }: { itemCardData: BorrowCardProps }) => {
+const BorrowCard = ({
+  borrowCardData,
+}: {
+  borrowCardData: borrowCardProps;
+}) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [items, setItems] = useState([]);
@@ -47,10 +51,10 @@ const BorrowCard = ({ itemCardData }: { itemCardData: BorrowCardProps }) => {
     <>
       <CardWrapper>
         <ImgWrapper>
-          <ItemImage src={itemCardData.images} />
+          <ItemImage src={borrowCardData.images} />
         </ImgWrapper>
         <ContentWrapper>
-          <TitleWrapper>{itemCardData.title}</TitleWrapper>
+          <TitleWrapper>{borrowCardData.title}</TitleWrapper>
           <DatesWrapper>
             <div>예약기간</div>
             <div>{`${startDate} - ${endDate}`}</div>

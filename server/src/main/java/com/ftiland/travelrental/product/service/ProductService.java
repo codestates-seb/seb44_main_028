@@ -1,27 +1,30 @@
 package com.ftiland.travelrental.product.service;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
+import com.ftiland.travelrental.common.PageInfo;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 
 
+import com.ftiland.travelrental.image.entity.ImageProduct;
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
 import com.ftiland.travelrental.member.entity.Member;
 
-import com.ftiland.travelrental.product.dto.CreateProduct;
-import com.ftiland.travelrental.product.dto.ProductDetailDto;
-import com.ftiland.travelrental.product.dto.ProductDto;
-import com.ftiland.travelrental.product.dto.UpdateProduct;
+import com.ftiland.travelrental.product.dto.*;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,6 +41,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final MemberService memberService;
     private final ProductCategoryService productCategoryService;
+    private final ImageService imageService;
 
     @Transactional
     public CreateProduct.Response createProduct(CreateProduct.Request request, Long memberId) {
@@ -80,12 +84,12 @@ public class ProductService {
     }
 
     @Transactional
+    @CacheEvict(key = "#productId", value = "products")
     public UpdateProduct.Response updateProduct(UpdateProduct.Request request,
                                                 String productId, Long memberId) {
         Member member = memberService.findMember(memberId);
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
+        Product product = findProduct(productId);
 
         validateOwner(member, product);
 
@@ -111,11 +115,11 @@ public class ProductService {
     }
 
     @Transactional
+    @CacheEvict(key = "#productId", value = "products")
     public void deleteProduct(String productId, Long memberId) {
         Member member = memberService.findMember(memberId);
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
+        Product product = findProduct(productId);
 
         validateOwner(member, product);
 
@@ -127,26 +131,62 @@ public class ProductService {
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
     }
 
+    @Cacheable(key = "#productId", value = "products")
     public ProductDetailDto findProductDetail(String productId) {
+        log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
         List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
-        return ProductDetailDto.from(product, categories);
+
+        List<String> images = imageService.findImageProduct(productId).stream()
+                .map(image -> image.getImageUrl())
+                .collect(Collectors.toList());
+
+        return ProductDetailDto.from(product, categories, images);
     }
 
-    public List<ProductDto> findProducts(Long memberId, int size, int page) {
+    public GetProducts findProducts(Long memberId, int size, int page) {
         Member member = memberService.findMember(memberId);
 
         Page<Product> products = productRepository.findByMemberMemberId(memberId, PageRequest.of(page, size));
 
-        return products.stream()
-                .map(ProductDto::from)
+        List<ProductDto> productDtos = products.stream()
+                .map(p -> {
+                    ImageProduct image = imageService.findFirstImageProduct(p.getProductId());
+                    return ProductDto.from(p, image.getImageUrl());
+                })
                 .collect(Collectors.toList());
+
+        PageInfo pageInfo = new PageInfo(products.getNumber(), products.getSize(),
+                products.getTotalElements(), products.getTotalPages());
+
+        return GetProducts.from(productDtos, pageInfo);
     }
 
     @Transactional
     public void updateView(String productId) {
         Product product = findProduct(productId);
         product.setViewCount(product.getViewCount() + 1);
+    }
+
+
+    public List<Product> findProductByMemberId(Long memberId) {
+        return productRepository.findAllByMemberMemberId(memberId);
+    }
+
+    public List<Product> getTop3ByViewCount() {
+        return productRepository.findTop3ByOrderByViewCountDesc();
+    }
+
+    public List<Product> getTop3ByTotalRateScoreRatio() {
+        //첫번째 페이지에서 3개의 product만 가져오도록
+        int PAGE = 0;
+        int SIZE = 3;
+
+        return productRepository.findTop3ByOrderByTotalRateScoreRatioDesc(PageRequest.of(PAGE, SIZE));
+    }
+
+    public List<Product> getTop3ByBaseFeeZero(int baseFee) {
+        return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
     }
 }

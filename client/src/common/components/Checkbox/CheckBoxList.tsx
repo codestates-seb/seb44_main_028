@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import CheckBox from './CheckBox';
@@ -5,10 +6,14 @@ import { CategoryListProps } from '../../type';
 import { ICategory } from '../../model/ICategory';
 import Loading from '../Loading';
 import ErrorPage from '../ErrorPage';
+import CheckBox from './Checkbox';
+        
 const CheckBoxList = ({
   selectedtCategory,
   setSelectedCategory,
 }: CategoryListProps) => {
+  const [seletedCategories, setSelectedCategories] = useState<string[]>([]);
+  console.log(seletedCategories);
   const fetchCategoryData = async () => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/categories`,
@@ -26,6 +31,7 @@ const CheckBoxList = ({
   if (isError) {
     return <ErrorPage />;
   }
+
   return (
     <div>
       {category?.map((checkbox, index) => {
