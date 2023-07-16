@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import ItemUserInfo from './ItemUserInfo';
 import ItemPrice from './ItemPrice';
 import RatingStar from '../../MyPage/components/RatingStar';
@@ -21,15 +22,11 @@ import {
   ProductBtn,
 } from '../style';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
-import {
-  ITEM_DISCRIPRION,
-  ITEM_PRICE,
-  ITEM_TITLE,
-  ITEM_TAG,
-  ITEM_NOTICE,
-  USER_BTN,
-} from '../constants';
+import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import Loading from '../../../common/components/Loading';
+import ErrorPage from '../../../common/components/ErrorPage';
 
 const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
@@ -48,24 +45,44 @@ const ItemContent = () => {
   const handleDelete = () => {
     console.log('삭제');
   };
+  const { data, isLoading, error } = useQuery('productDtail', async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/products/018cc66f-9361-4fff-8a41-87ed5fd50d4b`,
+    );
+    console.log(data);
+    return data;
+  });
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <ErrorPage />;
+  }
+
   return (
     <ItemContentContainer>
       <ItemInfoWrapper>
         <ItemImageWrapper>
-          <img src="https://pbs.twimg.com/media/FsD7uO8aUAALFPR.jpg:large" />
+          <img src={data.images[0]} />
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
-          <ItemUserInfo />
+          <ItemUserInfo userName={data.userName} address={data.address} />
           {/* 가격 정보 */}
-          {ITEM_PRICE.map((price, index) => (
-            <ItemPrice key={index} itemPrice={price} />
-          ))}
+
+          <ItemPrice
+            itemKey={ITEM_PRICE[0]}
+            itemValue={data.minimumRentalPeriod}
+          />
+          <ItemPrice itemKey={ITEM_PRICE[1]} itemValue={data.baseFee} />
+          <ItemPrice itemKey={ITEM_PRICE[2]} itemValue={data.feePerDay} />
+          <ItemPrice itemKey={ITEM_PRICE[3]} itemValue={data.overdueFee} />
+
           {/* 별점 */}
           <p className="rate">상품 별점</p>
           <ItemRate>
             <RatingStar
-              ratingIndex={ratingIndex}
+              ratingIndex={data.rate}
               setRatingIndex={setRatingIndex}
             />
           </ItemRate>
@@ -90,8 +107,8 @@ const ItemContent = () => {
           <div></div>
         </ProductInfo>
         <ProductDescription>
-          <ProductTitle>{ITEM_TITLE}</ProductTitle>
-          <ProductContent>{ITEM_DISCRIPRION}</ProductContent>
+          <ProductTitle>{data.title}</ProductTitle>
+          <ProductContent>{data.content}</ProductContent>
           <ProductNotice>{ITEM_NOTICE}</ProductNotice>
           {/* 카테고리 */}
           <ItemTagSection>

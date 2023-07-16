@@ -1,9 +1,10 @@
 import { ItemPriceContainer } from '../style';
-const ItemPrice = ({ itemPrice }: { itemPrice: string }) => {
+import { ItemPriceProps } from '../type';
+const ItemPrice = ({ itemKey, itemValue }: ItemPriceProps) => {
   return (
     <ItemPriceContainer>
-      <div>{itemPrice}</div>
-      <div>3시간</div>
+      <div>{itemKey}</div>
+      <div>{itemValue}</div>
     </ItemPriceContainer>
   );
 };
