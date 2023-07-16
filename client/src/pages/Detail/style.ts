@@ -37,7 +37,9 @@ export const ItemRate = styled.div`
   margin-left: 1rem;
 `;
 export const ItemActionBtn = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   margin-top: 1.938rem;
 `;
 export const ItemDescriptionWrapper = styled.div`

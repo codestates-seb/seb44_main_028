@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import axios from 'axios';
 import ItemUserInfo from './ItemUserInfo';
 import ItemPrice from './ItemPrice';
@@ -23,10 +25,9 @@ import {
 } from '../style';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
+import ChatBtn from './ChatBtn';
 
 const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
@@ -67,7 +68,7 @@ const ItemContent = () => {
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
-          <ItemUserInfo userName={data.userName} address={data.address} />
+          <ItemUserInfo userName={data.username} address={data.address} />
           {/* 가격 정보 */}
 
           <ItemPrice
@@ -92,12 +93,12 @@ const ItemContent = () => {
               backgroundColor={colorPalette.heavyColor}
               hoverBackgroundColor={colorPalette.rightButtonHoverColor}
               height={64}
-              width={228}
+              width={198}
               onClick={handleReservation}
             >
               예약하기
             </BigDefaultBtn>
-            <div onClick={handleChatting}>채팅아이콘</div>
+            <ChatBtn />
           </ItemActionBtn>
         </ItemUserWrapper>
       </ItemInfoWrapper>
