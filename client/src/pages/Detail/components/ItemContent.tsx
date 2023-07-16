@@ -112,9 +112,9 @@ const ItemContent = () => {
           <ProductNotice>{ITEM_NOTICE}</ProductNotice>
           {/* 카테고리 */}
           <ItemTagSection>
-            {ITEM_TAG.map((tag, index) => (
-              <ItemTag key={index} itemtag={tag} />
-            ))}
+            {/* {data.categories.map((tag) => (
+              <ItemTag key={tag.categoryId} itemtag={tag.title} />
+            ))} */}
           </ItemTagSection>
           <ProductBtn>
             <div onClick={handleUpdate}>{USER_BTN[0]}</div>
