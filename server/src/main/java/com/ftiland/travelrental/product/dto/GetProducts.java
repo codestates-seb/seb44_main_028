@@ -1,7 +1,6 @@
 package com.ftiland.travelrental.product.dto;
 
 import com.ftiland.travelrental.common.PageInfo;
-import com.ftiland.travelrental.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -21,9 +19,12 @@ public class GetProducts {
     private PageInfo pageInfo;
 
 
-    public static GetProducts from(List<ProductDto> products, PageInfo pageInfo) {
+    public static GetProducts from(Page<ProductDto> products) {
+        PageInfo pageInfo = new PageInfo(products.getNumber(), products.getSize(),
+                products.getTotalElements(), products.getTotalPages());
+
         return GetProducts.builder()
-                .products(products)
+                .products(products.getContent())
                 .pageInfo(pageInfo).build();
     }
 }

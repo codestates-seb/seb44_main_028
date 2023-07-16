@@ -1,4 +1,10 @@
+import ItemContent from '../components/ItemContent';
+
 function DetailPage() {
-  return <div>detail page</div>;
+  return (
+    <>
+      <ItemContent />
+    </>
+  );
 }
 export default DetailPage;

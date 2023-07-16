@@ -6,6 +6,7 @@ import com.ftiland.travelrental.category.entity.Category;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.image.entity.ImageCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Cacheable(value = "categories")
     public List<CategoryDto> findCategoriesAll() {
         return categoryRepository.findAll().stream()
                 .map(CategoryDto::from)

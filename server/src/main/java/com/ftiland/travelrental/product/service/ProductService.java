@@ -1,12 +1,8 @@
 package com.ftiland.travelrental.product.service;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
-import com.ftiland.travelrental.common.PageInfo;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
-
-
-import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
@@ -24,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -148,19 +143,9 @@ public class ProductService {
     public GetProducts findProducts(Long memberId, int size, int page) {
         Member member = memberService.findMember(memberId);
 
-        Page<Product> products = productRepository.findByMemberMemberId(memberId, PageRequest.of(page, size));
+        Page<ProductDto> products = productRepository.findProductDtosByMemberId(memberId, PageRequest.of(page, size));
 
-        List<ProductDto> productDtos = products.stream()
-                .map(p -> {
-                    ImageProduct image = imageService.findFirstImageProduct(p.getProductId());
-                    return ProductDto.from(p, image.getImageUrl());
-                })
-                .collect(Collectors.toList());
-
-        PageInfo pageInfo = new PageInfo(products.getNumber(), products.getSize(),
-                products.getTotalElements(), products.getTotalPages());
-
-        return GetProducts.from(productDtos, pageInfo);
+        return GetProducts.from(products);
     }
 
     @Transactional
