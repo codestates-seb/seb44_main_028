@@ -6,8 +6,8 @@ import { CategoryListProps } from '../../type';
 import { ICategory } from '../../model/ICategory';
 import Loading from '../Loading';
 import ErrorPage from '../ErrorPage';
-import CheckBox from './Checkbox';
-        
+import Checkbox from './CheckBox';
+
 const CheckBoxList = ({
   selectedtCategory,
   setSelectedCategory,

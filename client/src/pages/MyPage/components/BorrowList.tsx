@@ -5,7 +5,7 @@ import Modal from './Modal';
 import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
 import { borrowCardProps } from '../../../common/type';
 import { BORROWCARD_DATA } from '../constants';
-import { BorrowWrapper } from '../style';
+import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { PiFileTextThin } from 'react-icons/pi';
@@ -27,36 +27,36 @@ function BorrowList() {
   }, [currentPage, currentStatus]);
 
   const fetchItemsForPage = async (page: number, status: string) => {
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const filteredItems = BORROWCARD_DATA.filter(
-      (item) => item.status === status,
-    );
-    const slicedItems = filteredItems.slice(startIndex, endIndex);
-    setItems(slicedItems);
-    setTotalItemsCount(filteredItems.length);
+    // const startIndex = (page - 1) * itemsPerPage;
+    // const endIndex = startIndex + itemsPerPage;
+    // const filteredItems = BORROWCARD_DATA.filter(
+    //   (item) => item.status === status,
+    // );
+    // const slicedItems = filteredItems.slice(startIndex, endIndex);
+    // setItems(slicedItems);
+    // setTotalItemsCount(filteredItems.length);
+    // };
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/reservations/`,
+        {
+          params: {
+            size: itemsPerPage,
+            page: currentPage,
+            status: status,
+          },
+        },
+      ); // 실제 API 엔드포인트에 맞게 수정
+      console.log(Array.isArray(response.data));
+      setItems(response.data.responses);
+      setTotalItemsCount(response.data.listSize);
+      console.log('currentPage:', currentPage);
+      console.log('totalElements:', response.data);
+      console.log('response:', response.data.responses);
+    } catch (error) {
+      console.error('Error fetching wishlist:', error);
+    }
   };
-  // try {
-  //   const response = await axios.get(
-  //     `${process.env.REACT_APP_API_URL}/api/reservations/`,
-  //     {
-  //       params: {
-  //         size: itemsPerPage,
-  //         page: currentPage,
-  //         status: status,
-  //       },
-  //     },
-  //   ); // 실제 API 엔드포인트에 맞게 수정
-  //   console.log(Array.isArray(response.data));
-  //   setItems(response.data.responses);
-  //   setTotalItemsCount(response.data.listSize);
-  //   console.log('currentPage:', currentPage);
-  //   console.log('totalElements:', response.data);
-  //   console.log('response:', response.data.responses);
-  // } catch (error) {
-  //   console.error('Error fetching wishlist:', error);
-  // }
-
   console.log('items:', items);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -69,13 +69,19 @@ function BorrowList() {
     console.log('예약요청:', items);
   };
   const handleInUseItems = () => {
-    handlePageChange(currentPage);
+    setCurrentStatus('INUSE');
+    setCurrentPage(1);
     setIsOpen(true);
+    console.log('사용중인 플레이팩:', items);
   };
 
   const handleCompletedItems = () => {
-    handlePageChange(currentPage);
+    setCurrentStatus('COMPLETED');
+    setCurrentPage(1);
     setIsOpen(true);
+    console.log('사용 완료한 플레이팩:', items);
+    // handlePageChange(currentPage);
+    // setIsOpen(true);
   };
   return (
     <div>
@@ -103,9 +109,11 @@ function BorrowList() {
         </DefaultBtn>
       </BorrowWrapper>
       빌린 내역~!~!~!~!
-      {items.map((item, index) => (
-        <BorrowCard key={index} borrowCardData={item} />
-      ))}
+      <BorrowCardWrappre>
+        {items.map((item, index) => (
+          <BorrowCard key={index} borrowCardData={item} />
+        ))}
+      </BorrowCardWrappre>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal>
