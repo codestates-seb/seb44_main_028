@@ -1,4 +1,6 @@
+import ChatBtn from '../components/ChatBtn';
+
 function DetailPage() {
-  return <div>detail page</div>;
+  return <ChatBtn />;
 }
 export default DetailPage;
