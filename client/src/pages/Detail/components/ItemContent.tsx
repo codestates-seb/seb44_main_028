@@ -42,6 +42,12 @@ const ItemContent = () => {
   const handleChatting = () => {
     navigate(`/chatting/${param.itemId}`);
   };
+  const handleUpdate = () => {
+    navigate(`/update/${param.itemId}`);
+  };
+  const handleDelete = () => {
+    console.log('삭제');
+  };
   return (
     <ItemContentContainer>
       <ItemInfoWrapper>
@@ -94,8 +100,8 @@ const ItemContent = () => {
             ))}
           </ItemTagSection>
           <ProductBtn>
-            <div>{USER_BTN[0]}</div>
-            <div>{USER_BTN[1]}</div>
+            <div onClick={handleUpdate}>{USER_BTN[0]}</div>
+            <div onClick={handleDelete}>{USER_BTN[1]}</div>
           </ProductBtn>
         </ProductDescription>
       </ItemDescriptionWrapper>
