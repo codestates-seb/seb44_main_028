@@ -25,7 +25,7 @@ function Router() {
         <Route path="/mypage/edit" element={<ProfileEdit />} />
         <Route path="/create" element={<CreatePage />} />
         <Route path="/update/:itemId" element={<UpdatePage />} />
-        <Route path="/chatting" element={<ChattingPage />} />
+        <Route path="/chatting/:roomId" element={<ChattingPage />} />
       </Route>
       <Route path="/detail/:itemId" element={<DetailPage />} />
     </Routes>
