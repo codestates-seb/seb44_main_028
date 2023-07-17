@@ -1,14 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Calendar from './Calendar';
-import { RootState } from '../../../common/store/RootStore';
-import {
-  CalendarContainer,
-  Btn,
-  ButtonWrapper,
-  CalendarWrapper,
-} from '../style';
 import MonthSwitchBtns from './MonthSwitchBtns';
 import { clearReservationDates } from '../store/ReservationDateStore';
+import { CalendarContainer, CalendarWrapper } from '../style';
+import { RootState } from '../../../common/store/RootStore';
 
 function Calendars() {
   const dispatch = useDispatch();
