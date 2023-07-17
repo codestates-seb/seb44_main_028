@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
-import { ITEMCARD_DATA } from '../../Main/constants';
 import { ItemListPageContainer } from '../style';
 import Loading from '../../../common/components/Loading';
 import {
