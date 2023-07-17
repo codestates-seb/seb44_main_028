@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,7 +51,8 @@ public class ChatController {
     // 채팅방 생성
     @PostMapping
     public ResponseEntity createRoom(@RequestBody RequestDto.Post requestBody){
-        // 중복 검사하는 로직 작성해야함
+
+        chatEntityService.findChatRoom(requestBody.getSenderId(), requestBody.getReceiverId());
 
         ChatRoomDto chatRoomDto = chatDtoService.createRoom(requestBody.getName());
         ChatRoom chatRoom = chatEntityService.storeChatRoom(requestBody.getSenderId(), requestBody.getReceiverId(), chatRoomDto.getRoomId(), requestBody.getName());
@@ -70,20 +70,21 @@ public class ChatController {
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
-
     // 채팅방 이전 메세지 불러오기 case 2
     @GetMapping("/message2")
-    public List<ChatMessage> findChatRoomMessages(@Param("memberId") Long memberId){
+    public ResponseEntity findChatRoomMessages(@Param("memberId") Long memberId){
         List<ChatMessage> chatMessageList = chatEntityService.findChatRoomMessage2(memberId);
+        ResponseDto.Messages response = chatMapper.ChatMessagesToResponseMessages(chatMessageList);
 
-        return chatMessageList;
+        return new ResponseEntity(response,HttpStatus.OK);
     }
 
     // 채팅방 리스트 불러오기
     @GetMapping("/chatroom")
-    public List<String> findChatRooms(@Param("memberId") Long memberId){
-        List<String> chatRooms = chatEntityService.findChatRoom(memberId);
+    public ResponseEntity findChatRooms(@Param("memberId") Long memberId){
+        List<ChatRoom> chatRooms = chatEntityService.findChatRoom(memberId);
+        ResponseDto.ChatRooms response = chatMapper.ChatRoomsToChatRoomList(chatRooms);
 
-        return chatRooms;
+        return new ResponseEntity(response,HttpStatus.OK);
     }
 }
