@@ -1,6 +1,6 @@
-import { YearAndMonthWrapper, Month, Table, Year } from '../style';
 import Days from './Days';
 import Dates from './Dates';
+import { YearAndMonthWrapper, Month, Table, Year } from '../style';
 import { CalendarProps } from '../type';
 
 function Calendar({ calendar, reservationData }: CalendarProps) {
