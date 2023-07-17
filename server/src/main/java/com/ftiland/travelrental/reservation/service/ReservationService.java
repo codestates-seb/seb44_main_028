@@ -1,7 +1,6 @@
 package com.ftiland.travelrental.reservation.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
-import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.common.utils.mail.MailService;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
@@ -65,7 +64,7 @@ public class ReservationService {
         }
 
         // 예약 날짜가 겹치는 경우
-        if (checkReservationDuplication(request.getEndDate(), request.getStartDate())) {
+        if (checkReservationDuplication(request.getEndDate().plusDays(1), request.getStartDate())) {
             throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
         }
 
@@ -174,29 +173,27 @@ public class ReservationService {
         }
     }
 
-    public GetReservations getReservationByBorrower(Long memberId, ReservationStatus status,
-                                                    int size, int page) {
+    public GetBorrowReservations getReservationByBorrower(Long memberId, ReservationStatus status,
+                                                          int size, int page) {
         Member member = memberService.findMember(memberId);
 
-        Page<Reservation> reservations = reservationRepository
-                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page - 1, size));
+        Page<BorrowReservationDto> reservations = reservationRepository
+                .findBorrowReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
 
-
-
-        return GetReservations.from(reservations);
+        return GetBorrowReservations.from(reservations);
     }
 
-    public GetReservations getReservationByLender(Long memberId, String productId,
-                                                  ReservationStatus status, int size, int page) {
+    public GetLendReservations getReservationByLender(Long memberId, String productId,
+                                                      ReservationStatus status, int size, int page) {
         Member member = memberService.findMember(memberId);
         Product product = productService.findProduct(productId);
 
         validateOwner(product, member);
 
-        Page<Reservation> reservations = reservationRepository
-                .findAllByProductProductIdAndStatus(productId, status, PageRequest.of(page, size));
+        Page<LendReservationDto> reservations = reservationRepository
+                .findLendReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
 
-        return GetReservations.from(reservations);
+        return GetLendReservations.from(reservations);
     }
 
     public List<ReservationCalendarDto> getReservationByMonth(String productId, String date) {

@@ -2,8 +2,6 @@ package com.ftiland.travelrental.product.controller;
 
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.product.dto.*;
-import com.ftiland.travelrental.product.entity.Product;
-import com.ftiland.travelrental.product.helper.FeaturedProductsHelper;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +29,6 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<CreateProduct.Response> createProduct(
-//            @Valid @RequestBody CreateProduct.Request request
             @Valid @RequestPart(required = false) CreateProduct.Request request,
             @RequestPart(required = false) List<MultipartFile> images) {
         log.info("[ProductController] createProduct called");
@@ -70,7 +67,7 @@ public class ProductController {
         log.info("[ProductController] findProductDetail called");
         Long memberId = 1L;
 
-        ProductDetailDto productDetail = productService.findProductDetail(productId);
+        ProductDetailDto productDetail = productService.findProductDetail(productId, memberId);
 
         // 조회수 로직
         countView(productId, request, response);
@@ -81,12 +78,12 @@ public class ProductController {
     @GetMapping("/members")
     public ResponseEntity<GetProducts> findProducts(@RequestParam int size, @RequestParam int page) {
         log.info("[ProductController] findProducts called");
-        Long memberId = 2L;
+        Long memberId = 1L;
 
         return ResponseEntity.ok(productService.findProducts(memberId, size, page));
     }
 
-    @GetMapping("/featured")
+    /*@GetMapping("/featured")
     public ResponseEntity<FeaturedProductsResponseDto> findFeaturedProducts() {
 
         List<Product> top3ByViewCount = productService.getTop3ByViewCount();
@@ -97,7 +94,7 @@ public class ProductController {
                 FeaturedProductsHelper.createFeaturedProductsResponseDto(top3ByViewCount, top3ByTotalRateScoreRatio, top3ByBaseFeeZero);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
+    }*/
 
     private void countView(String productId, HttpServletRequest request, HttpServletResponse response) {
         /* 조회수 로직 */
@@ -116,14 +113,14 @@ public class ProductController {
                 productService.updateView(productId);
                 oldCookie.setValue(oldCookie.getValue() + "_[" + productId + "]");
                 oldCookie.setPath("/");
-                oldCookie.setMaxAge(60 * 60 * 24); 							// 쿠키 시간
+                oldCookie.setMaxAge(60 * 60 * 24);
                 response.addCookie(oldCookie);
             }
         } else {
             productService.updateView(productId);
             Cookie newCookie = new Cookie("postView", "[" + productId + "]");
             newCookie.setPath("/");
-            newCookie.setMaxAge(60 * 60 * 24); 								// 쿠키 시간
+            newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
     }

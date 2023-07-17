@@ -67,19 +67,19 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<GetReservations> getReservationsByBorrower(
+    public ResponseEntity<GetBorrowReservations> getReservationsByBorrower(
             @RequestParam ReservationStatus status,
             @RequestParam int size,
             @RequestParam int page) {
         log.info("[ReservationController] getReservationsByBorrower called");
 
-        Long memberId = 2L;
+        Long memberId = 1L;
 
         return ResponseEntity.ok(reservationService.getReservationByBorrower(memberId, status, size, page));
     }
 
     @GetMapping("/products/{product-id}")
-    public ResponseEntity<GetReservations> getReservationsByLender(
+    public ResponseEntity<GetLendReservations> getReservationsByLender(
             @PathVariable("product-id") String productId,
             @RequestParam ReservationStatus status,
             @RequestParam int size,

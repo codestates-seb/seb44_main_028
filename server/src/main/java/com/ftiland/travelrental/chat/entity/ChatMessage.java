@@ -1,27 +1,26 @@
 package com.ftiland.travelrental.chat.entity;
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
-import com.ftiland.travelrental.member.entity.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
-public class Message extends BaseEntity {
+public class ChatMessage extends BaseEntity {
 
     @Id
     private String messageId;
+    private String content;
+    private Long senderId;
+    private String roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "chatroom_id")
-    private Chatroom chatroom;
 
-    @ManyToOne
-    @JoinColumn(name = "sender_id")
-    private Member sender;
 }

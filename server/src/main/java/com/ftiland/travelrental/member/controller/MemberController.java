@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -26,7 +27,6 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<MemberDto.Response> getMember() {
-
         Long memberId = MemberAuthUtils.getMemberId(request);
 
         Member member = memberService.findMember(memberId);
@@ -41,7 +41,6 @@ public class MemberController {
 
         MemberDto.Response response = memberService.updateMember(patchRequest, memberId);
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     @DeleteMapping

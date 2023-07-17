@@ -33,7 +33,7 @@ public class InterestMemberController {
 
     // 특정 맴버의 관심목록 검색 ( 맴버 , Get )
     @GetMapping
-    public ResponseEntity getInterest(@Param("memberId")Long memberId, @Param("page")@Positive int page, @Param("size")@Positive int size){
+    public ResponseEntity getInterest(@Param("memberId")Long memberId, @Param("page")@Positive Integer page, @Param("size")@Positive Integer size){
 
         InterestDto.ResponsesDto responses = interestService.findInterest(memberId,page,size);
 
