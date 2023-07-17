@@ -35,9 +35,10 @@ function ItemListPage() {
           },
         },
       );
+      console.log('res', res);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.log('err', err);
     }
   });
   if (isLoading) {
@@ -46,6 +47,7 @@ function ItemListPage() {
   if (error) {
     return <div>에러가 발생했습니다.</div>;
   }
+  console.log(products);
   return (
     <ItemListPageContainer>
       {
@@ -57,7 +59,7 @@ function ItemListPage() {
           <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
         </div>
       }
-      {products.map((product: ItemCardProps) => (
+      {products?.map((product: ItemCardProps) => (
         <ItemCard key={product.id} itemCardData={product} />
       ))}
     </ItemListPageContainer>
