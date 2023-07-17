@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ICategory } from './model/ICategory';
 
 export type CategoryButtonProps = {
   ImageId: string;
@@ -14,10 +15,15 @@ export type CategoryProps = {
   image: string;
   name: string;
 };
+export type CategoryListProps = {
+  selectedtCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
+};
 export type CheckBoxProps = {
-  categoryData: string;
-  selectedCategories: string[];
-  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  categoryTitle: string;
+  categoryId: string;
+  selectedtCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export type ModalButtonProps = {
@@ -57,13 +63,45 @@ export type ItemCardProps = {
   images: string;
 };
 
-export type BorrowCardProps = {
-  id: string;
-  title: string;
+// export type BorrowCardProps = {
+//   id: string;
+//   title: string;
+//   startDate: string;
+//   endDate: string;
+//   images: string;
+//   content: string;
+//   category: number[];
+//   address: string;
+// };
+
+// export type lendCardProps = {
+//   title: string;
+//   images: string;
+//   startDate: string;
+//   endDate: string;
+// };
+export type lendCardProps = {
+  reservationId: string;
+  status: string;
+  username: string;
+  totalFee: string;
   startDate: string;
   endDate: string;
   images: string;
-  content: string;
-  category: number[];
-  address: string;
 };
+export type borrowCardProps = {
+  title: string;
+  images: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+};
+// export type borrowCardProps = {
+//   reservationId: string;
+//   status: string;
+//   username: string;
+//   totalFee: string;
+//   startDate: string;
+//   endDate: string;
+//   images: string;
+// };

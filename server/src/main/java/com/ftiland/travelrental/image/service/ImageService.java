@@ -175,13 +175,16 @@ public class ImageService {
         return imageProducts;
     }
 
+    public ImageProduct findFirstImageProduct(String productId){
+        return imageProductRepository.findFirstByProductProductId(productId);
+    }
+
     // 맴버 이미지
     public ImageMember findImageMember(Long memberId) {
         Optional<ImageMember> optionalImageMember = imageMemberRepository.findByMemberId(memberId);
-        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_IMAGE_MEMBER));
         return imageMember;
     }
-
 }
 
 
