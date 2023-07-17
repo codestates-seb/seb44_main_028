@@ -81,11 +81,12 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
+    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile, Long memberId) {
 
 <<<<<<< HEAD
         Member member = findMember(memberId);
 
+<<<<<<< HEAD
         Optional.ofNullable(request.getDisplayName())
                 .ifPresent(displayName -> member.setDisplayName(displayName));
 
@@ -112,6 +113,14 @@ public class MemberService {
 
         memberRepository.save(member);
         return MemberDto.Response.from(member);
+=======
+        Member member = findMember(memberId);
+        String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
+        member.setDisplayName(displayName);
+        member.setImageUrl(imageUrl);
+        memberRepository.save(member);
+        return MemberDto.Response.from(member, imageUrl);
+>>>>>>> 0042797 (:art: 반복적인 로직 삭제)
     }
 
     public void deleteMember(Long memberId) {
