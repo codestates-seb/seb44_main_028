@@ -269,4 +269,64 @@ public class ProductService {
 
         return GetProducts.from(productDtoPage);
     }
+
+    public GetProducts getProductsByCategoryAndLocation(String categoryId, double latitude, double longitude, double distance, String sortBy, Pageable pageable) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+
+        // 특정 카테고리에 속한 상품-카테고리 연결 객체 목록 조회
+        List<ProductCategory> productCategories = productCategoryRepository.findByCategory(category);
+
+        // 거리 필터링을 위한 결과 목록
+        List<Product> filteredProducts = new ArrayList<>();
+
+        // 거리 필터링
+        for (ProductCategory productCategory : productCategories) {
+            Product product = productCategory.getProduct();
+            double productDistance = GeoUtils.calculateDistance(latitude, longitude, product.getLatitude(), product.getLongitude());
+            if (productDistance <= distance) {
+                filteredProducts.add(product);
+            }
+        }
+
+        // 정렬
+        switch (sortBy) {
+            case "totalRateScore":
+                // 기본적으로 total Rate Score로 정렬이지만 새로운 rate field 생기면 그것으로 수정
+                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
+                break;
+            case "viewCount":
+                filteredProducts.sort(Comparator.comparing(Product::getViewCount).reversed());
+                break;
+            case "createdAt":
+                filteredProducts.sort(Comparator.comparing(Product::getCreatedAt).reversed());
+                break;
+            default:
+                // 디폴트는 평점 좋은 순
+                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
+                break;
+        }
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<ProductDto> productDtos;
+
+        if (filteredProducts.size() < startItem) {
+            productDtos = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, filteredProducts.size());
+            List<Product> pagedProducts = filteredProducts.subList(startItem, toIndex);
+            productDtos = pagedProducts.stream()
+                    .map(product -> {
+                        ImageProduct firstImage = imageProductRepository.findFirstByProductOrderByCreatedAtAsc(product);
+                        String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
+                        return ProductDto.from(product, imageUrl);
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        Page<ProductDto> productDtoPage = new PageImpl<>(productDtos, pageable, filteredProducts.size());
+
+        return GetProducts.from(productDtoPage);
+    }
 }
