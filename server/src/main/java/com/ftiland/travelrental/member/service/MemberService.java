@@ -3,13 +3,18 @@ package com.ftiland.travelrental.member.service;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.repository.ImageMemberRepository;
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +29,15 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ImageMemberRepository imageMemberRepository;
+    private final ImageService imageService;
 
-    public MemberService(MemberRepository memberRepository, ImageMemberRepository imageMemberRepository) {
+    public MemberService(MemberRepository memberRepository, ImageMemberRepository imageMemberRepository, ImageService imageService) {
         this.memberRepository = memberRepository;
         this.imageMemberRepository = imageMemberRepository;
+        this.imageService = imageService;
     }
 
-    public void createMembers(List<Member> members){
+    public void createMembers(List<Member> members) {
         members.forEach(member -> createMember(member));
     }
 
@@ -62,17 +69,28 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    public MemberDto.Response updateMember(MemberPatchDto.Request request, Long memberId) {
+    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
 
-        Member member = findMember(memberId);
 
-        Optional.ofNullable(request.getDisplayName())
-                .ifPresent(displayName -> member.setDisplayName(displayName));
-
-        return MemberDto.Response.from(member);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        String imageUrl = imageService.storeImageMember(imageFile,memberId).getImageUrl();
+        Optional.ofNullable(displayName)
+                .ifPresent(name -> member.setDisplayName(name));
+        memberRepository.save(member);
+        return MemberDto.Response.from(member,imageUrl);
     }
 
+    public MemberDto.Response updateMember(String displayName ,Long memberId) {
 
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        Optional.ofNullable(displayName)
+                .ifPresent(name -> member.setDisplayName(name));
+
+        memberRepository.save(member);
+        return MemberDto.Response.from(member);
+    }
 
     public void deleteMember(Long memberId) {
         Member member = findMember(memberId);

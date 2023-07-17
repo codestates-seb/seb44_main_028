@@ -3,6 +3,12 @@ package com.ftiland.travelrental.common.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
+    UNAUTHORIZED_ACCESS(501,"권한이 없습니다"),
+    CHATROOM_ALREADY_EXISTS(501,"Chatroom already exists"),
+    INTEREST_NOT_EXISTS(409,"Interest not exists"),
+    IMAGE_DELETE_FAILED(501,"Image delete failed"),
+    IMAGE_SAVE_FAILED(501,"Image save failed"),
+    NOT_EXISTS(409,"Not exists"),
     INTEREST_EXISTS(409,"Interest exists"),
     IMAGE_EMPTY(501,"이미지가 없습니다."),
     MEMBER_NOT_FOUND(404, "멤버가 존재하지 않습니다."),

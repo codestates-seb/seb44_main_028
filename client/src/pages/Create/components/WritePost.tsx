@@ -1,183 +1,301 @@
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useForm } from 'react-hook-form';
+import { MdError } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
-import { useForm } from 'react-hook-form';
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
+import UploadImage from '../components/UploadImage';
+import ModalMain from '../../../common/components/Modal/ModalMain';
+import CheckBoxList from '../../../common/components/CheckBox/CheckBoxList';
 import {
   CONTENT_DESCRIPTION,
   INPIT_VALIDATION,
   INPUT_FIELD,
 } from '../constants';
+import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
   WritePostContainer,
+  PriceInput,
   WritePriceWrapper,
   ButtonWrapper,
   CheckBoxTitle,
-  PriceInput,
-  TitleInput,
+  Input,
 } from '../style';
-import { ChangeEvent, useEffect, useState } from 'react';
 
 const WritePost = () => {
+  const navigate = useNavigate();
+  const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors, isDirty },
+    formState: { isSubmitting, errors },
   } = useForm();
-  const [isInputChange, setIsInputChange] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [isInputValid, setIsInputValid] = useState<boolean[]>([
-    true,
-    true,
-    true,
-    true,
-  ]);
+
+  const [inputValues, setInputValues] = useState({
+    title: '',
+    baseFee: '',
+    feePerDay: '',
+    overdueFee: '',
+    minimumRentalPeriod: '',
+    content: '',
+    categoryIds: [] as string[],
+  });
+  const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
+    images: [],
+  });
+  //
   const handleQuillChange = (value: string) => {
-    console.log(value);
+    const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
+    setInputValues((prev) => ({
+      ...prev,
+      content: strippedValue,
+    }));
   };
-  const onSubmit = async (data: any) => {
-    alert(JSON.stringify(data));
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    let newValue: string | number;
+
+    if (e.target.name === 'minimumRentalPeriod') {
+      newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
+    } else {
+      newValue = inputValue;
+    }
+
+    setInputValues((prev) => ({
+      ...prev,
+      [e.target.name]: newValue,
+    }));
   };
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const newValue = e.target.value.length > 0;
-    setIsInputChange((prevState) => {
-      const newState = [...prevState];
-      newState[index] = newValue;
-      return newState;
-    });
-    setIsInputValid((prevState) => {
-      const newState = [...prevState];
-      newState[index] = newValue && !errors[INPUT_FIELD[index].id];
-      return newState;
-    });
+  const handleCancel = () => {
+    setShowModal(!showModal);
   };
-  const handleInputBlur = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    setIsInputValid((prevState) => {
-      const newState = [...prevState];
-      newState[index] = !!e.target.value && !errors[INPUT_FIELD[index].id];
-      return newState;
+  const handelExit = () => {
+    navigate('/');
+  };
+  const newPost = useMutation((post: object) =>
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/products`, post, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        const { data } = res;
+        navigate(`/detail/${data.productId}`);
+        console.log('data', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  );
+  const onSubmit = () => {
+    const formData = new FormData();
+    const blobJson = new Blob([JSON.stringify(inputValues)], {
+      type: 'application/json',
     });
+    formData.append('request', blobJson);
+    for (const image of uploadImages.images) {
+      formData.append('images', image || null);
+    }
+    console.log(uploadImages);
+    console.log(formData);
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    newPost.mutate(formData);
   };
   useEffect(() => {
-    setIsInputValid((prevState) => {
-      const newState = [...prevState];
-      for (let i = 0; i < INPUT_FIELD.length; i++) {
-        newState[i] = !errors[INPUT_FIELD[i].id];
-      }
-      return newState;
+    setInputValues({
+      ...inputValues,
+      categoryIds: [...selectedtCategory],
     });
-  }, [errors]);
+  }, [selectedtCategory, uploadImages]);
+
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
+      <UploadImage setUploadImages={setUploadImages} />
       <WritePriceWrapper>
-        <PriceInput className="priceInput" isInputChange={isInputChange[0]}>
-          <label htmlFor={`${INPUT_FIELD[0].id}}`}>
-            {INPUT_FIELD[0].title}
-          </label>
-          <input
-            id={INPUT_FIELD[0].id}
+        <PriceInput errorMessage={!!errors}>
+          최소 대여시간
+          <Input
             type="text"
-            aria-invalid={
-              !isDirty
-                ? undefined
-                : errors[INPUT_FIELD[0].id]
-                ? 'true'
-                : 'false'
+            {...register('minimumRentalPeriod', {
+              required: true,
+            })}
+            onChange={handleInputChange}
+            className={
+              inputValues.minimumRentalPeriod
+                ? 'success'
+                : errors.minimumRentalPeriod
+                ? 'error'
+                : ''
             }
-            {...register(`${INPUT_FIELD[0].id}`, { required: true })}
-            onChange={(e) => handleInputChange(e, 0)}
-            onBlur={(e) => handleInputBlur(e, 0)}
           />
-          {isInputChange[0] && <BsCheckLg />}
-          {!isInputValid[0] && <BiErrorCircle />}
-          {errors[INPUT_FIELD[0].id] && (
-            <small role="alert">{INPIT_VALIDATION}</small>
+          {inputValues.minimumRentalPeriod && (
+            <BsCheckLg className="check-icon" />
+          )}
+          {!inputValues.minimumRentalPeriod &&
+            inputValues.minimumRentalPeriod === '' && (
+              <BiErrorCircle className="error-icon" />
+            )}
+          {errors.minimumRentalPeriod && (
+            <small
+              className={`error-message ${
+                errors.minimumRentalPeriod ? 'show' : ''
+              }`}
+            >
+              필수 입력사항입니다.
+            </small>
           )}
         </PriceInput>
-        <PriceInput className="priceInput" isInputChange={isInputChange[1]}>
-          <label>{INPUT_FIELD[1].title}</label>
-          <input
-            id={`${INPUT_FIELD[1].id}}`}
+        <PriceInput errorMessage={!!errors}>
+          고정금액
+          <Input
             type="text"
-            aria-invalid={
-              !isDirty
-                ? undefined
-                : errors[INPUT_FIELD[1].id]
-                ? 'true'
-                : 'false'
+            {...register('baseFee', { required: true })}
+            value={inputValues.baseFee}
+            onChange={handleInputChange}
+            className={
+              inputValues.baseFee ? 'success' : errors.baseFee ? 'error' : ''
             }
-            {...register(`${INPUT_FIELD[1].id}`, { required: true })}
-            onChange={(e) => handleInputChange(e, 1)}
-            onBlur={(e) => handleInputBlur(e, 1)}
           />
-          {isInputChange[1] && <BsCheckLg />}
-          {!isInputValid[1] && <BiErrorCircle />}
-          {errors[INPUT_FIELD[1].id] && (
-            <small role="alert">{INPIT_VALIDATION}</small>
+          {inputValues.baseFee && <BsCheckLg className="check-icon" />}
+          {!inputValues.baseFee && inputValues.baseFee === '' && (
+            <BiErrorCircle className="error-icon" />
+          )}
+          {errors.baseFee && (
+            <small className={`error-message ${errors.baseFee ? 'show' : ''}`}>
+              필수 입력사항입니다.
+            </small>
           )}
         </PriceInput>
-        <PriceInput className="titleInput" isInputChange={isInputChange[2]}>
-          <label>{INPUT_FIELD[2].title}</label>
-          <input
-            id={`${INPUT_FIELD[2].id}}`}
+        <PriceInput errorMessage={!!errors}>
+          1일 당 추가금액
+          <Input
             type="text"
-            aria-invalid={
-              !isDirty
-                ? undefined
-                : errors[INPUT_FIELD[2].id]
-                ? 'true'
-                : 'false'
+            {...register('feePerDay', { required: true })}
+            value={inputValues.feePerDay}
+            onChange={handleInputChange}
+            className={
+              inputValues.feePerDay
+                ? 'success'
+                : errors.feePerDay
+                ? 'error'
+                : ''
             }
-            {...register(`${INPUT_FIELD[2].id}`, { required: true })}
-            onChange={(e) => handleInputChange(e, 2)}
-            onBlur={(e) => handleInputBlur(e, 2)}
           />
-          {isInputChange[2] && <BsCheckLg />}
-          {!isInputValid[2] && <BiErrorCircle />}
-          {errors[INPUT_FIELD[2].id] && (
-            <small role="alert">{INPIT_VALIDATION}</small>
+          {inputValues.feePerDay && <BsCheckLg className="check-icon" />}
+          {!inputValues.feePerDay && inputValues.feePerDay === '' && (
+            <BiErrorCircle className="error-icon" />
+          )}
+          {errors.feePerDay && (
+            <small
+              className={`error-message ${errors.feePerDay ? 'show' : ''}`}
+            >
+              필수 입력사항입니다.
+            </small>
+          )}
+        </PriceInput>
+        <PriceInput errorMessage={!!errors}>
+          연체료
+          <Input
+            type="text"
+            {...register('overdueFee', { required: true })}
+            value={inputValues.overdueFee}
+            onChange={handleInputChange}
+            className={
+              inputValues.overdueFee
+                ? 'success'
+                : errors.overdueFee
+                ? 'error'
+                : ''
+            }
+          />
+          {inputValues.overdueFee && <BsCheckLg className="check-icon" />}
+          {!inputValues.overdueFee && inputValues.overdueFee === '' && (
+            <BiErrorCircle className="error-icon" />
+          )}
+          {errors.overdueFee && (
+            <small
+              className={`error-message ${errors.overdueFee ? 'show' : ''}`}
+            >
+              필수 입력사항입니다.
+            </small>
           )}
         </PriceInput>
       </WritePriceWrapper>
-      <TitleInput isInputChange={isInputChange[3]}>
-        <label>{INPUT_FIELD[3].title}</label>
-        <input
-          id={`${INPUT_FIELD[3].id}`}
-          type="text"
-          aria-invalid={
-            !isDirty ? undefined : errors[INPUT_FIELD[3].id] ? 'true' : 'false'
+
+      <PriceInput errorMessage={!!errors}>
+        제목
+        <Input
+          {...register('title', { required: true })}
+          value={inputValues.title}
+          onChange={handleInputChange}
+          className={
+            inputValues.title ? 'success' : errors.title ? 'error' : ''
           }
-          {...register(`${INPUT_FIELD[3].id}`, { required: true })}
-          onChange={(e) => handleInputChange(e, 3)}
-          onBlur={(e) => handleInputBlur(e, 3)}
         />
-        {isInputChange[3] && <BsCheckLg />}
-        {!isInputValid[3] && <BiErrorCircle />}
-        {errors[INPUT_FIELD[3].id] && (
-          <small role="alert">{INPIT_VALIDATION}</small>
+        {inputValues.title && <BsCheckLg className="check-icon" />}
+        {!inputValues.title && inputValues.title === '' && (
+          <BiErrorCircle className="error-icon" />
         )}
-      </TitleInput>
+        {errors.title && (
+          <small className={`error-message ${errors.title ? 'show' : ''}`}>
+            필수 입력사항입니다.
+          </small>
+        )}
+      </PriceInput>
       <ReactQuill
         theme="snow"
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}
       />
       <CheckBoxTitle>카테고리</CheckBoxTitle>
-      <CheckBoxList />
+      <CheckBoxList
+        selectedtCategory={selectedtCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+
       <ButtonWrapper>
-        <button>취소</button>
+        <button onClick={handleCancel}>취소</button>
         <button type="submit" disabled={isSubmitting}>
           등록
         </button>
       </ButtonWrapper>
+      {showModal && (
+        <ModalMain isOpen={showModal}>
+          <ModalMain.Additional>
+            <MdError />
+          </ModalMain.Additional>
+          <ModalMain.Title>작성 중인 내용이 있습니다.</ModalMain.Title>
+          <ModalMain.Title>나가시겠습니까?</ModalMain.Title>
+          <div>
+            <ModalMain.Button
+              color="inherit"
+              backgroundColor={colorPalette.modalCancelButtonColor}
+              hoverBackgroundColor={colorPalette.modalCancelHoverColor}
+              onClick={() => setShowModal(false)}
+            >
+              머무르기
+            </ModalMain.Button>
+            <ModalMain.Button
+              color={colorPalette.whiteColor}
+              backgroundColor={colorPalette.heavyColor}
+              hoverBackgroundColor={colorPalette.rightButtonHoverColor}
+              onClick={handelExit}
+            >
+              이동하기
+            </ModalMain.Button>
+          </div>
+        </ModalMain>
+      )}
     </WritePostContainer>
   );
 };
