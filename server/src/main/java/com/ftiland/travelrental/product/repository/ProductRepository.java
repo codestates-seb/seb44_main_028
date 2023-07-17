@@ -30,5 +30,5 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "GROUP BY p.productId")
     Page<ProductDto> findProductDtosByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
-
+    Page<Product> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 }
