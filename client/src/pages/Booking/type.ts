@@ -8,7 +8,7 @@ export type DateType = {
 
 export type CalendarProps = {
   calendar: DateType;
-  reservationData: StartEndDateProps[];
+  reservationDataFromServer: StartEndDateProps[];
 };
 
 export type EachDatesProps = {
@@ -17,6 +17,6 @@ export type EachDatesProps = {
     week: number;
     finalWeek: number;
   };
-  reservationData: StartEndDateProps[];
+  reservationDataFromServer: StartEndDateProps[];
   day: number;
 };
