@@ -5,7 +5,7 @@ import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
 import axios from 'axios';
 import {
-  CardWrapper,
+  BorrowCardWrapper,
   DatesWrapper,
   ButtonWapper,
   TitleWrapper,
@@ -49,7 +49,7 @@ const BorrowCard = ({
 
   return (
     <>
-      <CardWrapper>
+      <BorrowCardWrapper>
         <ImgWrapper>
           <ItemImage src={borrowCardData.images} />
         </ImgWrapper>
@@ -62,19 +62,13 @@ const BorrowCard = ({
           <ButtonWapper>
             <DefaultBtn
               color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.deepMintColor}
-            >
-              예약 확정
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
               backgroundColor={colorPalette.cancleButtonColor}
             >
-              거절 하기
+              취소요청
             </DefaultBtn>
           </ButtonWapper>
         </ContentWrapper>
-      </CardWrapper>
+      </BorrowCardWrapper>
     </>
   );
 };

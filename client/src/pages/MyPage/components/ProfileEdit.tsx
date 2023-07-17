@@ -166,7 +166,26 @@ function ProfileEdit() {
 
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
+      //이미지업로드
       try {
+        // 이미지 업로드
+        const imageFormData = new FormData();
+        if (inputRef.current && inputRef.current.files) {
+          const file = inputRef.current.files[0];
+          imageFormData.append('file', file);
+
+          await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/members/images/`,
+            imageFormData,
+            {
+              params: { memberId: 1 },
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          );
+        }
+
         const response = await axios.patch(
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
@@ -174,11 +193,12 @@ function ProfileEdit() {
           },
           {
             headers: {
-              Authorization: `Bearer ${accessToken}}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         );
         await updateUserInfo();
+
         // dispatch(setName(userData?.displayName));
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
         console.log('setNewDisplayName:', setNewDisplayName);

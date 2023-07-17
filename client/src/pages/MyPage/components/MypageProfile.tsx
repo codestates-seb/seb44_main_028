@@ -17,6 +17,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import LendCard from '../../../common/components/MypageCard/LendCard';
 
 function MypageProfile() {
   const decrypt = useDecryptToken();
@@ -80,6 +81,17 @@ function MypageProfile() {
   return (
     <MypageProfileWrapper>
       <MypageLeft>
+        <LendCard
+          lendCardData={{
+            reservationId: '',
+            status: '',
+            username: '',
+            totalFee: '',
+            startDate: '',
+            endDate: '',
+            image: '',
+          }}
+        />
         <MypageImage>
           <img src={ProfileImage0} alt="Profile Image" />
         </MypageImage>

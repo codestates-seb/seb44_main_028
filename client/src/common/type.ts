@@ -63,23 +63,6 @@ export type ItemCardProps = {
   images: string;
 };
 
-// export type BorrowCardProps = {
-//   id: string;
-//   title: string;
-//   startDate: string;
-//   endDate: string;
-//   images: string;
-//   content: string;
-//   category: number[];
-//   address: string;
-// };
-
-// export type lendCardProps = {
-//   title: string;
-//   images: string;
-//   startDate: string;
-//   endDate: string;
-// };
 export type lendCardProps = {
   reservationId: string;
   status: string;
@@ -87,8 +70,9 @@ export type lendCardProps = {
   totalFee: string;
   startDate: string;
   endDate: string;
-  images: string;
+  image: string;
 };
+
 export type borrowCardProps = {
   title: string;
   images: string;

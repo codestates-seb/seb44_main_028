@@ -357,15 +357,17 @@ export const ErrorWrapper = styled.div`
 
 //BorrowCard
 
-export const CardWrapper = styled.div`
+export const BorrowCardWrapper = styled.div`
   display: flex;
   align-items: center;
   box-shadow: ${BoxShadow.Basic};
+  transform: translateY(4rem);
   height: 11rem;
   width: 23rem;
 `;
 export const ImgWrapper = styled.div`
   margin-left: 1rem;
+  margin-right: 1rem;
   height: 9rem;
   width: 9rem;
   img {
@@ -377,17 +379,13 @@ export const ImgWrapper = styled.div`
     width: 9rem;
   }
 `;
-export const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 1rem;
-`;
+export const ContentWrapper = styled.div``;
 export const DatesWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  /* border: 1px solid gray; */
   height: 4rem;
   width: 10rem;
+
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
   div {
@@ -398,7 +396,6 @@ export const DatesWrapper = styled.div`
 
 export const TitleWrapper = styled.div`
   display: flex;
-  /* border: 1px solid black; */
   height: 2rem;
   width: 10rem;
   font-weight: 700;
@@ -413,9 +410,72 @@ export const ButtonWapper = styled.div`
   width: 10rem;
 
   button {
-    flex: 1;
+    width: 4.5rem;
+    height: 1.7rem;
+    font-weight: lighter;
+    font-size: ${fontSize.small};
+  }
+`;
+//LendCard
+export const LendCardWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  box-shadow: ${BoxShadow.Basic};
+  transform: translateY(4rem);
+  height: 11rem;
+  width: 23rem;
+`;
+
+export const LendImgWrapper = styled.div`
+  margin-left: 1rem;
+  height: 9rem;
+  width: 9rem;
+  img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 9rem;
+    width: 9rem;
+  }
+`;
+export const LendContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const LendDatesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+  height: 4rem;
+  width: 10rem;
+  font-size: ${fontSize.small};
+  color: ${colorPalette.grayTextColor};
+  div {
+    margin-bottom: -0.5rem;
+    transform: translateY(1rem);
+  }
+`;
+
+export const LendTitleWrapper = styled.div`
+  display: flex;
+  /* border: 1px solid black; */
+  height: 2rem;
+  width: 10rem;
+  font-weight: 700;
+  font-size: ${fontSize.basic};
+`;
+
+export const LendButtonWapper = styled.div`
+  display: flex;
+  align-items: center;
+  /* border: 1px solid brown; */
+  height: 2rem;
+  width: 10rem;
+
+  button {
     margin-right: 0.3rem;
-    width: 4rem;
+    width: 4.5rem;
     height: 1.7rem;
     font-weight: lighter;
     font-size: ${fontSize.small};

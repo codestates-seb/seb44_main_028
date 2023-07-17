@@ -13,7 +13,7 @@ function BorrowList() {
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
   // const [items, setItems] = useState<borrowCardProps[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(6);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   // const [totalItemsCount, setTotalItemsCount] = useState(BORROWCARD_DATA.length);
@@ -45,6 +45,9 @@ function BorrowList() {
             page: currentPage,
             status: currentStatus,
           },
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6Miwic3ViIjoic2tkbGF1ZHJiQG5hdmVyLmNvbSIsImlhdCI6MTY4OTU2MTkzNiwiZXhwIjoxNjg5NjIxOTM2fQ.ETbgFHnlVwgudQxssIToxjYJKnCRTzk4jzGzszbsffNjTBfpVg4uXFGRTflJFFOueDGYYymTHNScSu6qFL7Cpw`,
+          },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response.data));
@@ -71,26 +74,26 @@ function BorrowList() {
   const handleReservationRequest = () => {
     //예약 요청을 누르면 실행되는 함수
     setCurrentStatus('REQUESTED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('예약요청:', items);
   };
   const handleReservedItems = () => {
     setCurrentStatus('RESERVED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('예약확정:', items);
   };
   const handleInUseItems = () => {
     setCurrentStatus('INUSE');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('사용중인 플레이팩:', items);
   };
 
   const handleCompletedItems = () => {
     setCurrentStatus('COMPLETED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('사용 완료한 플레이팩:', items);
     // handlePageChange(currentPage);
@@ -98,7 +101,7 @@ function BorrowList() {
   };
   const handleCanceledItems = () => {
     setCurrentStatus('CANCELED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('예약 취소한 내역:', items);
     // handlePageChange(currentPage);
