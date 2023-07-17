@@ -22,12 +22,12 @@ function Router() {
       <Route path="/itemlist/:categoryId" element={<ItemListPage />} />
       <Route path="/itemlist/search/:serachContent" element={<SearchPage />} />
       <Route element={<PrivateRoutes />}>
-      <Route path="/booking/:itemId" element={<BookingPage />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/mypage/edit" element={<ProfileEdit />} />
-      <Route path="/create" element={<CreatePage />} />
-      <Route path="/update/:itemId" element={<UpdatePage />} />
-      <Route path="/chatting/:roomId" element={<ChattingPage />} />
+        <Route path="/booking/:itemId" element={<BookingPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/edit" element={<ProfileEdit />} />
+        <Route path="/create" element={<CreatePage />} />
+        <Route path="/update/:itemId" element={<UpdatePage />} />
+        <Route path="/chatting/:roomId" element={<ChattingPage />} />
       </Route>
       <Route path="/detail/:itemId" element={<DetailPage />} />
     </Routes>
