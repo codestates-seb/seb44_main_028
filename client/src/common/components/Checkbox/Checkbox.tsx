@@ -14,7 +14,7 @@ const CheckBox = ({
   setSelectedCategory,
 }: CheckBoxProps) => {
   const isSelected = selectedtCategory.includes(categoryId);
-  console.log(selectedtCategory, categoryId);
+
   const handleIsClick = () => {
     if (selectedtCategory.includes(categoryId)) {
       setSelectedCategory((prevCategories) =>

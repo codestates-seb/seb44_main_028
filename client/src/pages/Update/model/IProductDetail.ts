@@ -1,4 +1,3 @@
-import { category } from '../../Create/type';
 export interface IProductDetail {
   title: string;
   baseFee: number;

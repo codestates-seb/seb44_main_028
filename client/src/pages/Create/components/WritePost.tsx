@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import axios from 'axios';
@@ -36,7 +36,7 @@ const WritePost = ({
           (cat) => cat.categoryId,
         )
       : [];
-  console.log(categoryIds);
+
   const [selectedCategory, setSelectedCategory] = useState<string[]>([
     ...categoryIds,
   ]);
@@ -61,7 +61,6 @@ const WritePost = ({
   const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
     images: [],
   });
-  console.log(inputValues);
   //
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
