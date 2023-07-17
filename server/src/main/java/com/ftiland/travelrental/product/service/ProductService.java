@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -185,10 +186,16 @@ public class ProductService {
         return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
     }
 
+<<<<<<< HEAD
     public Long findSellerId(String productId){
         Product product = productRepository.findById(productId).orElseThrow(()-> new BusinessLogicException(PRODUCT_NOT_FOUND));
         Long sellerId = product.getMember().getMemberId();
 
         return sellerId;
+=======
+    public Page<Product> searchProductsByKeyword(String keyword, Pageable pageable) {
+        Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+        return products;
+>>>>>>> c8c5c84 (:sparkles: 검색바 구현)
     }
 }

@@ -12,6 +12,9 @@ import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -109,6 +112,26 @@ public class ProductController {
         responseDto.setTop3ByTotalRateScoreRatio(top3ByTotalRateScoreRatioDtoList);
         responseDto.setTop3ByViewCount(top3ByViewCountDtoList);
         responseDto.setTop3ByBaseFeeZero(top3ByBaseFeeZeroDtoList);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<GetProducts> searchProductsByKeyword(
+            @RequestParam("keyword") String keyword,
+            @RequestParam("size") int size,
+            @RequestParam("page") int page) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> productPage = productService.searchProductsByKeyword(keyword, pageable);
+        Page<ProductDto> productDtoPage = productPage.map(product -> {
+            ImageProduct firstImage = imageService.findFirstImageProduct(product.getProductId());
+            String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
+            return ProductDto.from(product, imageUrl);
+        });
+
+        GetProducts responseDto = GetProducts.from(productDtoPage);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
