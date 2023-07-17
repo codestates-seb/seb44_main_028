@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -23,13 +24,38 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 const WritePost = ({
   productData,
 }: {
   productData: IProductDetail | string;
 }) => {
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  // Effect to decrypt the access token on component mount
+  // useEffect(() => {
+  //   const decrypt = useDecryptToken();
+  //   const encryptedAccessToken: string | null =
+  //     localStorage.getItem(ACCESS_TOKEN);
+  //   if (encryptedAccessToken) {
+  //     const decryptedToken = decrypt(encryptedAccessToken);
+  //     setAccessToken(decryptedToken);
+  //   } else {
+  //     return;
+  //   }
+  // }, []);
+  const decrypt = useDecryptToken();
+  const encryptedAccessToken: string | null =
+    localStorage.getItem(ACCESS_TOKEN);
+  if (encryptedAccessToken) {
+    const decryptedToken = decrypt(encryptedAccessToken);
+    setAccessToken(decryptedToken);
+  } else {
+    return null;
+  }
   const navigate = useNavigate();
+  const params = useParams();
   const categoryIds =
     typeof productData === 'object'
       ? (productData.categories as unknown as categories[]).map(
@@ -53,7 +79,7 @@ const WritePost = ({
     overdueFee: '',
     minimumRentalPeriod: '',
     content: '',
-    categories: [] as string[],
+    categoryIds: [] as string[],
   };
   const initialInputValue =
     typeof productData === 'string' ? defaultInputValues : productData;
@@ -122,6 +148,7 @@ const WritePost = ({
       .post(`${process.env.REACT_APP_API_URL}/api/products`, post, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((res) => {
@@ -133,21 +160,52 @@ const WritePost = ({
         console.log(err);
       }),
   );
+  const updatePost = useMutation((update: object) =>
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/products/${params.itemId}`,
+        update,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        const { data } = res;
+        console.log('data', data);
+        navigate(`/detail/${params.itemId}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  );
+
   const onSubmit = () => {
     const formData = new FormData();
     const blobJson = new Blob([JSON.stringify(inputValues)], {
       type: 'application/json',
     });
     formData.append('request', blobJson);
-    newPost.mutate(formData);
+    console.log(inputValues);
+    for (const image of uploadImages.images) {
+      formData.append('images', image);
+    }
+    if (typeof productData === 'object') {
+      console.log('a');
+      updatePost.mutate(formData);
+    } else if (typeof productData === 'string') {
+      console.log('b');
+      newPost.mutate(formData);
+    }
   };
   useEffect(() => {
     setInputValues({
       ...inputValues,
-      categories: [...selectedCategory],
+      categoryIds: [...selectedCategory],
     });
   }, [productData, UploadImage]);
-
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage
