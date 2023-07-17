@@ -1,20 +1,18 @@
 import { StartEndDateProps } from './model/IStartEndDateProps';
 
+export type DateType = {
+  year: number;
+  month: number;
+  date: number;
+};
+
 export type CalendarProps = {
-  calendar: {
-    year: number;
-    month: number;
-    date: number;
-  };
+  calendar: DateType;
   reservationData: StartEndDateProps[];
 };
 
 export type EachDatesProps = {
-  current: {
-    year: number;
-    month: number;
-    date: number;
-  };
+  current: DateType;
   row: {
     week: number;
     finalWeek: number;

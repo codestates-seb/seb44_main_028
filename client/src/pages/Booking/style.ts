@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { EachDatesProps } from './type';
+import { DateType, EachDatesProps } from './type';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../common/store/RootStore';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
@@ -138,7 +138,7 @@ export const DatesContainer = styled.tbody`
 `;
 
 const isWithinReservationPeriods = (
-  dateInfo: { year: number; month: number; date: number },
+  dateInfo: DateType,
   reservationData: StartEndDateProps[],
 ) => {
   const currentDate = new Date(
