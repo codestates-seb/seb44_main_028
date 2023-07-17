@@ -255,7 +255,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -270,7 +270,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -285,7 +285,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -300,7 +300,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -315,7 +315,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -330,7 +330,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -345,7 +345,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -360,7 +360,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -375,7 +375,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -390,7 +390,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -405,7 +405,7 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
     category: [1, 2, 3],
     address: '동대문구 마장동',
     minRental: 3,
-    images:
+    image:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
 ];
