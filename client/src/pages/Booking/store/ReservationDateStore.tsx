@@ -1,12 +1,10 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { monthlyReservationStore } from './MonthlyReservationStore';
 import { StartEndDateProps } from '../model/IStartEndDateProps';
-
-type DateProps = { year: number; month: number; date: number };
+import { DateType } from '../type';
 
 function isWithinPeriod(
-  startDate: DateProps,
-  endDate: DateProps,
+  startDate: DateType,
+  endDate: DateType,
   reservation: StartEndDateProps,
 ) {
   const start = new Date(startDate.year, startDate.month - 1, startDate.date);
@@ -35,8 +33,8 @@ function isWithinPeriod(
 }
 
 type ReservationProps = {
-  startDate: { year: number; month: number; date: number } | null;
-  endDate: { year: number; month: number; date: number } | null;
+  startDate: DateType | null;
+  endDate: DateType | null;
   allReservations: StartEndDateProps[];
 };
 
