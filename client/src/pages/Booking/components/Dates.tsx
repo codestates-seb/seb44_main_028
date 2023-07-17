@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { DatesContainer, EachDate } from '../style';
-import { CalendarProps } from '../type';
-import { RootState } from '../../../common/store/RootStore';
 import { setEndDate, setStartDate } from '../store/ReservationDateStore';
+import { DatesContainer, EachDate } from '../style';
+import { RootState } from '../../../common/store/RootStore';
+import { CalendarProps } from '../type';
 
 function Dates({ calendar, reservationData }: CalendarProps) {
   const dispatch = useDispatch();
