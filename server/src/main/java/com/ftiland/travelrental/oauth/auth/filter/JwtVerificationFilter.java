@@ -33,23 +33,23 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         this.jwtTokenizer = jwtTokenizer;
         this.memberService = memberService;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         try {
             Map<String, Object> claims = verifyJws(request);
+            //String refreshToken = getRefreshTokenFromCookie(request, "refreshToken");
+            //if(refreshToken == null) response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             setAuthenticationToContext(claims);
+            request.setAttribute("memberId", claims.get("memberId"));
         } catch (SignatureException se) {
-
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {
-//            request.setAttribute("exception", ee);
             handleTokenExpiration(request, response);
             return;
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -75,6 +75,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    private String verifyRefreshToken(HttpServletRequest request) throws ServletException {
+        String refreshToken = getRefreshTokenFromCookie(request, "refreshToken");
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        Map<String, Object> refreshTokenClaims = jwtTokenizer.getClaims(refreshToken, base64EncodedSecretKey).getBody();
+        String refreshTokenMemberEmail = (String) refreshTokenClaims.get("sub");
+        return refreshTokenMemberEmail;
+    }
+
     private void handleTokenExpiration(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = getRefreshTokenFromCookie(request, "refreshToken");
 
@@ -83,10 +91,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                 // Refresh token 유효성 검사
                 String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
                 Map<String, Object> refreshTokenClaims = jwtTokenizer.getClaims(refreshToken, base64EncodedSecretKey).getBody();
-                Long refreshTokenMemberId = (Long) refreshTokenClaims.get("memberId");
-                if (refreshTokenMemberId != null) {
+                String refreshTokenMemberEmail = (String) refreshTokenClaims.get("sub");
+                if (refreshTokenMemberEmail != null) {
                     // check member exist
-                    Member member = memberService.findMember(refreshTokenMemberId);
+                    Member member = memberService.findMemberByEmail(refreshTokenMemberEmail);
                     // Access token 재발급
                     Map<String, Object> claims = new HashMap<>();
                     claims.put("memberId", member.getMemberId());
@@ -98,15 +106,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
                     String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
 
-                    // Response Header에 새로운 Access token 설정
                     response.setHeader("Authorization", "Bearer " + accessToken);
-                    // Response 200 OK
-                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setStatus(HttpServletResponse.SC_OK, "Access token refreshed successfully");
                     return;
                 }
             } catch (ExpiredJwtException e) {
-                // Refresh token도 만료된 경우
+
             } catch (Exception e) {
+
             }
         }
 
@@ -116,12 +123,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private String getRefreshTokenFromCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(cookieName)) {
                     return cookie.getValue();
                 }
             }
+        } else {
+            logger.info("no cookie");
         }
         return null;
     }

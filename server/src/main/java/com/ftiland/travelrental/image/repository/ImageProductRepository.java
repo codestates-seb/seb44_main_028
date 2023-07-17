@@ -1,6 +1,7 @@
 package com.ftiland.travelrental.image.repository;
 
 import com.ftiland.travelrental.image.entity.ImageProduct;
+import com.ftiland.travelrental.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,4 +13,8 @@ public interface ImageProductRepository extends JpaRepository<ImageProduct,Strin
 
     @Query("SELECT i FROM ImageProduct i WHERE i.product.productId =:productId")
     ArrayList<ImageProduct> findByProductId(@Param("productId") String productId);
+
+    ImageProduct findFirstByProductProductId(String productId);
+
+    ImageProduct findFirstByProductOrderByCreatedAtAsc(Product product);
 }

@@ -1,12 +1,14 @@
 package com.ftiland.travelrental.interest.repository;
 
 import com.ftiland.travelrental.interest.entity.Interest;
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
 
 public interface InterestRepository extends JpaRepository<Interest,String> {
@@ -17,5 +19,5 @@ public interface InterestRepository extends JpaRepository<Interest,String> {
 
     // 한 유저의 관심 목록
     @Query("SELECT i FROM Interest i WHERE i.member.memberId = :memberId")
-    ArrayList<Interest> findByMemberId(@Param("memberId")long memberId);
+    Page<Interest> findByMemberId(@Param("memberId")long memberId, Pageable pageable);
 }

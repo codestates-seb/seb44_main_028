@@ -7,3 +7,6 @@ export type InputFieldData = {
   id: string;
   title: string;
 };
+export type UploadImagesProps = {
+  setUploadImages: React.Dispatch<React.SetStateAction<{ images: File[] }>>;
+};

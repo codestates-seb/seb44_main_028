@@ -8,6 +8,7 @@ import com.ftiland.travelrental.image.repository.ImageCategoryRepository;
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.dto.CreateProduct;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.service.ProductService;
@@ -21,12 +22,13 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class InitData {
-
+/*
     private final CategoryService categoryService;
     private final MemberRepository memberRepository;
     private final ImageCategoryRepository imageCategoryRepository;
     private final ProductService productService;
     private final ImageProductRepository imageProductRepository;
+    private final MemberService memberService;
 
     @PostConstruct
     public void init() {
@@ -255,7 +257,8 @@ public class InitData {
                         .address("서울 강북구 수유동 554-53").build()
         );
 
-        memberRepository.saveAll(members);
+
+        memberService.createMembers(members);
 
         CreateProduct.Request request1 = CreateProduct.Request.builder()
                 .title("다이슨 헤어드라이기 팝니다.")
@@ -860,5 +863,13 @@ public class InitData {
         imageProductRepository.save(image38);
         imageProductRepository.save(image39);
         imageProductRepository.save(image40);
-    }
+
+
+
+
+
+
+
+
+    }*/
 }

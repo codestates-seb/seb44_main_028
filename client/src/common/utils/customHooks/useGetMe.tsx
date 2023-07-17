@@ -1,21 +1,23 @@
+import { useNavigate } from 'react-router-dom';
 import { UseQueryResult, useQuery } from 'react-query';
 import axios, { AxiosError } from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createUserInfo, deleteUserInfo } from '../../store/UserInfoStore';
 import { IUserInfo } from '../../model/IUserInfo';
 import useEncryptToken from './useEncryptToken';
 import useDecryptToken from './useDecryptToken';
 import { ACCESS_TOKEN } from '../../constants';
-import { RootState } from '../../store/RootStore';
 
 // 추후 React Query 사용하여 유저 정보 캐싱하는 로직으로 변경 예정
 
 function useGetMe(): UseQueryResult<IUserInfo | null> {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const encryptToken = useEncryptToken();
   const decryptToken = useDecryptToken();
 
   const getMe = async (): Promise<IUserInfo | null | undefined> => {
+    console.log('getMe 호출');
     const encryptedAccessToken: string | null =
       localStorage.getItem(ACCESS_TOKEN);
 
@@ -23,7 +25,9 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
       '1. localstorage에서 꺼내온 accessToken:',
       encryptedAccessToken,
     );
+    // 1. 액세스 토큰이 없으면 로그인 페이지로 이동
     if (!encryptedAccessToken || !process.env.REACT_APP_SECRET_KEY) {
+      navigate('/login');
       return null;
     }
 
@@ -31,45 +35,43 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
     console.log('2. 복호화된 accessToken:', accessToken);
 
     try {
-      const { data } = await axios.get(
+      const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/members`,
         {
           headers: { Authorization: 'Bearer ' + accessToken },
         },
       );
-
-      console.log('3. getMe response:', data === '');
+      const data = response.data;
 
       // 유저 정보 store에 저장
       dispatch(createUserInfo(data));
-    } catch (error) {
-      console.log('error가 난거니? 뭠미?', error);
+      console.log('3. getMe response:', data);
+      console.log(
+        '4. Headers에 있는 Authorization:',
+        response.headers?.Authorization,
+      );
+      // 5. accessToken이 만료되었으면 재발급 받아서 localStorage에 저장
+      if (response.headers?.Authorization) {
+        const newAccessToken = response.headers.Authorization.split(' ')[1];
+        console.log('5. 재발급 받은 accessToken:', newAccessToken);
+        localStorage.setItem(ACCESS_TOKEN, encryptToken(newAccessToken));
+      }
+      return data;
+    } catch (error: AxiosError | any) {
+      console.log('error가 난거니? 뭠미?', error.response.status);
+      const statusCode = error.response.status;
+      // unauthorized일 경우 로그인 페이지로 리디렉트
+      if (statusCode === 401) {
+        localStorage.removeItem(ACCESS_TOKEN);
+        dispatch(deleteUserInfo());
+        navigate('/login');
+        // 서버 에러 발생시 콘솔에 에러 로그 출력
+      } else if (statusCode >= 500 && statusCode < 600) {
+        console.error('Internal Server Error', error);
+      } else {
+        console.error(error);
+      }
     }
-
-    //   if (!userData || !response?.headers.authorization) {
-    //     return null;
-    //   }
-
-    //   // accessToken 재발급
-    //   const newAccessToken: string =
-    //     response.headers.authorization.split(' ')[1];
-    //   if (newAccessToken) {
-    //     localStorage.removeItem(ACCESS_TOKEN);
-    //     localStorage.setItem(ACCESS_TOKEN, encryptToken(newAccessToken));
-    //   }
-
-    //   return userData;
-    // } catch (error: AxiosError | any) {
-    //   // refresh token 만료 시 로그아웃 처리
-    //   if (error?.response?.status === 401) {
-    //     localStorage.removeItem(ACCESS_TOKEN);
-    //     dispatch(deleteUserInfo());
-    //   } else {
-    //     console.error(error);
-    //   }
-
-    //   return null;
-    // }
   };
 
   return useQuery('me', getMe, {

@@ -80,7 +80,7 @@ public class ImageService {
             //S3 버킷에 파일 업로드
             amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
-            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+            throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
         ImageCategory imageCategory = imageMapper.fileToImageCategory(file, categoryRepository, categoryId);
         imageCategory.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
@@ -111,7 +111,7 @@ public class ImageService {
             //S3 버킷에 파일 업로드
             amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
-            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+            throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
         ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
         createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
@@ -136,7 +136,7 @@ public class ImageService {
             //S3 버킷에 파일 업로드
             amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
-            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+            throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
 
         ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
@@ -154,7 +154,7 @@ public class ImageService {
             amazonS3.deleteObject(buckName, imageProduct.getFileName());
             imageProductRepository.delete(imageProduct);
         } catch (BusinessLogicException e) {
-            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+            throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
         }
     }
 
@@ -165,7 +165,7 @@ public class ImageService {
             amazonS3.deleteObject(buckName, imageMember.getFileName());
             imageMemberRepository.delete(imageMember);
         } catch (BusinessLogicException e) {
-            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+            throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
         }
     }
 
@@ -175,13 +175,17 @@ public class ImageService {
         return imageProducts;
     }
 
+    public ImageProduct findFirstImageProduct(String productId){
+        return imageProductRepository.findFirstByProductProductId(productId);
+    }
+
     // 맴버 이미지
     public ImageMember findImageMember(Long memberId) {
         Optional<ImageMember> optionalImageMember = imageMemberRepository.findByMemberId(memberId);
-        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+
+        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_IMAGE_MEMBER));
         return imageMember;
     }
-
 }
 
 

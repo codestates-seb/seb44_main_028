@@ -12,30 +12,41 @@ import {
   UploadImageCountWrapper,
   PreViewImageWrapper,
 } from '../style';
-const UploadImages = () => {
+import { UploadImagesProps } from '../type';
+const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
 
   const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
-    let imageUrlLists: string[] = [...showImages];
     if (imageLists) {
+      let newImages: File[] = [];
       for (let i = 0; i < imageLists.length; i++) {
+        newImages.push(imageLists[i]);
+
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        imageUrlLists.push(currentImageUrl);
+        setShowImages((prev) => [...prev, currentImageUrl]);
       }
 
-      if (imageUrlLists.length > MAX_IMAGE_COUNT) {
+      if (newImages.length + showImages.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         setIsClick(true);
-        imageUrlLists = imageUrlLists.slice(0, MAX_IMAGE_COUNT);
+        newImages = newImages.slice(0, MAX_IMAGE_COUNT - showImages.length);
       }
-      setShowImages([...imageUrlLists]);
+
+      setUploadImages((prev) => ({ images: [...prev.images, ...newImages] }));
+      console.log(newImages);
     }
   };
+
   const handleDeleteImage = (index: number) => {
     setShowImages((prev) => prev.filter((_, i) => i !== index));
+    setUploadImages((prev) => {
+      const updatedImages = [...prev.images];
+      updatedImages.splice(index, 1);
+      return { images: updatedImages };
+    });
   };
   useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
@@ -43,8 +54,8 @@ const UploadImages = () => {
     } else {
       setImageOverflow(false);
     }
-    console.log(showImages);
   }, [imageOverflow, showImages]);
+
   return (
     <UploadContainer>
       <UploadImageLabel htmlFor="input-file">
@@ -61,10 +72,9 @@ const UploadImages = () => {
         </UploadImageCountWrapper>
       </UploadImageLabel>
       {showImages.map((image, index) => (
-        <PreViewImageWrapper>
+        <PreViewImageWrapper key={index}>
           <PreImage
             imageSrc={image}
-            key={index}
             ImageId={index}
             handleDeleteImage={handleDeleteImage}
           />

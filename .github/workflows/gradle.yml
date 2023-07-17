@@ -41,13 +41,16 @@ jobs:
           cloud.aws.credentials.accessKey: ${{secrets.AWS_ACCESS_KEY}}
           cloud.aws.credentials.secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           jwt.key.secret: ${{secrets.JWT_SECRET_KEY}}
+
+          kakao.restapi: ${{secrets.KAKAO_REST_API}}   
+
           jwt.redirect.scheme: ${{secrets.REDIRECT_SCHEME}}
           jwt.redirect.host: ${{secrets.REDIRECT_HOST}}
           jwt.redirect.port: ${{secrets.REDIRECT_PORT}}
           jwt.redirect.path: ${{secrets.REDIRECT_PATH}}
-          kakao.restapi: ${{secrets.KAKAO_REST_API}}
-          spring.mail.smtp.username: ${{EMAIL_USERNAME}}
-          spring.mail.smtp.password: ${{EMAIL_PASSWORD}}
+
+          spring.mail.smtp.username: ${{secrets.EMAIL_USERNAME}}
+          spring.mail.smtp.password: ${{secrets.EMAIL_PASSWORD}}
           
       - name: Build with Gradle
         run: |

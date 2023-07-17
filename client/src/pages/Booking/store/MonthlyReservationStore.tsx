@@ -9,12 +9,12 @@ const turnStringArrIntoDateObjectArr = (
       const startDate = {
         year: Number(dateObj.startDate.slice(0, 4)),
         month: Number(dateObj.startDate.slice(5, 7)),
-        day: Number(dateObj.startDate.slice(8, 10)),
+        date: Number(dateObj.startDate.slice(8, 10)),
       };
       const endDate = {
         year: Number(dateObj.endDate.slice(0, 4)),
         month: Number(dateObj.endDate.slice(5, 7)),
-        day: Number(dateObj.endDate.slice(8, 10)),
+        date: Number(dateObj.endDate.slice(8, 10)),
       };
       return { startDate, endDate };
     },
@@ -41,24 +41,24 @@ const initialMonthlyReservationState: MonthlyReservationProps = {
       startDate: {
         year: 2023,
         month: 7,
-        day: 15,
+        date: 15,
       },
       endDate: {
         year: 2023,
         month: 7,
-        day: 20,
+        date: 20,
       },
     },
     {
       startDate: {
         year: 2023,
         month: 7,
-        day: 22,
+        date: 22,
       },
       endDate: {
         year: 2023,
         month: 7,
-        day: 29,
+        date: 29,
       },
     },
   ],
@@ -67,24 +67,24 @@ const initialMonthlyReservationState: MonthlyReservationProps = {
       startDate: {
         year: 2023,
         month: 8,
-        day: 2,
+        date: 2,
       },
       endDate: {
         year: 2023,
         month: 8,
-        day: 9,
+        date: 9,
       },
     },
     {
       startDate: {
         year: 2023,
         month: 8,
-        day: 22,
+        date: 22,
       },
       endDate: {
         year: 2023,
         month: 9,
-        day: 1,
+        date: 1,
       },
     },
   ],
@@ -116,8 +116,8 @@ export const monthlyReservation = createSlice({
       state,
       action: PayloadAction<{ startDate: string; endDate: string }[]>,
     ) => {
-      state.reservationsDate1 = turnStringArrIntoDateObjectArr(action.payload);
       state.reservationsDate2 = state.reservationsDate1;
+      state.reservationsDate1 = turnStringArrIntoDateObjectArr(action.payload);
     },
   },
 });

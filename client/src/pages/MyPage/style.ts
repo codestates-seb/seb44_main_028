@@ -16,11 +16,11 @@ export const ProfileWrapper = styled.div`
 export const EditWrapper = styled.button`
   display: flex;
   justify-content: flex-end;
-  margin-right: -111rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
   border-style: none;
   cursor: pointer;
+  transform: translateX(59rem);
 `;
 export const ProfileDataWrapper = styled.div`
   display: flex;
@@ -172,6 +172,9 @@ export const ProfileEditWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 200px;
+  transform: translateY(4rem);
+  box-shadow: ${BoxShadow.Basic};
 `;
 
 export const ProfileSection = styled.div`
@@ -184,6 +187,7 @@ export const UploadBtn = styled.button`
   width: 80px;
   height: 32px;
   background-color: ${colorPalette.whiteColor};
+  color: ${colorPalette.basicTextColor};
   border-radius: 3px;
   border: 1px solid ${colorPalette.grayTextColor};
 `;
@@ -198,7 +202,7 @@ export const TextWrapper = styled.div`
 export const NameWrapper = styled.div`
   display: grid;
   align-items: center;
-  margin: 1.3rem 1rem 0rem 3rem;
+  margin: 0rem 1rem 0rem 3rem;
 
   font-size: 14px;
   font-weight: 600;
@@ -213,7 +217,6 @@ export const InputWrapper = styled.div`
 `;
 export const InputBox = styled.div`
   margin-bottom: 0.4rem;
-  margin-top: 1rem;
   input {
     align-items: center;
     width: 180px;
@@ -227,7 +230,6 @@ export const TownBtn = styled(DefaultBtn)`
   height: 22px;
 `;
 export const ProfileImg = styled.div`
-  margin-top: 2rem;
   margin-bottom: -0.2rem;
   img {
     height: 90px;
@@ -241,26 +243,31 @@ export const StyledForm = styled.form`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 15rem;
+  transform: translateY(8rem);
 
   input,
   button {
-    background-color: #0d4c92;
-    color: #fff;
     height: 28px;
     width: 80px;
     margin: 5px;
     border-radius: 5px;
     border: none;
-    box-shadow: ${BoxShadow.Basic};
     cursor: pointer;
-    &:hover {
-      background-color: #1d5799;
-    }
     &:active {
       transform: scale(0.98);
     }
   }
+`;
+export const DelBtn = styled.button`
+  display: flex;
+  flex-direction: row-reverse;
+  border: none;
+  background-color: transparent;
+  color: ${colorPalette.grayTextColor};
+
+  transform: translate(-0.8rem, 15rem);
+
+  cursor: pointer;
 `;
 
 //RatingStar
@@ -328,4 +335,52 @@ export const WishListWrapper = styled.div``;
 export const LendListWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+//BorrowList
+
+export const BorrowWrapper = styled.div`
+  display: flex;
+
+  button {
+    border: 1px solid ${colorPalette.deepMintColor};
+    box-shadow: none;
+    border-radius: 20px;
+    margin-left: 1rem;
+    width: 10rem;
+    &:focus {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+    }
+    &:active {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+    }
+  }
+`;
+export const BorrowCardWrappre = styled.div`
+  display: flex;
+  div {
+    margin-left: 1rem;
+  }
+`;
+// LendList
+
+export const LendWrapper = styled.div`
+  button {
+    border: 1px solid ${colorPalette.deepMintColor};
+    box-shadow: none;
+    border-radius: 20px;
+    margin-left: 1rem;
+    width: 10rem;
+    &:focus {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+      opacity: 80%;
+    }
+    &:active {
+      background-color: ${colorPalette.deepMintColor};
+      color: ${colorPalette.whiteColor};
+    }
+  }
 `;

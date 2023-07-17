@@ -7,22 +7,23 @@ import com.ftiland.travelrental.interest.dto.InterestDto;
 import com.ftiland.travelrental.interest.entity.Interest;
 import com.ftiland.travelrental.interest.mapper.InterestMapper;
 import com.ftiland.travelrental.interest.repository.InterestRepository;
-import com.ftiland.travelrental.interest.utils.CustomPage;
+
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.util.function.Predicate.not;
 
 // Test 필요
 @Service
@@ -56,13 +57,12 @@ public class InterestService {
 
     // 한 사용자의 관심 목록
     public InterestDto.ResponsesDto  findInterest(Long memberId,int page,int size){
+        Pageable pageable = PageRequest.of(page,size);
 
         // 맴버 존재하는지 검사
         memberService.findMember(memberId);
-        ArrayList<Interest> allList = interestRepository.findByMemberId(memberId);
-        ArrayList<Interest> pagedList = CustomPage.Paging(page,size,allList);
-
-        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(imageService,pagedList,page,size,allList.size());
+        Page<Interest> pagedList = interestRepository.findByMemberId(memberId, pageable);
+        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(imageService,pagedList);
 
         return responses;
     }
@@ -83,7 +83,7 @@ public class InterestService {
 
     // 관심 상품 해제
     public void deleteInterest(Long memberId,String interestId){
-        Interest interest = interestRepository.findById(interestId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        Interest interest = interestRepository.findById(interestId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.INTEREST_NOT_EXISTS));
         if ( interest.getMember().getMemberId() == memberId){
             interestRepository.delete(interest);
         }
