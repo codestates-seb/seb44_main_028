@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
@@ -6,7 +7,6 @@ import { CategoryListProps } from '../../type';
 import { ICategory } from '../../model/ICategory';
 import Loading from '../Loading';
 import ErrorPage from '../ErrorPage';
-import Checkbox from './CheckBox';
 
 const CheckBoxList = ({
   selectedtCategory,

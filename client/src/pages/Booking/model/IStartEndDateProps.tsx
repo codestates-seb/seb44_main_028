@@ -2,11 +2,11 @@ export interface StartEndDateProps {
   startDate: {
     year: number;
     month: number;
-    day: number;
+    date: number;
   };
   endDate: {
     year: number;
     month: number;
-    day: number;
+    date: number;
   };
 }

@@ -4,6 +4,10 @@ import { RootState } from '../../../common/store/RootStore';
 import { setDate } from '../store/CalendarStore';
 import { Btn, ButtonWrapper } from '../style';
 import axios from 'axios';
+import {
+  clickLeftArrow,
+  clickRightArrow,
+} from '../store/MonthlyReservationStore';
 
 function MonthSwitchBtns() {
   const dispatch = useDispatch();
@@ -17,6 +21,18 @@ function MonthSwitchBtns() {
     } else {
       dispatch(setDate({ ...current, year: current.year - 1, month: 12 }));
     }
+    dispatch(
+      clickLeftArrow([
+        {
+          startDate: '2023-07-15',
+          endDate: '2023-07-20',
+        },
+        {
+          startDate: '2023-07-22',
+          endDate: '2023-07-29',
+        },
+      ]),
+    );
     // const response = axios.get(
     //   `https://playpack.shop/api/reservations/products/api/reservations/products/${itemId}/moreCalendar?date=${current.year}-${current.month}-${current.date}`,
     // );
@@ -35,6 +51,18 @@ function MonthSwitchBtns() {
     } else {
       dispatch(setDate({ ...current, year: current.year + 1, month: 1 }));
     }
+    dispatch(
+      clickRightArrow([
+        {
+          startDate: '2023-09-15',
+          endDate: '2023-09-20',
+        },
+        {
+          startDate: '2023-09-22',
+          endDate: '2023-10-30',
+        },
+      ]),
+    );
 
     // const response = axios.get(
     //   `https://playpack.shop/api/reservations/products/api/reservations/products/${itemId}/moreCalendar?date=2023-01-01`,
@@ -53,7 +81,12 @@ function MonthSwitchBtns() {
 
   return (
     <ButtonWrapper>
-      <Btn onClick={onClickBack}>◀️</Btn>
+      {new Date().getFullYear() === current.year &&
+      new Date().getMonth() + 1 === current.month ? (
+        <span />
+      ) : (
+        <Btn onClick={onClickBack}>◀️</Btn>
+      )}
       <Btn onClick={onClickNext}>▶️</Btn>
     </ButtonWrapper>
   );

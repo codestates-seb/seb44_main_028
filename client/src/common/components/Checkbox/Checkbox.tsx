@@ -1,3 +1,4 @@
+import React from 'react';
 import { CheckBoxWrapper } from '../../style/style';
 import { CheckBoxProps } from '../../type';
 
