@@ -11,6 +11,8 @@ import {
   PRODUCT_FILTER_OPTIONS,
 } from '../../../common/constants';
 import { SearchPageContainer, SearchProductListWrapper } from '../style';
+import Loading from '../../../common/components/Loading';
+import ErrorPage from '../../../common/components/ErrorPage';
 const SearchPage = () => {
   const params = useParams();
   const [page, setPage] = useState(0);
@@ -33,6 +35,12 @@ const SearchPage = () => {
       console.log('err', err);
     }
   });
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <SearchPageContainer>
