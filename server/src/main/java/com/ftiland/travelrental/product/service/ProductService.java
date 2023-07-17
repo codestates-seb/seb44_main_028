@@ -145,10 +145,13 @@ public class ProductService {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
-        Member member = memberService.findMember(memberId);
+        // 로그인 안된 사용자일 경우
         boolean isOwner = false;
-        if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
-            isOwner = true;
+        if (!Objects.isNull(memberId)) {
+            Member member = memberService.findMember(memberId);
+            if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
+                isOwner = true;
+            }
         }
 
         List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
@@ -159,7 +162,7 @@ public class ProductService {
 
         String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
 
-        return ProductDetailDto.from(product, categories, images, null, isOwner);
+        return ProductDetailDto.from(product, categories, images, userImage, isOwner);
     }
 
     public GetProducts findProducts(Long memberId, int size, int page) {

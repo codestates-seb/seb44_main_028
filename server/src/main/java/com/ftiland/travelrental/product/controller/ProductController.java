@@ -79,7 +79,7 @@ public class ProductController {
     public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId,
                                                               HttpServletRequest request,
                                                               HttpServletResponse response,
-                                                              @CurrentMember Long memberId) {
+                                                              @CurrentMember(required = false) Long memberId) {
         log.info("[ProductController] findProductDetail called");
 
         ProductDetailDto productDetail = productService.findProductDetail(productId, memberId);
