@@ -78,7 +78,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   };
   return (
     <ItemCardContainer onClick={handleItemOnClick}>
-      <ItemImage src={itemCardData.images}></ItemImage>
+      <ItemImage src={itemCardData.image}></ItemImage>
       <ItemInfo>
         <ItemName>{itemCardData.title}</ItemName>
         <ItemDescription>{itemCardData.content}</ItemDescription>
