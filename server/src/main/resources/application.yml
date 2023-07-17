@@ -56,12 +56,17 @@ jwt:
   key:
     secret: ${JWT_SECRET_KEY}
 <<<<<<< HEAD
+<<<<<<< HEAD
   access-token-expiration-minutes: 1000
   refresh-token-expiration-minutes: 420
 =======
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 30
 >>>>>>> 6d46261 (Update application.yml)
+=======
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 30
+>>>>>>> 1fb99f2 (Update application.yml)
   redirect:
     scheme: ${REDIRECT_SCHEME}
     host: ${REDIRECT_HOST}
