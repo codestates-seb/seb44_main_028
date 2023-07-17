@@ -1,5 +1,6 @@
 package com.ftiland.travelrental.interest.dto;
 
+import com.ftiland.travelrental.common.PageInfo;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,9 +48,7 @@ public class InterestDto {
     @Getter
     @Setter
     public static class ResponsesDto{
-        private long page;
-        private long size;
-        private Integer listSize;
+        private PageInfo pageInfo;
         private ArrayList<GetResponseDto> responses = new ArrayList<>();
         public void addResponse(GetResponseDto responseDto){
             this.responses.add(responseDto);
