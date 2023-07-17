@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/api/members")
@@ -44,6 +45,7 @@ public class MemberController {
 
     @PatchMapping
 <<<<<<< HEAD
+<<<<<<< HEAD
     public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request patchRequest) {
 =======
     public ResponseEntity<MemberDto.Response> patchMember(@RequestHeader("Authorization") String authorizationHeader,
@@ -57,6 +59,16 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+=======
+    public ResponseEntity<MemberDto.Response> patchMember(@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
+        Long memberId = MemberAuthUtils.getMemberId(request);
+
+        MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+      
+>>>>>>> fe0bbdf (:sparkles: 배포)
     @DeleteMapping
     public ResponseEntity<Void> deleteMember() {
 
