@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/api/members")
@@ -40,30 +41,12 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request patchRequest) {
-
+    public ResponseEntity<MemberDto.Response> patchMember(@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
         Long memberId = MemberAuthUtils.getMemberId(request);
 
-        MemberDto.Response response = memberService.updateMember(patchRequest, memberId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@RequestHeader("Authorization") String authorizationHeader,
-                                                          @Param("displayName") String displayName, @Param("imageFile")MultipartFile imageFile) {
-
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String jws = authorizationHeader.substring(7);
-            String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-            Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
-            Integer memberId = (Integer) claims.get("memberId");
-            Long memberIdLong = memberId != null ? memberId.longValue() : null;
-
-            MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberIdLong);
+        MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberId);
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }                                         @Param("displayName") String displayName, @Param("imageFile")MultipartFile imageFile) {
+    }
 
       
     @DeleteMapping
