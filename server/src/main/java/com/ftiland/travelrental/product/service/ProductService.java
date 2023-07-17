@@ -174,4 +174,11 @@ public class ProductService {
     public List<Product> getTop3ByBaseFeeZero(int baseFee) {
         return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
     }
+
+    public Long findSellerId(String productId){
+        Product product = productRepository.findById(productId).orElseThrow(()-> new BusinessLogicException(PRODUCT_NOT_FOUND));
+        Long sellerId = product.getMember().getMemberId();
+
+        return sellerId;
+    }
 }
