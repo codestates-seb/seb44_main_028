@@ -17,33 +17,13 @@ function Dates({ calendar, reservationDataFromServer }: CalendarProps) {
     ...state.monthlyReservation.reservationsDate2,
   ]);
 
-  const { year, month, date } = calendar;
+  const { year, month } = calendar;
   // 이번 달 마지막 날짜를 구함
   const lastDateOfThisMonth: number = new Date(year, month, 0).getDate();
   // 이번 달 1일이 무슨 요일인지 구함
   const firstDayOfThisMonth: number = new Date(year, month - 1, 1).getDay();
 
   const dates = makeCalendar(firstDayOfThisMonth, lastDateOfThisMonth);
-
-  const handleClickDate = () => {
-    if (!reservationDatesClickedByUser.startDate) {
-      dispatch(
-        setStartDate({
-          ...reservationDatesClickedByUser,
-          allReservations,
-          startDate: { ...calendar, date },
-        }),
-      );
-    } else {
-      dispatch(
-        setEndDate({
-          ...reservationDatesClickedByUser,
-          allReservations,
-          endDate: { ...calendar, date },
-        }),
-      );
-    }
-  };
 
   const showDates = dates.map((week, i) => (
     <tr key={i}>
@@ -59,7 +39,25 @@ function Dates({ calendar, reservationDataFromServer }: CalendarProps) {
           }}
           day={j}
           reservationDataFromServer={reservationDataFromServer}
-          onClick={handleClickDate}
+          onClick={() => {
+            if (!reservationDatesClickedByUser.startDate) {
+              dispatch(
+                setStartDate({
+                  ...reservationDatesClickedByUser,
+                  allReservations,
+                  startDate: { ...calendar, date },
+                }),
+              );
+            } else {
+              dispatch(
+                setEndDate({
+                  ...reservationDatesClickedByUser,
+                  allReservations,
+                  endDate: { ...calendar, date },
+                }),
+              );
+            }
+          }}
         >
           {date ? date : null}
         </EachDate>
