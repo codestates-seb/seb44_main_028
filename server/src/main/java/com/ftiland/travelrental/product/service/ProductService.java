@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -183,6 +184,11 @@ public class ProductService {
 
     public List<Product> getTop3ByBaseFeeZero(int baseFee) {
         return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
+    }
+
+    public Page<Product> searchProductsByKeyword(String keyword, Pageable pageable) {
+        Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+        return products;
     }
 
     public Long findSellerId(String productId){
