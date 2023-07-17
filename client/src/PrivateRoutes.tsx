@@ -1,11 +1,14 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { ACCESS_TOKEN } from './pages/Login/constants';
+import { UseQueryResult } from 'react-query';
+import useGetMe from './common/utils/customHooks/useGetMe';
+import { IUserInfo } from './common/model/IUserInfo';
+import { AxiosError } from 'axios';
 
 function PrivateRoutes() {
-  // TODO: 로그인 여부를 store에서 가져오기
-  const isLoggedIn = localStorage.getItem(ACCESS_TOKEN);
+  // TODO: 로그인 여부를 getMe에서 가져오기
+  const { data: data }: UseQueryResult<IUserInfo | null> = useGetMe();
 
   // TODO: 로그인 여부에 따라서 라우팅 처리
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+  return data ? <Outlet /> : <Navigate to="/login" />;
 }
 export default PrivateRoutes;
