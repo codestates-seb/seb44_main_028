@@ -22,6 +22,26 @@ function Dates({ calendar, reservationData }: CalendarProps) {
   // 달력에 표시할 날짜들을 구함
   const dates = makeCalendar(firstDayOfThisMonth, lastDateOfThisMonth);
 
+  const handleClickDate = () => {
+    if (!reservationState.startDate) {
+      dispatch(
+        setStartDate({
+          ...reservationState,
+          allReservations,
+          startDate: { ...calendar, date },
+        }),
+      );
+    } else {
+      dispatch(
+        setEndDate({
+          ...reservationState,
+          allReservations,
+          endDate: { ...calendar, date },
+        }),
+      );
+    }
+  };
+
   const showDates = dates.map((week, i) => (
     <tr key={i}>
       {week.map((date, j) => (
@@ -36,26 +56,7 @@ function Dates({ calendar, reservationData }: CalendarProps) {
           }}
           day={j}
           reservationData={reservationData}
-          onClick={() => {
-            console.log({ ...calendar, date });
-            if (!reservationState.startDate) {
-              dispatch(
-                setStartDate({
-                  ...reservationState,
-                  allReservations,
-                  startDate: { ...calendar, date },
-                }),
-              );
-            } else {
-              dispatch(
-                setEndDate({
-                  ...reservationState,
-                  allReservations,
-                  endDate: { ...calendar, date },
-                }),
-              );
-            }
-          }}
+          onClick={handleClickDate}
         >
           {date ? date : null}
         </EachDate>
