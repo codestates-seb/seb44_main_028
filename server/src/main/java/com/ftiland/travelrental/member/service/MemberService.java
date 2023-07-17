@@ -69,27 +69,15 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
+    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile, Long memberId) {
 
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
-        String imageUrl = imageService.storeImageMember(imageFile,memberId).getImageUrl();
-        Optional.ofNullable(displayName)
-                .ifPresent(name -> member.setDisplayName(name));
+        Member member = findMember(memberId);
+        String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
+        member.setDisplayName(displayName);
+        member.setImageUrl(imageUrl);
         memberRepository.save(member);
-        return MemberDto.Response.from(member,imageUrl);
-    }
-
-    public MemberDto.Response updateMember(String displayName ,Long memberId) {
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
-        Optional.ofNullable(displayName)
-                .ifPresent(name -> member.setDisplayName(name));
-
-        memberRepository.save(member);
-        return MemberDto.Response.from(member);
+        return MemberDto.Response.from(member, imageUrl);
     }
 
     public void deleteMember(Long memberId) {
