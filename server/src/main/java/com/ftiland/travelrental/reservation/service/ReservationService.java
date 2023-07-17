@@ -173,27 +173,27 @@ public class ReservationService {
         }
     }
 
-    public GetMemberReservations getReservationByBorrower(Long memberId, ReservationStatus status,
+    public GetBorrowReservations getReservationByBorrower(Long memberId, ReservationStatus status,
                                                           int size, int page) {
         Member member = memberService.findMember(memberId);
 
-        Page<Reservation> reservations = reservationRepository
-                .findAllByMemberMemberIdAndStatus(memberId, status, PageRequest.of(page, size));
+        Page<BorrowReservationDto> reservations = reservationRepository
+                .findBorrowReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
 
-        return GetMemberReservations.from(reservations);
+        return GetBorrowReservations.from(reservations);
     }
 
-    public GetMemberReservations getReservationByLender(Long memberId, String productId,
-                                                        ReservationStatus status, int size, int page) {
+    public GetLendReservations getReservationByLender(Long memberId, String productId,
+                                                      ReservationStatus status, int size, int page) {
         Member member = memberService.findMember(memberId);
         Product product = productService.findProduct(productId);
 
         validateOwner(product, member);
 
-        Page<Reservation> reservations = reservationRepository
-                .findAllByProductProductIdAndStatus(productId, status, PageRequest.of(page, size));
+        Page<LendReservationDto> reservations = reservationRepository
+                .findLendReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
 
-        return GetMemberReservations.from(reservations);
+        return GetLendReservations.from(reservations);
     }
 
     public List<ReservationCalendarDto> getReservationByMonth(String productId, String date) {

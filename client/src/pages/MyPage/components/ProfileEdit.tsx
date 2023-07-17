@@ -86,21 +86,21 @@ function ProfileEdit() {
       // const accessToken: string | null = null;
       // Token(accessToken);
 
-      // console.log('회원 정보가 성공적으로 수정되었습니다.');
+      console.log('회원 정보가 성공적으로 수정되었습니다.:', newDisplayName);
       //   // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
-      //   const getResponse = await axios.get(
-      //     `${process.env.REACT_APP_API_URL}/api/members/`,
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${accessToken}`,
-      //       },
-      //     },
-      //   );
-      //   const updatedUserInfo = getResponse.data;
+      const getResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      const updatedUserInfo = getResponse.data;
 
-      //   // setNewDisplayName(updatedUserInfo.newDisplayName || '');
-      //   // setAddress(updatedUserInfo.address || '');
-      //   console.log('update유저정보 ', updatedUserInfo);
+      setNewDisplayName(updatedUserInfo.newDisplayName || '');
+      // setAddress(updatedUserInfo.address || '');
+      console.log('update유저정보 ', updatedUserInfo);
     } catch (error) {
       console.log('회원 정보가 업데이트 되지 않았습니다.', error);
     }

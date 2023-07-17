@@ -8,12 +8,13 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../common/store/RootStore';
 import { ACCESS_TOKEN } from '../../Login/constants';
-// import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
-// import { BorrowCardProps } from '../../../common/type';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 const MyPage = () => {
-  const state = useSelector((state: RootState) => state.userInfo);
-  console.log(state);
+  const decrypt = useDecryptToken();
+  const { data: userData } = useGetMe();
+  console.log('userData', userData);
   const navigator = useNavigate();
   const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
   console.log('유저 정보gg', userInfo);
@@ -29,12 +30,20 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      const encryptedAccessToken: string | null =
+        localStorage.getItem(ACCESS_TOKEN);
+      let accessToken: string | null = null;
+      if (encryptedAccessToken) {
+        accessToken = decrypt(encryptedAccessToken);
+      } else {
+        return;
+      }
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         );
