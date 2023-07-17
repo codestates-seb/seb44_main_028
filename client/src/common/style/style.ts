@@ -300,6 +300,8 @@ export const NoDataWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20rem;
+  margin-bottom: 3.7rem;
 `;
 
 // checkbox 컴포넌트의 스타일을 정의
