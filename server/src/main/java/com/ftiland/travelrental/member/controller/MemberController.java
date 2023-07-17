@@ -7,13 +7,19 @@ import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.repository.query.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/api/members")
@@ -35,20 +41,21 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request patchRequest) {
-
+    public ResponseEntity<MemberDto.Response> patchMember(@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
         Long memberId = MemberAuthUtils.getMemberId(request);
 
-        MemberDto.Response response = memberService.updateMember(patchRequest, memberId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+      
     @DeleteMapping
     public ResponseEntity<Void> deleteMember() {
 
-        Long memberId = MemberAuthUtils.getMemberId(request);
 
+        Long memberId = MemberAuthUtils.getMemberId(request);
         memberService.deleteMember(memberId);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
