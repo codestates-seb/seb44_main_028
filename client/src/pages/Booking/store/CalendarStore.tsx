@@ -3,12 +3,6 @@ import { DateType } from '../type';
 
 const today = new Date();
 
-type CalendarProps = {
-  year: number;
-  month: number;
-  date: number;
-};
-
 const initialCalendarState: DateType = {
   year: today.getFullYear(),
   month: today.getMonth() + 1,
