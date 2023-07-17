@@ -35,16 +35,6 @@ function ProfileEdit() {
   const { data: userData } = useGetMe();
   console.log('userData', userData);
 
-  const Token = (value: string | null): string | undefined => {
-    const encryptedAccessToken: string | null =
-      localStorage.getItem(ACCESS_TOKEN);
-    if (encryptedAccessToken) {
-      return (value = decrypt(encryptedAccessToken));
-    } else {
-      return;
-    }
-  };
-
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [address, setAddress] = useState<string>('');
@@ -70,7 +60,7 @@ function ProfileEdit() {
     if (encryptedAccessToken) {
       accessToken = decrypt(encryptedAccessToken);
     } else {
-      return;
+      return null;
     }
     try {
       await axios.patch(
@@ -82,9 +72,6 @@ function ProfileEdit() {
           },
         },
       );
-
-      // const accessToken: string | null = null;
-      // Token(accessToken);
 
       console.log('회원 정보가 성공적으로 수정되었습니다.:', newDisplayName);
       //   // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
@@ -113,8 +100,8 @@ function ProfileEdit() {
       }
       const file = e.target.files[0];
       const formData = new FormData();
-      formData.append('imageFile', file);
-      console.log('formData', formData.append('imageFile', file));
+      formData.append('file', file);
+
       // 서버 연결 시
       try {
         const response = await axios.post(
@@ -156,22 +143,28 @@ function ProfileEdit() {
       if (encryptedAccessToken) {
         accessToken = decrypt(encryptedAccessToken);
       } else {
-        return;
+        return null;
       }
-
-      // if (!newDisplayName) {
 
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
-      //이미지업로드
       try {
         // 이미지 업로드
         const imageFormData = new FormData();
-        if (inputRef.current && inputRef.current.files) {
-          const file = inputRef.current.files[0];
-          imageFormData.append('imageFile', file);
-        }
+        if (formData.get('file')) {
+          const file = formData.get('file') as File;
+          imageFormData.append('file', file);
 
+          await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/members/images/`,
+            imageFormData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          );
+        }
         const response = await axios.patch(
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
@@ -187,7 +180,6 @@ function ProfileEdit() {
         );
         await updateUserInfo();
 
-        // dispatch(setName(userData?.displayName));
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
         console.log('setNewDisplayName:', setNewDisplayName);
 
@@ -196,7 +188,7 @@ function ProfileEdit() {
         console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
       }
     },
-    [newDisplayName, decrypt, updateUserInfo, navigate],
+    [newDisplayName, dispatch, navigate, decrypt, updateUserInfo],
   );
 
   return (
@@ -212,7 +204,6 @@ function ProfileEdit() {
           </ProfileImg>
           <ProfilerEdit>
             <input
-              ref={inputRef}
               type="file"
               id="imgUpload"
               name="file"

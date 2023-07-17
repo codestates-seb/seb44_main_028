@@ -4,12 +4,17 @@ import axios from 'axios';
 import Modal from './Modal';
 import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
 import { borrowCardProps } from '../../../common/type';
-import { BORROWCARD_DATA } from '../constants';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 function BorrowList() {
+  const decrypt = useDecryptToken();
+  const { data: userData } = useGetMe();
+
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
   // const [items, setItems] = useState<borrowCardProps[]>([]);
@@ -36,6 +41,14 @@ function BorrowList() {
     // setItems(slicedItems);
     // setTotalItemsCount(filteredItems.length);
     // };
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    let accessToken: string | null = null;
+    if (encryptedAccessToken) {
+      accessToken = decrypt(encryptedAccessToken);
+    } else {
+      return;
+    }
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/reservations`,
@@ -46,7 +59,7 @@ function BorrowList() {
             status: currentStatus,
           },
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6Miwic3ViIjoic2tkbGF1ZHJiQG5hdmVyLmNvbSIsImlhdCI6MTY4OTU2MTkzNiwiZXhwIjoxNjg5NjIxOTM2fQ.ETbgFHnlVwgudQxssIToxjYJKnCRTzk4jzGzszbsffNjTBfpVg4uXFGRTflJFFOueDGYYymTHNScSu6qFL7Cpw`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정

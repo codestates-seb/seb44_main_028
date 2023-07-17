@@ -80,12 +80,3 @@ export type borrowCardProps = {
   startDate: string;
   endDate: string;
 };
-// export type borrowCardProps = {
-//   reservationId: string;
-//   status: string;
-//   username: string;
-//   totalFee: string;
-//   startDate: string;
-//   endDate: string;
-//   images: string;
-// };

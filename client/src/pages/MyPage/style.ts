@@ -168,7 +168,6 @@ export const CustomTapButton = styled.button`
 export const MyPageEdit = styled.div`
   display: grid;
 `;
-
 export const ProfileEditWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -320,13 +319,8 @@ export const ButtonWapper2 = styled.div`
 export const Close = styled(DefaultBtn)`
   justify-content: space-around;
   border-radius: 5px;
-  color: ${colorPalette.basicTextColor};
-  background-color: ${colorPalette.modalCancelButtonColor};
   margin-right: 10px;
   cursor: pointer;
-  &:hover {
-    background-color: ${colorPalette.modalCancelButtonColor};
-  }
 `;
 export const Rating = styled(DefaultBtn)``;
 
