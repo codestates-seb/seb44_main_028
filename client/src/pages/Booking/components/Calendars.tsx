@@ -28,8 +28,14 @@ function Calendars() {
     <CalendarContainer>
       <MonthSwitchBtns />
       <CalendarWrapper>
-        <Calendar calendar={current} reservationData={reservationData1} />
-        <Calendar calendar={next} reservationData={reservationData2} />
+        <Calendar
+          calendar={current}
+          reservationDataFromServer={reservationData1}
+        />
+        <Calendar
+          calendar={next}
+          reservationDataFromServer={reservationData2}
+        />
       </CalendarWrapper>
       <button onClick={handleClearReservation}>시작 날짜 재설정</button>
     </CalendarContainer>
