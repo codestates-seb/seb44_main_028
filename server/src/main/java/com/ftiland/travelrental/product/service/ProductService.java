@@ -1,9 +1,14 @@
 package com.ftiland.travelrental.product.service;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
+import com.ftiland.travelrental.category.entity.Category;
+import com.ftiland.travelrental.category.repository.CategoryRepository;
+
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
-import com.ftiland.travelrental.image.entity.ImageMember;
+import com.ftiland.travelrental.common.utils.GeoUtils;
+import com.ftiland.travelrental.image.entity.ImageProduct;
+import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
@@ -11,12 +16,15 @@ import com.ftiland.travelrental.member.entity.Member;
 
 import com.ftiland.travelrental.product.dto.*;
 import com.ftiland.travelrental.product.entity.Product;
+import com.ftiland.travelrental.product.entity.ProductCategory;
+import com.ftiland.travelrental.product.repository.ProductCategoryRepository;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,6 +45,9 @@ public class ProductService {
     private final MemberService memberService;
     private final ProductCategoryService productCategoryService;
     private final ImageService imageService;
+    private final CategoryRepository categoryRepository;
+    private final ProductCategoryRepository productCategoryRepository;
+    private final ImageProductRepository imageProductRepository;
 
     @Transactional
     public CreateProduct.Response createProduct(CreateProduct.Request request, Long memberId) {
@@ -197,5 +208,65 @@ public class ProductService {
         Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
         return products;
 >>>>>>> c8c5c84 (:sparkles: 검색바 구현)
+    }
+
+    public GetProducts getProductsByCategoryAndLocation(String categoryId, double latitude, double longitude, double distance, String sortBy, Pageable pageable) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+
+        // 특정 카테고리에 속한 상품-카테고리 연결 객체 목록 조회
+        List<ProductCategory> productCategories = productCategoryRepository.findByCategory(category);
+
+        // 거리 필터링을 위한 결과 목록
+        List<Product> filteredProducts = new ArrayList<>();
+
+        // 거리 필터링
+        for (ProductCategory productCategory : productCategories) {
+            Product product = productCategory.getProduct();
+            double productDistance = GeoUtils.calculateDistance(latitude, longitude, product.getLatitude(), product.getLongitude());
+            if (productDistance <= distance) {
+                filteredProducts.add(product);
+            }
+        }
+
+        // 정렬
+        switch (sortBy) {
+            case "totalRateScore":
+                // 기본적으로 total Rate Score로 정렬이지만 새로운 rate field 생기면 그것으로 수정
+                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
+                break;
+            case "viewCount":
+                filteredProducts.sort(Comparator.comparing(Product::getViewCount).reversed());
+                break;
+            case "createdAt":
+                filteredProducts.sort(Comparator.comparing(Product::getCreatedAt).reversed());
+                break;
+            default:
+                // 디폴트는 평점 좋은 순
+                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
+                break;
+        }
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<ProductDto> productDtos;
+
+        if (filteredProducts.size() < startItem) {
+            productDtos = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, filteredProducts.size());
+            List<Product> pagedProducts = filteredProducts.subList(startItem, toIndex);
+            productDtos = pagedProducts.stream()
+                    .map(product -> {
+                        ImageProduct firstImage = imageProductRepository.findFirstByProductOrderByCreatedAtAsc(product);
+                        String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
+                        return ProductDto.from(product, imageUrl);
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        Page<ProductDto> productDtoPage = new PageImpl<>(productDtos, pageable, filteredProducts.size());
+
+        return GetProducts.from(productDtoPage);
     }
 }

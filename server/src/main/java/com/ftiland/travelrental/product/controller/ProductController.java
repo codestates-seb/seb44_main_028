@@ -7,8 +7,11 @@ import com.ftiland.travelrental.common.utils.MemberAuthUtils;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 >>>>>>> 2358680 (:sparkles: main page featured product api 구현)
 import com.ftiland.travelrental.image.service.ImageService;
+import com.ftiland.travelrental.member.entity.Member;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.dto.*;
 import com.ftiland.travelrental.product.entity.Product;
+import com.ftiland.travelrental.product.service.ProductCategoryService;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,9 @@ public class ProductController {
 
     private final ProductService productService;
     private final ImageService imageService;
+    private final ProductCategoryService productCategoryService;
+
+    private final MemberService memberService;
 
     @PostMapping
     public ResponseEntity<CreateProduct.Response> createProduct(
@@ -135,6 +141,45 @@ public class ProductController {
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity<GetProducts> getProductsByCategory(
+            @RequestParam("categoryId") String categoryId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        GetProducts products = productCategoryService.getProductsByCategory(categoryId, pageable);
+
+        return new ResponseEntity(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<GetProducts> getProductsByCategoryAndLocation(
+            @RequestParam("categoryId") String categoryId,
+            @RequestParam("distance") double distance,
+            @RequestParam("sortBy") String sortBy,
+            int page,
+            int size
+            ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Long memberId = 1L;
+        Member member = memberService.findMember(1L);
+
+        double latitude = 37.5211085848039;
+        double longitude = 126.88117354710396;
+        latitude = member.getLatitude();
+        longitude = member.getLongitude();
+
+        GetProducts responseDto =
+                productService.getProductsByCategoryAndLocation(categoryId, latitude, longitude, distance, sortBy, pageable);
+
+        return new ResponseEntity(responseDto, HttpStatus.OK);
+    }
+
 
     private void countView(String productId, HttpServletRequest request, HttpServletResponse response) {
         /* 조회수 로직 */
