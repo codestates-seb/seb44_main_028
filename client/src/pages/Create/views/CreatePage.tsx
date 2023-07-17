@@ -1,6 +1,10 @@
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-
+import WritePost from '../components/WritePost';
+import { CreatePageContainer } from '../style';
 function CreatePage() {
-  return <CheckBoxList />;
+  return (
+    <CreatePageContainer>
+      <WritePost />
+    </CreatePageContainer>
+  );
 }
 export default CreatePage;

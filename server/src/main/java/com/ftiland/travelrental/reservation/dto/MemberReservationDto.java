@@ -11,21 +11,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReservationDto {
+public class MemberReservationDto {
 
     private String reservationId;
-    private Integer totalFee;
-    private String username;
+    private String image;
+    private String title;
 
     private String startDate;
     private String endDate;
     private ReservationStatus status;
 
-    public static ReservationDto from(Reservation reservation) {
-        return ReservationDto.builder()
+    public static MemberReservationDto from(Reservation reservation) {
+        return MemberReservationDto.builder()
                 .reservationId(reservation.getReservationId())
-                .totalFee(reservation.getTotalFee())
-                .username(reservation.getProduct().getMember().getDisplayName())
+                .image(reservation.getProduct().getMember().getDisplayName())
                 .startDate(reservation.getStartDate().toString())
                 .endDate(reservation.getEndDate().toString())
                 .status(reservation.getStatus()).build();

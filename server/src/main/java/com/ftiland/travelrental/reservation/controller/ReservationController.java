@@ -5,6 +5,7 @@ import com.ftiland.travelrental.reservation.service.ReservationService;
 import com.ftiland.travelrental.reservation.status.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class ReservationController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    @PatchMapping("/{reservation-id}")
+    @PatchMapping("/{reservation-id}/cancel")
     public ResponseEntity<CancelReservation.Response> cancelReservationByBorrower(
             @Positive @PathVariable("reservation-id") String reservationId) {
         log.info("[ReservationController] cancelReservationByBorrower called");
@@ -43,7 +44,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.cancelReservationByBorrower(reservationId, memberId));
     }
 
-    @PatchMapping("/{reservation-id}/products/{product-id}")
+    @PatchMapping("/{reservation-id}/products/{product-id}/cancel")
     public ResponseEntity<CancelReservation.Response> cancelReservationByLender(
             @Positive @PathVariable("reservation-id") String reservationId,
             @Positive @PathVariable("product-id") String productId) {
@@ -54,8 +55,19 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.cancelReservationByLender(reservationId, productId, memberId));
     }
 
+    @PatchMapping("/{reservation-id}/products/{product-id}/accept")
+    public ResponseEntity<AcceptReservation.Response> acceptReservationByLender(
+            @Positive @PathVariable("reservation-id") String reservationId,
+            @Positive @PathVariable("product-id") String productId) {
+        log.info("[ReservationController] acceptReservationByLender called");
+
+        Long memberId = 1L;
+
+        return ResponseEntity.ok(reservationService.acceptReservationByLender(reservationId, productId, memberId));
+    }
+
     @GetMapping
-    public ResponseEntity<GetReservations> getReservationsByBorrower(
+    public ResponseEntity<GetMemberReservations> getReservationsByBorrower(
             @RequestParam ReservationStatus status,
             @RequestParam int size,
             @RequestParam int page) {
@@ -67,14 +79,14 @@ public class ReservationController {
     }
 
     @GetMapping("/products/{product-id}")
-    public ResponseEntity<GetReservations> getReservationsByLender(
+    public ResponseEntity<GetMemberReservations> getReservationsByLender(
             @PathVariable("product-id") String productId,
             @RequestParam ReservationStatus status,
             @RequestParam int size,
             @RequestParam int page) {
         log.info("[ReservationController] getReservationsByLender called");
 
-        Long memberId = 2L;
+        Long memberId = 1L;
 
         return ResponseEntity.ok(reservationService.getReservationByLender(memberId, productId, status, size, page));
     }
@@ -98,5 +110,27 @@ public class ReservationController {
         Long memberId = 2L;
 
         return ResponseEntity.ok(reservationService.getReservationByMonth(productId, date));
+    }
+
+    @PostMapping("/{reservation-id}/rate")
+    public ResponseEntity<Void> rateReservation(
+            @Valid @RequestBody RateReservation.Request request,
+            @Positive @PathVariable("reservation-id") String reservationId) {
+        log.info("[ReservationController] getReservationsByMoreMonth called");
+
+        Long memberId = 2L;
+
+        reservationService.rateReservation(reservationId, memberId, request.getScore());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/members")
+    public ResponseEntity<Long> countAllReservation() {
+        log.info("[ReservationController] countAllReservation called");
+
+        Long memberId = 1L;
+
+        return ResponseEntity.ok(reservationService.countAllReservation(memberId));
     }
 }

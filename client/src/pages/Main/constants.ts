@@ -5,6 +5,7 @@ import SkiImage from '../../assets/image_slider/SkiImage.svg';
 import { ImageData } from './type';
 import { ItemCardProps } from '../../common/type';
 
+export const INTEREST_KEY = 'interest';
 export const IMAGE_SLIDER: ImageData[] = [
   {
     image: MainImage,
@@ -32,7 +33,7 @@ export const ITEMCARDLIST_TITLE: string[] = [
 ];
 export const ITEMCARD_DATA: ItemCardProps[] = [
   {
-    id: '1',
+    id: '86911664-5691-4fb3-b441-04e1eca38fb7',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -41,13 +42,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: '2',
+    id: '97c61b71-f91f-47f8-8737-7e4e15cdb36f',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -56,13 +57,13 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
-    id: '3',
+    id: '506d3643-573f-4347-b51f-36cc7abcbccb',
     title: '다이슨 빌려줍니다.',
     baseFee: 10000,
     feePerDay: 5000,
@@ -71,9 +72,9 @@ export const ITEMCARD_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
 ];
@@ -88,9 +89,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -103,9 +104,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -118,9 +119,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -133,9 +134,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -148,9 +149,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
   {
@@ -163,9 +164,9 @@ export const ITEMCARD_DEVELOPMENT_DATA: ItemCardProps[] = [
       '에어랩 빌려가실 분? 다이슨은 영국의 기업으로 아무튼 사랑받고 있답니다.',
     minimumRentalPeriod: 5,
     category: [1, 2, 3],
-    location: '동대문구 마장동',
+    address: '동대문구 마장동',
     minRental: 3,
-    imageUrl:
+    images:
       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
   },
 ];

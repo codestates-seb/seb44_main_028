@@ -8,7 +8,7 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
 }: CategoryButtonProps) => {
   const navigate = useNavigate();
   const handleViewItemList = () => {
-    navigate(`/itemlist/${ImageId}`);
+    navigate(`/itemlist/${imageName}`);
   };
 
   return (

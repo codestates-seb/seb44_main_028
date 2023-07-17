@@ -15,20 +15,20 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetReservations {
-    private List<ReservationDto> reservations;
+public class GetMemberReservations {
+    private List<MemberReservationDto> reservations;
     private PageInfo pageInfo;
 
 
-    public static GetReservations from(Page<Reservation> reservations) {
-        List<ReservationDto> reservationDtos = reservations.getContent().stream()
-                .map(ReservationDto::from)
+    public static GetMemberReservations from(Page<Reservation> reservations) {
+        List<MemberReservationDto> reservationDtos = reservations.getContent().stream()
+                .map(MemberReservationDto::from)
                 .collect(Collectors.toList());
 
         PageInfo pageInfo = new PageInfo(reservations.getNumber(), reservations.getSize(),
                 reservations.getTotalElements(), reservations.getTotalPages());
 
-        return GetReservations.builder()
+        return GetMemberReservations.builder()
                 .reservations(reservationDtos)
                 .pageInfo(pageInfo).build();
     }

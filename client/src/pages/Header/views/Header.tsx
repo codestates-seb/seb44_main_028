@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { MdSearch, MdSend, MdLogout } from 'react-icons/md';
+import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';
+import { MdSearch, MdSend, MdLogout, MdError } from 'react-icons/md';
 import { LogoText, NavMenuList } from '../constants';
 import {
   HeaderContainer,
@@ -13,12 +13,26 @@ import {
   ActionWrapper,
   LogoutInfo,
 } from '../style';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../common/store/RootStore';
+import { deleteUserInfo } from '../../../common/store/UserInfoStore';
 
 function Header() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isClick, setIsClick] = useState(false);
   const [isLogoutHovered, setIsLogoutHovered] = useState(false);
+  const isLoggedIn = useSelector((state: RootState) => state.userInfo);
   const handleClick = () => {
     setIsClick(!isClick);
+  };
+
+  const handleLoginStatus = async () => {
+    if (isLoggedIn) {
+      dispatch(deleteUserInfo());
+      //TODO: "로그아웃 되었습니다."모달창 띄워주기
+    }
+    navigate('/login');
   };
 
   return (
@@ -46,13 +60,11 @@ function Header() {
           </NavSendIconWrapper>
         </NavIconWrapper>
       </NavWrapper>
-      <ActionWrapper>
-        <Link to="/login">
-          <MdLogout
-            onMouseEnter={() => setIsLogoutHovered(true)}
-            onMouseLeave={() => setIsLogoutHovered(false)}
-          />
-        </Link>
+      <ActionWrapper onClick={handleLoginStatus}>
+        <MdLogout
+          onMouseEnter={() => setIsLogoutHovered(true)}
+          onMouseLeave={() => setIsLogoutHovered(false)}
+        />
         <LogoutInfo isHovered={isLogoutHovered}>logout</LogoutInfo>
       </ActionWrapper>
     </HeaderContainer>
