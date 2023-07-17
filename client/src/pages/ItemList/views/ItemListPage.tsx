@@ -30,7 +30,7 @@ function ItemListPage() {
           params: {
             page: page,
             size: size,
-            category: params.categoryId,
+            categoryId: params.categoryId,
           },
         },
       );
@@ -49,17 +49,16 @@ function ItemListPage() {
   console.log(products);
   return (
     <ItemListPageContainer>
-      {
-        <div>
-          <SelectBox
-            selectOptionData={DISTANCE_OPTIONS}
-            selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-          />
-          <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-        </div>
-      }
+      <div>
+        <SelectBox
+          selectOptionData={DISTANCE_OPTIONS}
+          selectDefaultOption={DISTANCE_DEFAULT_VALUE}
+        />
+        <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+      </div>
+
       {products?.map((product: ItemCardProps) => (
-        <ItemCard key={product.id} itemCardData={product} />
+        <ItemCard key={product.productId} itemCardData={product} />
       ))}
     </ItemListPageContainer>
   );
