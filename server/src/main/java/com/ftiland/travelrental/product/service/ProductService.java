@@ -145,10 +145,13 @@ public class ProductService {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
-        Member member = memberService.findMember(memberId);
+        // 로그인 안된 사용자일 경우
         boolean isOwner = false;
-        if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
-            isOwner = true;
+        if (!Objects.isNull(memberId)) {
+            Member member = memberService.findMember(memberId);
+            if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
+                isOwner = true;
+            }
         }
 
         List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
@@ -159,7 +162,7 @@ public class ProductService {
 
         String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
 
-        return ProductDetailDto.from(product, categories, images, null, isOwner);
+        return ProductDetailDto.from(product, categories, images, userImage, isOwner);
     }
 
     public GetProducts findProducts(Long memberId, int size, int page) {
@@ -197,77 +200,16 @@ public class ProductService {
         return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
     }
 
-<<<<<<< HEAD
+    public Page<Product> searchProductsByKeyword(String keyword, Pageable pageable) {
+        Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+        return products;
+    }
+
     public Long findSellerId(String productId){
         Product product = productRepository.findById(productId).orElseThrow(()-> new BusinessLogicException(PRODUCT_NOT_FOUND));
         Long sellerId = product.getMember().getMemberId();
 
         return sellerId;
-=======
-    public Page<Product> searchProductsByKeyword(String keyword, Pageable pageable) {
-        Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
-        return products;
->>>>>>> c8c5c84 (:sparkles: 검색바 구현)
-    }
-
-    public GetProducts getProductsByCategoryAndLocation(String categoryId, double latitude, double longitude, double distance, String sortBy, Pageable pageable) {
-        Category category = categoryRepository.findById(categoryId).orElse(null);
-
-        // 특정 카테고리에 속한 상품-카테고리 연결 객체 목록 조회
-        List<ProductCategory> productCategories = productCategoryRepository.findByCategory(category);
-
-        // 거리 필터링을 위한 결과 목록
-        List<Product> filteredProducts = new ArrayList<>();
-
-        // 거리 필터링
-        for (ProductCategory productCategory : productCategories) {
-            Product product = productCategory.getProduct();
-            double productDistance = GeoUtils.calculateDistance(latitude, longitude, product.getLatitude(), product.getLongitude());
-            if (productDistance <= distance) {
-                filteredProducts.add(product);
-            }
-        }
-
-        // 정렬
-        switch (sortBy) {
-            case "totalRateScore":
-                // 기본적으로 total Rate Score로 정렬이지만 새로운 rate field 생기면 그것으로 수정
-                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
-                break;
-            case "viewCount":
-                filteredProducts.sort(Comparator.comparing(Product::getViewCount).reversed());
-                break;
-            case "createdAt":
-                filteredProducts.sort(Comparator.comparing(Product::getCreatedAt).reversed());
-                break;
-            default:
-                // 디폴트는 평점 좋은 순
-                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
-                break;
-        }
-
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List<ProductDto> productDtos;
-
-        if (filteredProducts.size() < startItem) {
-            productDtos = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, filteredProducts.size());
-            List<Product> pagedProducts = filteredProducts.subList(startItem, toIndex);
-            productDtos = pagedProducts.stream()
-                    .map(product -> {
-                        ImageProduct firstImage = imageProductRepository.findFirstByProductOrderByCreatedAtAsc(product);
-                        String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
-                        return ProductDto.from(product, imageUrl);
-                    })
-                    .collect(Collectors.toList());
-        }
-
-        Page<ProductDto> productDtoPage = new PageImpl<>(productDtos, pageable, filteredProducts.size());
-
-        return GetProducts.from(productDtoPage);
     }
 
     public GetProducts getProductsByCategoryAndLocation(String categoryId, double latitude, double longitude, double distance, String sortBy, Pageable pageable) {

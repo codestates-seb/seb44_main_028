@@ -182,15 +182,11 @@ public class ImageService {
     // 맴버 이미지
     public ImageMember findImageMember(Long memberId) {
         Optional<ImageMember> optionalImageMember = imageMemberRepository.findByMemberId(memberId);
-<<<<<<< HEAD
+
         ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_IMAGE_MEMBER));
-=======
-        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
->>>>>>> 94ad91f (:sparkle: 이미지 서비스 수정)
         return imageMember;
     }
 }
-
 
 
 

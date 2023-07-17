@@ -16,9 +16,11 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, String> {
-    boolean existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNot(LocalDate endDate,
-                                                                                 LocalDate startDate,
-                                                                                 ReservationStatus status);
+    boolean existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNotAndProductProductId(LocalDate endDate,
+                                                                                                    LocalDate startDate,
+                                                                                                    ReservationStatus status,
+                                                                                                    String productId);
+
     Page<Reservation> findAllByMemberMemberIdAndStatus(Long memberId, ReservationStatus status, Pageable pageable);
 
     Page<Reservation> findAllByProductProductIdAndStatus(String productId, ReservationStatus status, Pageable pageable);
@@ -36,8 +38,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
             "WHERE r.product.productId = :productId AND r.status = :status " +
             "GROUP BY r.reservationId")
     Page<LendReservationDto> findLendReservationDtosByMemberId(@Param("productId") String productId,
-                                                                 @Param("status") ReservationStatus status,
-                                                                 Pageable pageable);
+                                                               @Param("status") ReservationStatus status,
+                                                               Pageable pageable);
 
     @Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, ip.imageUrl, p.title, r.startDate, r.endDate, r.status) " +
             "FROM Reservation r JOIN r.product p " +
@@ -45,8 +47,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
             "WHERE r.member.memberId = :memberId AND r.status = :status " +
             "GROUP BY r.reservationId")
     Page<BorrowReservationDto> findBorrowReservationDtosByMemberId(@Param("memberId") Long memberId,
-                                                               @Param("status") ReservationStatus status,
-                                                               Pageable pageable);
+                                                                   @Param("status") ReservationStatus status,
+                                                                   Pageable pageable);
 
     long countByMemberMemberId(Long memberId);
 
