@@ -66,7 +66,16 @@ public class MemberService {
         return MemberDto.Response.from(member,imageUrl);
     }
 
+    public MemberDto.Response updateMember(String displayName ,Long memberId) {
 
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        Optional.ofNullable(displayName)
+                .ifPresent(name -> member.setDisplayName(name));
+
+        memberRepository.save(member);
+        return MemberDto.Response.from(member);
+    }
 
     public void deleteMember(Long memberId) {
         Member member = findMember(memberId);
