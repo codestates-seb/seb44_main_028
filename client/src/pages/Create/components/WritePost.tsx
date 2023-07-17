@@ -61,6 +61,7 @@ const WritePost = ({
   const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
     images: [],
   });
+  console.log(inputValues);
   //
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
