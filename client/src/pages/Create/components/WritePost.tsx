@@ -11,11 +11,9 @@ import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import {
-  CONTENT_DESCRIPTION,
-  INPIT_VALIDATION,
-  INPUT_FIELD,
-} from '../constants';
+import { CONTENT_DESCRIPTION } from '../constants';
+import { categories } from '../type';
+import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
   WritePostContainer,
@@ -25,7 +23,6 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
-import { IProductDetail } from '../../Update/model/IProductDetail';
 
 const WritePost = ({
   productData,
@@ -33,7 +30,16 @@ const WritePost = ({
   productData: IProductDetail | string;
 }) => {
   const navigate = useNavigate();
-  const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
+  const categoryIds =
+    typeof productData === 'object'
+      ? (productData.categories as unknown as categories[]).map(
+          (cat) => cat.categoryId,
+        )
+      : [];
+  console.log(categoryIds);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([
+    ...categoryIds,
+  ]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const {
     register,
@@ -47,7 +53,7 @@ const WritePost = ({
     overdueFee: '',
     minimumRentalPeriod: '',
     content: '',
-    categoryIds: [] as string[],
+    categories: [] as string[],
   };
   const initialInputValue =
     typeof productData === 'string' ? defaultInputValues : productData;
@@ -121,9 +127,15 @@ const WritePost = ({
   useEffect(() => {
     setInputValues({
       ...inputValues,
-      categoryIds: [...selectedtCategory],
+      categories: [...selectedCategory],
     });
-  }, [selectedtCategory, uploadImages]);
+    // if (typeof productData === 'object') {
+    //   const categoryIds = productData.categories.map(
+    //     (categories as categories[]) => categories.categoryId,
+    //   );
+    //   setSelectedCategory(categoryIds);
+    // }
+  }, [productData, UploadImage]);
 
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
@@ -268,7 +280,7 @@ const WritePost = ({
       />
       <CheckBoxTitle>카테고리</CheckBoxTitle>
       <CheckBoxList
-        selectedtCategory={selectedtCategory}
+        selectedtCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
 

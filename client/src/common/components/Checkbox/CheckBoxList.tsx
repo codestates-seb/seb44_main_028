@@ -14,6 +14,7 @@ const CheckBoxList = ({
 }: CategoryListProps) => {
   const [seletedCategories, setSelectedCategories] = useState<string[]>([]);
   console.log(seletedCategories);
+  console.log('Write=>checkbox', selectedtCategory);
   const fetchCategoryData = async () => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/categories`,
