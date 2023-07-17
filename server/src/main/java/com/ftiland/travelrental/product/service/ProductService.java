@@ -141,4 +141,11 @@ public class ProductService {
                 .map(ProductDto::from)
                 .collect(Collectors.toList());
     }
+
+    public Long findSellerId(String productId){
+        Product product = productRepository.findById(productId).orElseThrow(()-> new BusinessLogicException(PRODUCT_NOT_FOUND));
+        Long sellerId = product.getMember().getMemberId();
+
+        return sellerId;
+    }
 }
