@@ -1,7 +1,10 @@
 import styled from 'styled-components';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { fontSize } from '../../common/utils/enum/fontSize';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
 import { border } from '../../common/utils/enum/border';
+import Slider from 'react-slick';
 
 export const ItemContentContainer = styled.div`
   display: flex;
@@ -37,7 +40,9 @@ export const ItemRate = styled.div`
   margin-left: 1rem;
 `;
 export const ItemActionBtn = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   margin-top: 1.938rem;
 `;
 export const ItemDescriptionWrapper = styled.div`
@@ -90,6 +95,16 @@ export const ProductBtn = styled.div`
   }
 `;
 
+export const ProductView = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  & div {
+    font-size: ${fontSize.small};
+    color: ${colorPalette.detailPageGrayColor};
+  }
+`;
 export const ItemUserInfoContainer = styled.div`
   display: flex;
   margin-bottom: 2.5rem;
@@ -137,4 +152,38 @@ export const ItemTagWrapper = styled.div`
   border-radius: 20px;
   color: ${colorPalette.whiteColor};
   margin-right: 1rem;
+`;
+export const StyledSlider = styled(Slider)`
+  width: 49.5rem;
+  height: 33.75rem;
+  margin-right: 0;
+
+  .slick-slide div {
+    cursor: pointer;
+  }
+  .slick-slide img {
+    object-fit: cover;
+  }
+  .slick-prev::before,
+  .slick-next::before {
+    width: 35px;
+    height: 35px;
+    z-index: 2;
+    background-color: black;
+  }
+`;
+
+export const ImageCarouselContainer = styled.div`
+  width: 49.5rem;
+  height: 33.75rem;
+  ul {
+    transform: translateY(-2.5rem);
+  }
+`;
+export const ItemImageBox = styled.div`
+  & img {
+    margin-right: 0;
+    width: 49.5rem;
+    height: 33.75rem;
+  }
 `;

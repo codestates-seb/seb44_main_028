@@ -3,6 +3,7 @@ package com.ftiland.travelrental.product.service;
 import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -128,9 +130,15 @@ public class ProductService {
     }
 
     @Cacheable(key = "#productId", value = "products")
-    public ProductDetailDto findProductDetail(String productId) {
+    public ProductDetailDto findProductDetail(String productId, Long memberId) {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
+
+        Member member = memberService.findMember(memberId);
+        boolean isOwner = false;
+        if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
+            isOwner = true;
+        }
 
         List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
 
@@ -138,7 +146,9 @@ public class ProductService {
                 .map(image -> image.getImageUrl())
                 .collect(Collectors.toList());
 
-        return ProductDetailDto.from(product, categories, images);
+//        String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
+
+        return ProductDetailDto.from(product, categories, images, null, isOwner);
     }
 
     public GetProducts findProducts(Long memberId, int size, int page) {
@@ -179,5 +189,12 @@ public class ProductService {
     public Page<Product> searchProductsByKeyword(String keyword, Pageable pageable) {
         Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
         return products;
+    }
+
+    public Long findSellerId(String productId){
+        Product product = productRepository.findById(productId).orElseThrow(()-> new BusinessLogicException(PRODUCT_NOT_FOUND));
+        Long sellerId = product.getMember().getMemberId();
+
+        return sellerId;
     }
 }

@@ -148,8 +148,8 @@ const isWithinReservationPeriods = (
   );
   for (const reservation of reservationData) {
     const { startDate, endDate } = reservation;
-    const start = new Date(startDate.year, startDate.month - 1, startDate.day);
-    const end = new Date(endDate.year, endDate.month - 1, endDate.day);
+    const start = new Date(startDate.year, startDate.month - 1, startDate.date);
+    const end = new Date(endDate.year, endDate.month - 1, endDate.date);
     if (currentDate >= start && currentDate <= end && dateInfo.date) {
       return true;
     }
@@ -217,6 +217,15 @@ export const EachDate = styled.th<EachDatesProps>`
   }};
 
   background-color: ${(props) => {
+    // 기예약된 날짜
+    const dateInfo = {
+      year: props.current.year,
+      month: props.current.month,
+      date: Number(props.children),
+    };
+    if (isWithinReservationPeriods(dateInfo, props.reservationData)) {
+      return colorPalette.grayColor;
+    }
     const start = useSelector(
       (state: RootState) => state.reservation.startDate,
     );

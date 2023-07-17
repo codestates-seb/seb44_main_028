@@ -182,10 +182,9 @@ public class ImageService {
     // 맴버 이미지
     public ImageMember findImageMember(Long memberId) {
         Optional<ImageMember> optionalImageMember = imageMemberRepository.findByMemberId(memberId);
-        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageMember imageMember = optionalImageMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_IMAGE_MEMBER));
         return imageMember;
     }
-
 }
 
 

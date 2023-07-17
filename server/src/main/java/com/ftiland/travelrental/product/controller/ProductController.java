@@ -73,7 +73,7 @@ public class ProductController {
         log.info("[ProductController] findProductDetail called");
         Long memberId = 1L;
 
-        ProductDetailDto productDetail = productService.findProductDetail(productId);
+        ProductDetailDto productDetail = productService.findProductDetail(productId, memberId);
 
         // 조회수 로직
         countView(productId, request, response);
