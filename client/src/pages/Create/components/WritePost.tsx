@@ -12,7 +12,7 @@ import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
 import { CONTENT_DESCRIPTION } from '../constants';
-import { categories } from '../type';
+import { categories, productImages } from '../type';
 import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
@@ -23,6 +23,7 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
+import { type } from 'os';
 
 const WritePost = ({
   productData,
@@ -58,10 +59,37 @@ const WritePost = ({
   const initialInputValue =
     typeof productData === 'string' ? defaultInputValues : productData;
   const [inputValues, setInputValues] = useState(initialInputValue);
-  const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
-    images: [],
+
+  const createFilesFromUrls = (urls: string[]): File[] => {
+    const files: File[] = [];
+
+    for (const url of urls) {
+      const file = new File([url], 'image.jpg', { type: 'image/jpeg' });
+      files.push(file);
+    }
+
+    return files;
+  };
+
+  const productDataImages =
+    typeof productData === 'object'
+      ? createFilesFromUrls(
+          productData?.productImages.slice().reverse() as unknown as string[],
+        )
+      : [];
+  const productShowImages =
+    typeof productData === 'object'
+      ? productData.productImages.slice().reverse()
+      : [];
+  const [showImages, setShowImages] = useState<string[]>([
+    ...productShowImages,
+  ]);
+  const [uploadImages, setUploadImages] = useState<{
+    images: File[];
+  }>({
+    images: [...productDataImages],
   });
-  console.log(inputValues);
+  console.log(uploadImages);
   //
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
@@ -114,7 +142,7 @@ const WritePost = ({
     });
     formData.append('request', blobJson);
     for (const image of uploadImages.images) {
-      formData.append('images', image || null);
+      formData.append('images', image);
     }
     console.log(uploadImages);
     console.log(formData);
@@ -133,7 +161,11 @@ const WritePost = ({
 
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
-      <UploadImage setUploadImages={setUploadImages} />
+      <UploadImage
+        setUploadImages={setUploadImages}
+        showImages={showImages}
+        setShowImages={setShowImages}
+      />
       <WritePriceWrapper>
         <PriceInput errorMessage={!!errors}>
           최소 대여시간

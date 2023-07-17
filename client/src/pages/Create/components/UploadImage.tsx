@@ -13,8 +13,11 @@ import {
   PreViewImageWrapper,
 } from '../style';
 import { UploadImagesProps } from '../type';
-const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
-  const [showImages, setShowImages] = useState<string[]>([]);
+const UploadImages = ({
+  setUploadImages,
+  showImages,
+  setShowImages,
+}: UploadImagesProps) => {
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
 
