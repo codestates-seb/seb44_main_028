@@ -1,10 +1,8 @@
 package com.ftiland.travelrental.chat.mapper;
 
-import com.ftiland.travelrental.chat.dto.ChatRoomDto;
 import com.ftiland.travelrental.chat.dto.ResponseDto;
 import com.ftiland.travelrental.chat.entity.ChatMessage;
 import com.ftiland.travelrental.chat.entity.ChatRoom;
-import com.ftiland.travelrental.chat.entity.ChatRoomMembers;
 import com.ftiland.travelrental.chat.repository.ChatRoomMembersRepository;
 import com.ftiland.travelrental.member.entity.Member;
 import org.mapstruct.Mapper;
@@ -42,5 +40,22 @@ public interface ChatMapper {
         }
 
         return response;
+    }
+
+    default ResponseDto.ChatRoom ChatRoomToResponseChatRoom(ChatRoom chatRoom){
+        ResponseDto.ChatRoom response = new ResponseDto.ChatRoom();
+        response.setChatroomId(chatRoom.getChatroomId());
+
+        return response;
+    }
+
+    default ResponseDto.ChatRooms ChatRoomsToChatRoomList(List<ChatRoom> chatRooms){
+        ResponseDto.ChatRooms responses = new ResponseDto.ChatRooms();
+        for (ChatRoom chatRoom : chatRooms){
+            ResponseDto.ChatRoom chatRoomElement = ChatRoomToResponseChatRoom(chatRoom);
+            responses.addChatRoom(chatRoomElement);
+        }
+
+        return responses;
     }
 }
