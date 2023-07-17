@@ -1,12 +1,13 @@
 package com.ftiland.travelrental.interest.mapper;
 
+import com.ftiland.travelrental.common.PageInfo;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.interest.dto.InterestDto;
 import com.ftiland.travelrental.interest.entity.Interest;
 import com.ftiland.travelrental.product.entity.Product;
 import org.mapstruct.Mapper;
-
+import org.springframework.data.domain.Page;
 
 
 import java.util.ArrayList;
@@ -40,9 +41,10 @@ public interface InterestMapper {
         return response;
     }
 
-    default InterestDto.ResponsesDto interestsToResponsesDto (ImageService imageService,ArrayList<Interest> interests,long page,long size,int listSize){
+    default InterestDto.ResponsesDto interestsToResponsesDto (ImageService imageService, Page<Interest> interests){
         InterestDto.ResponsesDto responses = new InterestDto.ResponsesDto();
-        for(Interest interest : interests){
+        PageInfo pageInfo = new PageInfo(interests.getPageable().getPageNumber(),interests.getPageable().getPageSize(),interests.getTotalElements(),interests.getTotalPages());
+        for(Interest interest : interests.getContent()){
             InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
             ArrayList<ImageProduct> images = imageService.findImageProduct(interest.getProduct().getProductId());
 
@@ -52,9 +54,7 @@ public interface InterestMapper {
             }
             responses.addResponse(response);
         }
-        responses.setListSize(listSize);
-        responses.setPage(page);
-        responses.setSize(size);
+        responses.setPageInfo(pageInfo);
         return responses;
     }
 }
