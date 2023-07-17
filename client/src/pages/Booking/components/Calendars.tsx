@@ -19,8 +19,6 @@ function Calendars() {
   const reservationData2 = useSelector(
     (state: RootState) => state.monthlyReservation.reservationsDate2,
   );
-  console.log('1번째 달력', reservationData1);
-  console.log('2번째 달력', reservationData2);
 
   const handleClearReservation = () => {
     dispatch(clearReservationDates());
