@@ -5,6 +5,7 @@ import axios from 'axios';
 import BigBtn from '../../../common/components/Button';
 import { RootState } from '../../../common/store/RootStore';
 import { IReservationData } from '../model/IReservationData';
+import { colorPalette } from '../../../common/utils/enum/colorPalette';
 
 const sendReservationData = async ({
   startDate,
@@ -13,7 +14,7 @@ const sendReservationData = async ({
 }: IReservationData) => {
   try {
     const response = await axios.post(
-      `https://playpack.shop/api/reservations/products/${productId}`,
+      `${process.env.REACT_APP_API_URL}/api/reservations/products/${productId}`,
       {
         startDate: startDate,
         endDate: endDate,
@@ -55,6 +56,9 @@ function ReservationBtn() {
 
   return (
     <BigBtn
+      color={colorPalette.whiteColor}
+      backgroundColor={colorPalette.heavyColor}
+      hoverBackgroundColor={colorPalette.rightButtonHoverColor}
       height={57}
       width={175}
       children={'예약하기'}

@@ -7,7 +7,9 @@ export const MainPageContainer = styled.div`
 `;
 
 // Carousel
-export const CarouselContainer = styled.div``;
+export const CarouselContainer = styled.div`
+  padding-top: 4.5rem;
+`;
 export const ImageSliderWrapper = styled.div`
   width: 100%;
   height: 28rem;

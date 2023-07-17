@@ -1,16 +1,22 @@
 import styled from 'styled-components';
 import { BoxShadow } from '../utils/enum/boxShadow';
 
-export const DefaultBtn = styled.button`
-  background-color: #0d4c92;
-  color: #fff;
+type DefaultBtnprops = {
+  color: string;
+  backgroundColor: string;
+  hoverBackgroundColor?: string;
+};
+export const DefaultBtn = styled.button<DefaultBtnprops>`
+  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) => props.color};
   height: 28px;
   width: 80px;
   border-radius: 5px;
   border: none;
   box-shadow: ${BoxShadow.Basic};
+  cursor: pointer;
   &:hover {
-    background-color: #1d5799;
+    background-color: ${(props) => props.hoverBackgroundColor};
   }
   &:active {
     transform: scale(0.98);
@@ -29,18 +35,31 @@ const BigDefaultBtn = styled(DefaultBtn)<BigDefaultBtnProps>`
 `;
 
 function BigBtn({
+  color,
+  backgroundColor,
+  hoverBackgroundColor,
   height,
   width,
   children,
   onClick,
 }: {
+  color: string;
+  backgroundColor: string;
+  hoverBackgroundColor?: string;
   height: number;
   width: number;
   children: React.ReactNode;
   onClick?: () => void;
 }) {
   return (
-    <BigDefaultBtn height={height} width={width} onClick={onClick}>
+    <BigDefaultBtn
+      color={color}
+      backgroundColor={backgroundColor}
+      hoverBackgroundColor={hoverBackgroundColor}
+      height={height}
+      width={width}
+      onClick={onClick}
+    >
       {children}
     </BigDefaultBtn>
   );

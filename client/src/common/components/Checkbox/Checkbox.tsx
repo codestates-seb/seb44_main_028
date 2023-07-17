@@ -1,28 +1,32 @@
+import React from 'react';
 import { CheckBoxWrapper } from '../../style/style';
 import { CheckBoxProps } from '../../type';
 
+type CheckBox = {
+  categoryId: string;
+  title: string;
+  image: string;
+};
 const CheckBox = ({
-  categoryData,
-  selectedCategories,
-  setSelectedCategories,
+  categoryTitle,
+  categoryId,
+  selectedtCategory,
+  setSelectedCategory,
 }: CheckBoxProps) => {
-  const isSelected = selectedCategories.includes(categoryData);
-  console.log(categoryData, selectedCategories);
+  const isSelected = selectedtCategory.includes(categoryId);
+
   const handleIsClick = () => {
-    if (selectedCategories.includes(categoryData)) {
-      setSelectedCategories((prevCategories) =>
-        prevCategories.filter((category) => category !== categoryData),
+    if (selectedtCategory.includes(categoryId)) {
+      setSelectedCategory((prevCategories) =>
+        prevCategories.filter((category) => category !== categoryId),
       );
     } else {
-      setSelectedCategories((prevCategories) => [
-        ...prevCategories,
-        categoryData,
-      ]);
+      setSelectedCategory((prevCategories) => [...prevCategories, categoryId]);
     }
   };
   return (
     <CheckBoxWrapper onClick={handleIsClick} isSelected={isSelected}>
-      {categoryData}
+      {categoryTitle}
     </CheckBoxWrapper>
   );
 };

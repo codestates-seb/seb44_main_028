@@ -17,23 +17,28 @@ import { useParams } from 'react-router-dom';
 function ItemListPage() {
   const params = useParams();
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  console.log(params);
+  const size = 10;
   const {
     data: products,
     isLoading,
     error,
   } = useQuery('products', async () => {
     try {
-      const res = await axios.get(`https://playpack.shop/products`, {
-        params: {
-          page: page,
-          size: size,
-          category: params.id,
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/products`,
+        {
+          params: {
+            page: page,
+            size: size,
+            category: params.categoryId,
+          },
         },
-      });
+      );
+      console.log('res', res);
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.log('err', err);
     }
   });
   if (isLoading) {
@@ -42,16 +47,19 @@ function ItemListPage() {
   if (error) {
     return <div>에러가 발생했습니다.</div>;
   }
+  console.log(products);
   return (
     <ItemListPageContainer>
-      <div>
-        <SelectBox
-          selectOptionData={DISTANCE_OPTIONS}
-          selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-        />
-        <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-      </div>
-      {products.map((product: ItemCardProps) => (
+      {
+        <div>
+          <SelectBox
+            selectOptionData={DISTANCE_OPTIONS}
+            selectDefaultOption={DISTANCE_DEFAULT_VALUE}
+          />
+          <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+        </div>
+      }
+      {products?.map((product: ItemCardProps) => (
         <ItemCard key={product.id} itemCardData={product} />
       ))}
     </ItemListPageContainer>

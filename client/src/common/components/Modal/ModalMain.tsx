@@ -1,14 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { MdError } from 'react-icons/md';
 import ModalTitle from './ModalTitle';
 import ModalButton from './ModalButton';
+import ModalAdditional from './ModalAdditional';
 import { ModalMainProps } from '../../type';
-import { ModalOverlay, ModalWrapper } from '../../style/style';
+import {
+  ModalOverlay,
+  ModalWrapper,
+  ModalInfoWrapper,
+} from '../../style/style';
 
 const ModalMain = ({ children, isOpen }: ModalMainProps) => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(true);
-  const modalRef = useRef<HTMLDivElement>(null);
   const handleCloseModal = () => {
     setIsOverlayVisible(false);
   };
@@ -20,11 +23,10 @@ const ModalMain = ({ children, isOpen }: ModalMainProps) => {
     <>
       {isOverlayVisible && <ModalOverlay onClick={handleCloseModal} />}
       {isOverlayVisible && (
-        <ModalWrapper ref={modalRef}>
-          <div onClick={handleModalContentClick}>
-            <MdError />
+        <ModalWrapper>
+          <ModalInfoWrapper onClick={handleModalContentClick}>
             {children}
-          </div>
+          </ModalInfoWrapper>
         </ModalWrapper>
       )}
     </>,
@@ -35,4 +37,5 @@ const ModalMain = ({ children, isOpen }: ModalMainProps) => {
 export default Object.assign(ModalMain, {
   Title: ModalTitle,
   Button: ModalButton,
+  Additional: ModalAdditional,
 });

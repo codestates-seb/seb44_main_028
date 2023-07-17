@@ -31,15 +31,38 @@ spring:
       hibernate:
         format_sql: true
         hbm2ddl:
-          auto: create
-
+          auto: update
     show-sql: true
+
+  mail:
+    smtp:
+      host: smtp.gmail.com
+      port: 587
+      username: ${EMAIL_USERNAME} # Gmail email
+      password: ${EMAIL_PASSWORD} # Google 계정 2단계 인증 생성 후 앱 비밀번호 생성
+      auth: true
+      starttls:
+        enable: true #일부 SMTP 서버에는 TLS 연결이 필요하므로 TLS 보호 연결을 활성화한다
+    subject:
+      member:
+        registration: Thank you for joining our cafe!
+
+  redis:
+    cache:
+      host: localhost
+      port: 6379
 
 jwt:
   key:
     secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+  redirect:
+    scheme: ${REDIRECT_SCHEME}
+    host: ${REDIRECT_HOST}
+    port: ${REDIRECT_PORT}
+    path: ${REDIRECT_PATH}
+
 
 logging:
   level:
@@ -68,3 +91,8 @@ kakao:
 category:
   image:
     path: ${CATEGORY.IMAGE.PATH}
+
+
+
+
+

@@ -1,18 +1,10 @@
 import { ReactNode } from 'react';
+import { ICategory } from './model/ICategory';
 
 export type CategoryButtonProps = {
   ImageId: string;
   imageUrl: string;
   imageName: string;
-};
-export type ModalPortalProps = {
-  children: React.ReactNode;
-};
-export type ModalFrameProps = {
-  leftButtonText: string;
-  rightButtonText: string;
-  children: React.ReactNode;
-  setOnModal: (state: boolean) => void;
 };
 export type SelectOption = {
   value: string;
@@ -23,18 +15,30 @@ export type CategoryProps = {
   image: string;
   name: string;
 };
+export type CategoryListProps = {
+  selectedtCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
+};
 export type CheckBoxProps = {
-  categoryData: string;
-  selectedCategories: string[];
-  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  categoryTitle: string;
+  categoryId: string;
+  selectedtCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export type ModalButtonProps = {
+  color: string;
+  backgroundColor: string;
+  hoverBackgroundColor?: string;
   children?: ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 export type ModalTitleProps = {
   children?: ReactNode;
+};
+
+export type ModalAdditionalProps = {
+  children: ReactNode;
 };
 export type ModalMainProps = {
   children?: ReactNode;
@@ -54,7 +58,50 @@ export type ItemCardProps = {
   content: string;
   minimumRentalPeriod: number;
   category: number[];
-  location: string;
+  address: string;
   minRental: number;
-  imageUrl: string;
+  images: string;
 };
+
+// export type BorrowCardProps = {
+//   id: string;
+//   title: string;
+//   startDate: string;
+//   endDate: string;
+//   images: string;
+//   content: string;
+//   category: number[];
+//   address: string;
+// };
+
+// export type lendCardProps = {
+//   title: string;
+//   images: string;
+//   startDate: string;
+//   endDate: string;
+// };
+export type lendCardProps = {
+  reservationId: string;
+  status: string;
+  username: string;
+  totalFee: string;
+  startDate: string;
+  endDate: string;
+  images: string;
+};
+export type borrowCardProps = {
+  title: string;
+  images: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+};
+// export type borrowCardProps = {
+//   reservationId: string;
+//   status: string;
+//   username: string;
+//   totalFee: string;
+//   startDate: string;
+//   endDate: string;
+//   images: string;
+// };
