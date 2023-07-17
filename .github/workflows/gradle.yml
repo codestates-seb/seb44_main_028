@@ -48,7 +48,6 @@ jobs:
           jwt.redirect.host: ${{secrets.REDIRECT_HOST}}
           jwt.redirect.port: ${{secrets.REDIRECT_PORT}}
           jwt.redirect.path: ${{secrets.REDIRECT_PATH}}
-          kakao.restapi: ${{secrets.KAKAO_REST_API}}
 
           spring.mail.smtp.username: ${{secrets.EMAIL_USERNAME}}
           spring.mail.smtp.password: ${{secrets.EMAIL_PASSWORD}}
