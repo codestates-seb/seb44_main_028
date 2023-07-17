@@ -191,7 +191,7 @@ public class ReservationService {
         validateOwner(product, member);
 
         Page<LendReservationDto> reservations = reservationRepository
-                .findLendReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
+                .findLendReservationDtosByMemberId(productId, status, PageRequest.of(page, size));
 
         return GetLendReservations.from(reservations);
     }

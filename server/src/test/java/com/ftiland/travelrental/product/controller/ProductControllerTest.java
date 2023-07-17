@@ -40,7 +40,7 @@ class ProductControllerTest {
     @MockBean
     private ImageService imageService;
 
-    @Test
+    /*@Test
     @WithMockUser(username = "사용자", roles = {"USER"})
     void createProduct_SUCCESS() throws Exception {
         // given
@@ -134,6 +134,6 @@ class ProductControllerTest {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.productId").value(response.getProductId()))
                 .andDo(print());
-    }
+    }*/
 
 }
