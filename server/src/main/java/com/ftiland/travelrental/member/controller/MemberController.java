@@ -7,9 +7,11 @@ import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.oauth.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class MemberController {
 
     @PatchMapping
     public ResponseEntity<MemberDto.Response> patchMember(@RequestHeader("Authorization") String authorizationHeader,
-                                                          @Valid @RequestBody MemberPatchDto.Request request) {
+                                                          @Param("displayName") String displayName, @Param("imageFile")MultipartFile imageFile) {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String jws = authorizationHeader.substring(7);
@@ -62,7 +64,7 @@ public class MemberController {
             Integer memberId = (Integer) claims.get("memberId");
             Long memberIdLong = memberId != null ? memberId.longValue() : null;
 
-            MemberDto.Response response = memberService.updateMember(request, memberIdLong);
+            MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberIdLong);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

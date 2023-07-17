@@ -1,11 +1,14 @@
 package com.ftiland.travelrental.member.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -14,9 +17,12 @@ import static com.ftiland.travelrental.common.exception.ExceptionCode.MEMBER_NOT
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final ImageService imageService;
 
-    public MemberService(MemberRepository memberRepository) {
+    @Autowired
+    public MemberService(MemberRepository memberRepository,ImageService imageService) {
         this.memberRepository = memberRepository;
+        this.imageService = imageService;
     }
 
     public Member createMember(Member member) {
@@ -44,15 +50,15 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    public MemberDto.Response updateMember(MemberPatchDto.Request request, Long memberId) {
+    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        String imageUrl = imageService.storeImageMember(imageFile,memberId).getImageUrl();
+        Optional.ofNullable(displayName)
+                .ifPresent(name -> member.setDisplayName(name));
 
-        Optional.ofNullable(request.getDisplayName())
-                .ifPresent(displayName -> member.setDisplayName(displayName));
-
-        return MemberDto.Response.from(member);
+        return MemberDto.Response.from(member,imageUrl);
     }
 
 }
