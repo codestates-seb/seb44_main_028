@@ -2,7 +2,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { UseQueryResult } from 'react-query';
 import useGetMe from './common/utils/customHooks/useGetMe';
 import { IUserInfo } from './common/model/IUserInfo';
-import { AxiosError } from 'axios';
 
 function PrivateRoutes() {
   // TODO: 로그인 여부를 getMe에서 가져오기
