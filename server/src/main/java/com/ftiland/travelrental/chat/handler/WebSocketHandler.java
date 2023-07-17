@@ -53,7 +53,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
         if(chatEntityService.verifyChatroomMember(roomId,chatMessage.getSenderId())==false){
             log.error("[ Invalid chat access ]");
-            throw new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION);
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_ACCESS);
         }
 
         if(chatMessage.getType()== ChatMessageDto.MessageType.CONNECT){
