@@ -44,4 +44,18 @@ public class ResponseDto {
         public void addMessage(ResponseDto.Message message){this.messages.add(message);}
     }
 
+    @Getter
+    @Setter
+    public static class ChatRoom{
+        private String chatroomId;
+    }
+
+    @Getter
+    @Setter
+    public static class ChatRooms{
+        List<ChatRoom> chatRooms = new ArrayList<>();
+
+        public void addChatRoom(ResponseDto.ChatRoom chatRoom){this.chatRooms.add(chatRoom);}
+    }
+
 }
