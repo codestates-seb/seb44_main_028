@@ -31,24 +31,19 @@ const UploadImages = ({
         newImages.push(imageLists[i]);
 
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        console.log(currentImageUrl);
         newImageURLs.push(currentImageUrl);
-        //setShowImages((prev) => [...prev, currentImageUrl]);
       }
       console.log('업로드 ㅇ미ㅣ지', imageLists);
       if (newImages.length + showImages.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         setIsClick(true);
-        //newImages = newImages.slice(0, MAX_IMAGE_COUNT - showImages.length);
         const diff = showImages.length + newImages.length - MAX_IMAGE_COUNT;
-        console.log(showImages.length, newImages.length, diff);
         newImages = newImages.slice(0, newImages.length - diff);
         newImageURLs = newImageURLs.slice(0, newImageURLs.length - diff);
       }
 
       setUploadImages((prev) => ({ images: [...prev.images, ...newImages] }));
       setShowImages((prev) => [...prev, ...newImageURLs]);
-      console.log(showImages);
     }
   };
 
@@ -62,7 +57,6 @@ const UploadImages = ({
     });
   };
   useEffect(() => {
-    // Store the URLs in the imageURLs state whenever the showImages state changes
     setImageURLs(showImages);
   }, [showImages]);
   useEffect(() => {

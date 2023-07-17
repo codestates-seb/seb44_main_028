@@ -17,6 +17,3 @@ export type categories = {
   title: string;
   image: string;
 };
-export type productImages = {
-  productImages: string[];
-};

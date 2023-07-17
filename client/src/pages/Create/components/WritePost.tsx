@@ -12,7 +12,7 @@ import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
 import { CONTENT_DESCRIPTION, MAX_IMAGE_COUNT } from '../constants';
-import { categories, productImages } from '../type';
+import { categories } from '../type';
 import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
@@ -23,7 +23,6 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
-import { type } from 'os';
 
 const WritePost = ({
   productData,
@@ -68,7 +67,6 @@ const WritePost = ({
       const file = new File([url], 'image.jpg', { type: 'image/jpeg' });
       files.push(file);
     }
-
     return files;
   };
 
@@ -90,7 +88,6 @@ const WritePost = ({
   }>({
     images: [...productDataImages].slice(0, MAX_IMAGE_COUNT),
   });
-  console.log(uploadImages);
   //
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
@@ -142,15 +139,6 @@ const WritePost = ({
       type: 'application/json',
     });
     formData.append('request', blobJson);
-    for (const image of uploadImages.images) {
-      formData.append('images', image);
-    }
-    console.log(uploadImages);
-    console.log(formData);
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     newPost.mutate(formData);
   };
   useEffect(() => {
