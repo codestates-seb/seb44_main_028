@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
-import { ItemListPageContainer } from '../style';
+import { ItemListPageContainer, ProductListWrapper } from '../style';
 import Loading from '../../../common/components/Loading';
 import {
   DISTANCE_DEFAULT_VALUE,
@@ -56,10 +56,11 @@ function ItemListPage() {
         />
         <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
       </div>
-
-      {products?.map((product: ItemCardProps) => (
-        <ItemCard key={product.productId} itemCardData={product} />
-      ))}
+      <ProductListWrapper>
+        {products?.products.map((product: ItemCardProps) => (
+          <ItemCard key={product.productId} itemCardData={product} />
+        ))}
+      </ProductListWrapper>
     </ItemListPageContainer>
   );
 }
