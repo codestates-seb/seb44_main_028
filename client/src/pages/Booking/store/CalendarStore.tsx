@@ -17,7 +17,6 @@ export const calendar = createSlice({
       state.year = action.payload.year;
       state.month = action.payload.month;
       state.date = action.payload.date;
-      console.log(state);
     },
   },
 });
