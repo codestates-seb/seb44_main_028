@@ -1,4 +1,38 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { monthlyReservationStore } from './MonthlyReservationStore';
+import { StartEndDateProps } from '../model/IStartEndDateProps';
+
+type DateProps = { year: number; month: number; date: number };
+
+function isWithinPeriod(
+  startDate: DateProps,
+  endDate: DateProps,
+  reservation: StartEndDateProps,
+) {
+  const start = new Date(startDate.year, startDate.month - 1, startDate.date);
+  const end = new Date(endDate.year, endDate.month - 1, endDate.date);
+
+  const reservationStart = new Date(
+    reservation.startDate.year,
+    reservation.startDate.month - 1,
+    reservation.startDate.date,
+  );
+  const reservationEnd = new Date(
+    reservation.endDate.year,
+    reservation.endDate.month - 1,
+    reservation.endDate.date,
+  );
+
+  // 시작 날짜와 종료 날짜가 예약 기간 안에 있는지 확인
+  if (start >= reservationStart && start <= reservationEnd) return true;
+  if (end >= reservationStart && end <= reservationEnd) return true;
+
+  // 예약이 시작 날짜와 종료 날짜 사이에 있는지 확인
+  if (reservationStart >= start && reservationStart <= end) return true;
+  if (reservationEnd >= start && reservationEnd <= end) return true;
+
+  return false;
+}
 
 type ReservationProps = {
   startDate: { year: number; month: number; date: number } | null;
@@ -51,6 +85,19 @@ export const reservation = createSlice({
       const currentStartMonth = currentStart.month;
       const currentStartDate = currentStart.date;
 
+      const { reservationsDate1, reservationsDate2 } =
+        monthlyReservationStore.getState();
+      const allReservations = [...reservationsDate1, ...reservationsDate2];
+
+      for (const reservation of allReservations) {
+        if (isWithinPeriod(currentStart, newEnd, reservation)) {
+          alert(
+            '선택하신 기간에는 이미 예약이 있습니다. 다른 기간을 선택해 주세요.',
+          );
+          return;
+        }
+      }
+
       if (
         currentStartYear < newEndYear ||
         (currentStartYear === newEndYear && currentStartMonth < newEndMonth) ||
@@ -70,4 +117,5 @@ export const reservation = createSlice({
 export const reservationStore = configureStore({
   reducer: reservation.reducer,
 });
-export const { setStartDate, setEndDate } = reservation.actions;
+export const { setStartDate, setEndDate, clearReservationDates } =
+  reservation.actions;

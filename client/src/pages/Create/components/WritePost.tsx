@@ -1,5 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useForm } from 'react-hook-form';
@@ -7,7 +9,13 @@ import { MdError } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
+import ModalMain from '../../../common/components/Modal/ModalMain';
+import CheckBoxList from '../../../common/components/CheckBox/CheckBoxList';
+import {
+  CONTENT_DESCRIPTION,
+  INPIT_VALIDATION,
+  INPUT_FIELD,
+} from '../constants';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
   WritePostContainer,
@@ -17,10 +25,6 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
-import { CONTENT_DESCRIPTION } from '../constants';
-import ModalMain from '../../../common/components/Modal/ModalMain';
-import axios from 'axios';
-import { useMutation } from 'react-query';
 
 const WritePost = () => {
   const navigate = useNavigate();
