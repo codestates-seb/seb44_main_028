@@ -12,6 +12,7 @@ import {
 } from '../../../common/constants';
 import { ItemCardProps } from '../../../common/type';
 import { useParams } from 'react-router-dom';
+import NoData from '../../../common/components/NoData';
 
 function ItemListPage() {
   const params = useParams();
@@ -45,6 +46,9 @@ function ItemListPage() {
   }
   if (error) {
     return <div>에러가 발생했습니다.</div>;
+  }
+  if (products.products.length === 0) {
+    return <NoData />;
   }
   console.log(products);
   return (
