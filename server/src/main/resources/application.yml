@@ -55,7 +55,7 @@ spring:
 jwt:
   key:
     secret: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
+  access-token-expiration-minutes: 1000
   refresh-token-expiration-minutes: 420
   redirect:
     scheme: ${REDIRECT_SCHEME}
@@ -92,7 +92,9 @@ category:
   image:
     path: ${CATEGORY.IMAGE.PATH}
 
-
+image:
+  default:
+    path: "https://seb44main028image-bucket.s3.ap-northeast-2.amazonaws.com/default.jpg"
 
 
 

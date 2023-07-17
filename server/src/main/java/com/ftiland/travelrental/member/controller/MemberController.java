@@ -1,6 +1,8 @@
 package com.ftiland.travelrental.member.controller;
 
 import com.ftiland.travelrental.common.utils.MemberAuthUtils;
+import com.ftiland.travelrental.image.entity.ImageMember;
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,6 +24,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final ImageService imageService;
 
     @Autowired
     private HttpServletRequest request;
@@ -50,5 +54,13 @@ public class MemberController {
 
         memberService.deleteMember(memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/default")
+    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile){
+        ImageMember imageMember = imageService.storeImageMember(imageFile, 1L);
+        log.info("[MemberController] createImage : {}", imageMember.getImageUrl());
+
+        return ResponseEntity.ok(imageMember);
     }
 }

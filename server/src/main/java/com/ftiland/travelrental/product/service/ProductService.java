@@ -21,10 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.*;
@@ -49,6 +46,9 @@ public class ProductService {
             throw new BusinessLogicException(NOT_FOUND_LOCATION);
         }
 
+        Random random = new Random();
+        int totalRateScore = random.nextInt(1000);
+
         Product productEntity = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .title(request.getTitle())
@@ -57,9 +57,9 @@ public class ProductService {
                 .baseFee(request.getBaseFee())
                 .feePerDay(request.getFeePerDay())
                 .minimumRentalPeriod(request.getMinimumRentalPeriod())
-                .totalRateCount(0)
-                .totalRateScore(0)
-                .viewCount(0)
+                .totalRateCount(totalRateScore / (random.nextInt(totalRateScore - 5) + 5))
+                .totalRateScore(totalRateScore)
+                .viewCount(random.nextInt(5000))
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
                 .address(member.getAddress())
@@ -145,7 +145,7 @@ public class ProductService {
                 .map(image -> image.getImageUrl())
                 .collect(Collectors.toList());
 
-//        String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
+        String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
 
         return ProductDetailDto.from(product, categories, images, null, isOwner);
     }
