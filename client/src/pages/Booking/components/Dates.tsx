@@ -49,6 +49,11 @@ function Dates({ calendar, reservationData }: CalendarProps) {
     }
   }
 
+  const allReservations = useSelector((state: RootState) => [
+    ...state.monthlyReservation.reservationsDate1,
+    ...state.monthlyReservation.reservationsDate2,
+  ]);
+
   const showDates = dates.map((week, i) => (
     <tr key={i}>
       {week.map((date, j) => (
@@ -69,6 +74,7 @@ function Dates({ calendar, reservationData }: CalendarProps) {
               dispatch(
                 setStartDate({
                   ...reservationState,
+                  allReservations: allReservations,
                   startDate: { ...calendar, date },
                 }),
               );
@@ -76,6 +82,7 @@ function Dates({ calendar, reservationData }: CalendarProps) {
               dispatch(
                 setEndDate({
                   ...reservationState,
+                  allReservations: allReservations,
                   endDate: { ...calendar, date },
                 }),
               );
