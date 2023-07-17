@@ -261,6 +261,7 @@ const WritePost = ({
         )}
       </PriceInput>
       <ReactQuill
+        defaultValue={inputValues.content}
         theme="snow"
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}
