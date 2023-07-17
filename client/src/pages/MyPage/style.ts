@@ -340,6 +340,7 @@ export const LendListWrapper = styled.div`
 
 export const BorrowWrapper = styled.div`
   display: flex;
+
   button {
     border: 1px solid ${colorPalette.deepMintColor};
     box-shadow: none;
@@ -355,6 +356,12 @@ export const BorrowWrapper = styled.div`
       background-color: ${colorPalette.deepMintColor};
       color: ${colorPalette.whiteColor};
     }
+  }
+`;
+export const BorrowCardWrappre = styled.div`
+  display: flex;
+  div {
+    margin-left: 1rem;
   }
 `;
 // LendList

@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import BigDefaultBtn from '../../../common/components/Button';
+import { colorPalette } from '../../../common/utils/enum/colorPalette';
 
 function makeChatRoomName(senderId: number, receiverId: number) {
   const chatRoomName = [String(senderId), String(receiverId)].sort().join('');
@@ -60,6 +62,17 @@ function ChatBtn() {
     }
   };
 
-  return <button onClick={createChatRoom}>채팅하기</button>;
+  return (
+    <BigDefaultBtn
+      color="inherit"
+      backgroundColor={colorPalette.modalCancelButtonColor}
+      hoverBackgroundColor={colorPalette.modalCancelHoverColor}
+      height={64}
+      width={100}
+      onClick={createChatRoom}
+    >
+      채팅하기
+    </BigDefaultBtn>
+  );
 }
 export default ChatBtn;

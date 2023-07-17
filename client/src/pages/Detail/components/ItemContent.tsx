@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
+import { GrFormView } from 'react-icons/gr';
 import ItemUserInfo from './ItemUserInfo';
 import ItemPrice from './ItemPrice';
 import RatingStar from '../../MyPage/components/RatingStar';
@@ -14,6 +17,7 @@ import {
   ItemRate,
   ItemTagSection,
   ItemActionBtn,
+  ProductView,
   ProductDescription,
   ProductInfo,
   ProductTitle,
@@ -23,16 +27,17 @@ import {
 } from '../style';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
+import ChatBtn from './ChatBtn';
+import { ICategory } from '../type';
+import ImageCarousel from './ImageCarousel';
 
 const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
-
+  console.log(param.itemId);
   const handleReservation = () => {
     navigate(`/booking/${param.itemId}`);
   };
@@ -42,12 +47,27 @@ const ItemContent = () => {
   const handleUpdate = () => {
     navigate(`/update/${param.itemId}`);
   };
+  const removeItem = useMutation(
+    (productId: string | undefined) =>
+      axios
+        .delete(`${process.env.REACT_APP_API_URL}/api/products/${productId}`)
+        .then((res) => {
+          const { data } = res;
+          console.log(data);
+        }),
+    {
+      onError: (error) => {
+        console.error('removeItem error:', error);
+      },
+    },
+  );
   const handleDelete = () => {
-    console.log('삭제');
+    removeItem.mutate(param.itemId);
+    navigate(`/`);
   };
   const { data, isLoading, error } = useQuery('productDtail', async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/products/018cc66f-9361-4fff-8a41-87ed5fd50d4b`,
+      `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
     );
     console.log(data);
     return data;
@@ -62,12 +82,13 @@ const ItemContent = () => {
   return (
     <ItemContentContainer>
       <ItemInfoWrapper>
+        {/* <ItemImageWrapper images={data.images}> */}
         <ItemImageWrapper>
-          <img src={data.images[0]} />
+          <ImageCarousel images={data.productImages} />
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
-          <ItemUserInfo userName={data.userName} address={data.address} />
+          <ItemUserInfo userName={data.username} address={data.address} />
           {/* 가격 정보 */}
 
           <ItemPrice
@@ -92,12 +113,12 @@ const ItemContent = () => {
               backgroundColor={colorPalette.heavyColor}
               hoverBackgroundColor={colorPalette.rightButtonHoverColor}
               height={64}
-              width={228}
+              width={198}
               onClick={handleReservation}
             >
               예약하기
             </BigDefaultBtn>
-            <div onClick={handleChatting}>채팅아이콘</div>
+            {/* <ChatBtn /> */}
           </ItemActionBtn>
         </ItemUserWrapper>
       </ItemInfoWrapper>
@@ -106,19 +127,29 @@ const ItemContent = () => {
           <div>상품정보</div>
           <div></div>
         </ProductInfo>
+        <ProductView>
+          <GrFormView />
+          <div>{data.viewCount}</div>
+        </ProductView>
         <ProductDescription>
           <ProductTitle>{data.title}</ProductTitle>
           <ProductContent>{data.content}</ProductContent>
           <ProductNotice>{ITEM_NOTICE}</ProductNotice>
           {/* 카테고리 */}
           <ItemTagSection>
-            {/* {data.categories.map((tag) => (
+            {data?.categories.map((tag: ICategory) => (
               <ItemTag key={tag.categoryId} itemtag={tag.title} />
-            ))} */}
+            ))}
           </ItemTagSection>
           <ProductBtn>
-            <div onClick={handleUpdate}>{USER_BTN[0]}</div>
-            <div onClick={handleDelete}>{USER_BTN[1]}</div>
+            {data.isOwner ? (
+              <>
+                <div onClick={handleUpdate}>{USER_BTN[0]}</div>
+                <div onClick={handleDelete}>{USER_BTN[1]}</div>
+              </>
+            ) : (
+              <div></div>
+            )}
           </ProductBtn>
         </ProductDescription>
       </ItemDescriptionWrapper>

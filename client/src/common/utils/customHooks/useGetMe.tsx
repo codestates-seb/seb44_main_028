@@ -56,7 +56,7 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
         console.log('5. 재발급 받은 accessToken:', newAccessToken);
         localStorage.setItem(ACCESS_TOKEN, encryptToken(newAccessToken));
       }
-       return data;
+      return data;
     } catch (error: AxiosError | any) {
       console.log('error가 난거니? 뭠미?', error.response.status);
       const statusCode = error.response.status;
