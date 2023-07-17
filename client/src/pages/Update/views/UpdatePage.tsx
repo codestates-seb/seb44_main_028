@@ -8,12 +8,12 @@ function UpdatePage() {
     const { data } = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
     );
-    console.log(data);
+    console.log('update', data);
     return data;
   });
   return (
     <div>
-      <WritePost />
+      <WritePost productData={data} />
     </div>
   );
 }

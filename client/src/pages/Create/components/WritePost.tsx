@@ -25,8 +25,13 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
+import { IProductDetail } from '../../Update/model/IProductDetail';
 
-const WritePost = () => {
+const WritePost = ({
+  productData,
+}: {
+  productData: IProductDetail | string;
+}) => {
   const navigate = useNavigate();
   const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -35,8 +40,7 @@ const WritePost = () => {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm();
-
-  const [inputValues, setInputValues] = useState({
+  const defaultInputValues = {
     title: '',
     baseFee: '',
     feePerDay: '',
@@ -44,10 +48,14 @@ const WritePost = () => {
     minimumRentalPeriod: '',
     content: '',
     categoryIds: [] as string[],
-  });
+  };
+  const initialInputValue =
+    typeof productData === 'string' ? defaultInputValues : productData;
+  const [inputValues, setInputValues] = useState(initialInputValue);
   const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
     images: [],
   });
+  console.log(inputValues);
   //
   const handleQuillChange = (value: string) => {
     const strippedValue = value.replace(/<\/?[^>]+(>|$)/g, '');
@@ -59,14 +67,13 @@ const WritePost = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    let newValue: string | number;
+    let newValue: string | number | undefined;
 
     if (e.target.name === 'minimumRentalPeriod') {
       newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
     } else {
       newValue = inputValue;
     }
-
     setInputValues((prev) => ({
       ...prev,
       [e.target.name]: newValue,
@@ -129,6 +136,7 @@ const WritePost = () => {
             {...register('minimumRentalPeriod', {
               required: true,
             })}
+            value={inputValues?.minimumRentalPeriod}
             onChange={handleInputChange}
             className={
               inputValues.minimumRentalPeriod
