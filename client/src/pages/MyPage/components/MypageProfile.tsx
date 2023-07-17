@@ -81,7 +81,7 @@ function MypageProfile() {
   return (
     <MypageProfileWrapper>
       <MypageLeft>
-        <LendCard
+        {/* <LendCard
           lendCardData={{
             reservationId: '',
             status: '',
@@ -91,7 +91,7 @@ function MypageProfile() {
             endDate: '',
             image: '',
           }}
-        />
+        /> */}
         <MypageImage>
           <img src={ProfileImage0} alt="Profile Image" />
         </MypageImage>

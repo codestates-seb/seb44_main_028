@@ -356,7 +356,7 @@ export const ErrorWrapper = styled.div`
 `;
 
 //BorrowCard
-
+export const BorrowCardContainer = styled.div``;
 export const BorrowCardWrapper = styled.div`
   display: flex;
   align-items: center;

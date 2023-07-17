@@ -50,10 +50,10 @@ function ProfileEdit() {
   const [address, setAddress] = useState<string>('');
   const [newDisplayName, setNewDisplayName] = useState('');
 
-  useEffect(() => {
-    //회원 정보 조회 Read
-    updateUserInfo();
-  }, []);
+  // useEffect(() => {
+  //   //회원 정보 조회 Read
+  //   updateUserInfo();
+  // }, []);
 
   const onDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDisplayName(e.target.value);
@@ -113,23 +113,20 @@ function ProfileEdit() {
       }
       const file = e.target.files[0];
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('file', e.target.files[0]);
-
+      formData.append('imageFile', file);
+      console.log('formData', formData.append('imageFile', file));
       // 서버 연결 시
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/members/images/`,
+          `${process.env.REACT_APP_API_URL}/api/members/images`,
           formData,
           {
-            params: { memberId: 1, imageFile: formData },
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Access-Control-Allow-Headers': '*',
             },
           },
         );
-        console.log(response.data);
+        console.log('response', response.data);
       } catch (error) {
         console.error('이미지 업로드 중에 오류발생', error);
       }
@@ -172,28 +169,19 @@ function ProfileEdit() {
         const imageFormData = new FormData();
         if (inputRef.current && inputRef.current.files) {
           const file = inputRef.current.files[0];
-          imageFormData.append('file', file);
-
-          await axios.post(
-            `${process.env.REACT_APP_API_URL}/api/members/images/`,
-            imageFormData,
-            {
-              params: { memberId: 1 },
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            },
-          );
+          imageFormData.append('imageFile', file);
         }
 
         const response = await axios.patch(
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
             displayName: newDisplayName,
+            imamgeFile: imageFormData,
           },
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'multipart/form-data',
             },
           },
         );
@@ -208,7 +196,7 @@ function ProfileEdit() {
         console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
       }
     },
-    [newDisplayName, dispatch, navigate, userData, decrypt, updateUserInfo],
+    [newDisplayName, decrypt, updateUserInfo, navigate],
   );
 
   return (

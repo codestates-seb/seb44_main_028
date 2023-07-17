@@ -160,9 +160,9 @@ function BorrowList() {
           <div>데이터를 불러오는 중입니다...</div>
         )}
       </BorrowCardWrappre>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
-      </Modal>
+      </Modal> */}
       <Paging
         currentPage={currentPage}
         onPageChange={handlePageChange}
