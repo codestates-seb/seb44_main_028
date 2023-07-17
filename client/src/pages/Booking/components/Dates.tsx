@@ -9,8 +9,6 @@ function Dates({ calendar, reservationData }: CalendarProps) {
   const reservationState = useSelector((state: RootState) => state.reservation);
 
   const { year, month, date } = calendar;
-  // 지난 달 마지막 날짜를 구함
-  // const lastDateOfLastMonth: number = new Date(year, month - 1, 0).getDate();
   // 이번 달 마지막 날짜를 구함
   const lastDateOfThisMonth: number = new Date(year, month, 0).getDate();
   // 이번 달 1일이 무슨 요일인지 구함
