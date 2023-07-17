@@ -1,6 +1,8 @@
 package com.ftiland.travelrental.member.controller;
 
 import com.ftiland.travelrental.common.utils.MemberAuthUtils;
+import com.ftiland.travelrental.image.entity.ImageMember;
+import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
@@ -27,6 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final ImageService imageService;
 
     @Autowired
     private HttpServletRequest request;
@@ -57,5 +60,13 @@ public class MemberController {
         memberService.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/default")
+    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile){
+        ImageMember imageMember = imageService.storeImageMember(imageFile, 1L);
+        log.info("[MemberController] createImage : {}", imageMember.getImageUrl());
+
+        return ResponseEntity.ok(imageMember);
     }
 }

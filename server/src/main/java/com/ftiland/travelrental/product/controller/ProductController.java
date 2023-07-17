@@ -1,5 +1,7 @@
 package com.ftiland.travelrental.product.controller;
 
+import com.ftiland.travelrental.common.annotation.CurrentMember;
+import com.ftiland.travelrental.common.utils.MemberAuthUtils;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.entity.Member;
@@ -42,9 +44,9 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<CreateProduct.Response> createProduct(
             @Valid @RequestPart(required = false) CreateProduct.Request request,
-            @RequestPart(required = false) List<MultipartFile> images) {
+            @RequestPart(required = false) List<MultipartFile> images,
+            @CurrentMember Long memberId) {
         log.info("[ProductController] createProduct called");
-        Long memberId = 1L;
 
         CreateProduct.Response response = productService.createProduct(request, memberId);
 
@@ -57,17 +59,18 @@ public class ProductController {
 
     @PatchMapping("/{product-id}")
     public ResponseEntity<UpdateProduct.Response> updateProduct(@PathVariable("product-id") String productId,
-                                                                @Valid @RequestBody UpdateProduct.Request request) {
+                                                                @Valid @RequestBody UpdateProduct.Request request,
+                                                                @CurrentMember Long memberId) {
         log.info("[ProductController] updateProduct called");
-        Long memberId = 1L;
 
         return ResponseEntity.ok(productService.updateProduct(request, productId, memberId));
     }
 
     @DeleteMapping("/{product-id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("product-id") String productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable("product-id") String productId,
+                                              @CurrentMember Long memberId) {
         log.info("[ProductController] deleteProduct called");
-        Long memberId = 1L;
+
         productService.deleteProduct(productId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -75,9 +78,9 @@ public class ProductController {
     @GetMapping("/{product-id}")
     public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId,
                                                               HttpServletRequest request,
-                                                              HttpServletResponse response) {
+                                                              HttpServletResponse response,
+                                                              @CurrentMember Long memberId) {
         log.info("[ProductController] findProductDetail called");
-        Long memberId = 1L;
 
         ProductDetailDto productDetail = productService.findProductDetail(productId, memberId);
 
@@ -88,9 +91,10 @@ public class ProductController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<GetProducts> findProducts(@RequestParam int size, @RequestParam int page) {
+    public ResponseEntity<GetProducts> findProducts(@RequestParam int size,
+                                                    @RequestParam int page,
+                                                    @CurrentMember Long memberId) {
         log.info("[ProductController] findProducts called");
-        Long memberId = 1L;
 
         return ResponseEntity.ok(productService.findProducts(memberId, size, page));
     }
