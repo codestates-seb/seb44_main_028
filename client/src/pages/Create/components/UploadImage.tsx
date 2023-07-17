@@ -20,30 +20,40 @@ const UploadImages = ({
 }: UploadImagesProps) => {
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
+  const [imageURLs, setImageURLs] = useState<string[]>([]);
 
   const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
+    let newImages: File[] = [];
+    let newImageURLs: string[] = [];
     if (imageLists) {
-      let newImages: File[] = [];
       for (let i = 0; i < imageLists.length; i++) {
         newImages.push(imageLists[i]);
 
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        setShowImages((prev) => [...prev, currentImageUrl]);
+        console.log(currentImageUrl);
+        newImageURLs.push(currentImageUrl);
+        //setShowImages((prev) => [...prev, currentImageUrl]);
       }
-
+      console.log('업로드 ㅇ미ㅣ지', imageLists);
       if (newImages.length + showImages.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         setIsClick(true);
-        newImages = newImages.slice(0, MAX_IMAGE_COUNT - showImages.length);
+        //newImages = newImages.slice(0, MAX_IMAGE_COUNT - showImages.length);
+        const diff = showImages.length + newImages.length - MAX_IMAGE_COUNT;
+        console.log(showImages.length, newImages.length, diff);
+        newImages = newImages.slice(0, newImages.length - diff);
+        newImageURLs = newImageURLs.slice(0, newImageURLs.length - diff);
       }
 
       setUploadImages((prev) => ({ images: [...prev.images, ...newImages] }));
-      console.log(newImages);
+      setShowImages((prev) => [...prev, ...newImageURLs]);
+      console.log(showImages);
     }
   };
 
   const handleDeleteImage = (index: number) => {
+    URL.revokeObjectURL(imageURLs[index]);
     setShowImages((prev) => prev.filter((_, i) => i !== index));
     setUploadImages((prev) => {
       const updatedImages = [...prev.images];
@@ -52,7 +62,12 @@ const UploadImages = ({
     });
   };
   useEffect(() => {
+    // Store the URLs in the imageURLs state whenever the showImages state changes
+    setImageURLs(showImages);
+  }, [showImages]);
+  useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
+      showImages.slice(0, MAX_IMAGE_COUNT);
       setImageOverflow(true);
     } else {
       setImageOverflow(false);

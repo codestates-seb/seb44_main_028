@@ -11,7 +11,7 @@ import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import { CONTENT_DESCRIPTION } from '../constants';
+import { CONTENT_DESCRIPTION, MAX_IMAGE_COUNT } from '../constants';
 import { categories, productImages } from '../type';
 import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
@@ -60,6 +60,7 @@ const WritePost = ({
     typeof productData === 'string' ? defaultInputValues : productData;
   const [inputValues, setInputValues] = useState(initialInputValue);
 
+  // string[] -> File[]
   const createFilesFromUrls = (urls: string[]): File[] => {
     const files: File[] = [];
 
@@ -81,13 +82,13 @@ const WritePost = ({
     typeof productData === 'object'
       ? productData.productImages.slice().reverse()
       : [];
-  const [showImages, setShowImages] = useState<string[]>([
-    ...productShowImages,
-  ]);
+  const [showImages, setShowImages] = useState<string[]>(
+    [...productShowImages].slice(0, MAX_IMAGE_COUNT),
+  );
   const [uploadImages, setUploadImages] = useState<{
     images: File[];
   }>({
-    images: [...productDataImages],
+    images: [...productDataImages].slice(0, MAX_IMAGE_COUNT),
   });
   console.log(uploadImages);
   //
