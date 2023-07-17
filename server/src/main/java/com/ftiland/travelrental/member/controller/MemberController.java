@@ -9,7 +9,11 @@ import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
+=======
+import org.springframework.data.repository.query.Param;
+>>>>>>> 94a6125 (:sparkle: 이미지 추가)
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +43,16 @@ public class MemberController {
     }
 
     @PatchMapping
+<<<<<<< HEAD
     public ResponseEntity<MemberDto.Response> patchMember(@Valid @RequestBody MemberPatchDto.Request patchRequest) {
+=======
+    public ResponseEntity<MemberDto.Response> patchMember(@RequestHeader("Authorization") String authorizationHeader,
+                                                          @Param("displayName") String displayName, @Param("imageFile")MultipartFile imageFile) {
+>>>>>>> 94a6125 (:sparkle: 이미지 추가)
 
         Long memberId = MemberAuthUtils.getMemberId(request);
 
+<<<<<<< HEAD
         MemberDto.Response response = memberService.updateMember(patchRequest, memberId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -53,6 +63,11 @@ public class MemberController {
         Long memberId = MemberAuthUtils.getMemberId(request);
 
         memberService.deleteMember(memberId);
+=======
+            MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberIdLong);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+>>>>>>> 94a6125 (:sparkle: 이미지 추가)
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
