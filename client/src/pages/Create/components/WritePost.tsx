@@ -128,12 +128,6 @@ const WritePost = ({
       ...inputValues,
       categories: [...selectedCategory],
     });
-    // if (typeof productData === 'object') {
-    //   const categoryIds = productData.categories.map(
-    //     (categories as categories[]) => categories.categoryId,
-    //   );
-    //   setSelectedCategory(categoryIds);
-    // }
   }, [productData, UploadImage]);
 
   return (
