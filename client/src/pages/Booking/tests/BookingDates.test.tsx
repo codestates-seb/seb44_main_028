@@ -7,7 +7,7 @@ import BookingDates from '../components/BookingDates';
 
 describe('BookingDates', () => {
   test('renders BookingDates component', () => {
-    // 가짜 store를 생성.
+    // store를 생성.
     const store = configureStore({
       reducer: rootReducer,
     });
