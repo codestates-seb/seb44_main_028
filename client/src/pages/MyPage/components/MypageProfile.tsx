@@ -19,8 +19,10 @@ import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import LendCard from '../../../common/components/MypageCard/LendCard';
+import useGeoLocation from '../utils/customHooks/useGeoLocation';
 
 function MypageProfile() {
+  const location = useGeoLocation();
   const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);

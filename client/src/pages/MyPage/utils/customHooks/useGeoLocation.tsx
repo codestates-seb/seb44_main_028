@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ILocation } from '../model/ILocation';
-const Location = () => {
+import { ILocation } from '../../model/ILocation';
+const useGeoLocation = () => {
   const [location, setLocation] = useState<ILocation>({
     loaded: false,
     coordinates: { lat: 0, lng: 0 },
@@ -37,4 +37,4 @@ const Location = () => {
   return location;
 };
 
-export default Location;
+export default useGeoLocation;
