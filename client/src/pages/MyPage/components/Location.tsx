@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LocationContainer } from '../style';
+import { LocationContainer, TownBtn } from '../style';
 import { ILocation } from '../model/ILocation';
 const Location = () => {
   const [location, setLocation] = useState<ILocation>({

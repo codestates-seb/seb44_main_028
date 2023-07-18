@@ -8,6 +8,7 @@ import {
   MypageLeft,
   EvaluationScore,
   Location,
+  TownBtn,
 } from '../style';
 import ProfileImage0 from '../../../asset/my_page/myprofile_adobe_express.svg';
 import GradeIcon from './GradeIcon';
@@ -91,6 +92,7 @@ function MypageProfile() {
             </span>
           </div>
           <Location>
+            <TownBtn>내 동네 설정</TownBtn>
             <span>
               <FaMapMarkerAlt />
             </span>

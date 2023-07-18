@@ -228,7 +228,7 @@ function ProfileEdit() {
             <InputBox>
               <input type="text" placeholder="닉네임" />
             </InputBox>
-            <TownBtn>내 동네 설정</TownBtn>
+            {/* <TownBtn>내 동네 설정</TownBtn> */}
           </InputWrapper>
         </TextWrapper>
       </ProfileEditWrapper>
