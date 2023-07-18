@@ -141,28 +141,19 @@ public class ProductService {
     }
 
     @Cacheable(key = "#productId", value = "products")
-    public ProductDetailDto findProductDetail(String productId, Long memberId) {
+    public ProductDetailDto findProductDetail(String productId) {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
-        // 로그인 안된 사용자일 경우
-        boolean isOwner = false;
-        if (!Objects.isNull(memberId)) {
-            Member member = memberService.findMember(memberId);
-            if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
-                isOwner = true;
-            }
-        }
-
         List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
 
-        List<String> images = imageService.findImageProduct(productId).stream()
+        List<String> images = imageService.findImageProducts(productId).stream()
                 .map(image -> image.getImageUrl())
                 .collect(Collectors.toList());
 
         String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
 
-        return ProductDetailDto.from(product, categories, images, userImage, isOwner);
+        return ProductDetailDto.from(product, categories, images, userImage);
     }
 
     public GetProducts findProducts(Long memberId, int size, int page) {
