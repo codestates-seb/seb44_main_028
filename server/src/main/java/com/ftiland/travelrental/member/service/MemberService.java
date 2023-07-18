@@ -76,7 +76,9 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
         ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElse(null);
 
-        if (imageMemberRepository.findByMemberId(memberId).isPresent()) {
+
+        if(imageMember!=null){
+
             imageService.deleteImageMember(imageMember.getImageId());
         }
 
