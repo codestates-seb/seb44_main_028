@@ -54,6 +54,10 @@ function MonthSwitchBtns() {
     dispatch(
       clickRightArrow([
         {
+          startDate: '2023-08-22',
+          endDate: '2023-09-01',
+        },
+        {
           startDate: '2023-09-15',
           endDate: '2023-09-20',
         },
