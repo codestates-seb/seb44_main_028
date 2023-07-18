@@ -25,7 +25,7 @@ import static com.ftiland.travelrental.common.exception.ExceptionCode.MEMBER_NOT
 @Service
 public class MemberService {
 
-    @Value("image.default.path")
+    @Value("${image.default.path}")
     private String defaultImageUrl;
 
     private final MemberRepository memberRepository;
@@ -33,7 +33,7 @@ public class MemberService {
     private final ImageService imageService;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository,ImageService imageService,ImageMemberRepository imageMemberRepository) {
+    public MemberService(MemberRepository memberRepository, ImageService imageService, ImageMemberRepository imageMemberRepository) {
         this.memberRepository = memberRepository;
         this.imageMemberRepository = imageMemberRepository;
         this.imageService = imageService;
@@ -59,32 +59,32 @@ public class MemberService {
         return member.isPresent();
     }
 
-    public Member findMember(Long memberId){
+    public Member findMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    public Member findMemberByEmail(String email){
+    public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
 
-    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
+    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile, Long memberId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
         ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElse(null);
 
-        if(imageMemberRepository.findByMemberId(memberId)!=null){
+        if (imageMemberRepository.findByMemberId(memberId).isPresent()) {
             imageService.deleteImageMember(imageMember.getImageId());
         }
 
-        String imageUrl = imageService.storeImageMember(imageFile,memberId).getImageUrl();
+        String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
         Optional.ofNullable(displayName)
                 .ifPresent(name -> member.setDisplayName(name));
         memberRepository.save(member);
-        return MemberDto.Response.from(member,imageUrl);
+        return MemberDto.Response.from(member, imageUrl);
     }
 
     public void deleteMember(Long memberId) {
