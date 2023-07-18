@@ -60,7 +60,7 @@ export type ItemCardProps = {
   category: number[];
   address: string;
   minRental: number;
-  images: string;
+  image: string;
 };
 
 // export type BorrowCardProps = {
