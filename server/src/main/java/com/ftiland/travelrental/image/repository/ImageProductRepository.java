@@ -14,7 +14,9 @@ public interface ImageProductRepository extends JpaRepository<ImageProduct,Strin
     @Query("SELECT i FROM ImageProduct i WHERE i.product.productId =:productId")
     ArrayList<ImageProduct> findByProductId(@Param("productId") String productId);
 
-    ImageProduct findFirstByProductProductId(String productId);
+    List<ImageProduct> findByProductProductIdOrderByCreatedAtAsc(String productId);
+
+    ImageProduct findFirstByProductProductIdOrderByCreatedAtAsc(String productId);
 
     ImageProduct findFirstByProductOrderByCreatedAtAsc(Product product);
 }

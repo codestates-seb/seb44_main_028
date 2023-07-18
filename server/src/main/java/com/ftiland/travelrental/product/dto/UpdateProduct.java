@@ -35,6 +35,7 @@ public class UpdateProduct {
     public static class Response {
 
         private String productId;
+        private List<String> imageProductIds;
 
         public static Response from(Product product) {
             return Response.builder()
