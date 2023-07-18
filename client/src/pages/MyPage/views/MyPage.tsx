@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ParentTap from '../components/ParentTap';
 import MypageProfile from '../components/MypageProfile';
 import { ProfileWrapper, EditWrapper, ProfileDataWrapper } from '../style';
@@ -18,6 +18,7 @@ const MyPage = () => {
   const isLoggedIn = useSelector(
     (state: RootState) => state.userInfo.isLoggedIn,
   );
+  console.log('Mypage userData', userData);
   console.log('로그인 상태인가?', isLoggedIn);
 
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
@@ -44,12 +45,11 @@ const MyPage = () => {
           },
         );
         setProfileData(response.data);
+        console.log('setProfileData:', response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-
-    fetchUserData();
   }, []);
 
   const handleEditProfile = () => {

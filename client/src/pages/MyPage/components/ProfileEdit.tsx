@@ -5,6 +5,7 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from 'react';
+import { QueryClient, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import {
   UploadBtn,
@@ -30,11 +31,44 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function ProfileEdit() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const decrypt = useDecryptToken();
   const [previewImage, setPreviewImage] = useState<string | null>(profileImage);
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [newDisplayName, setNewDisplayName] = useState<string>('');
+
+  const { data: userData } = useGetMe(); // Use the useGetMe hook to fetch user information
+  console.log('userData', userData);
+
+  const fetchUpdatedUserInfo = useCallback(async () => {
+    try {
+      queryClient.invalidateQueries('me');
+      const encryptedAccessToken: string | null =
+        localStorage.getItem(ACCESS_TOKEN);
+      let accessToken: string | null = null;
+      if (encryptedAccessToken) {
+        accessToken = decrypt(encryptedAccessToken);
+      } else {
+        return;
+      }
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6Mywic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ._VPRKi0CPI6qbxUu-QSRoB0KBOSV7OAaIsCNsoYpHikU4DOg8YLn2967MR5iVaWpNjZ6eMyDR5dTgSS3ir1wWA`,
+          },
+        },
+      );
+      const updatedUserInfo = response.data;
+      setNewDisplayName(updatedUserInfo.displayName);
+      setPreviewImage(updatedUserInfo.profileImageUrl); //이미지 업데이트
+      console.log('업데이트 유지정보:', updatedUserInfo);
+    } catch (error) {
+      console.error('업데이트된 유저정보를 가져오는데 실패했습니다.', error);
+    }
+  }, [decrypt]);
 
   const onUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -101,39 +135,12 @@ function ProfileEdit() {
       alert('정보가 수정되었습니다.');
       console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
 
+      await fetchUpdatedUserInfo();
       navigate('/mypage');
     } catch (error) {
       console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
     }
-    await fetchUpdatedUserInfo();
   };
-
-  const fetchUpdatedUserInfo = useCallback(async () => {
-    try {
-      const encryptedAccessToken: string | null =
-        localStorage.getItem(ACCESS_TOKEN);
-      let accessToken: string | null = null;
-      if (encryptedAccessToken) {
-        accessToken = decrypt(encryptedAccessToken);
-      } else {
-        return;
-      }
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/members`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      const updatedUserInfo = response.data;
-      setNewDisplayName(updatedUserInfo.displayName);
-      setPreviewImage(updatedUserInfo.profileImageUrl); //이미지 업데이트
-      console.log('업데이트 유지정보:', updatedUserInfo);
-    } catch (error) {
-      console.error('업데이트된 유저정보를 가져오는데 실패했습니다.', error);
-    }
-  }, [decrypt]);
 
   return (
     <MyPageEdit>
