@@ -1,6 +1,8 @@
 package com.ftiland.travelrental.member.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
+import com.ftiland.travelrental.image.entity.ImageMember;
+import com.ftiland.travelrental.image.repository.ImageMemberRepository;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.dto.MemberPatchDto;
@@ -22,11 +24,13 @@ import static com.ftiland.travelrental.common.exception.ExceptionCode.MEMBER_NOT
 public class MemberService {
     private final MemberRepository memberRepository;
     private final ImageService imageService;
+    private final ImageMemberRepository imageMemberRepository;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository,ImageService imageService) {
+    public MemberService(MemberRepository memberRepository,ImageService imageService,ImageMemberRepository imageMemberRepository) {
         this.memberRepository = memberRepository;
         this.imageService = imageService;
+        this.imageMemberRepository = imageMemberRepository;
     }
 
     public Member createMember(Member member) {
@@ -56,9 +60,14 @@ public class MemberService {
 
     public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
 
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElse(null);
+
+        if(imageMemberRepository.findByMemberId(memberId)!=null){
+            imageService.deleteImageMember(imageMember.getImageId());
+        }
+
         String imageUrl = imageService.storeImageMember(imageFile,memberId).getImageUrl();
         Optional.ofNullable(displayName)
                 .ifPresent(name -> member.setDisplayName(name));
@@ -78,8 +87,8 @@ public class MemberService {
     }
 
     public void deleteMember(Long memberId) {
-        Member member = findMember(memberId);
 
+        Member member = findMember(memberId);
         memberRepository.deleteById(memberId);
     }
 
