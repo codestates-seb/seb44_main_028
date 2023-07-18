@@ -4,16 +4,21 @@ import axios from 'axios';
 import Modal from './Modal';
 import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
 import { borrowCardProps } from '../../../common/type';
-import { BORROWCARD_DATA } from '../constants';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 function BorrowList() {
+  const decrypt = useDecryptToken();
+  const { data: userData } = useGetMe();
+
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
   // const [items, setItems] = useState<borrowCardProps[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(6);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   // const [totalItemsCount, setTotalItemsCount] = useState(BORROWCARD_DATA.length);
@@ -36,6 +41,14 @@ function BorrowList() {
     // setItems(slicedItems);
     // setTotalItemsCount(filteredItems.length);
     // };
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    let accessToken: string | null = null;
+    if (encryptedAccessToken) {
+      accessToken = decrypt(encryptedAccessToken);
+    } else {
+      return;
+    }
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/reservations`,
@@ -44,6 +57,9 @@ function BorrowList() {
             size: itemsPerPage,
             page: currentPage,
             status: currentStatus,
+          },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
@@ -71,26 +87,26 @@ function BorrowList() {
   const handleReservationRequest = () => {
     //예약 요청을 누르면 실행되는 함수
     setCurrentStatus('REQUESTED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('예약요청:', items);
   };
   const handleReservedItems = () => {
     setCurrentStatus('RESERVED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('예약확정:', items);
   };
   const handleInUseItems = () => {
     setCurrentStatus('INUSE');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('사용중인 플레이팩:', items);
   };
 
   const handleCompletedItems = () => {
     setCurrentStatus('COMPLETED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('사용 완료한 플레이팩:', items);
     // handlePageChange(currentPage);
@@ -98,7 +114,7 @@ function BorrowList() {
   };
   const handleCanceledItems = () => {
     setCurrentStatus('CANCELED');
-    setCurrentPage(1);
+    setCurrentPage(0);
     setIsOpen(true);
     console.log('예약 취소한 내역:', items);
     // handlePageChange(currentPage);
@@ -157,9 +173,9 @@ function BorrowList() {
           <div>데이터를 불러오는 중입니다...</div>
         )}
       </BorrowCardWrappre>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
-      </Modal>
+      </Modal> */}
       <Paging
         currentPage={currentPage}
         onPageChange={handlePageChange}

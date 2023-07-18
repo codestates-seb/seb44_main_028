@@ -34,7 +34,12 @@ function Header() {
     }
     navigate('/login');
   };
-
+  const handelSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const searchContent = (e.target as HTMLInputElement).value;
+    if (e.key === 'Enter') {
+      navigate(`/itemlist/search/${searchContent}`);
+    }
+  };
   return (
     <HeaderContainer>
       <LogoWrapper>
@@ -50,7 +55,7 @@ function Header() {
         </ol>
         <NavIconWrapper>
           <NavSearchForm isClick={isClick}>
-            <input type="text" />
+            <input type="text" onKeyDown={handelSearch} />
             <MdSearch onClick={handleClick} />
           </NavSearchForm>
           <NavSendIconWrapper>

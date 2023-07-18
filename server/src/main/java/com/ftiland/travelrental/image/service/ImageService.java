@@ -146,6 +146,12 @@ public class ImageService {
         return imageMemberRepository.save(createdImage);
     }
 
+    public void deleteImageProducts(String productId) {
+        ArrayList<ImageProduct> images = imageProductRepository.findByProductId(productId);
+        // 파일 확인
+        images.forEach(image -> imageProductRepository.delete(image));
+    }
+
     // 이미지 삭제(상품)
     public void deleteImageProduct(String imageId) {
         // 파일 확인
@@ -175,8 +181,13 @@ public class ImageService {
         return imageProducts;
     }
 
+    // 상품 이미지
+    public List<ImageProduct> findImageProducts(String productId) {
+        return imageProductRepository.findByProductProductIdOrderByCreatedAtAsc(productId);
+    }
+
     public ImageProduct findFirstImageProduct(String productId){
-        return imageProductRepository.findFirstByProductProductId(productId);
+        return imageProductRepository.findFirstByProductProductIdOrderByCreatedAtAsc(productId);
     }
 
     // 맴버 이미지
@@ -187,7 +198,6 @@ public class ImageService {
         return imageMember;
     }
 }
-
 
 
 

@@ -1,5 +1,6 @@
 package com.ftiland.travelrental.member.controller;
 
+import com.ftiland.travelrental.common.annotation.CurrentMember;
 import com.ftiland.travelrental.member.dto.MemberDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberLocationService;
@@ -18,14 +19,14 @@ public class MemberLocationController {
     private MemberLocationService memberLocationService;
 
     @Autowired
-    public MemberLocationController(MemberLocationService memberLocationService){
+    public MemberLocationController(MemberLocationService memberLocationService) {
         this.memberLocationService = memberLocationService;
     }
 
     // 위치 갱신
     @PatchMapping
-    public ResponseEntity updateLocation(@Param("memberId")Long memberId,@Param("latitude") double latitude,@Param("longitude") double longitude){
-        Member member = memberLocationService.updateLocation(memberId,latitude,longitude);
+    public ResponseEntity updateLocation(@CurrentMember Long memberId, @Param("latitude") double latitude, @Param("longitude") double longitude) {
+        Member member = memberLocationService.updateLocation(memberId, latitude, longitude);
         MemberDto.Response response = MemberDto.Response.from(member);
 
         return new ResponseEntity(response, HttpStatus.OK);

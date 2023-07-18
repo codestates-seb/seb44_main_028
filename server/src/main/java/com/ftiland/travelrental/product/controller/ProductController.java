@@ -1,7 +1,8 @@
 package com.ftiland.travelrental.product.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.common.annotation.CurrentMember;
-import com.ftiland.travelrental.common.utils.MemberAuthUtils;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.entity.Member;
@@ -43,8 +44,8 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<CreateProduct.Response> createProduct(
-            @Valid @RequestPart(required = false) CreateProduct.Request request,
-            @RequestPart(required = false) List<MultipartFile> images,
+            @Valid @RequestPart CreateProduct.Request request,
+            @RequestPart List<MultipartFile> images,
             @CurrentMember Long memberId) {
         log.info("[ProductController] createProduct called");
 
@@ -59,11 +60,19 @@ public class ProductController {
 
     @PatchMapping("/{product-id}")
     public ResponseEntity<UpdateProduct.Response> updateProduct(@PathVariable("product-id") String productId,
-                                                                @Valid @RequestBody UpdateProduct.Request request,
+                                                                @Valid @RequestPart(required = false) UpdateProduct.Request request,
+                                                                @RequestPart(required = false) List<MultipartFile> images,
                                                                 @CurrentMember Long memberId) {
         log.info("[ProductController] updateProduct called");
 
-        return ResponseEntity.ok(productService.updateProduct(request, productId, memberId));
+        UpdateProduct.Response response = productService.updateProduct(request, productId, memberId);
+
+        Optional.ofNullable(images)
+                .ifPresent(i -> imageService.deleteImageProducts(productId));
+        Optional.ofNullable(images)
+                .ifPresent(i -> imageService.storeImageProducts(i, productId));
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{product-id}")
@@ -78,11 +87,9 @@ public class ProductController {
     @GetMapping("/{product-id}")
     public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId,
                                                               HttpServletRequest request,
-                                                              HttpServletResponse response,
-                                                              @CurrentMember(required = false) Long memberId) {
+                                                              HttpServletResponse response) {
         log.info("[ProductController] findProductDetail called");
-
-        ProductDetailDto productDetail = productService.findProductDetail(productId, memberId);
+        ProductDetailDto productDetail = productService.findProductDetail(productId);
 
         // 조회수 로직
         countView(productId, request, response);
@@ -157,9 +164,9 @@ public class ProductController {
             @RequestParam("categoryId") String categoryId,
             @RequestParam("distance") double distance,
             @RequestParam("sortBy") String sortBy,
-            int page,
-            int size
-            ) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -191,7 +198,7 @@ public class ProductController {
         }
 
         if (oldCookie != null) {
-            if (!oldCookie.getValue().contains("["+ productId +"]")) {
+            if (!oldCookie.getValue().contains("[" + productId + "]")) {
                 productService.updateView(productId);
                 oldCookie.setValue(oldCookie.getValue() + "_[" + productId + "]");
                 oldCookie.setPath("/");
@@ -206,7 +213,6 @@ public class ProductController {
             response.addCookie(newCookie);
         }
     }
-
     private List<ProductDto> convertToProductDtoList(List<Product> products) {
         return products.stream()
                 .map(product -> ProductDto.from(product, getImageUrlForProduct(product)))

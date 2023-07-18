@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.MEMBER_NOT_FOUND;
 
@@ -31,7 +32,8 @@ public class MemberService {
     private final ImageMemberRepository imageMemberRepository;
     private final ImageService imageService;
 
-    public MemberService(MemberRepository memberRepository, ImageMemberRepository imageMemberRepository, ImageService imageService) {
+    @Autowired
+    public MemberService(MemberRepository memberRepository,ImageService imageService,ImageMemberRepository imageMemberRepository) {
         this.memberRepository = memberRepository;
         this.imageMemberRepository = imageMemberRepository;
         this.imageService = imageService;
@@ -42,16 +44,14 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
-        if(!existsEmail(member.getEmail())) {
-            Member savedMember = memberRepository.save(member);
-            ImageMember imageMember = new ImageMember();
-            imageMember.setImageUrl(defaultImageUrl);
-            imageMember.setMember(savedMember);
-            imageMemberRepository.save(imageMember);
-            return savedMember;
-        }
 
-        return null;
+        Member savedMember = memberRepository.save(member);
+        ImageMember imageMember = new ImageMember();
+        imageMember.setImageUrl(defaultImageUrl);
+        imageMember.setMember(savedMember);
+        imageMember.setImageId(UUID.randomUUID().toString());
+        imageMemberRepository.save(imageMember);
+        return savedMember;
     }
 
     public boolean existsEmail(String email) {
@@ -69,20 +69,27 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
-    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile, Long memberId) {
 
+    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile ,Long memberId) {
 
-        Member member = findMember(memberId);
-        String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
-        member.setDisplayName(displayName);
-        member.setImageUrl(imageUrl);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
+        ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElse(null);
+
+        if(imageMemberRepository.findByMemberId(memberId)!=null){
+            imageService.deleteImageMember(imageMember.getImageId());
+        }
+
+        String imageUrl = imageService.storeImageMember(imageFile,memberId).getImageUrl();
+        Optional.ofNullable(displayName)
+                .ifPresent(name -> member.setDisplayName(name));
         memberRepository.save(member);
-        return MemberDto.Response.from(member, imageUrl);
+        return MemberDto.Response.from(member,imageUrl);
     }
 
     public void deleteMember(Long memberId) {
-        Member member = findMember(memberId);
 
+        Member member = findMember(memberId);
         memberRepository.deleteById(memberId);
     }
 
