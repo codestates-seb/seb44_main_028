@@ -13,16 +13,12 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 const MyPage = () => {
   const decrypt = useDecryptToken();
-  const { data: userData } = useGetMe();
-  console.log('userData', userData);
   const navigator = useNavigate();
-  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-  console.log('유저 정보gg', userInfo);
+  const { data: userData } = useGetMe();
   const isLoggedIn = useSelector(
     (state: RootState) => state.userInfo.isLoggedIn,
   );
   console.log('로그인 상태인가?', isLoggedIn);
-  console.log('유저 정보', userInfo);
 
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
