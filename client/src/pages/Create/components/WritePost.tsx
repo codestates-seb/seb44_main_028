@@ -33,27 +33,27 @@ const WritePost = ({
 }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  // Effect to decrypt the access token on component mount
-  // useEffect(() => {
-  //   const decrypt = useDecryptToken();
-  //   const encryptedAccessToken: string | null =
-  //     localStorage.getItem(ACCESS_TOKEN);
-  //   if (encryptedAccessToken) {
-  //     const decryptedToken = decrypt(encryptedAccessToken);
-  //     setAccessToken(decryptedToken);
-  //   } else {
-  //     return;
-  //   }
-  // }, []);
-  const decrypt = useDecryptToken();
-  const encryptedAccessToken: string | null =
-    localStorage.getItem(ACCESS_TOKEN);
-  if (encryptedAccessToken) {
-    const decryptedToken = decrypt(encryptedAccessToken);
-    setAccessToken(decryptedToken);
-  } else {
-    return null;
-  }
+  useEffect(() => {
+    const decrypt = useDecryptToken();
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    if (encryptedAccessToken) {
+      const decryptedToken = decrypt(encryptedAccessToken);
+      setAccessToken(decryptedToken);
+    } else {
+      return;
+    }
+  }, []);
+  // const decrypt = useDecryptToken();
+  // const encryptedAccessToken: string | null =
+  //   localStorage.getItem(ACCESS_TOKEN);
+  // if (encryptedAccessToken) {
+  //   const decryptedToken = decrypt(encryptedAccessToken);
+  //   setAccessToken(decryptedToken);
+  // } else {
+  //   return null;
+  // }
+
   const navigate = useNavigate();
   const params = useParams();
   const categoryIds =
@@ -183,21 +183,23 @@ const WritePost = ({
   );
 
   const onSubmit = () => {
-    const formData = new FormData();
-    const blobJson = new Blob([JSON.stringify(inputValues)], {
-      type: 'application/json',
-    });
-    formData.append('request', blobJson);
-    console.log(inputValues);
-    for (const image of uploadImages.images) {
-      formData.append('images', image);
-    }
-    if (typeof productData === 'object') {
-      console.log('a');
-      updatePost.mutate(formData);
-    } else if (typeof productData === 'string') {
-      console.log('b');
-      newPost.mutate(formData);
+    if (inputValues.content === '' || selectedCategory.length === 0) {
+      return null;
+    } else {
+      const formData = new FormData();
+      const blobJson = new Blob([JSON.stringify(inputValues)], {
+        type: 'application/json',
+      });
+      formData.append('request', blobJson);
+      console.log(inputValues);
+      for (const image of uploadImages.images) {
+        formData.append('images', image);
+      }
+      if (typeof productData === 'object') {
+        updatePost.mutate(formData);
+      } else if (typeof productData === 'string') {
+        newPost.mutate(formData);
+      }
     }
   };
   useEffect(() => {
