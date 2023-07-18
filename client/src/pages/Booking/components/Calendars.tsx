@@ -1,14 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Calendar from './Calendar';
-import { RootState } from '../../../common/store/RootStore';
-import {
-  CalendarContainer,
-  Btn,
-  ButtonWrapper,
-  CalendarWrapper,
-} from '../style';
 import MonthSwitchBtns from './MonthSwitchBtns';
 import { clearReservationDates } from '../store/ReservationDateStore';
+import { CalendarContainer, CalendarWrapper } from '../style';
+import { RootState } from '../../../common/store/RootStore';
 
 function Calendars() {
   const dispatch = useDispatch();
@@ -24,8 +19,6 @@ function Calendars() {
   const reservationData2 = useSelector(
     (state: RootState) => state.monthlyReservation.reservationsDate2,
   );
-  console.log('1번째 달력', reservationData1);
-  console.log('2번째 달력', reservationData2);
 
   const handleClearReservation = () => {
     dispatch(clearReservationDates());
@@ -35,8 +28,14 @@ function Calendars() {
     <CalendarContainer>
       <MonthSwitchBtns />
       <CalendarWrapper>
-        <Calendar calendar={current} reservationData={reservationData1} />
-        <Calendar calendar={next} reservationData={reservationData2} />
+        <Calendar
+          calendar={current}
+          reservationDataFromServer={reservationData1}
+        />
+        <Calendar
+          calendar={next}
+          reservationDataFromServer={reservationData2}
+        />
       </CalendarWrapper>
       <button onClick={handleClearReservation}>시작 날짜 재설정</button>
     </CalendarContainer>

@@ -17,6 +17,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import LendCard from '../../../common/components/MypageCard/LendCard';
 
 function MypageProfile() {
   const decrypt = useDecryptToken();

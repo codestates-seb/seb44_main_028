@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { EachDatesProps } from './type';
+import { DateType, EachDatesProps } from './type';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../common/store/RootStore';
 import { colorPalette } from '../../common/utils/enum/colorPalette';
@@ -138,7 +138,7 @@ export const DatesContainer = styled.tbody`
 `;
 
 const isWithinReservationPeriods = (
-  dateInfo: { year: number; month: number; date: number },
+  dateInfo: DateType,
   reservationData: StartEndDateProps[],
 ) => {
   const currentDate = new Date(
@@ -171,7 +171,7 @@ export const EachDate = styled.th<EachDatesProps>`
       date: Number(props.children),
     };
 
-    if (isWithinReservationPeriods(dateInfo, props.reservationData)) {
+    if (isWithinReservationPeriods(dateInfo, props.reservationDataFromServer)) {
       return css`
         color: ${colorPalette.lightColor};
         background-color: ${colorPalette.grayColor};
@@ -223,7 +223,7 @@ export const EachDate = styled.th<EachDatesProps>`
       month: props.current.month,
       date: Number(props.children),
     };
-    if (isWithinReservationPeriods(dateInfo, props.reservationData)) {
+    if (isWithinReservationPeriods(dateInfo, props.reservationDataFromServer)) {
       return colorPalette.grayColor;
     }
     const start = useSelector(

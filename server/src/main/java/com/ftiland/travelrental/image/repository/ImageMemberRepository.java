@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ImageMemberRepository extends JpaRepository<ImageMember,String> {
     @Query("SELECT i FROM ImageMember i WHERE i.member.memberId =:memberId")
     Optional<ImageMember> findByMemberId(@Param("memberId") Long memberId);
+
 }

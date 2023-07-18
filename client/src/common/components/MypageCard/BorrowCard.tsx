@@ -5,13 +5,14 @@ import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
 import axios from 'axios';
 import {
-  CardWrapper,
+  BorrowCardWrapper,
   DatesWrapper,
   ButtonWapper,
   TitleWrapper,
   ImgWrapper,
   ContentWrapper,
   ItemImage,
+  BorrowCardContainer,
 } from '../../style/style';
 
 const BorrowCard = ({
@@ -39,42 +40,44 @@ const BorrowCard = ({
 
   useEffect(() => {
     const fetchDates = () => {
-      const start = '2023.07.09';
-      const end = '2023.07.11';
-      setStartDate(start);
-      setEndDate(end);
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + 7);
+      setStartDate(startDate.toISOString().split('T')[0]);
+      setEndDate(endDate.toISOString().split('T')[0]);
     };
     fetchDates();
   }, []);
-
   return (
     <>
-      <CardWrapper>
-        <ImgWrapper>
-          <ItemImage src={borrowCardData.images} />
-        </ImgWrapper>
-        <ContentWrapper>
-          <TitleWrapper>{borrowCardData.title}</TitleWrapper>
-          <DatesWrapper>
-            <div>예약기간</div>
-            <div>{`${startDate} - ${endDate}`}</div>
-          </DatesWrapper>
-          <ButtonWapper>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.deepMintColor}
-            >
-              예약 확정
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.cancleButtonColor}
-            >
-              거절 하기
-            </DefaultBtn>
-          </ButtonWapper>
-        </ContentWrapper>
-      </CardWrapper>
+      <BorrowCardContainer>
+        <BorrowCardWrapper>
+          <ImgWrapper>
+            <ItemImage src={borrowCardData.images} />
+          </ImgWrapper>
+          <ContentWrapper>
+            <TitleWrapper>{borrowCardData.title}</TitleWrapper>
+            <DatesWrapper>
+              <div>예약기간</div>
+              {borrowCardData.status === 'CANCELED' ? (
+                <div>{`${startDate}`}</div>
+              ) : (
+                <div>{`${startDate} - ${endDate}`}</div>
+              )}
+            </DatesWrapper>
+            {borrowCardData.status === 'REQUESTED' && (
+              <ButtonWapper>
+                <DefaultBtn
+                  color={colorPalette.whiteColor}
+                  backgroundColor={colorPalette.cancleButtonColor}
+                >
+                  취소요청
+                </DefaultBtn>
+              </ButtonWapper>
+            )}
+          </ContentWrapper>
+        </BorrowCardWrapper>
+      </BorrowCardContainer>
     </>
   );
 };

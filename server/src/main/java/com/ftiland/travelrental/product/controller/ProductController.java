@@ -1,14 +1,12 @@
 package com.ftiland.travelrental.product.controller;
 
-import com.ftiland.travelrental.common.annotation.CurrentMember;
-import com.ftiland.travelrental.common.utils.MemberAuthUtils;
-import com.ftiland.travelrental.image.entity.ImageProduct;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.entity.Member;
-import com.ftiland.travelrental.member.service.MemberService;
-import com.ftiland.travelrental.product.dto.*;
+import com.ftiland.travelrental.product.dto.CreateProduct;
+import com.ftiland.travelrental.product.dto.UpdateProduct;
 import com.ftiland.travelrental.product.entity.Product;
-import com.ftiland.travelrental.product.service.ProductCategoryService;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -211,19 +209,5 @@ public class ProductController {
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
-    }
-
-    private List<ProductDto> convertToProductDtoList(List<Product> products) {
-        return products.stream()
-                .map(product -> ProductDto.from(product, getImageUrlForProduct(product)))
-                .collect(Collectors.toList());
-    }
-
-    private String getImageUrlForProduct(Product product) {
-        ImageProduct imageProduct = imageService.findFirstImageProduct(product.getProductId());
-        if (imageProduct != null) {
-            return imageProduct.getImageUrl();
-        }
-        return null;
     }
 }

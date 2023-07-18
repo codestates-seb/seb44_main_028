@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.Map;
+
 
 @Slf4j
 @RequestMapping("/api/members")
@@ -50,11 +49,9 @@ public class MemberController {
         MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberId);
             return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
       
     @DeleteMapping
     public ResponseEntity<Void> deleteMember() {
-
 
         Long memberId = MemberAuthUtils.getMemberId(request);
         memberService.deleteMember(memberId);
