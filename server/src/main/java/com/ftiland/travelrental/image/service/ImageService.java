@@ -2,6 +2,7 @@ package com.ftiland.travelrental.image.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
@@ -35,8 +36,8 @@ public class ImageService {
 
     private ImageMapper imageMapper;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String buckName;
+    //@Value("${cloud.aws.s3.bucket}")
+    private String buckName="seb44main028image-bucket";
 
     private final AmazonS3 amazonS3;
 
@@ -96,7 +97,8 @@ public class ImageService {
 
     // 이미지 업로드(상품)
     public ImageProduct storeImageProduct(MultipartFile file, String productId) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
 
         try {
             // 파일이 비었을 때 예외처리
@@ -121,7 +123,7 @@ public class ImageService {
 
     // 이미지 업로드(맴버)
     public ImageMember storeImageMember(MultipartFile file, Long memberId) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = file.getOriginalFilename();
 
         try {
             // 파일이 비었을 때 예외처리
@@ -133,6 +135,7 @@ public class ImageService {
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
+
             //S3 버킷에 파일 업로드
             amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
@@ -155,9 +158,9 @@ public class ImageService {
     // 이미지 삭제(상품)
     public void deleteImageProduct(String imageId) {
         // 파일 확인
-        ImageProduct imageProduct = imageProductRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageProduct imageProduct = imageProductRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
         try {
-            amazonS3.deleteObject(buckName, imageProduct.getFileName());
+            amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageProduct.getFileName()));
             imageProductRepository.delete(imageProduct);
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
@@ -166,9 +169,10 @@ public class ImageService {
 
     // 이미지 삭제(맴버)
     public void deleteImageMember(String imageId) {
-        ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
         try {
-            amazonS3.deleteObject(buckName, imageMember.getFileName());
+
+            amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageMember.getFileName()));
             imageMemberRepository.delete(imageMember);
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
