@@ -30,18 +30,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ImageMemberRepository imageMemberRepository;
     private final ImageService imageService;
-    private final ImageMemberRepository imageMemberRepository;
-
 
     @Autowired
     public MemberService(MemberRepository memberRepository,ImageService imageService,ImageMemberRepository imageMemberRepository) {
-
-    public MemberService(MemberRepository memberRepository, ImageMemberRepository imageMemberRepository, ImageService imageService) {
-
         this.memberRepository = memberRepository;
         this.imageMemberRepository = imageMemberRepository;
         this.imageService = imageService;
-        this.imageMemberRepository = imageMemberRepository;
     }
 
     public void createMembers(List<Member> members) {
@@ -94,24 +88,11 @@ public class MemberService {
         return MemberDto.Response.from(member,imageUrl);
     }
 
-    public MemberDto.Response updateMember(String displayName ,Long memberId) {
-
-    public MemberDto.Response updateMember(String displayName, MultipartFile imageFile, Long memberId) {
-
-
-
-        Member member = findMember(memberId);
-        String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
-        member.setDisplayName(displayName);
-        member.setImageUrl(imageUrl);
-        memberRepository.save(member);
-        return MemberDto.Response.from(member, imageUrl);
-    }
-
     public void deleteMember(Long memberId) {
 
         Member member = findMember(memberId);
         memberRepository.deleteById(memberId);
+
     }
 
 }
