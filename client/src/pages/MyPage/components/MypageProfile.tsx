@@ -24,56 +24,17 @@ import useGeoLocation from '../utils/customHooks/useGeoLocation';
 import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
 import { useMutation } from 'react-query';
+import { access } from 'fs';
 
 function MypageProfile() {
-  const { data: userData } = useGetMe();
-  console.log('userData', userData);
-  const [locationSuccessful, setLocationSuccessful] = useState<boolean>(false);
-  const [isGetLocationData, setIsGetLocationData] = useState<string>('');
-  const [locationInfo, setLocationInfo] = useState<LocationProps>({
-    latitude: 0,
-    longitude: 0,
-    memberId: 0,
-  });
-  const [loading, setLoading] = useState<boolean>(false);
-  const location = useGeoLocation();
-  const patchUserLocation = useMutation(async (locationInfo: LocationProps) =>
-    axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/api/members/location`,
-        locationInfo,
-      )
-      .then((res) => {
-        console.log(res);
-        setLocationSuccessful(true);
-      })
-      .catch((err) => {
-        setLocationSuccessful(false);
-        console.log(err);
-      }),
-  );
-  const handleLocation = () => {
-    setLoading(true);
-    setLocationInfo({
-      latitude: location?.coordinates?.lat ?? 0,
-      longitude: location?.coordinates?.lng ?? 0,
-      memberId: userData?.memberId,
-    });
-    console.log('locationInfo', locationInfo);
-    patchUserLocation.mutate(locationInfo);
-    setLoading(false);
-  };
-  useEffect(() => {
-    console.log('locationInfo', locationInfo);
-  }, [locationInfo]);
-  //
-  const decrypt = useDecryptToken();
-
   const iconProps = { itemCount: 0 };
   const [user, setUser] = useState<IUserInfo | null>(null);
   const [displayName, setDisplayName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
 
+  const { data: userData } = useGetMe();
+
+  const decrypt = useDecryptToken();
   const getUserInfo = useCallback(() => {
     const token = localStorage.getItem(ACCESS_TOKEN);
     console.log('토큰이 있습니다.', token);
@@ -82,6 +43,7 @@ function MypageProfile() {
       console.log('토큰이 없습니다.', token);
       return;
     }
+    console.log('userData', userData);
 
     const fetchUserData = async () => {
       const encryptedAccessToken: string | null =
@@ -90,7 +52,7 @@ function MypageProfile() {
       if (encryptedAccessToken) {
         accessToken = decrypt(encryptedAccessToken);
       } else {
-        return;
+        return null;
       }
 
       try {
@@ -119,11 +81,47 @@ function MypageProfile() {
     };
   }, []);
 
+  const [isGetLocationData, setIsGetLocationData] = useState<string>('');
+
+  const encryptedAccessToken: string | null =
+    localStorage.getItem(ACCESS_TOKEN);
+  let accessToken: string | null = null;
+  if (encryptedAccessToken) {
+    accessToken = decrypt(encryptedAccessToken);
+  } else {
+    return null;
+  }
+
+  const location = useGeoLocation();
+  const formData = new FormData();
+  const patchUserLocation = useMutation(async () =>
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/members/location`,
+        formData,
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      )
+      .then((res) => {
+        console.log(res);
+        setIsGetLocationData(res.data.address);
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  );
+
+  const handleLocation = () => {
+    if (location) {
+      formData.append('latitude', String(location?.coordinates?.lat));
+      formData.append('longitude', String(location?.coordinates?.lng));
+      formData.append('memberId', String(userData?.memberId));
+    }
+    patchUserLocation.mutate();
+  };
   useEffect(() => {
     getUserInfo();
   }, [getUserInfo]);
 
-  if (loading) return <Loading />;
   return (
     <MypageProfileWrapper>
       <MypageLeft>
@@ -137,12 +135,13 @@ function MypageProfile() {
             </span>
           </div>
           <Location>
+            {isGetLocationData && (
+              <>
+                <FaMapMarkerAlt />
+                <span>{isGetLocationData}</span>
+              </>
+            )}
             <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>
-            <span>
-              <FaMapMarkerAlt />
-            </span>
-            {/**유저위치입력 */}
-            <span>{userData?.address}</span>
           </Location>
         </MypageInfo>
       </MypageLeft>
