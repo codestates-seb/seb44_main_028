@@ -10,6 +10,7 @@ import {
   Location,
   TownBtn,
 } from '../style';
+import Loading from '../../../common/components/Loading';
 import ProfileImage0 from '../../../asset/my_page/myprofile_adobe_express.svg';
 import GradeIcon from './GradeIcon';
 import { FaMapMarkerAlt } from 'react-icons/fa';
@@ -20,12 +21,53 @@ import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import LendCard from '../../../common/components/MypageCard/LendCard';
 import useGeoLocation from '../utils/customHooks/useGeoLocation';
+import { set } from 'react-hook-form';
+import { LocationProps } from '../type';
+import { useMutation } from 'react-query';
 
 function MypageProfile() {
-  const location = useGeoLocation();
-  const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);
+  const [locationSuccessful, setLocationSuccessful] = useState<boolean>(false);
+  const [isGetLocationData, setIsGetLocationData] = useState<string>('');
+  const [locationInfo, setLocationInfo] = useState<LocationProps>({
+    latitude: 0,
+    longitude: 0,
+    memberId: 0,
+  });
+  const [loading, setLoading] = useState<boolean>(false);
+  const location = useGeoLocation();
+  const patchUserLocation = useMutation(async (locationInfo: LocationProps) =>
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/members/location`,
+        locationInfo,
+      )
+      .then((res) => {
+        console.log(res);
+        setLocationSuccessful(true);
+      })
+      .catch((err) => {
+        setLocationSuccessful(false);
+        console.log(err);
+      }),
+  );
+  const handleLocation = () => {
+    setLoading(true);
+    setLocationInfo({
+      latitude: location?.coordinates?.lat ?? 0,
+      longitude: location?.coordinates?.lng ?? 0,
+      memberId: userData?.memberId,
+    });
+    console.log('locationInfo', locationInfo);
+    patchUserLocation.mutate(locationInfo);
+    setLoading(false);
+  };
+  useEffect(() => {
+    console.log('locationInfo', locationInfo);
+  }, [locationInfo]);
+  //
+  const decrypt = useDecryptToken();
 
   const iconProps = { itemCount: 0 };
   const [user, setUser] = useState<IUserInfo | null>(null);
@@ -81,6 +123,7 @@ function MypageProfile() {
     getUserInfo();
   }, [getUserInfo]);
 
+  if (loading) return <Loading />;
   return (
     <MypageProfileWrapper>
       <MypageLeft>
@@ -94,7 +137,7 @@ function MypageProfile() {
             </span>
           </div>
           <Location>
-            <TownBtn>내 동네 설정</TownBtn>
+            <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>
             <span>
               <FaMapMarkerAlt />
             </span>
