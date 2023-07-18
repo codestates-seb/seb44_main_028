@@ -27,7 +27,6 @@ public interface ImageMapper {
     default ImageProduct fileToImageProduct(MultipartFile multipartFile, ProductRepository productRepository, String productId) {
         ImageProduct imageProduct = new ImageProduct();
         imageProduct.setImageId(UUID.randomUUID().toString());
-        imageProduct.setFileName(multipartFile.getOriginalFilename());
         imageProduct.setFileType(multipartFile.getContentType());
 
         // service 구현 필요
@@ -39,7 +38,6 @@ public interface ImageMapper {
     default ImageCategory fileToImageCategory(MultipartFile multipartFile, CategoryRepository categoryRepository, String categoryId) {
         ImageCategory imageCategory = new ImageCategory();
         imageCategory.setImageId(UUID.randomUUID().toString());
-        imageCategory.setFileName(StringUtils.cleanPath(multipartFile.getOriginalFilename()));
         imageCategory.setFileType(multipartFile.getContentType());
 
         return imageCategory;
@@ -49,7 +47,6 @@ public interface ImageMapper {
     default ImageMember fileToImageMember(MultipartFile multipartFile, MemberRepository memberRepository, Long memberId) {
         ImageMember imageMember = new ImageMember();
         imageMember.setImageId(UUID.randomUUID().toString());
-        imageMember.setFileName(multipartFile.getOriginalFilename());
         imageMember.setFileType(multipartFile.getContentType());
 
         // service 구현 필요

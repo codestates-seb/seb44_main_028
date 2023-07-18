@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InitData {
 
-
+/*
     private final CategoryService categoryService;
     private final MemberRepository memberRepository;
     private final ImageCategoryRepository imageCategoryRepository;
