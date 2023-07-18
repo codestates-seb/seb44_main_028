@@ -9,6 +9,7 @@ import {
   EvaluationScore,
   Location,
   TownBtn,
+  LocationContent,
 } from '../style';
 import Loading from '../../../common/components/Loading';
 import ProfileImage0 from '../../../asset/my_page/myprofile_adobe_express.svg';
@@ -139,10 +140,10 @@ function MypageProfile() {
           </div>
           <Location>
             {isGetLocationData && (
-              <>
+              <LocationContent>
                 <FaMapMarkerAlt />
-                <span>{isGetLocationData}</span>
-              </>
+                <div>{isGetLocationData}</div>
+              </LocationContent>
             )}
             <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>
           </Location>
