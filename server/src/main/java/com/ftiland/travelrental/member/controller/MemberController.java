@@ -1,16 +1,14 @@
 package com.ftiland.travelrental.member.controller;
 
+import com.ftiland.travelrental.common.annotation.CurrentMember;
 import com.ftiland.travelrental.common.utils.MemberAuthUtils;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
-import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.repository.query.Param;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,9 +49,8 @@ public class MemberController {
     }
       
     @DeleteMapping
-    public ResponseEntity<Void> deleteMember() {
+    public ResponseEntity<Void> deleteMember(@CurrentMember Long memberId) {
 
-        Long memberId = MemberAuthUtils.getMemberId(request);
         memberService.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

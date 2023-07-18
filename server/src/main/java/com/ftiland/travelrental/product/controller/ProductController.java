@@ -164,8 +164,8 @@ public class ProductController {
             @RequestParam("categoryId") String categoryId,
             @RequestParam("distance") double distance,
             @RequestParam("sortBy") String sortBy,
-            int page,
-            int size
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
 
         Pageable pageable = PageRequest.of(page, size);

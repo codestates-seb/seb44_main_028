@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,10 +33,12 @@ public class Reservation extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
 
     public void setStatus(ReservationStatus status) {
