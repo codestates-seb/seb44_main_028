@@ -105,7 +105,35 @@ function ProfileEdit() {
     } catch (error) {
       console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
     }
+    await fetchUpdatedUserInfo();
   };
+
+  const fetchUpdatedUserInfo = useCallback(async () => {
+    try {
+      const encryptedAccessToken: string | null =
+        localStorage.getItem(ACCESS_TOKEN);
+      let accessToken: string | null = null;
+      if (encryptedAccessToken) {
+        accessToken = decrypt(encryptedAccessToken);
+      } else {
+        return;
+      }
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      const updatedUserInfo = response.data;
+      setNewDisplayName(updatedUserInfo.displayName);
+      setPreviewImage(updatedUserInfo.profileImageUrl); //이미지 업데이트
+      console.log('업데이트 유지정보:', updatedUserInfo);
+    } catch (error) {
+      console.error('업데이트된 유저정보를 가져오는데 실패했습니다.', error);
+    }
+  }, [decrypt]);
 
   return (
     <MyPageEdit>
