@@ -92,7 +92,6 @@ public class MemberService {
 
         Member member = findMember(memberId);
         memberRepository.deleteById(memberId);
-
     }
 
 }
