@@ -26,10 +26,6 @@ public class ChatDtoService {
         chatRooms = new LinkedHashMap<>();
     }
 
-    public List<ChatRoomDto> findAllRoom() {
-        return new ArrayList<>(chatRooms.values());
-    }
-
     public ChatRoomDto findRoomById(String roomId) {
         return chatRooms.get(roomId);
     }
@@ -49,7 +45,6 @@ public class ChatDtoService {
         return chatRoom;
     }
 
-
     public <T> void sendMessage(WebSocketSession session, T message) {
         try{
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
@@ -57,12 +52,9 @@ public class ChatDtoService {
             log.error(e.getMessage(), e);
         }
     }
-
-
     public void removeChatRoom(String roomId){
         chatRooms.remove(roomId);
     }
-
 
     public boolean findUseChatRoom(String roomId){
         if(chatRooms.get(roomId) == null){

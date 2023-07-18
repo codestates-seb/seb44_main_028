@@ -50,7 +50,7 @@ export type ItemCardListProps = {
   itemCardListContentData: ItemCardProps[];
 };
 export type ItemCardProps = {
-  id: string;
+  productId: string;
   title: string;
   baseFee: number;
   feePerDay: number;
@@ -60,7 +60,7 @@ export type ItemCardProps = {
   category: number[];
   address: string;
   minRental: number;
-  images: string;
+  image: string;
 };
 
 // export type BorrowCardProps = {

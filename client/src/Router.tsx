@@ -9,6 +9,7 @@ import CreatePage from './pages/Create/views/CreatePage';
 import UpdatePage from './pages/Update/views/UpdatePage';
 import ChattingPage from './pages/Chatting/views/ChattingPage';
 import BookingPage from './pages/Booking/views/BookingPage';
+import SearchPage from './pages/Search/views/SearchPage';
 import PrivateRoutes from './PrivateRoutes';
 import ProfileEdit from './pages/MyPage/components/ProfileEdit';
 

@@ -33,7 +33,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
     localStorage.setItem(INTEREST_KEY, JSON.stringify(interestItems));
   }, [interestItems]);
 
-  const isInterest = interestItems.includes(itemCardData.id);
+  const isInterest = interestItems.includes(itemCardData.productId);
   const addInterestMutation = useMutation((productId: string) =>
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/members/interests`, {
@@ -64,19 +64,21 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
     if (isInterest) {
       removeInterestMutation.mutate(interestId);
       dispatch(removeInterest(interestId));
-      setInterestItems(interestItems.filter((id) => id !== itemCardData.id));
+      setInterestItems(
+        interestItems.filter((id) => id !== itemCardData.productId),
+      );
     } else {
-      addInterestMutation.mutate(itemCardData.id);
-      dispatch(addInterest(itemCardData.id));
-      setInterestItems([...interestItems, itemCardData.id]);
+      addInterestMutation.mutate(itemCardData.productId);
+      dispatch(addInterest(itemCardData.productId));
+      setInterestItems([...interestItems, itemCardData.productId]);
     }
   };
   const handleItemOnClick = () => {
-    navigate(`/detail/${itemCardData.id}`);
+    navigate(`/detail/${itemCardData.productId}`);
   };
   return (
     <ItemCardContainer onClick={handleItemOnClick}>
-      <ItemImage src={itemCardData.images}></ItemImage>
+      <ItemImage src={itemCardData.image}></ItemImage>
       <ItemInfo>
         <ItemName>{itemCardData.title}</ItemName>
         <ItemDescription>{itemCardData.content}</ItemDescription>
