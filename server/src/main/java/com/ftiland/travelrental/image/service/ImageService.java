@@ -70,28 +70,30 @@ public class ImageService {
 
     // 이미지 업로드(카테고리)
     public ImageCategory storeImageCategory(MultipartFile file, String categoryId) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
             // 파일이 비었을 때 예외처리
             if (file.isEmpty()) {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
+            ImageCategory imageCategory = imageMapper.fileToImageCategory(file, categoryRepository, categoryId);
+
+            imageCategory.setFileName(fileNameGenerator.uuidName(imageCategory.getImageId(),imageCategory.getFileType()));
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
             //S3 버킷에 파일 업로드
-            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            amazonS3.putObject(new PutObjectRequest(buckName, imageCategory.getFileName(), file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            imageCategory.setImageUrl(amazonS3.getUrl(buckName, imageCategory.getFileName()).toString());
+
+            return imageCategoryRepository.save(imageCategory);
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
-        ImageCategory imageCategory = imageMapper.fileToImageCategory(file, categoryRepository, categoryId);
-        imageCategory.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
-        imageCategory.setFileName(fileNameGenerator.uuidName(imageCategory.getImageId(),imageCategory.getFileType()));
 
-        return imageCategoryRepository.save(imageCategory);
+
     }
 
     public List<ImageProduct> storeImageProducts(List<MultipartFile> files, String productId) {
@@ -102,34 +104,32 @@ public class ImageService {
 
     // 이미지 업로드(상품)
     public ImageProduct storeImageProduct(MultipartFile file, String productId) {
-         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
 
         try {
             // 파일이 비었을 때 예외처리
             if (file.isEmpty()) {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
+            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
+            createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
+
             //S3 버킷에 파일 업로드
-            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            amazonS3.putObject(new PutObjectRequest(buckName, createdImageProduct.getFileName(), file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, createdImageProduct.getFileName()).toString());
+
+            return imageProductRepository.save(createdImageProduct);
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
-        ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
-        createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
-        createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
-
-        return imageProductRepository.save(createdImageProduct);
     }
 
     // 이미지 업로드(맴버)
     public ImageMember storeImageMember(MultipartFile file, Long memberId) {
-        String fileName = file.getOriginalFilename();
 
         try {
             // 파일이 비었을 때 예외처리
@@ -137,23 +137,21 @@ public class ImageService {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
 
+            ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
+            createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
 
             //S3 버킷에 파일 업로드
-            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            amazonS3.putObject(new PutObjectRequest(buckName, createdImage.getFileName(), file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            createdImage.setImageUrl(amazonS3.getUrl(buckName,createdImage.getFileName()).toString());
+
+            return imageMemberRepository.save(createdImage);
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
-
-        ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
-        createdImage.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
-        createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
-
-
-        return imageMemberRepository.save(createdImage);
     }
 
     public void deleteImageProducts(String productId) {
