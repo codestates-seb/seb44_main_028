@@ -1,17 +1,27 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import KakaoLogin from '../components/KakaoLogin';
 import { LoginPageContainer } from '../style';
+import { ACCESS_TOKEN } from '../constants';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function LoginPage() {
+  const decrypt = useDecryptToken();
+  const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
+  if (!encryptedAccessToken) {
+    return null;
+  }
+  const accessToken = decrypt(encryptedAccessToken);
   const handleWithdrawal = () => {
     try {
-      console.log('회원탈퇴');
-      const response = axios.delete(
-        process.env.REACT_APP_API_URL + '/api/members/',
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      axios.delete(process.env.REACT_APP_API_URL + '/api/members', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error: AxiosError | any) {
+      if (error.response.status === 401) {
+        alert('로그인이 만료되었습니다. 다시 로그인해주세요');
+      }
     }
   };
   return (
