@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.MEMBER_NOT_FOUND;
 
@@ -43,16 +44,14 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
-        if(!existsEmail(member.getEmail())) {
-            Member savedMember = memberRepository.save(member);
-            ImageMember imageMember = new ImageMember();
-            imageMember.setImageUrl(defaultImageUrl);
-            imageMember.setMember(savedMember);
-            imageMemberRepository.save(imageMember);
-            return savedMember;
-        }
 
-        return null;
+        Member savedMember = memberRepository.save(member);
+        ImageMember imageMember = new ImageMember();
+        imageMember.setImageUrl(defaultImageUrl);
+        imageMember.setMember(savedMember);
+        imageMember.setImageId(UUID.randomUUID().toString());
+        imageMemberRepository.save(imageMember);
+        return savedMember;
     }
 
     public boolean existsEmail(String email) {
