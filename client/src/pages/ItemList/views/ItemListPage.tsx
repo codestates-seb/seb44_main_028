@@ -60,7 +60,7 @@ function ItemListPage() {
         </div>
       }
       {products?.map((product: ItemCardProps) => (
-        <ItemCard key={product.id} itemCardData={product} />
+        <ItemCard key={product.productId} itemCardData={product} />
       ))}
     </ItemListPageContainer>
   );
