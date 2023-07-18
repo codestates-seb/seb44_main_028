@@ -16,9 +16,11 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, String> {
-    boolean existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNot(LocalDate endDate,
-                                                                                 LocalDate startDate,
-                                                                                 ReservationStatus status);
+    boolean existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNotAndProductProductId(LocalDate endDate,
+                                                                                                    LocalDate startDate,
+                                                                                                    ReservationStatus status,
+                                                                                                    String productId);
+
     Page<Reservation> findAllByMemberMemberIdAndStatus(Long memberId, ReservationStatus status, Pageable pageable);
 
     Page<Reservation> findAllByProductProductIdAndStatus(String productId, ReservationStatus status, Pageable pageable);
@@ -30,23 +32,23 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
     List<Reservation> findReservationByDate(@Param("productId") String productId, @Param("status") ReservationStatus status,
                                             @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, im.imageUrl, m.displayName, r.startDate, r.endDate, r.status) " +
+    @Query("SELECT new com.ftiland.travelrental.reservation.dto.LendReservationDto(r.reservationId, im.imageUrl, m.displayName, r.startDate, r.endDate, r.status) " +
             "FROM Reservation r JOIN r.member m " +
             "JOIN ImageMember im on im.member.memberId = m.memberId " +
-            "WHERE im.member.memberId = :memberId AND r.status = :status " +
+            "WHERE r.product.productId = :productId AND r.status = :status " +
             "GROUP BY r.reservationId")
-    Page<LendReservationDto> findLendReservationDtosByMemberId(@Param("memberId") Long memberId,
-                                                                 @Param("status") ReservationStatus status,
-                                                                 Pageable pageable);
-
-    @Query("SELECT new com.ftiland.travelrental.reservation.dto.LendReservationDto(r.reservationId, ip.imageUrl, p.title, r.startDate, r.endDate, r.status) " +
-            "FROM Reservation r JOIN r.product p " +
-            "JOIN ImageProduct ip on ip.product.productId = p.productId " +
-            "WHERE p.member.memberId = :memberId AND r.status = :status " +
-            "GROUP BY r.reservationId")
-    Page<BorrowReservationDto> findBorrowReservationDtosByMemberId(@Param("memberId") Long memberId,
+    Page<LendReservationDto> findLendReservationDtosByMemberId(@Param("productId") String productId,
                                                                @Param("status") ReservationStatus status,
                                                                Pageable pageable);
+
+    @Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, ip.imageUrl, p.title, r.startDate, r.endDate, r.status) " +
+            "FROM Reservation r JOIN r.product p " +
+            "JOIN ImageProduct ip on ip.product.productId = p.productId " +
+            "WHERE r.member.memberId = :memberId AND r.status = :status " +
+            "GROUP BY r.reservationId")
+    Page<BorrowReservationDto> findBorrowReservationDtosByMemberId(@Param("memberId") Long memberId,
+                                                                   @Param("status") ReservationStatus status,
+                                                                   Pageable pageable);
 
     long countByMemberMemberId(Long memberId);
 

@@ -41,6 +41,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             //String refreshToken = getRefreshTokenFromCookie(request, "refreshToken");
             //if(refreshToken == null) response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             setAuthenticationToContext(claims);
+            request.setAttribute("memberId", claims.get("memberId"));
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
         } catch (ExpiredJwtException ee) {

@@ -17,13 +17,12 @@ public class MemberDto {
         private Long memberId;
         private String email;
         private String displayName;
-
         private String imageUrl;
         private String address;
         private Double latitude;
         private Double longitude;
 
-        public static MemberDto.Response from(Member member,String imageUrl) {
+        public static MemberDto.Response from(Member member, String imageUrl) {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
@@ -43,6 +42,7 @@ public class MemberDto {
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
+                    .imageUrl(member.getImageUrl())
                     .build();
         }
     }

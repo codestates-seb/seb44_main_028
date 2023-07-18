@@ -64,7 +64,7 @@ public class ReservationService {
         }
 
         // 예약 날짜가 겹치는 경우
-        if (checkReservationDuplication(request.getEndDate().plusDays(1), request.getStartDate())) {
+        if (checkReservationDuplication(productId, request.getEndDate().plusDays(1), request.getStartDate())) {
             throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
         }
 
@@ -88,8 +88,8 @@ public class ReservationService {
         return CreateReservation.Response.from(savedReservation);
     }
 
-    public boolean checkReservationDuplication(LocalDate startDate, LocalDate endDate) {
-        return reservationRepository.existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNot(startDate, endDate, CANCELED);
+    public boolean checkReservationDuplication(String productId, LocalDate startDate, LocalDate endDate) {
+        return reservationRepository.existsByStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatusNotAndProductProductId(startDate, endDate, CANCELED, productId);
     }
 
     @Transactional
@@ -191,7 +191,7 @@ public class ReservationService {
         validateOwner(product, member);
 
         Page<LendReservationDto> reservations = reservationRepository
-                .findLendReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
+                .findLendReservationDtosByMemberId(productId, status, PageRequest.of(page, size));
 
         return GetLendReservations.from(reservations);
     }
