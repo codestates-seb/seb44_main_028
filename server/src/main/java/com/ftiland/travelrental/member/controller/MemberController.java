@@ -28,26 +28,22 @@ public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;
 
-    @Autowired
-    private HttpServletRequest request;
-
     @GetMapping
-    public ResponseEntity<MemberDto.Response> getMember() {
-        Long memberId = MemberAuthUtils.getMemberId(request);
-
+    public ResponseEntity<MemberDto.Response> getMember(@CurrentMember Long memberId) {
         Member member = memberService.findMember(memberId);
         MemberDto.Response response = MemberDto.Response.from(member);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
-        Long memberId = MemberAuthUtils.getMemberId(request);
+    public ResponseEntity<MemberDto.Response> patchMember(@RequestParam("displayName") String displayName,
+                                                          @RequestParam("imageFile") MultipartFile imageFile,
+                                                          @CurrentMember Long memberId) {
 
-        MemberDto.Response response = memberService.updateMember(displayName,imageFile, memberId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+        MemberDto.Response response = memberService.updateMember(displayName, imageFile, memberId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-      
+
     @DeleteMapping
     public ResponseEntity<Void> deleteMember(@CurrentMember Long memberId) {
 
@@ -57,7 +53,7 @@ public class MemberController {
     }
 
     @PostMapping("/default")
-    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile){
+    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile) {
         ImageMember imageMember = imageService.storeImageMember(imageFile, 1L);
         log.info("[MemberController] createImage : {}", imageMember.getImageUrl());
 
