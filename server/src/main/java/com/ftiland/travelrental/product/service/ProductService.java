@@ -167,7 +167,6 @@ public class ProductService {
         product.setViewCount(product.getViewCount() + 1);
     }
 
-
     public List<Product> findProductByMemberId(Long memberId) {
         return productRepository.findAllByMemberMemberId(memberId);
     }
