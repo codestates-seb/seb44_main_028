@@ -83,7 +83,7 @@ public class InterestService {
 
     // 관심 상품 해제
     public void deleteInterest(Long memberId,String interestId){
-        Interest interest = interestRepository.findById(interestId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        Interest interest = interestRepository.findById(interestId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.INTEREST_NOT_EXISTS));
         if ( interest.getMember().getMemberId() == memberId){
             interestRepository.delete(interest);
         }

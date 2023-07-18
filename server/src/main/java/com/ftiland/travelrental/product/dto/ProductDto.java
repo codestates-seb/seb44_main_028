@@ -26,6 +26,7 @@ public class ProductDto {
 
     public static ProductDto from(Product product, String image) {
         return ProductDto.builder()
+                .productId(product.getProductId())
                 .title(product.getTitle())
                 .content(product.getContent())
                 .baseFee(product.getBaseFee())

@@ -19,11 +19,9 @@ public class Member extends BaseEntity {
     private Long memberId;
     @Column(nullable = false)
     private String email;
-
     @Column(nullable = false)
     private String displayName;
-
-    // 이미지 필드 필요
+    private String imageUrl;
     private Double latitude;
     private Double longitude;
     private String address;
