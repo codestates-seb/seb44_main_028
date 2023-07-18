@@ -22,6 +22,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class InitData {
+
 /*
 
     private final CategoryService categoryService;
@@ -865,6 +866,6 @@ public class InitData {
         imageProductRepository.save(image39);
         imageProductRepository.save(image40);
     }*/
-    
+
 }
 

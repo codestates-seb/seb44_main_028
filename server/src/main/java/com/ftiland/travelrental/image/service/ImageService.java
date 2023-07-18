@@ -16,6 +16,7 @@ import com.ftiland.travelrental.image.mapper.ImageMapper;
 import com.ftiland.travelrental.image.repository.ImageMemberRepository;
 
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
+import com.ftiland.travelrental.image.utils.FileNameGenerator;
 import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,15 @@ public class ImageService {
     private MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final ImageCategoryRepository imageCategoryRepository;
+    private FileNameGenerator fileNameGenerator ;
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
                         ImageMemberRepository imageMemberRepository, MemberRepository memberRepository,
                         ProductRepository productRepository,
                         CategoryRepository categoryRepository,
-                        ImageCategoryRepository imageCategoryRepository) {
+                        ImageCategoryRepository imageCategoryRepository,
+                        FileNameGenerator fileNameGenerator) {
         this.amazonS3 = amazonS3;
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
@@ -62,6 +65,7 @@ public class ImageService {
         this.memberRepository = memberRepository;
         this.categoryRepository = categoryRepository;
         this.imageCategoryRepository = imageCategoryRepository;
+        this.fileNameGenerator = fileNameGenerator;
     }
 
     // 이미지 업로드(카테고리)
@@ -85,6 +89,7 @@ public class ImageService {
         }
         ImageCategory imageCategory = imageMapper.fileToImageCategory(file, categoryRepository, categoryId);
         imageCategory.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
+        imageCategory.setFileName(fileNameGenerator.uuidName(imageCategory.getImageId(),imageCategory.getFileType()));
 
         return imageCategoryRepository.save(imageCategory);
     }
@@ -117,6 +122,7 @@ public class ImageService {
         }
         ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
         createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
+        createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
 
         return imageProductRepository.save(createdImageProduct);
     }
@@ -144,6 +150,7 @@ public class ImageService {
 
         ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
         createdImage.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
+        createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
 
 
         return imageMemberRepository.save(createdImage);
@@ -160,7 +167,9 @@ public class ImageService {
         // 파일 확인
         ImageProduct imageProduct = imageProductRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
         try {
-            amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageProduct.getFileName()));
+            if(imageProduct.getFileName()!="defaultImage.png"||imageProduct.getFileName()!=null){
+                amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageProduct.getFileName()));
+            }
             imageProductRepository.delete(imageProduct);
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
@@ -171,8 +180,9 @@ public class ImageService {
     public void deleteImageMember(String imageId) {
         ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
         try {
-
-            amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageMember.getFileName()));
+            if(imageMember.getFileName()!= "defaultImage.png" ||imageMember.getFileName()!=null){
+                amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageMember.getImageUrl()));
+            }
             imageMemberRepository.delete(imageMember);
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
