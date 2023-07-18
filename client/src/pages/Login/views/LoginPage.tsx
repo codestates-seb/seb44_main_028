@@ -1,8 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import KakaoLogin from '../components/KakaoLogin';
 import { LoginPageContainer } from '../style';
 import { ACCESS_TOKEN } from '../constants';
-import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function LoginPage() {
   const decrypt = useDecryptToken();
