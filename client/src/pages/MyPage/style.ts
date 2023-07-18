@@ -379,5 +379,3 @@ export const LendWrapper = styled.div`
     }
   }
 `;
-// Location
-export const LocationContainer = styled.div``;
