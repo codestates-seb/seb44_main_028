@@ -83,7 +83,7 @@ public class ReservationService {
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
-//        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
+        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
 
         return CreateReservation.Response.from(savedReservation);
     }
