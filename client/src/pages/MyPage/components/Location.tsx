@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { LocationContainer, TownBtn } from '../style';
 import { ILocation } from '../model/ILocation';
 const Location = () => {
   const [location, setLocation] = useState<ILocation>({
@@ -35,7 +34,7 @@ const Location = () => {
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
   }, []);
 
-  return <LocationContainer></LocationContainer>;
+  return location;
 };
 
 export default Location;
