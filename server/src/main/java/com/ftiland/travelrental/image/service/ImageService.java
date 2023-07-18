@@ -152,7 +152,7 @@ public class ImageService {
     public void deleteImageProducts(String productId) {
         ArrayList<ImageProduct> images = imageProductRepository.findByProductId(productId);
         // 파일 확인
-        images.forEach(image -> imageProductRepository.delete(image));
+        imageProductRepository.deleteAll(images);
     }
 
     // 이미지 삭제(상품)

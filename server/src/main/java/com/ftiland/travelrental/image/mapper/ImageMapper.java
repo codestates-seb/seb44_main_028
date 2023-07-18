@@ -13,6 +13,7 @@ import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import org.mapstruct.Mapper;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public interface ImageMapper {
     default ImageCategory fileToImageCategory(MultipartFile multipartFile, CategoryRepository categoryRepository, String categoryId) {
         ImageCategory imageCategory = new ImageCategory();
         imageCategory.setImageId(UUID.randomUUID().toString());
-        imageCategory.setFileName(multipartFile.getOriginalFilename());
+        imageCategory.setFileName(StringUtils.cleanPath(multipartFile.getOriginalFilename()));
         imageCategory.setFileType(multipartFile.getContentType());
 
         return imageCategory;

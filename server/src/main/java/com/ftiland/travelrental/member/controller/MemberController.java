@@ -1,16 +1,14 @@
 package com.ftiland.travelrental.member.controller;
 
+import com.ftiland.travelrental.common.annotation.CurrentMember;
 import com.ftiland.travelrental.common.utils.MemberAuthUtils;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
-import com.ftiland.travelrental.member.dto.MemberPatchDto;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.repository.query.Param;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,13 +28,8 @@ public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;
 
-    @Autowired
-    private HttpServletRequest request;
-
     @GetMapping
-    public ResponseEntity<MemberDto.Response> getMember() {
-        Long memberId = MemberAuthUtils.getMemberId(request);
-
+    public ResponseEntity<MemberDto.Response> getMember(@CurrentMember Long memberId) {
         Member member = memberService.findMember(memberId);
         MemberDto.Response response = MemberDto.Response.from(member);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -47,19 +40,19 @@ public class MemberController {
         Long memberId = MemberAuthUtils.getMemberId(request);
         MemberDto.Response response = memberService.updateMember(displayName,imageFile,memberId);
             return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-      
-    @DeleteMapping
-    public ResponseEntity<Void> deleteMember() {
 
-        Long memberId = MemberAuthUtils.getMemberId(request);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteMember(@CurrentMember Long memberId) {
+
         memberService.deleteMember(memberId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/default")
-    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile){
+    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile) {
         ImageMember imageMember = imageService.storeImageMember(imageFile, 1L);
         log.info("[MemberController] createImage : {}", imageMember.getImageUrl());
 
