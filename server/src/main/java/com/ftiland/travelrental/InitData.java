@@ -30,7 +30,7 @@ public class InitData {
     private final ProductService productService;
     private final ImageProductRepository imageProductRepository;
     private final MemberService memberService;
-
+/*
     @PostConstruct
     public void init() {
         List<CreateCategory.Request> categories = List.of(

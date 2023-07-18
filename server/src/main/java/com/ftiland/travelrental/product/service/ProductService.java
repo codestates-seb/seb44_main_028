@@ -58,9 +58,6 @@ public class ProductService {
             throw new BusinessLogicException(NOT_FOUND_LOCATION);
         }
 
-        Random random = new Random();
-        int totalRateScore = random.nextInt(1000);
-
         Product productEntity = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .title(request.getTitle())
@@ -69,9 +66,9 @@ public class ProductService {
                 .baseFee(request.getBaseFee())
                 .feePerDay(request.getFeePerDay())
                 .minimumRentalPeriod(request.getMinimumRentalPeriod())
-                .totalRateCount(totalRateScore / (random.nextInt(totalRateScore - 5) + 5))
-                .totalRateScore(totalRateScore)
-                .viewCount(random.nextInt(5000))
+                .totalRateCount(0)
+                .totalRateScore(0)
+                .viewCount(0)
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
                 .address(member.getAddress())
@@ -169,7 +166,6 @@ public class ProductService {
         Product product = findProduct(productId);
         product.setViewCount(product.getViewCount() + 1);
     }
-
 
     public List<Product> findProductByMemberId(Long memberId) {
         return productRepository.findAllByMemberMemberId(memberId);
