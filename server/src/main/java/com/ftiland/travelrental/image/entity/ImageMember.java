@@ -23,6 +23,5 @@ public class ImageMember {
 
     @OneToOne
     @JoinColumn(name="member_id", unique = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 }

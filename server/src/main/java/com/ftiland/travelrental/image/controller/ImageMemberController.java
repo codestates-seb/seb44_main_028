@@ -38,6 +38,7 @@ public class ImageMemberController {
         return HttpStatus.OK;
     }
 
+
     // 사진 조회 ( 맴버 , Get )
     @GetMapping
     public ResponseEntity getImageMember(@RequestParam("memberId") Long memberId) {
