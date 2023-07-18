@@ -36,8 +36,8 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
-        Long memberId = MemberAuthUtils.getMemberId(request);
+    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId,@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
+
         MemberDto.Response response = memberService.updateMember(displayName,imageFile,memberId);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
