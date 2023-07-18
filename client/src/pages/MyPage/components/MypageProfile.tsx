@@ -23,7 +23,7 @@ import LendCard from '../../../common/components/MypageCard/LendCard';
 import useGeoLocation from '../utils/customHooks/useGeoLocation';
 import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { access } from 'fs';
 
 function MypageProfile() {
@@ -81,7 +81,9 @@ function MypageProfile() {
     };
   }, []);
 
-  const [isGetLocationData, setIsGetLocationData] = useState<string>('');
+  const [isGetLocationData, setIsGetLocationData] = useState<string>(
+    userData?.address || '',
+  );
 
   const encryptedAccessToken: string | null =
     localStorage.getItem(ACCESS_TOKEN);
@@ -94,6 +96,7 @@ function MypageProfile() {
 
   const location = useGeoLocation();
   const formData = new FormData();
+
   const patchUserLocation = useMutation(async () =>
     axios
       .patch(
