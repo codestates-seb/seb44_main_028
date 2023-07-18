@@ -18,6 +18,8 @@ import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import LendCard from '../../../common/components/MypageCard/LendCard';
+import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
+import { borrowCardProps } from '../../../common/type';
 
 function MypageProfile() {
   const decrypt = useDecryptToken();
@@ -104,6 +106,16 @@ function MypageProfile() {
           <GradeIcon {...iconProps} />
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
+        <BorrowCard
+          borrowCardData={{
+            params: 'REQUESTED',
+            title: '',
+            images: '',
+            status: '',
+            startDate: '',
+            endDate: '',
+          }}
+        />
       </MypageRight>
     </MypageProfileWrapper>
   );

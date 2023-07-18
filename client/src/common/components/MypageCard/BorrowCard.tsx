@@ -3,6 +3,7 @@ import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
 import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
+import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 import axios from 'axios';
 import {
   BorrowCardWrapper,
@@ -14,7 +15,9 @@ import {
   ItemImage,
   BorrowCardContainer,
 } from '../../style/style';
-
+interface Props {
+  params: string;
+}
 const BorrowCard = ({
   borrowCardData,
 }: {
@@ -39,15 +42,16 @@ const BorrowCard = ({
   }, []);
 
   useEffect(() => {
-    const fetchDates = () => {
-      const startDate = new Date();
-      const endDate = new Date();
-      endDate.setDate(endDate.getDate() + 7);
-      setStartDate(startDate.toISOString().split('T')[0]);
-      setEndDate(endDate.toISOString().split('T')[0]);
-    };
-    fetchDates();
-  }, []);
+    const params = borrowCardData.params as string; // 서버에서 내려주는 params 데이터
+
+    try {
+      const { startDate, endDate } = processDataWithRegex(params);
+      console.log(startDate); // "2023-01"
+      console.log(endDate); // "2023-02"
+    } catch (error) {
+      console.error('날짜 데이터 추출 중 오류가 발생했습니다.', error);
+    }
+  }, [borrowCardData.params]);
   return (
     <>
       <BorrowCardContainer>

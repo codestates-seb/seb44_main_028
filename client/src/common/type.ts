@@ -74,6 +74,7 @@ export type lendCardProps = {
 };
 
 export type borrowCardProps = {
+  params: string;
   title: string;
   images: string;
   status: string;

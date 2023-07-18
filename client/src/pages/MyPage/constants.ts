@@ -88,80 +88,80 @@ export const LENDCARD_DATA: lendCardProps[] = [
   },
 ];
 
-export const BORROWCARD_DATA: borrowCardProps[] = [
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'REQUESTED',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'COMPLETED',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'COMPLETED',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'INUSE',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'INUSE',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'INUSE',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'REQUESTED',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'REQUESTED',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    title: '충전기 빌려드려요 1',
-    startDate: '2023 - 0o6 - 10',
-    endDate: '2023 - 06 - 14',
-    status: 'REQUESTED',
-    images:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-];
+// export const BORROWCARD_DATA: borrowCardProps[] = [
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'REQUESTED',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'COMPLETED',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'COMPLETED',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'INUSE',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'INUSE',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'INUSE',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'REQUESTED',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'REQUESTED',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     title: '충전기 빌려드려요 1',
+//     startDate: '2023 - 0o6 - 10',
+//     endDate: '2023 - 06 - 14',
+//     status: 'REQUESTED',
+//     images:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+// ];
 // export const BORROWCARD_DATA: borrowCardProps[] = [
 //   {
 //     title: '충전기 빌려드려요 1',
