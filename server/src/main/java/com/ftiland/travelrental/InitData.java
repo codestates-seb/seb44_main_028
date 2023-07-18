@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InitData {
 
-
+/*
     private final CategoryService categoryService;
     private final MemberRepository memberRepository;
     private final ImageCategoryRepository imageCategoryRepository;
@@ -864,6 +864,6 @@ public class InitData {
         imageProductRepository.save(image38);
         imageProductRepository.save(image39);
         imageProductRepository.save(image40);
-    }/**/
+    }*/
 }
 

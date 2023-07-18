@@ -1,6 +1,7 @@
 package com.ftiland.travelrental.member.service;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
+import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.repository.ImageMemberRepository;
 import com.ftiland.travelrental.image.service.ImageService;
@@ -48,6 +49,7 @@ public class MemberService {
         Member savedMember = memberRepository.save(member);
         ImageMember imageMember = new ImageMember();
         imageMember.setImageUrl(defaultImageUrl);
+        imageMember.setFileName("defaultImage.png");
         imageMember.setMember(savedMember);
         imageMember.setImageId(UUID.randomUUID().toString());
         imageMemberRepository.save(imageMember);
@@ -74,13 +76,9 @@ public class MemberService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
-        ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElse(null);
+        ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.IMAGE_EMPTY));
 
-
-        if(imageMember!=null){
-
-            imageService.deleteImageMember(imageMember.getImageId());
-        }
+        imageService.deleteImageMember(imageMember.getImageId());
 
         String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
         Optional.ofNullable(displayName)
