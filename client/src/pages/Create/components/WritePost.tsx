@@ -40,19 +40,24 @@ const WritePost = ({
     if (encryptedAccessToken) {
       const decryptedToken = decrypt(encryptedAccessToken);
       setAccessToken(decryptedToken);
-    } else {
-      return;
     }
   }, []);
-  // const decrypt = useDecryptToken();
-  // const encryptedAccessToken: string | null =
-  //   localStorage.getItem(ACCESS_TOKEN);
-  // if (encryptedAccessToken) {
-  //   const decryptedToken = decrypt(encryptedAccessToken);
-  //   setAccessToken(decryptedToken);
-  // } else {
-  //   return null;
-  // }
+  const defaultInputValues = {
+    title: '',
+    baseFee: '',
+    feePerDay: '',
+    overdueFee: '',
+    minimumRentalPeriod: '',
+    content: '',
+    categoryIds: [] as string[],
+  };
+  const initialInputValue =
+    typeof productData === 'string' ? defaultInputValues : productData;
+  const [inputValues, setInputValues] = useState(initialInputValue);
+  if (typeof productData === 'object') {
+    console.log('productData', productData);
+    console.log('productData-inputValue', inputValues);
+  }
 
   const navigate = useNavigate();
   const params = useParams();
@@ -72,18 +77,6 @@ const WritePost = ({
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm();
-  const defaultInputValues = {
-    title: '',
-    baseFee: '',
-    feePerDay: '',
-    overdueFee: '',
-    minimumRentalPeriod: '',
-    content: '',
-    categoryIds: [] as string[],
-  };
-  const initialInputValue =
-    typeof productData === 'string' ? defaultInputValues : productData;
-  const [inputValues, setInputValues] = useState(initialInputValue);
 
   // string[] -> File[]
   const createFilesFromUrls = (urls: string[]): File[] => {
@@ -104,7 +97,7 @@ const WritePost = ({
       : [];
   const productShowImages =
     typeof productData === 'object'
-      ? productData.productImages.slice().reverse()
+      ? productData?.productImages.slice().reverse()
       : [];
   const [showImages, setShowImages] = useState<string[]>(
     [...productShowImages].slice(0, MAX_IMAGE_COUNT),
@@ -126,7 +119,7 @@ const WritePost = ({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     let newValue: string | number | undefined;
-
+    console.log(e.target.name);
     if (e.target.name === 'minimumRentalPeriod') {
       newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
     } else {
@@ -191,7 +184,7 @@ const WritePost = ({
         type: 'application/json',
       });
       formData.append('request', blobJson);
-      console.log(inputValues);
+      console.log('inputValues', inputValues);
       for (const image of uploadImages.images) {
         formData.append('images', image);
       }
@@ -207,7 +200,7 @@ const WritePost = ({
       ...inputValues,
       categoryIds: [...selectedCategory],
     });
-  }, [productData, UploadImage]);
+  }, [productData, UploadImage, selectedCategory]);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage
@@ -226,24 +219,24 @@ const WritePost = ({
             value={inputValues?.minimumRentalPeriod}
             onChange={handleInputChange}
             className={
-              inputValues.minimumRentalPeriod
+              inputValues?.minimumRentalPeriod
                 ? 'success'
-                : errors.minimumRentalPeriod
+                : errors?.minimumRentalPeriod
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.minimumRentalPeriod && (
+          {inputValues?.minimumRentalPeriod && (
             <BsCheckLg className="check-icon" />
           )}
-          {!inputValues.minimumRentalPeriod &&
-            inputValues.minimumRentalPeriod === '' && (
+          {!inputValues?.minimumRentalPeriod &&
+            inputValues?.minimumRentalPeriod === '' && (
               <BiErrorCircle className="error-icon" />
             )}
-          {errors.minimumRentalPeriod && (
+          {errors?.minimumRentalPeriod && (
             <small
               className={`error-message ${
-                errors.minimumRentalPeriod ? 'show' : ''
+                errors?.minimumRentalPeriod ? 'show' : ''
               }`}
             >
               필수 입력사항입니다.
@@ -255,18 +248,18 @@ const WritePost = ({
           <Input
             type="text"
             {...register('baseFee', { required: true })}
-            value={inputValues.baseFee}
+            value={inputValues?.baseFee}
             onChange={handleInputChange}
             className={
-              inputValues.baseFee ? 'success' : errors.baseFee ? 'error' : ''
+              inputValues?.baseFee ? 'success' : errors?.baseFee ? 'error' : ''
             }
           />
-          {inputValues.baseFee && <BsCheckLg className="check-icon" />}
-          {!inputValues.baseFee && inputValues.baseFee === '' && (
+          {inputValues?.baseFee && <BsCheckLg className="check-icon" />}
+          {!inputValues?.baseFee && inputValues?.baseFee === '' && (
             <BiErrorCircle className="error-icon" />
           )}
-          {errors.baseFee && (
-            <small className={`error-message ${errors.baseFee ? 'show' : ''}`}>
+          {errors?.baseFee && (
+            <small className={`error-message ${errors?.baseFee ? 'show' : ''}`}>
               필수 입력사항입니다.
             </small>
           )}
@@ -276,23 +269,23 @@ const WritePost = ({
           <Input
             type="text"
             {...register('feePerDay', { required: true })}
-            value={inputValues.feePerDay}
+            value={inputValues?.feePerDay}
             onChange={handleInputChange}
             className={
-              inputValues.feePerDay
+              inputValues?.feePerDay
                 ? 'success'
-                : errors.feePerDay
+                : errors?.feePerDay
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.feePerDay && <BsCheckLg className="check-icon" />}
-          {!inputValues.feePerDay && inputValues.feePerDay === '' && (
+          {inputValues?.feePerDay && <BsCheckLg className="check-icon" />}
+          {!inputValues?.feePerDay && inputValues?.feePerDay === '' && (
             <BiErrorCircle className="error-icon" />
           )}
           {errors.feePerDay && (
             <small
-              className={`error-message ${errors.feePerDay ? 'show' : ''}`}
+              className={`error-message ${errors?.feePerDay ? 'show' : ''}`}
             >
               필수 입력사항입니다.
             </small>
@@ -303,23 +296,23 @@ const WritePost = ({
           <Input
             type="text"
             {...register('overdueFee', { required: true })}
-            value={inputValues.overdueFee}
+            value={inputValues?.overdueFee}
             onChange={handleInputChange}
             className={
-              inputValues.overdueFee
+              inputValues?.overdueFee
                 ? 'success'
-                : errors.overdueFee
+                : errors?.overdueFee
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.overdueFee && <BsCheckLg className="check-icon" />}
-          {!inputValues.overdueFee && inputValues.overdueFee === '' && (
+          {inputValues?.overdueFee && <BsCheckLg className="check-icon" />}
+          {!inputValues?.overdueFee && inputValues?.overdueFee === '' && (
             <BiErrorCircle className="error-icon" />
           )}
-          {errors.overdueFee && (
+          {errors?.overdueFee && (
             <small
-              className={`error-message ${errors.overdueFee ? 'show' : ''}`}
+              className={`error-message ${errors?.overdueFee ? 'show' : ''}`}
             >
               필수 입력사항입니다.
             </small>
@@ -331,24 +324,24 @@ const WritePost = ({
         제목
         <Input
           {...register('title', { required: true })}
-          value={inputValues.title}
+          value={inputValues?.title}
           onChange={handleInputChange}
           className={
-            inputValues.title ? 'success' : errors.title ? 'error' : ''
+            inputValues?.title ? 'success' : errors?.title ? 'error' : ''
           }
         />
-        {inputValues.title && <BsCheckLg className="check-icon" />}
-        {!inputValues.title && inputValues.title === '' && (
+        {inputValues?.title && <BsCheckLg className="check-icon" />}
+        {!inputValues?.title && inputValues?.title === '' && (
           <BiErrorCircle className="error-icon" />
         )}
-        {errors.title && (
-          <small className={`error-message ${errors.title ? 'show' : ''}`}>
+        {errors?.title && (
+          <small className={`error-message ${errors?.title ? 'show' : ''}`}>
             필수 입력사항입니다.
           </small>
         )}
       </PriceInput>
       <ReactQuill
-        defaultValue={inputValues.content}
+        defaultValue={inputValues?.content}
         theme="snow"
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}

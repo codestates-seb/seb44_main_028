@@ -4,11 +4,11 @@ import axios from 'axios';
 import WritePost from '../../Create/components/WritePost';
 function UpdatePage() {
   const param = useParams();
+
   const { data, isLoading, error } = useQuery('updateDetail', async () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
     );
-    console.log('update', data);
     return data;
   });
   return (

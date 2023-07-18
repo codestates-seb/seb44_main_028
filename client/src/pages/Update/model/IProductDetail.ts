@@ -4,12 +4,13 @@ export interface IProductDetail {
   categories: string[];
   content: string;
   feePerDay: number;
-  isOwner: boolean;
-  minimumRentalPeriod: number;
+  minimumRentalPeriod: number | string;
   overdueFee: number;
+  ownerMemberId: number;
   productImages: string[];
-  rate: string;
-  userImage: null;
+  rate: number;
+  userImage: string;
   username: string;
   viewCount: number;
+  address: string;
 }
