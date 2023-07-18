@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   MypageProfileWrapper,
   MypageImage,
@@ -17,9 +17,8 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
-import LendCard from '../../../common/components/MypageCard/LendCard';
+// import LendCard from '../../../common/components/MypageCard/LendCard';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
-import { borrowCardProps } from '../../../common/type';
 
 function MypageProfile() {
   const decrypt = useDecryptToken();
@@ -32,14 +31,6 @@ function MypageProfile() {
   const [address, setAddress] = useState<string>('');
 
   const getUserInfo = useCallback(() => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    console.log('토큰이 있습니다.', token);
-    if (!token) {
-      // 토큰이 없는 경우 처리
-      console.log('토큰이 없습니다.', token);
-      return;
-    }
-
     const fetchUserData = async () => {
       const encryptedAccessToken: string | null =
         localStorage.getItem(ACCESS_TOKEN);
@@ -107,14 +98,12 @@ function MypageProfile() {
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
         <BorrowCard
-          borrowCardData={{
-            params: 'REQUESTED',
-            title: '',
-            images: '',
-            status: '',
-            startDate: '',
-            endDate: '',
-          }}
+          params={''}
+          title={''}
+          image={''}
+          status={''}
+          startDate={''}
+          endDate={''}
         />
       </MypageRight>
     </MypageProfileWrapper>

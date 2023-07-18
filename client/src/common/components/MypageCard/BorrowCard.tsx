@@ -1,4 +1,3 @@
-import React from 'react';
 import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
 import { DefaultBtn } from '../Button';
@@ -15,17 +14,15 @@ import {
   ItemImage,
   BorrowCardContainer,
 } from '../../style/style';
-interface Props {
-  params: string;
-}
+
 const BorrowCard = ({
-  borrowCardData,
-}: {
-  borrowCardData: borrowCardProps;
-}) => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [items, setItems] = useState([]);
+  title,
+  startDate,
+  endDate,
+  status,
+  image,
+}: borrowCardProps) => {
+  const [items, setItems] = useState([] as borrowCardProps[]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -33,7 +30,12 @@ const BorrowCard = ({
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/reservations/members`,
         );
-        setItems(response.data);
+        const processedItems = response.data.map((item: borrowCardProps) => {
+          const { startDate, endDate } = processDataWithRegex(item.startDate);
+          return { ...item, startDate, endDate };
+        });
+
+        setItems(processedItems);
       } catch (error) {
         console.error('아이템을 불러올 수없습니다.', error);
       }
@@ -41,35 +43,24 @@ const BorrowCard = ({
     fetchItems();
   }, []);
 
-  useEffect(() => {
-    const params = borrowCardData.params as string; // 서버에서 내려주는 params 데이터
-
-    try {
-      const { startDate, endDate } = processDataWithRegex(params);
-      console.log(startDate); // "2023-01"
-      console.log(endDate); // "2023-02"
-    } catch (error) {
-      console.error('날짜 데이터 추출 중 오류가 발생했습니다.', error);
-    }
-  }, [borrowCardData.params]);
   return (
     <>
       <BorrowCardContainer>
         <BorrowCardWrapper>
           <ImgWrapper>
-            <ItemImage src={borrowCardData.images} />
+            <ItemImage src={image} />
           </ImgWrapper>
           <ContentWrapper>
-            <TitleWrapper>{borrowCardData.title}</TitleWrapper>
+            <TitleWrapper>{title}</TitleWrapper>
             <DatesWrapper>
               <div>예약기간</div>
-              {borrowCardData.status === 'CANCELED' ? (
+              {status === 'CANCELED' ? (
                 <div>{`${startDate}`}</div>
               ) : (
                 <div>{`${startDate} - ${endDate}`}</div>
               )}
             </DatesWrapper>
-            {borrowCardData.status === 'REQUESTED' && (
+            {status === 'REQUESTED' && (
               <ButtonWapper>
                 <DefaultBtn
                   color={colorPalette.whiteColor}
