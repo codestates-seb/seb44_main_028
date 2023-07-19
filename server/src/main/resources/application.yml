@@ -94,7 +94,5 @@ category:
 
 image:
   default:
-    path: "https://seb44main028image-bucket.s3.ap-northeast-2.amazonaws.com/default.jpg"
-
-
+    path: ${IMAGE.DEFAULT.PATH}
 

@@ -35,25 +35,15 @@ function ProfileEdit() {
   const { data: userData } = useGetMe();
   console.log('userData', userData);
 
-  const Token = (value: string | null): string | undefined => {
-    const encryptedAccessToken: string | null =
-      localStorage.getItem(ACCESS_TOKEN);
-    if (encryptedAccessToken) {
-      return (value = decrypt(encryptedAccessToken));
-    } else {
-      return;
-    }
-  };
-
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [address, setAddress] = useState<string>('');
   const [newDisplayName, setNewDisplayName] = useState('');
 
-  useEffect(() => {
-    //회원 정보 조회 Read
-    updateUserInfo();
-  }, []);
+  // useEffect(() => {
+  //   //회원 정보 조회 Read
+  //   updateUserInfo();
+  // }, []);
 
   const onDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDisplayName(e.target.value);
@@ -70,7 +60,7 @@ function ProfileEdit() {
     if (encryptedAccessToken) {
       accessToken = decrypt(encryptedAccessToken);
     } else {
-      return;
+      return null;
     }
     try {
       await axios.patch(
@@ -82,9 +72,6 @@ function ProfileEdit() {
           },
         },
       );
-
-      // const accessToken: string | null = null;
-      // Token(accessToken);
 
       console.log('회원 정보가 성공적으로 수정되었습니다.:', newDisplayName);
       //   // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
@@ -114,22 +101,19 @@ function ProfileEdit() {
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('file', e.target.files[0]);
 
       // 서버 연결 시
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/members/images/`,
+          `${process.env.REACT_APP_API_URL}/api/members/images`,
           formData,
           {
-            params: { memberId: 1, imageFile: formData },
             headers: {
               'Content-Type': 'multipart/form-data',
-              'Access-Control-Allow-Headers': '*',
             },
           },
         );
-        console.log(response.data);
+        console.log('response', response.data);
       } catch (error) {
         console.error('이미지 업로드 중에 오류발생', error);
       }
@@ -159,27 +143,43 @@ function ProfileEdit() {
       if (encryptedAccessToken) {
         accessToken = decrypt(encryptedAccessToken);
       } else {
-        return;
+        return null;
       }
-
-      // if (!newDisplayName) {
 
       console.log('Form data:', Object.fromEntries(formData));
       console.log('Form submitted!');
       try {
+        // 이미지 업로드
+        const imageFormData = new FormData();
+        if (formData.get('file')) {
+          const file = formData.get('file') as File;
+          imageFormData.append('file', file);
+
+          await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/members/images/`,
+            imageFormData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          );
+        }
         const response = await axios.patch(
           `${process.env.REACT_APP_API_URL}/api/members`,
           {
             displayName: newDisplayName,
+            imamgeFile: imageFormData,
           },
           {
             headers: {
-              Authorization: `Bearer ${accessToken}}`,
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'multipart/form-data',
             },
           },
         );
         await updateUserInfo();
-        // dispatch(setName(userData?.displayName));
+
         console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
         console.log('setNewDisplayName:', setNewDisplayName);
 
@@ -188,7 +188,7 @@ function ProfileEdit() {
         console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
       }
     },
-    [newDisplayName, dispatch, navigate, userData, decrypt, updateUserInfo],
+    [newDisplayName, dispatch, navigate, decrypt, updateUserInfo],
   );
 
   return (
@@ -204,7 +204,6 @@ function ProfileEdit() {
           </ProfileImg>
           <ProfilerEdit>
             <input
-              ref={inputRef}
               type="file"
               id="imgUpload"
               name="file"

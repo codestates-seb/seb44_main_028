@@ -1,12 +1,17 @@
 package com.ftiland.travelrental.common.resolver;
-
 import com.ftiland.travelrental.common.annotation.CurrentMember;
+import com.ftiland.travelrental.common.exception.BusinessLogicException;
+import com.ftiland.travelrental.common.exception.ExceptionCode;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+
+import java.util.Objects;
 
 @Component
 public class CurrentMemberResolver implements HandlerMethodArgumentResolver {
@@ -24,6 +29,13 @@ public class CurrentMemberResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) {
-        return nativeWebRequest.getAttribute("memberId", NativeWebRequest.SCOPE_REQUEST);
+
+        boolean required = methodParameter.getParameterAnnotation(CurrentMember.class).required();
+        Long memberId = (Long) nativeWebRequest.getAttribute("memberId", NativeWebRequest.SCOPE_REQUEST);
+
+        if(Objects.isNull(memberId) && required) {
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+        }
+        return memberId;
     }
 }
