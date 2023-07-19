@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import Modal from './Modal';
-// import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
-import { BORROWCARD_DATA } from '../constants';
+// import { BORROWCARD_DATA } from '../constants';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 interface borrowCardProps {
   title: string;
@@ -32,7 +31,7 @@ function BorrowList() {
   //   BORROWCARD_DATA.length,
   // );
   const [currentStatus, setCurrentStatus] = useState('REQUESTED');
-  const totalPages = Math.ceil(totalItemsCount / itemsPerPage) * itemsPerPage;
+  const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
   console.log('currentStatus:', currentStatus);
   console.log('totalPages:', totalPages);
 
@@ -42,23 +41,10 @@ function BorrowList() {
   }, [currentPage, currentStatus]);
 
   const fetchItemsForPage = async (page: number, status: string) => {
-    // const startIndex = (page - 1) * itemsPerPage;
-    // const endIndex = startIndex + itemsPerPage;
-    // const filteredItems = BORROWCARD_DATA.filter(
-    //   (item) => item.status === status,
-    // );
-    // const slicedItems = filteredItems.slice(startIndex, endIndex);
-    // setItems(slicedItems);
-    // setTotalItemsCount(filteredItems.length);
-    // };
     const encryptedAccessToken: string | null =
-      localStorage.getItem(ACCESS_TOKEN);
-    let accessToken: string | null = null;
-    if (encryptedAccessToken) {
-      accessToken = decrypt(encryptedAccessToken);
-    } else {
-      return;
-    }
+      localStorage.getItem(ACCESS_TOKEN) || '';
+    const accessToken = decrypt(encryptedAccessToken);
+
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/reservations`,
