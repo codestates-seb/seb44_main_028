@@ -38,3 +38,9 @@ export type PagingType = {
   totalItemsCount: number;
   totalPages: number;
 };
+//location
+export type LocationProps = {
+  latitude: number;
+  longitude: number;
+  memberId: number | undefined;
+};

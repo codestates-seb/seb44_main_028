@@ -62,9 +62,15 @@ export const Location = styled.div`
   align-items: center;
   color: ${colorPalette.grayTextColor};
   font-size: ${fontSize.small};
-  span {
-    margin-right: 5px;
-    margin-top: -5px;
+`;
+export const LocationContent = styled.div`
+  display: flex;
+  align-items: center;
+  & svg {
+    margin-right: 0.5rem;
+  }
+  & div {
+    margin-right: 0.5rem;
   }
 `;
 export const EvaluationItem = styled.div`
@@ -225,6 +231,7 @@ export const InputBox = styled.div`
   }
 `;
 export const TownBtn = styled(DefaultBtn)`
+  cursor: pointer;
   font-size: 10px;
   width: 80px;
   height: 22px;
@@ -328,8 +335,8 @@ export const Rating = styled(DefaultBtn)``;
 
 export const WishListWrapper = styled.div``;
 export const LendListWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 //BorrowList
 
@@ -354,10 +361,8 @@ export const BorrowWrapper = styled.div`
   }
 `;
 export const BorrowCardWrappre = styled.div`
-  display: flex;
-  div {
-    margin-left: 1rem;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 // LendList
 

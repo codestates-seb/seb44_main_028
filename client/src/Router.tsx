@@ -20,6 +20,7 @@ function Router() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/auth/callback" element={<RedirectPage />} />
       <Route path="/itemlist/:categoryId" element={<ItemListPage />} />
+      <Route path="/itemlist/search/:serachContent" element={<SearchPage />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/booking/:itemId" element={<BookingPage />} />
         <Route path="/mypage" element={<MyPage />} />

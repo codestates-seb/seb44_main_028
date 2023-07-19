@@ -366,6 +366,7 @@ export const BorrowCardWrapper = styled.div`
   transform: translateY(4rem);
   height: 11rem;
   width: 23rem;
+  margin-bottom: 2rem;
 `;
 export const ImgWrapper = styled.div`
   margin-left: 1rem;
@@ -426,6 +427,7 @@ export const LendCardWrapper = styled.div`
   transform: translateY(4rem);
   height: 11rem;
   width: 23rem;
+  margin-bottom: 2rem;
 `;
 
 export const LendImgWrapper = styled.div`
@@ -444,11 +446,12 @@ export const LendImgWrapper = styled.div`
 export const LendContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 1rem;
 `;
 export const LendDatesWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   height: 4rem;
   width: 10rem;
   font-size: ${fontSize.small};
