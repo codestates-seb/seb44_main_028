@@ -46,12 +46,10 @@ public interface InterestMapper {
         PageInfo pageInfo = new PageInfo(interests.getPageable().getPageNumber(),interests.getPageable().getPageSize(),interests.getTotalElements(),interests.getTotalPages());
         for(Interest interest : interests.getContent()){
             InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
-            ArrayList<ImageProduct> images = imageService.findImageProduct(interest.getProduct().getProductId());
+            ImageProduct image = imageService.findMainImageProduct(interest.getProduct().getProductId());
 
             // response 에 image 추가
-            for(ImageProduct image : images){
-                response.addImageProduct(image.getImageUrl());
-            }
+            response.setImageUrl(image.getImageUrl());
             responses.addResponse(response);
         }
         responses.setPageInfo(pageInfo);
