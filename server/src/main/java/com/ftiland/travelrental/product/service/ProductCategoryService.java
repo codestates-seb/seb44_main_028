@@ -4,6 +4,7 @@ import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.category.entity.Category;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
+import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.product.dto.GetProducts;
@@ -100,5 +101,9 @@ public class ProductCategoryService {
         Page<ProductDto> productDtoPage = new PageImpl<>(productDtos, pageable, productCategories.size());
 
         return GetProducts.from(productDtoPage);
+    }
+
+    public List<ProductCategory> findCategories(String categoryId) {
+        return productCategoryRepository.findByCategoryCategoryId(categoryId);
     }
 }
