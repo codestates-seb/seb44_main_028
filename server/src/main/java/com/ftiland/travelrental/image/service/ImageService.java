@@ -192,6 +192,11 @@ public class ImageService {
         ArrayList<ImageProduct> imageProducts = imageProductRepository.findByProductId(productId);
         return imageProducts;
     }
+    public ImageProduct findMainImageProduct(String productId){
+        ImageProduct imageProduct = imageProductRepository.findFirstByProductProductId(productId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.IMAGE_EMPTY));
+
+        return imageProduct;
+    }
 
     // 상품 이미지
     public List<ImageProduct> findImageProducts(String productId) {
