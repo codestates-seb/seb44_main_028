@@ -21,10 +21,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
                                                                                                     ReservationStatus status,
                                                                                                     String productId);
 
-    Page<Reservation> findAllByMemberMemberIdAndStatus(Long memberId, ReservationStatus status, Pageable pageable);
-
-    Page<Reservation> findAllByProductProductIdAndStatus(String productId, ReservationStatus status, Pageable pageable);
-
     @Query("SELECT r " +
             "FROM Reservation r " +
             "WHERE r.product.productId = :productId AND r.status != :status " +
@@ -50,7 +46,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
                                                                    @Param("status") ReservationStatus status,
                                                                    Pageable pageable);*/
 
-    /**/@Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, p.title, r.startDate, r.endDate, r.status) " +
+    @Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, p.mainImage, p.title, r.startDate, r.endDate, r.status) " +
             "FROM Reservation r JOIN r.product p " +
             "WHERE r.member.memberId = :memberId AND r.status = :status " +
             "GROUP BY r.reservationId")

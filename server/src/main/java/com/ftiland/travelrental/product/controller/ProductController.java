@@ -1,8 +1,7 @@
 package com.ftiland.travelrental.product.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.common.annotation.CurrentMember;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.entity.Member;
@@ -48,10 +47,11 @@ public class ProductController {
             @CurrentMember Long memberId) {
         log.info("[ProductController] createProduct called");
 
-        CreateProduct.Response response = productService.createProduct(request, memberId);
+        List<ImageDto> imageDtos = imageService.storeImages(images);
 
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.storeImageProducts(i, response.getProductId()));
+        CreateProduct.Response response = productService.createProduct(request, memberId, imageDtos);
+
+
 
         URI uri = URI.create(String.format("/api/products/%s", response.getProductId()));
         return ResponseEntity.created(uri).body(response);
@@ -64,12 +64,13 @@ public class ProductController {
                                                                 @CurrentMember Long memberId) {
         log.info("[ProductController] updateProduct called");
 
-        UpdateProduct.Response response = productService.updateProduct(request, productId, memberId);
+        // 이미지 저장
+        List<ImageDto> imageDtos = imageService.storeImages(images);
 
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.deleteImageProducts(productId));
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.storeImageProducts(i, productId));
+        UpdateProduct.Response response = productService.updateProduct(request, productId, memberId, imageDtos);
+
+        // 이전 이미지 삭제
+        imageService.deleteImages(response.getDeletedImageName());
 
         return ResponseEntity.ok(response);
     }

@@ -183,8 +183,6 @@ public class ReservationService {
         log.info("findBorrowReservationDtosByMemberId total time = {}", end - start);
 
         return GetBorrowReservations.from(reservations);
-
-
     }
 
     public GetLendReservations getReservationByLender(Long memberId, String productId,

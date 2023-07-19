@@ -56,6 +56,4 @@ public class Product extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<>*/
 }
