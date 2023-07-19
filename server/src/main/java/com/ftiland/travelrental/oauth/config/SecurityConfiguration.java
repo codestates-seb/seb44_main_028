@@ -56,6 +56,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET,"/*/products/members/**" ).authenticated()
                         .antMatchers(HttpMethod.GET,"/*/reservations/products/*/calendar" ).permitAll()
                         .antMatchers(HttpMethod.GET,"/*/reservations/products/*/moreCalendar" ).permitAll()
+                        .antMatchers(HttpMethod.GET,"/*/categories").permitAll()
                         .antMatchers(HttpMethod.GET,"/api/products/**").permitAll()
                         .antMatchers("/api/chat/**").permitAll()
                         .anyRequest().authenticated()
