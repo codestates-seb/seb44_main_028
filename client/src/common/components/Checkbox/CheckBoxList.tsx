@@ -1,5 +1,3 @@
-import React from 'react';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import CheckBox from './CheckBox';
@@ -12,8 +10,6 @@ const CheckBoxList = ({
   selectedtCategory,
   setSelectedCategory,
 }: CategoryListProps) => {
-  const [seletedCategories, setSelectedCategories] = useState<string[]>([]);
-  console.log(seletedCategories);
   const fetchCategoryData = async () => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/categories`,
