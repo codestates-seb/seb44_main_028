@@ -237,6 +237,7 @@ export const Selected = styled.div<{ isClick: boolean }>`
   padding: 0.713rem 0;
   padding-left: 1.75rem;
   padding-right: 0.888rem;
+
   & svg {
     font-size: 1.5rem;
     margin-left: -35px;
@@ -270,6 +271,7 @@ const fadeOut = keyframes`
     }
 `;
 export const OptionWrapper = styled.ul<{ isClick: boolean }>`
+  z-index: 10;
   width: 16.75rem;
   border: ${border.basic};
   position: absolute;
