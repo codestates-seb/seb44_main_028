@@ -1,6 +1,5 @@
 package com.ftiland.travelrental.member.dto;
 
-import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +41,6 @@ public class MemberDto {
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
-                    .imageUrl(member.getImageUrl())
                     .build();
         }
     }
