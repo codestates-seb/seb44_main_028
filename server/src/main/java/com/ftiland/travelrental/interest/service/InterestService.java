@@ -43,8 +43,6 @@ public class InterestService {
         this.memberService = memberService;
         this.imageService = imageService;
         this.interestMapper = interestMapper;
-
-
     }
 
     // 특정 관심객체 검색

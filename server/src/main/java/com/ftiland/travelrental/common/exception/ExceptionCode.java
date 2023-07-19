@@ -22,7 +22,10 @@ public enum ExceptionCode {
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
     NOT_POSSIBLE_CANCEL(400, "예약취소 불가"),
     NOT_FOUND_IMAGE_MEMBER(404, "멤버 이미지가 존재하지 않습니다."),
-    RESERVATION_NOT_ALLOWED(400, "상품에 예약할 수 없습니다.");
+    RESERVATION_NOT_ALLOWED(400, "자신의 상품에 예약요청을 할 수 없습니다."),
+    WRONG_RESERVATION(400, "예약 날짜가 잘못되었습니다."),
+    WRONG_MINIMUM_PERIOD(400, "예약 기간이 최소 기간보다 짧습니다."),
+    EXIST_RESERVATION(400, "해당 기간에 예약이 존재합니다.");
 
     @Getter
     private int status;

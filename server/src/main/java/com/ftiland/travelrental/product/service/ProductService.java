@@ -7,8 +7,10 @@ import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.common.utils.GeoUtils;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
+import com.ftiland.travelrental.image.service.ImageProductService;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
@@ -48,9 +50,10 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ImageProductRepository imageProductRepository;
+    private final ImageProductService imageProductService;
 
     @Transactional
-    public CreateProduct.Response createProduct(CreateProduct.Request request, Long memberId) {
+    public CreateProduct.Response createProduct(CreateProduct.Request request, Long memberId, List<ImageDto> images) {
         log.info("[ProductService] createProduct called");
         Member member = memberService.findMember(memberId);
 
@@ -72,6 +75,7 @@ public class ProductService {
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
                 .address(member.getAddress())
+                .mainImage(images.get(0).getImageUrl())
                 .member(member).build();
 
         // save시에 id를 기준으로 insert쿼리나 update쿼리를 생성해야하기 때문에 select를 먼저 실행한다.
@@ -79,6 +83,8 @@ public class ProductService {
 
         List<CategoryDto> productCategories =
                 productCategoryService.createProductCategories(product, request.getCategoryIds());
+
+        imageProductService.createImageProducts(product, images);
 
         return CreateProduct.Response.from(product, productCategories);
     }
@@ -92,7 +98,9 @@ public class ProductService {
     @Transactional
     //@CacheEvict(key = "#productId", value = "products")
     public UpdateProduct.Response updateProduct(UpdateProduct.Request request,
-                                                String productId, Long memberId) {
+                                                String productId,
+                                                Long memberId,
+                                                List<ImageDto> images) {
         Member member = memberService.findMember(memberId);
 
         Product product = findProduct(productId);
@@ -117,7 +125,11 @@ public class ProductService {
                     productCategoryService.createProductCategories(product, categoryIds);
                 });
 
-        return UpdateProduct.Response.from(product);
+        List<String> imageFileNames = imageProductService.findImageFileName(productId);
+
+        imageProductService.createImageProducts(product, images);
+
+        return UpdateProduct.Response.from(product, imageFileNames);
     }
 
     @Transactional

@@ -65,7 +65,7 @@ function ItemListPage() {
       {products?.map((product: ItemCardProps) => (
         <ItemCard key={product.productId} itemCardData={product} />
       ))}
-  //    <div>
+      {/* //    <div>
    //     <SelectBox
     //      selectOptionData={DISTANCE_OPTIONS}
    //       selectDefaultOption={DISTANCE_DEFAULT_VALUE}
@@ -76,7 +76,7 @@ function ItemListPage() {
      //   {products?.products.map((product: ItemCardProps) => (
      //     <ItemCard key={product.productId} itemCardData={product} />
       //  ))}
-     // </ProductListWrapper>
+     // </ProductListWrapper> */}
     </ItemListPageContainer>
   );
 }
