@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { motion, AnimatePresence } from 'framer-motion';
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 import Loading from '../../../common/components/Loading';
@@ -86,9 +87,20 @@ function ItemListPage() {
         <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
       </div>
       <ProductListWrapper ref={containerRef}>
-        {items?.map((product: ItemCardProps) => (
-          <ItemCard key={product.productId} itemCardData={product} />
-        ))}
+        <AnimatePresence>
+          {items?.map((product: ItemCardProps) => (
+            <motion.div
+              key={product.productId}
+              ref={containerRef}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ItemCard itemCardData={product} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </ProductListWrapper>
       {isFetching && <Loading />}
     </ItemListPageContainer>
