@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
+
 import Loading from '../../../common/components/Loading';
 import {
   DISTANCE_DEFAULT_VALUE,
@@ -17,6 +18,12 @@ import NoData from '../../../common/components/NoData';
 function ItemListPage() {
   const params = useParams();
   const [page, setPage] = useState(1);
+  const [distanceSelectedValue, setDistanceSelectedValue] = useState(
+    DISTANCE_DEFAULT_VALUE,
+  );
+  const [productFilterSelectedValue, setProductFilterSelectedValue] = useState(
+    PRODUCT_FILTER_OPTIONS[0].label,
+  );
   console.log(params);
   const size = 10;
   const {
@@ -32,6 +39,7 @@ function ItemListPage() {
             page: page,
             size: size,
             categoryId: params.categoryId,
+            sortBy: 'createdAt',
           },
         },
       );
@@ -56,27 +64,21 @@ function ItemListPage() {
       {
         <div>
           <SelectBox
+            setSelectedValue={setDistanceSelectedValue}
+            selectedValue={distanceSelectedValue}
             selectOptionData={DISTANCE_OPTIONS}
             selectDefaultOption={DISTANCE_DEFAULT_VALUE}
           />
-          <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+          <SelectBox
+            selectedValue={productFilterSelectedValue}
+            setSelectedValue={setProductFilterSelectedValue}
+            selectOptionData={PRODUCT_FILTER_OPTIONS}
+          />
         </div>
       }
-      {products?.map((product: ItemCardProps) => (
+      {products?.products.map((product: ItemCardProps) => (
         <ItemCard key={product.productId} itemCardData={product} />
       ))}
-      {/* //    <div>
-   //     <SelectBox
-    //      selectOptionData={DISTANCE_OPTIONS}
-   //       selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-   //     />
-   //     <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-   //   </div>
-   //   <ProductListWrapper>
-     //   {products?.products.map((product: ItemCardProps) => (
-     //     <ItemCard key={product.productId} itemCardData={product} />
-      //  ))}
-     // </ProductListWrapper> */}
     </ItemListPageContainer>
   );
 }

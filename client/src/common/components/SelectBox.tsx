@@ -9,24 +9,27 @@ import {
   Option,
 } from '../style/style';
 const SelectBox = ({
+  selectedValue,
+  setSelectedValue,
   selectOptionData,
   selectDefaultOption,
 }: {
-  selectOptionData: SelectOption[];
+  selectedValue?: string;
+  setSelectedValue?: React.Dispatch<React.SetStateAction<string>>;
+  selectOptionData: SelectOption[] | undefined;
   selectDefaultOption?: string;
 }) => {
   const [onClick, setOnClick] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(
-    selectDefaultOption || selectOptionData[0].label,
-  );
   const selectBoxRef = useRef<HTMLDivElement>(null);
 
+  console.log(selectOptionData);
   const onClickHandler = () => {
     setOnClick(!onClick);
   };
   const selectOption = (e: React.MouseEvent<HTMLLIElement>) => {
-    const optionValue = e.currentTarget.innerText;
-    setSelectedValue(optionValue);
+    const optionValue = e.currentTarget.innerText as string;
+    console.log(optionValue);
+    optionValue && setSelectedValue?.(optionValue);
   };
   const handleClickOutside = (e: MouseEvent) => {
     if (
@@ -49,7 +52,7 @@ const SelectBox = ({
         <MdOutlineExpandMore />
       </Selected>
       <OptionWrapper isClick={onClick}>
-        {selectOptionData.map((option, index) => (
+        {selectOptionData?.map((option, index) => (
           <Option key={index} onClick={selectOption}>
             {option.label}
           </Option>

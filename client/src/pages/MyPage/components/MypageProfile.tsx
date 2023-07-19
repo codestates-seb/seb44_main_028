@@ -12,7 +12,6 @@ import {
   TownBtn,
   LocationContent,
 } from '../style';
-import Loading from '../../../common/components/Loading';
 import ProfileImage0 from '../../../asset/my_page/myprofile_adobe_express.svg';
 import GradeIcon from './GradeIcon';
 import { FaMapMarkerAlt } from 'react-icons/fa';
