@@ -1,10 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
-import { ItemListPageContainer, ProductListWrapper } from '../style';
-
 import Loading from '../../../common/components/Loading';
 import {
   DISTANCE_DEFAULT_VALUE,
@@ -14,6 +12,8 @@ import {
 import { ItemCardProps } from '../../../common/type';
 import { useParams } from 'react-router-dom';
 import NoData from '../../../common/components/NoData';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import { ItemListPageContainer, ProductListWrapper } from '../style';
 
 function ItemListPage() {
   const params = useParams();
@@ -24,7 +24,8 @@ function ItemListPage() {
   const [productFilterSelectedValue, setProductFilterSelectedValue] = useState(
     PRODUCT_FILTER_OPTIONS[0].label,
   );
-  console.log(params);
+  //const {data: userDate} = useGetMe();
+
   const size = 10;
   const {
     data: products,
@@ -59,6 +60,13 @@ function ItemListPage() {
     return <NoData />;
   }
   console.log(products);
+
+  useEffect(() => {
+    // 멤버 유저 아닌 경우
+    // 로그인 페이지로 리다이렉트
+    // 멤버 유저인데 위치 정보 없는 경우
+    // 위치 정보 수정 페이지로 리다이렉트
+  }, []);
   return (
     <ItemListPageContainer>
       {
