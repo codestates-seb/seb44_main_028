@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { UseQueryResult } from 'react-query';
 import useGetMe from './common/utils/customHooks/useGetMe';
-import { IUserInfo } from './common/model/IUserInfo';
 import Loading from './common/components/Loading';
+import { IUserInfo } from './common/model/IUserInfo';
 
 function PrivateRoutes() {
   const { data, isLoading }: UseQueryResult<IUserInfo | null> = useGetMe();

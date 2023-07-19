@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { QueryClient, useQueryClient } from 'react-query';
 import {
   MypageProfileWrapper,
@@ -18,6 +18,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 import LendCard from '../../../common/components/MypageCard/LendCard';
 import Loading from '../../../common/components/Loading';
 
@@ -86,7 +87,7 @@ function MypageProfile() {
         <MypageInfo>
           <div style={{ fontWeight: 'bold', fontSize: 20 }}>
             <span>
-              <h4>{userData?.displayName}</h4>
+              <h4>{displayName}</h4>
             </span>
           </div>
           <Location>
@@ -103,6 +104,15 @@ function MypageProfile() {
           <GradeIcon {...iconProps} />
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
+        {/* <BorrowCard
+          borrowCardData={{
+            title: '감자팔아요',
+            image: '',
+            status: 'REQUESTED',
+            startDate: '2021-01-12',
+            endDate: '2050-12-10',
+          }}
+        /> */}
       </MypageRight>
     </MypageProfileWrapper>
   );
