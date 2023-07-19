@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import NoData from '../../../common/components/NoData';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
+import ErrorPage from '../../../common/components/ErrorPage';
 
 function ItemListPage() {
   const params = useParams();
@@ -27,6 +28,12 @@ function ItemListPage() {
   //const {data: userDate} = useGetMe();
 
   const size = 10;
+  const queryParams = {
+    page: page,
+    size: size,
+    categoryId: params.categoryId,
+    sortBy: 'createdAt',
+  };
   const {
     data: products,
     isLoading,
@@ -36,12 +43,7 @@ function ItemListPage() {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products`,
         {
-          params: {
-            page: page,
-            size: size,
-            categoryId: params.categoryId,
-            sortBy: 'createdAt',
-          },
+          params: queryParams,
         },
       );
       console.log('res', res);
@@ -50,23 +52,27 @@ function ItemListPage() {
       console.log('err', err);
     }
   });
+
   if (isLoading) {
     return <Loading />;
   }
   if (error) {
-    return <div>에러가 발생했습니다.</div>;
+    return <ErrorPage />;
   }
   if (products.products.length === 0) {
     return <NoData />;
   }
   console.log(products);
 
-  useEffect(() => {
-    // 멤버 유저 아닌 경우
-    // 로그인 페이지로 리다이렉트
-    // 멤버 유저인데 위치 정보 없는 경우
-    // 위치 정보 수정 페이지로 리다이렉트
-  }, []);
+  // useEffect(() => {
+  // 멤버 유저 아닌 경우
+  // 로그인 페이지로 리다이렉트
+  // 멤버 유저인데 위치 정보 없는 경우
+  // 위치 정보 수정 페이지로 리다이렉트
+  // if(distanceSelectedValue) {
+  //   queryParams.distance = distanceSelectedValue;
+  // }
+  // }, [distanceSelectedValue]);
   return (
     <ItemListPageContainer>
       {
