@@ -1,5 +1,6 @@
 package com.ftiland.travelrental.member.dto;
 
+import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,11 +17,22 @@ public class MemberDto {
         private Long memberId;
         private String email;
         private String displayName;
-
-        // 이미지 필드 필요
+        private String imageUrl;
         private String address;
         private Double latitude;
         private Double longitude;
+
+        public static MemberDto.Response from(Member member, String imageUrl) {
+            return Response.builder()
+                    .memberId(member.getMemberId())
+                    .email(member.getEmail())
+                    .address(member.getAddress())
+                    .displayName(member.getDisplayName())
+                    .longitude(member.getLongitude())
+                    .latitude(member.getLatitude())
+                    .imageUrl(imageUrl)
+                    .build();
+        }
 
         public static MemberDto.Response from(Member member) {
             return Response.builder()
@@ -30,6 +42,7 @@ public class MemberDto {
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
+                    .imageUrl(member.getImageUrl())
                     .build();
         }
     }

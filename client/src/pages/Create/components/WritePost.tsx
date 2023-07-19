@@ -12,7 +12,7 @@ import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import { CONTENT_DESCRIPTION, MAX_IMAGE_COUNT } from '../constants';
+import { CONTENT_DESCRIPTION, MAX_IMAGE_COUNT, INPIT_VALIDATION, INPUT_FIELD } from '../constants';
 import { categories } from '../type';
 import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';

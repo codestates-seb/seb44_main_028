@@ -1,4 +1,11 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
+import { QueryClient, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import {
   UploadBtn,
@@ -17,142 +24,26 @@ import {
 } from '../style';
 import axios from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../common/store/RootStore';
-import { setName } from '../store/ProfileSlice';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { DefaultBtn } from '../../../common/components/Button';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
-import { displayName } from 'react-quill';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function ProfileEdit() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const decrypt = useDecryptToken();
+  const [previewImage, setPreviewImage] = useState<string | null>(profileImage);
+  const [profileImg, setProfileImg] = useState<File | null>(null);
+  const [newDisplayName, setNewDisplayName] = useState<string>('');
 
-  const { data: userData } = useGetMe();
+  const { data: userData } = useGetMe(); // Use the useGetMe hook to fetch user information
   console.log('userData', userData);
 
-  const Token = (value: string | null): string | undefined => {
-    const encryptedAccessToken: string | null =
-      localStorage.getItem(ACCESS_TOKEN);
-    if (encryptedAccessToken) {
-      return (value = decrypt(encryptedAccessToken));
-    } else {
-      return;
-    }
-  };
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [address, setAddress] = useState<string>('');
-  const [newDisplayName, setNewDisplayName] = useState('');
-
-  useEffect(() => {
-    //회원 정보 조회 Read
-    updateUserInfo();
-  }, []);
-
-  const onDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDisplayName(e.target.value);
-  };
-  console.log('수정 할 이름 :', newDisplayName);
-
-  const updateUserInfo = useCallback(async () => {
-    const requestData = {
-      displayName: newDisplayName,
-    };
-    const encryptedAccessToken: string | null =
-      localStorage.getItem(ACCESS_TOKEN);
-    let accessToken: string | null = null;
-    if (encryptedAccessToken) {
-      accessToken = decrypt(encryptedAccessToken);
-    } else {
-      return;
-    }
+  const fetchUpdatedUserInfo = useCallback(async () => {
     try {
-      await axios.patch(
-        `${process.env.REACT_APP_API_URL}/api/members`,
-        requestData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-
-      // const accessToken: string | null = null;
-      // Token(accessToken);
-
-      console.log('회원 정보가 성공적으로 수정되었습니다.:', newDisplayName);
-      //   // PATCH 요청 후 GET 요청으로 업데이트된 정보 가져오기
-      const getResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/members/`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      const updatedUserInfo = getResponse.data;
-
-      setNewDisplayName(updatedUserInfo.newDisplayName || '');
-      // setAddress(updatedUserInfo.address || '');
-      console.log('update유저정보 ', updatedUserInfo);
-    } catch (error) {
-      console.log('회원 정보가 업데이트 되지 않았습니다.', error);
-    }
-  }, [newDisplayName]);
-
-  const onUploadImage = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) {
-        return;
-      }
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('file', e.target.files[0]);
-
-      // 서버 연결 시
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/members/images/`,
-          formData,
-          {
-            params: { memberId: 1, imageFile: formData },
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'Access-Control-Allow-Headers': '*',
-            },
-          },
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error('이미지 업로드 중에 오류발생', error);
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    },
-    [],
-  );
-
-  const onInputButtonClick = useCallback(() => {
-    if (!inputRef.current) {
-      return;
-    }
-    inputRef.current.click();
-  }, []);
-
-  const onSubmitForm = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
+      queryClient.invalidateQueries('me');
       const encryptedAccessToken: string | null =
         localStorage.getItem(ACCESS_TOKEN);
       let accessToken: string | null = null;
@@ -161,35 +52,95 @@ function ProfileEdit() {
       } else {
         return;
       }
-
-      // if (!newDisplayName) {
-
-      console.log('Form data:', Object.fromEntries(formData));
-      console.log('Form submitted!');
-      try {
-        const response = await axios.patch(
-          `${process.env.REACT_APP_API_URL}/api/members`,
-          {
-            displayName: newDisplayName,
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6Mywic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ._VPRKi0CPI6qbxUu-QSRoB0KBOSV7OAaIsCNsoYpHikU4DOg8YLn2967MR5iVaWpNjZ6eMyDR5dTgSS3ir1wWA`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}}`,
-            },
-          },
-        );
-        await updateUserInfo();
-        // dispatch(setName(userData?.displayName));
-        console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
-        console.log('setNewDisplayName:', setNewDisplayName);
+        },
+      );
+      const updatedUserInfo = response.data;
+      setNewDisplayName(updatedUserInfo.displayName);
+      setPreviewImage(updatedUserInfo.profileImageUrl); //이미지 업데이트
+      console.log('업데이트 유지정보:', updatedUserInfo);
+    } catch (error) {
+      console.error('업데이트된 유저정보를 가져오는데 실패했습니다.', error);
+    }
+  }, [decrypt]);
 
-        navigate('/mypage');
-      } catch (error) {
-        console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
+  const onUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    const reader = new FileReader();
+    console.log('file', file);
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+      setProfileImg(file);
+      console.log(setProfileImg);
+    }
+  };
+
+  const onDisplayNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewDisplayName(e.target.value);
+    console.log('수정 할 이름 :', newDisplayName);
+  };
+
+  useEffect(() => {
+    console.log('newDisplayName:', newDisplayName);
+  }, [newDisplayName]);
+
+  const onInputButtonClick = () => {
+    const input = document.getElementById('imgUpload') as HTMLInputElement;
+    input.click();
+  };
+
+  const onSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Handle form submission logic here
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    let accessToken: string | null = null;
+    if (encryptedAccessToken) {
+      accessToken = decrypt(encryptedAccessToken);
+    } else {
+      return null;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('displayName', newDisplayName);
+      if (profileImg) {
+        formData.append('imageFile', profileImg);
       }
-    },
-    [newDisplayName, dispatch, navigate, userData, decrypt, updateUserInfo],
-  );
+
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        formData,
+        // {
+        //   displayName: newDisplayName,
+        //   imageFile: profileImg,
+        // },
+
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      alert('정보가 수정되었습니다.');
+      console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
+
+      await fetchUpdatedUserInfo();
+      navigate('/mypage');
+    } catch (error) {
+      console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
+    }
+  };
 
   return (
     <MyPageEdit>
@@ -199,12 +150,11 @@ function ProfileEdit() {
             {previewImage ? (
               <img src={previewImage} alt="Profile Image" />
             ) : (
-              <img src={profileImage} alt="Profile Image" />
+              <img src={profileImg?.name} alt="Profile Image" />
             )}
           </ProfileImg>
           <ProfilerEdit>
             <input
-              ref={inputRef}
               type="file"
               id="imgUpload"
               name="file"
@@ -237,12 +187,14 @@ function ProfileEdit() {
         <DefaultBtn
           color={colorPalette.grayTextColor}
           backgroundColor={colorPalette.modalCancelButtonColor}
+          onClick={() => navigate('/mypage')}
         >
           돌아가기
         </DefaultBtn>
         <DefaultBtn
           color={colorPalette.whiteColor}
           backgroundColor={colorPalette.heavyColor}
+          type="submit"
         >
           수정
         </DefaultBtn>

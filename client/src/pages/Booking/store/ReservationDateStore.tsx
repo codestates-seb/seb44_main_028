@@ -1,12 +1,10 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { monthlyReservationStore } from './MonthlyReservationStore';
 import { StartEndDateProps } from '../model/IStartEndDateProps';
-
-type DateProps = { year: number; month: number; date: number };
+import { DateType } from '../type';
 
 function isWithinPeriod(
-  startDate: DateProps,
-  endDate: DateProps,
+  startDate: DateType,
+  endDate: DateType,
   reservation: StartEndDateProps,
 ) {
   const start = new Date(startDate.year, startDate.month - 1, startDate.date);
@@ -35,13 +33,15 @@ function isWithinPeriod(
 }
 
 type ReservationProps = {
-  startDate: { year: number; month: number; date: number } | null;
-  endDate: { year: number; month: number; date: number } | null;
+  startDate: DateType | null;
+  endDate: DateType | null;
+  allReservations: StartEndDateProps[];
 };
 
 const initialReservationState: ReservationProps = {
   startDate: null,
   endDate: null,
+  allReservations: [],
 };
 
 export const reservation = createSlice({
@@ -60,6 +60,21 @@ export const reservation = createSlice({
       const todaysYear = today.getFullYear();
       const todaysMonth = today.getMonth() + 1;
       const todaysDate = today.getDate();
+
+      const allReservations = action.payload.allReservations;
+      console.log('allReservations', allReservations);
+
+      for (const reservation of allReservations) {
+        if (
+          state.endDate &&
+          isWithinPeriod(newStart, state.endDate, reservation)
+        ) {
+          alert(
+            '선택하신 기간에는 이미 예약이 있습니다. 다른 기간을 선택해 주세요.',
+          );
+          return;
+        }
+      }
 
       if (
         newStartYear > todaysYear ||
@@ -85,9 +100,7 @@ export const reservation = createSlice({
       const currentStartMonth = currentStart.month;
       const currentStartDate = currentStart.date;
 
-      const { reservationsDate1, reservationsDate2 } =
-        monthlyReservationStore.getState();
-      const allReservations = [...reservationsDate1, ...reservationsDate2];
+      const allReservations = action.payload.allReservations;
 
       for (const reservation of allReservations) {
         if (isWithinPeriod(currentStart, newEnd, reservation)) {

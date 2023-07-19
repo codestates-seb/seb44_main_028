@@ -8,6 +8,7 @@ import com.ftiland.travelrental.image.repository.ImageCategoryRepository;
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.dto.CreateProduct;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.service.ProductService;
@@ -22,12 +23,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InitData {
 
-    /*private final CategoryService categoryService;
+/*
+    private final CategoryService categoryService;
     private final MemberRepository memberRepository;
     private final ImageCategoryRepository imageCategoryRepository;
     private final ProductService productService;
     private final ImageProductRepository imageProductRepository;
-
+    private final MemberService memberService;
+/*
     @PostConstruct
     public void init() {
         List<CreateCategory.Request> categories = List.of(
@@ -255,7 +258,8 @@ public class InitData {
                         .address("서울 강북구 수유동 554-53").build()
         );
 
-        memberRepository.saveAll(members);
+
+        memberService.createMembers(members);
 
         CreateProduct.Request request1 = CreateProduct.Request.builder()
                 .title("다이슨 헤어드라이기 팝니다.")
@@ -576,7 +580,7 @@ public class InitData {
                 .title("아이들 BMW자동차")
                 .content("빌려드립")
                 .overdueFee(10000)
-                .baseFee(10000)
+                .baseFee(0)
                 .feePerDay(2500)
                 .minimumRentalPeriod(3)
                 .categoryIds(List.of("91052a17-bca6-4fde-a586-a1d179ad3463"))
@@ -585,7 +589,7 @@ public class InitData {
                 .title("라면포트 빌려드립니다.")
                 .content("정말편해요")
                 .overdueFee(10000)
-                .baseFee(10000)
+                .baseFee(0)
                 .feePerDay(2500)
                 .minimumRentalPeriod(3)
                 .categoryIds(List.of("318baf68-71c8-410c-8e1d-21852fbf088e", "7c08b19f-5846-4b6b-a11e-861d004f8151"))
@@ -594,7 +598,7 @@ public class InitData {
                 .title("보조베터리 삼성꺼 빌려드립니다.")
                 .content("충전 너무빨라요")
                 .overdueFee(10000)
-                .baseFee(10000)
+                .baseFee(0)
                 .feePerDay(2500)
                 .minimumRentalPeriod(3)
                 .categoryIds(List.of("91052a17-bca6-4fde-a586-a1d179ad3463"))
@@ -603,7 +607,7 @@ public class InitData {
                 .title("보조베터리 삼성꺼 빌려드립니다.")
                 .content("정말로 너무 좋아서 가져다 대면 바로 마름")
                 .overdueFee(10000)
-                .baseFee(10000)
+                .baseFee(0)
                 .feePerDay(2500)
                 .minimumRentalPeriod(3)
                 .categoryIds(List.of("91052a17-bca6-4fde-a586-a1d179ad3463"))
@@ -612,7 +616,7 @@ public class InitData {
                 .title("야구공 빌려드려요")
                 .content("아이들이랑 놀 때 딱좋아요")
                 .overdueFee(10000)
-                .baseFee(10000)
+                .baseFee(0)
                 .feePerDay(2500)
                 .minimumRentalPeriod(3)
                 .categoryIds(List.of("7c08b19f-5846-4b6b-a11e-861d004f8151", "86e56190-6f7f-43a9-a87d-adaeb1f2daa4"))
@@ -862,3 +866,4 @@ public class InitData {
         imageProductRepository.save(image40);
     }*/
 }
+

@@ -1,17 +1,18 @@
-import React from 'react';
 import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
 import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
+import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 import axios from 'axios';
 import {
-  CardWrapper,
+  BorrowCardWrapper,
   DatesWrapper,
   ButtonWapper,
   TitleWrapper,
   ImgWrapper,
   ContentWrapper,
   ItemImage,
+  BorrowCardContainer,
 } from '../../style/style';
 
 const BorrowCard = ({
@@ -19,9 +20,7 @@ const BorrowCard = ({
 }: {
   borrowCardData: borrowCardProps;
 }) => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([] as borrowCardProps[]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -29,7 +28,12 @@ const BorrowCard = ({
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/reservations/members`,
         );
-        setItems(response.data);
+        const processedItems = response.data.map((item: borrowCardProps) => {
+          const { startDate, endDate } = processDataWithRegex(item.startDate);
+          return { ...item, startDate, endDate };
+        });
+
+        setItems(processedItems);
       } catch (error) {
         console.error('아이템을 불러올 수없습니다.', error);
       }
@@ -37,44 +41,54 @@ const BorrowCard = ({
     fetchItems();
   }, []);
 
-  useEffect(() => {
-    const fetchDates = () => {
-      const start = '2023.07.09';
-      const end = '2023.07.11';
-      setStartDate(start);
-      setEndDate(end);
-    };
-    fetchDates();
-  }, []);
-
   return (
     <>
-      <CardWrapper>
-        <ImgWrapper>
-          <ItemImage src={borrowCardData.images} />
-        </ImgWrapper>
-        <ContentWrapper>
-          <TitleWrapper>{borrowCardData.title}</TitleWrapper>
-          <DatesWrapper>
-            <div>예약기간</div>
-            <div>{`${startDate} - ${endDate}`}</div>
-          </DatesWrapper>
-          <ButtonWapper>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.deepMintColor}
-            >
-              예약 확정
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.cancleButtonColor}
-            >
-              거절 하기
-            </DefaultBtn>
-          </ButtonWapper>
-        </ContentWrapper>
-      </CardWrapper>
+      <BorrowCardContainer>
+        <BorrowCardWrapper>
+          <ImgWrapper>
+            <ItemImage src={borrowCardData.image} />
+          </ImgWrapper>
+          <ContentWrapper>
+            <TitleWrapper>{borrowCardData.title}</TitleWrapper>
+            <DatesWrapper>
+              <div>예약기간</div>
+              {status === 'CANCELED' ? (
+                <div>{`${borrowCardData.startDate}`}</div>
+              ) : (
+                <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+              )}
+            </DatesWrapper>
+
+            <ButtonWapper>
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.cancleButtonColor}
+              >
+                취소요청
+              </DefaultBtn>
+            </ButtonWapper>
+
+            {status === 'COMPLETED' && (
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.accentColor}
+              >
+                별점 주기
+              </DefaultBtn>
+            )}
+            {/* {status === 'REQUESTED' && (
+              <ButtonWapper>
+                <DefaultBtn
+                  color={colorPalette.whiteColor}
+                  backgroundColor={colorPalette.cancleButtonColor}
+                >
+                  취소요청
+                </DefaultBtn>
+              </ButtonWapper>
+            )} */}
+          </ContentWrapper>
+        </BorrowCardWrapper>
+      </BorrowCardContainer>
     </>
   );
 };
