@@ -23,6 +23,13 @@ function ItemListPage() {
   const size = 3;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
+  const [distanceSelectedValue, setDistanceSelectedValue] = useState(
+    DISTANCE_DEFAULT_VALUE,
+  );
+  const [productFilterSelectedValue, setProductFilterSelectedValue] = useState(
+    PRODUCT_FILTER_OPTIONS[0].label,
+  );
+  console.log(params);
   const {
     data: products,
     isLoading,
@@ -37,6 +44,7 @@ function ItemListPage() {
             page: page,
             size: size,
             categoryId: params.categoryId,
+            sortBy: 'createdAt',
           },
         },
       );
@@ -82,10 +90,16 @@ function ItemListPage() {
     <ItemListPageContainer>
       <div>
         <SelectBox
+          setSelectedValue={setDistanceSelectedValue}
+          selectedValue={distanceSelectedValue}
           selectOptionData={DISTANCE_OPTIONS}
           selectDefaultOption={DISTANCE_DEFAULT_VALUE}
         />
-        <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+        <SelectBox
+          selectedValue={productFilterSelectedValue}
+          setSelectedValue={setProductFilterSelectedValue}
+          selectOptionData={PRODUCT_FILTER_OPTIONS}
+        />
       </div>
       <ProductListWrapper ref={containerRef}>
         <AnimatePresence>
