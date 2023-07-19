@@ -30,7 +30,6 @@ public class CurrentMemberResolver implements HandlerMethodArgumentResolver {
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) {
 
-        return nativeWebRequest.getAttribute("memberId", NativeWebRequest.SCOPE_REQUEST);
         boolean required = methodParameter.getParameterAnnotation(CurrentMember.class).required();
         Long memberId = (Long) nativeWebRequest.getAttribute("memberId", NativeWebRequest.SCOPE_REQUEST);
 
@@ -38,6 +37,5 @@ public class CurrentMemberResolver implements HandlerMethodArgumentResolver {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         }
         return memberId;
-
     }
 }

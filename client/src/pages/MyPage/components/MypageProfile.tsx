@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { QueryClient, useQueryClient } from 'react-query';
 import {
   MypageProfileWrapper,
   MypageImage,
@@ -17,10 +18,12 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
-// import LendCard from '../../../common/components/MypageCard/LendCard';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
+import LendCard from '../../../common/components/MypageCard/LendCard';
+import Loading from '../../../common/components/Loading';
 
 function MypageProfile() {
+  const queryClient = useQueryClient();
   const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);
@@ -30,47 +33,51 @@ function MypageProfile() {
   const [displayName, setDisplayName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
 
-  const getUserInfo = useCallback(() => {
-    const fetchUserData = async () => {
+  useEffect(() => {
+    if (userData) {
+      if (userData && userData.displayName)
+        setDisplayName(userData.displayName);
+    }
+  }, [userData]);
+
+  const getUserInfo = useCallback(async () => {
+    try {
+      queryClient.invalidateQueries('me');
       const encryptedAccessToken: string | null =
         localStorage.getItem(ACCESS_TOKEN);
       let accessToken: string | null = null;
       if (encryptedAccessToken) {
         accessToken = decrypt(encryptedAccessToken);
       } else {
-        return;
+        return null;
       }
 
-      try {
-        const headers = {
-          Authorization: `Bearer ${accessToken}`,
-        };
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/members`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
 
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/members/`,
-          { headers: headers },
-        );
-        setUser(response.data);
-        console.log(response);
-        setUser(response.data);
-
-        if (response.data) {
-          setDisplayName(response.data.displayName || '');
-          setAddress(response.data.address || '');
-          console.log('유저정보 ', user);
-        }
-      } catch (error) {
-        console.error('유저 정보를 가져오는데 실패했습니다.', error);
-        console.error('Error:', (error as Error).message);
-      }
-      fetchUserData();
-    };
+      setUser(response.data.user);
+      setDisplayName(response.data.displayName);
+      setAddress(response.data.address);
+      console.log('setUser', response.data.user);
+      console.log('setDisplayName', response.data.displayName);
+    } catch (error) {
+      console.error('회원 정보 가져오기 중에 오류가 발생했습니다.', error);
+    }
   }, []);
 
   useEffect(() => {
     getUserInfo();
   }, [getUserInfo]);
 
+  useEffect(() => {
+    console.log('setDisplayName', displayName);
+  }, [displayName]);
   return (
     <MypageProfileWrapper>
       <MypageLeft>

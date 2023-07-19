@@ -65,6 +65,18 @@ function ItemListPage() {
       {products?.map((product: ItemCardProps) => (
         <ItemCard key={product.productId} itemCardData={product} />
       ))}
+  //    <div>
+   //     <SelectBox
+    //      selectOptionData={DISTANCE_OPTIONS}
+   //       selectDefaultOption={DISTANCE_DEFAULT_VALUE}
+   //     />
+   //     <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+   //   </div>
+   //   <ProductListWrapper>
+     //   {products?.products.map((product: ItemCardProps) => (
+     //     <ItemCard key={product.productId} itemCardData={product} />
+      //  ))}
+     // </ProductListWrapper>
     </ItemListPageContainer>
   );
 }
