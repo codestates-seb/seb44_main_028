@@ -171,7 +171,6 @@ export const LENDCARD_DATA: lendCardProps[] = [
 //   },
 // ];
 
-
 export const BORROWCARD_DATA: borrowCardProps[] = [
   {
     title: '충전기 빌려드려요 1',

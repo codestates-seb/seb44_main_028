@@ -38,33 +38,31 @@ function ProfileEdit() {
   const [profileImg, setProfileImg] = useState<File | null>(null);
   const [newDisplayName, setNewDisplayName] = useState<string>('');
 
-  const { data: userData } = useGetMe(); // Use the useGetMe hook to fetch user information
+  console.log('Initial newDisplayName:', newDisplayName);
+
+  const { data: userData } = useGetMe();
   console.log('userData', userData);
 
   const fetchUpdatedUserInfo = useCallback(async () => {
     try {
-      queryClient.invalidateQueries('me');
+      // queryClient.invalidateQueries('me');
       const encryptedAccessToken: string | null =
-        localStorage.getItem(ACCESS_TOKEN);
-      let accessToken: string | null = null;
-      if (encryptedAccessToken) {
-        accessToken = decrypt(encryptedAccessToken);
-      } else {
-        return;
-      }
+        localStorage.getItem(ACCESS_TOKEN) || '';
+      const accessToken = decrypt(encryptedAccessToken);
+
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/members`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6Mywic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ._VPRKi0CPI6qbxUu-QSRoB0KBOSV7OAaIsCNsoYpHikU4DOg8YLn2967MR5iVaWpNjZ6eMyDR5dTgSS3ir1wWA`,
+            // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJkaXNwbGF5TmFtZSI6IuuvvO2KuCIsImVtYWlsIjoia2V1bWhlMDExMEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MjgsInN1YiI6ImtldW1oZTAxMTBAZ21haWwuY29tIiwiaWF0IjoxNjg5NzQwOTU1LCJleHAiOjE2ODk3NDI3NTV9.0pjNsb7VIaknXE3ci2tTPCJ9FXc1fJg8lZz65vLjYAUbmAXCpWuot2DAiNQQ6eg07bGkIDAAyybSJkG-7INwqw`,
           },
         },
       );
       const updatedUserInfo = response.data;
       setNewDisplayName(updatedUserInfo.displayName);
       setPreviewImage(updatedUserInfo.profileImageUrl); //이미지 업데이트
-      console.log('업데이트 유지정보:', updatedUserInfo);
+      console.log('업데이트 유지정보:', updatedUserInfo.displayName);
     } catch (error) {
       console.error('업데이트된 유저정보를 가져오는데 실패했습니다.', error);
     }
@@ -85,13 +83,13 @@ function ProfileEdit() {
     }
   };
 
-  const onDisplayNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDisplayName(e.target.value);
-    console.log('수정 할 이름 :', newDisplayName);
+    console.log('수정 할 이름 :', e.target.value);
   };
 
   useEffect(() => {
-    console.log('newDisplayName:', newDisplayName);
+    console.log('수정 할 이름 :', newDisplayName);
   }, [newDisplayName]);
 
   const onInputButtonClick = () => {
@@ -103,13 +101,9 @@ function ProfileEdit() {
     event.preventDefault();
     // Handle form submission logic here
     const encryptedAccessToken: string | null =
-      localStorage.getItem(ACCESS_TOKEN);
-    let accessToken: string | null = null;
-    if (encryptedAccessToken) {
-      accessToken = decrypt(encryptedAccessToken);
-    } else {
-      return null;
-    }
+      localStorage.getItem(ACCESS_TOKEN) || '';
+    const accessToken = decrypt(encryptedAccessToken);
+
     try {
       const formData = new FormData();
       formData.append('displayName', newDisplayName);
@@ -136,12 +130,12 @@ function ProfileEdit() {
       console.log('회원 정보가 성공적으로 수정되었습니다.:', response.data);
 
       await fetchUpdatedUserInfo();
-      navigate('/mypage');
+      navigate('/mypage', { state: { newDisplayName } });
     } catch (error) {
       console.error('회원 정보 수정 중에 오류가 발생했습니다.', error);
     }
   };
-
+  console.log('이름수정', newDisplayName);
   return (
     <MyPageEdit>
       <ProfileEditWrapper>

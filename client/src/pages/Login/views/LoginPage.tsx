@@ -8,11 +8,8 @@ import { ACCESS_TOKEN } from '../constants';
 function LoginPage() {
   const navigate = useNavigate();
   const decrypt = useDecryptToken();
-  const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
-  if (!encryptedAccessToken) {
-    navigate('/login');
-    return null;
-  }
+  const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN) || '';
+
   const accessToken = decrypt(encryptedAccessToken);
   const handleWithdrawal = async () => {
     try {
