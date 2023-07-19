@@ -21,14 +21,12 @@ import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.entity.ProductCategory;
 import com.ftiland.travelrental.product.repository.ProductCategoryRepository;
 import com.ftiland.travelrental.product.repository.ProductRepository;
+import com.ftiland.travelrental.product.sort.SortBy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,9 +55,10 @@ public class ProductService {
         log.info("[ProductService] createProduct called");
         Member member = memberService.findMember(memberId);
 
-        if (member.getLatitude() == null || member.getLongitude() == null) {
-            throw new BusinessLogicException(NOT_FOUND_LOCATION);
-        }
+        validateLocation(member);
+
+        /*Random random = new Random();
+        int totalRateCount = random.nextInt(100) + 1;*/
 
         Product productEntity = Product.builder()
                 .productId(UUID.randomUUID().toString())
@@ -72,6 +71,9 @@ public class ProductService {
                 .totalRateCount(0)
                 .totalRateScore(0)
                 .viewCount(0)
+                /*.totalRateCount(totalRateCount)
+                .totalRateScore(totalRateCount * (random.nextInt(5)+1))
+                .viewCount(random.nextInt(1000))*/
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
                 .address(member.getAddress())
@@ -87,6 +89,12 @@ public class ProductService {
         imageProductService.createImageProducts(product, images);
 
         return CreateProduct.Response.from(product, productCategories);
+    }
+
+    private static void validateLocation(Member member) {
+        if (member.getLatitude() == null || member.getLongitude() == null) {
+            throw new BusinessLogicException(NOT_FOUND_LOCATION);
+        }
     }
 
     private void validateOwner(Member member, Product product) {
@@ -204,18 +212,67 @@ public class ProductService {
         return products;
     }
 
-    public Long findSellerId(String productId){
-        Product product = productRepository.findById(productId).orElseThrow(()-> new BusinessLogicException(PRODUCT_NOT_FOUND));
+    public Long findSellerId(String productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
         Long sellerId = product.getMember().getMemberId();
 
         return sellerId;
     }
 
-    public GetProducts getProductsByCategoryAndLocation(String categoryId, double latitude, double longitude, double distance, String sortBy, Pageable pageable) {
-        Category category = categoryRepository.findById(categoryId).orElse(null);
+    public GetProducts getProductsByCategoryAndLocation(String categoryId, Long memberId,
+                                                        Double distance, SortBy sortBy, int size, int page) {
+        PageRequest pageable = PageRequest.of(page, size);
+        // distance 없을 때
+        if (distance == null) {
+            // 가까운 순 정렬일 때
+            if (sortBy == SortBy.distance) {
+                // 로그인한 사용자인지 검증
+                if (memberId == null) {
+                    throw new BusinessLogicException(MEMBER_NOT_FOUND);
+                }
+
+                Member member = memberService.findMember(memberId);
+
+                // member가 위치를 가지고 있는지 검증
+                validateLocation(member);
+
+                Page<ProductDto> products = productRepository
+                        .findByCategoryIdOrderByDistance(categoryId, member.getLatitude(), member.getLongitude(), pageable);
+                return GetProducts.from(products);
+            } else if (sortBy == SortBy.totalRateScore) {
+                return GetProducts.from(productRepository.findByCategoryIdOrderByRate(categoryId, pageable));
+            } else {
+                pageable = PageRequest.of(page, size, Sort.by("p." + sortBy.toString()).descending());
+                return GetProducts.from(productRepository.findByCategoryId(categoryId, pageable));
+            }
+        }
+        // distance가 있을 때
+        else {
+            if (memberId == null) {
+                throw new BusinessLogicException(MEMBER_NOT_FOUND);
+            }
+            Member member = memberService.findMember(memberId);
+            // 가까운 순 정렬일 때
+            if (sortBy == SortBy.distance) {
+
+                // member가 위치를 가지고 있는지 검증
+                validateLocation(member);
+                Page<ProductDto> products = productRepository.findByCategoryIdOrderByDistanceLimitBound(
+                        categoryId, member.getLatitude(), member.getLongitude(), pageable, distance);
+                return GetProducts.from(products);
+            } else if (sortBy == SortBy.totalRateScore) {
+                return GetProducts.from(productRepository
+                        .findByCategoryIdOrderByRateLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, distance));
+            } else {
+                pageable = PageRequest.of(page, size, Sort.by("p." + sortBy.toString()).descending());
+                return GetProducts.from(productRepository.findByCategoryIdLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, distance));
+            }
+        }
+
+/*
 
         // 특정 카테고리에 속한 상품-카테고리 연결 객체 목록 조회
-        List<ProductCategory> productCategories = productCategoryRepository.findByCategory(category);
+        List<ProductCategory> productCategories = productCategoryService.findCategories(categoryId);
 
         // 거리 필터링을 위한 결과 목록
         List<Product> filteredProducts = new ArrayList<>();
@@ -268,6 +325,7 @@ public class ProductService {
 
         Page<ProductDto> productDtoPage = new PageImpl<>(productDtos, pageable, filteredProducts.size());
 
-        return GetProducts.from(productDtoPage);
+
+        return GetProducts.from(productDtoPage);*/
     }
 }
