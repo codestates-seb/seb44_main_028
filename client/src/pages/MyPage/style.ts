@@ -328,8 +328,8 @@ export const Rating = styled(DefaultBtn)``;
 
 export const WishListWrapper = styled.div``;
 export const LendListWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 //BorrowList
 
@@ -354,10 +354,8 @@ export const BorrowWrapper = styled.div`
   }
 `;
 export const BorrowCardWrappre = styled.div`
-  display: flex;
-  div {
-    margin-left: 1rem;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 // LendList
 

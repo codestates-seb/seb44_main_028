@@ -16,12 +16,10 @@ import {
 } from '../../style/style';
 
 const BorrowCard = ({
-  title,
-  startDate,
-  endDate,
-  status,
-  image,
-}: borrowCardProps) => {
+  borrowCardData,
+}: {
+  borrowCardData: borrowCardProps;
+}) => {
   const [items, setItems] = useState([] as borrowCardProps[]);
 
   useEffect(() => {
@@ -48,19 +46,37 @@ const BorrowCard = ({
       <BorrowCardContainer>
         <BorrowCardWrapper>
           <ImgWrapper>
-            <ItemImage src={image} />
+            <ItemImage src={borrowCardData.image} />
           </ImgWrapper>
           <ContentWrapper>
-            <TitleWrapper>{title}</TitleWrapper>
+            <TitleWrapper>{borrowCardData.title}</TitleWrapper>
             <DatesWrapper>
               <div>예약기간</div>
               {status === 'CANCELED' ? (
-                <div>{`${startDate}`}</div>
+                <div>{`${borrowCardData.startDate}`}</div>
               ) : (
-                <div>{`${startDate} - ${endDate}`}</div>
+                <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
               )}
             </DatesWrapper>
-            {status === 'REQUESTED' && (
+
+            <ButtonWapper>
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.cancleButtonColor}
+              >
+                취소요청
+              </DefaultBtn>
+            </ButtonWapper>
+
+            {status === 'COMPLETED' && (
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.accentColor}
+              >
+                별점 주기
+              </DefaultBtn>
+            )}
+            {/* {status === 'REQUESTED' && (
               <ButtonWapper>
                 <DefaultBtn
                   color={colorPalette.whiteColor}
@@ -69,7 +85,7 @@ const BorrowCard = ({
                   취소요청
                 </DefaultBtn>
               </ButtonWapper>
-            )}
+            )} */}
           </ContentWrapper>
         </BorrowCardWrapper>
       </BorrowCardContainer>

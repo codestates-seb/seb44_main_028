@@ -80,7 +80,7 @@ function MypageProfile() {
         <MypageInfo>
           <div style={{ fontWeight: 'bold', fontSize: 20 }}>
             <span>
-              <h4>{userData?.displayName}</h4>
+              <h4>{displayName}</h4>
             </span>
           </div>
           <Location>
@@ -88,7 +88,7 @@ function MypageProfile() {
               <FaMapMarkerAlt />
             </span>
             {/**유저위치입력 */}
-            <span>{userData?.address}</span>
+            <span>{address}</span>
           </Location>
         </MypageInfo>
       </MypageLeft>
@@ -97,14 +97,15 @@ function MypageProfile() {
           <GradeIcon {...iconProps} />
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
-        <BorrowCard
-          params={''}
-          title={''}
-          image={''}
-          status={''}
-          startDate={''}
-          endDate={''}
-        />
+        {/* <BorrowCard
+          borrowCardData={{
+            title: '감자팔아요',
+            image: '',
+            status: 'REQUESTED',
+            startDate: '2021-01-12',
+            endDate: '2050-12-10',
+          }}
+        /> */}
       </MypageRight>
     </MypageProfileWrapper>
   );
