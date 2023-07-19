@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageCategory;
 import com.ftiland.travelrental.image.repository.ImageCategoryRepository;
 import com.ftiland.travelrental.image.entity.ImageProduct;
@@ -20,7 +21,6 @@ import com.ftiland.travelrental.image.utils.FileNameGenerator;
 import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,7 +68,7 @@ public class ImageService {
         this.fileNameGenerator = fileNameGenerator;
     }
 
-    // 이미지 업로드(카테고리)
+   /* // 이미지 업로드(카테고리)
     public ImageCategory storeImageCategory(MultipartFile file, String categoryId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -94,16 +94,34 @@ public class ImageService {
         return imageCategoryRepository.save(imageCategory);
     }
 
-    public List<ImageProduct> storeImageProducts(List<MultipartFile> files, String productId) {
+    public List<ImageProduct> storeImages(List<MultipartFile> files) {
         return files.stream()
-                .map(file -> storeImageProduct(file, productId))
+                .map(file -> storeImageProduct(file))
                 .collect(Collectors.toList());
+    }*/
+
+    public List<ImageDto> storeImage(MultipartFile file) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        try {
+            // 파일이 비었을 때 예외처리
+            if (file.isEmpty()) {
+                throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
+            }
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+            metadata.setContentLength(file.getSize());
+            metadata.setContentDisposition("inline");
+            //S3 버킷에 파일 업로드
+            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
+        }
     }
 
     // 이미지 업로드(상품)
     public ImageProduct storeImageProduct(MultipartFile file, String productId) {
-         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
             // 파일이 비었을 때 예외처리
@@ -120,6 +138,7 @@ public class ImageService {
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
+
         ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
         createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, fileName).toString());
         createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));

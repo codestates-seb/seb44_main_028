@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class BorrowReservationDto {
 
     private String reservationId;
-    private String image;
+//    private String image;
     private String title;
 
     private LocalDate startDate;

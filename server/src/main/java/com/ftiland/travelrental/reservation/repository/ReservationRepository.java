@@ -37,13 +37,21 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
             "JOIN ImageMember im on im.member.memberId = m.memberId " +
             "WHERE r.product.productId = :productId AND r.status = :status " +
             "GROUP BY r.reservationId")
-    Page<LendReservationDto> findLendReservationDtosByMemberId(@Param("productId") String productId,
-                                                               @Param("status") ReservationStatus status,
-                                                               Pageable pageable);
+    Page<LendReservationDto> findLendReservationDtosByProductId(@Param("productId") String productId,
+                                                                @Param("status") ReservationStatus status,
+                                                                Pageable pageable);
 
-    @Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, ip.imageUrl, p.title, r.startDate, r.endDate, r.status) " +
+    /*@Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, ip.imageUrl, p.title, r.startDate, r.endDate, r.status) " +
             "FROM Reservation r JOIN r.product p " +
             "JOIN ImageProduct ip on ip.product.productId = p.productId " +
+            "WHERE r.member.memberId = :memberId AND r.status = :status " +
+            "GROUP BY r.reservationId")
+    Page<BorrowReservationDto> findBorrowReservationDtosByMemberId(@Param("memberId") Long memberId,
+                                                                   @Param("status") ReservationStatus status,
+                                                                   Pageable pageable);*/
+
+    /**/@Query("SELECT new com.ftiland.travelrental.reservation.dto.BorrowReservationDto(r.reservationId, p.title, r.startDate, r.endDate, r.status) " +
+            "FROM Reservation r JOIN r.product p " +
             "WHERE r.member.memberId = :memberId AND r.status = :status " +
             "GROUP BY r.reservationId")
     Page<BorrowReservationDto> findBorrowReservationDtosByMemberId(@Param("memberId") Long memberId,

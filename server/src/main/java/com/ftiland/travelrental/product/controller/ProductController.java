@@ -39,7 +39,6 @@ public class ProductController {
     private final ProductService productService;
     private final ImageService imageService;
     private final ProductCategoryService productCategoryService;
-
     private final MemberService memberService;
 
     @PostMapping
@@ -98,8 +97,8 @@ public class ProductController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<GetProducts> findProducts(@RequestParam int size,
-                                                    @RequestParam int page,
+    public ResponseEntity<GetProducts> findProducts(@RequestParam(defaultValue = "20") int size,
+                                                    @RequestParam(defaultValue = "0") int page,
                                                     @CurrentMember Long memberId) {
         log.info("[ProductController] findProducts called");
 
