@@ -16,6 +16,7 @@ import {
 import { ACCESS_TOKEN } from '../../constants';
 import useDecryptToken from '../../utils/customHooks/useDecryptToken';
 import useGetMe from '../../utils/customHooks/useGetMe';
+import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 
 const LendCard = ({ lendCardData }: { lendCardData: lendCardProps }) => {
   const decrypt = useDecryptToken();
@@ -31,23 +32,17 @@ const LendCard = ({ lendCardData }: { lendCardData: lendCardProps }) => {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/reservations/members`,
         );
-        setItems(response.data);
+        const processedItems = response.data.map((item: lendCardProps) => {
+          const { startDate, endDate } = processDataWithRegex(item.startDate);
+          return { ...item, startDate, endDate };
+        });
+
+        setItems(processedItems);
       } catch (error) {
         console.error('아이템을 불러올 수없습니다.', error);
       }
     };
     fetchItems();
-  }, []);
-
-  useEffect(() => {
-    const fetchDates = () => {
-      const startDate = new Date();
-      const endDate = new Date();
-      endDate.setDate(endDate.getDate() + 7);
-      setStartDate(startDate.toISOString().split('T')[0]);
-      setEndDate(endDate.toISOString().split('T')[0]);
-    };
-    fetchDates();
   }, []);
 
   return (
@@ -60,21 +55,29 @@ const LendCard = ({ lendCardData }: { lendCardData: lendCardProps }) => {
           <LendTitleWrapper>{lendCardData.username}</LendTitleWrapper>
           <LendDatesWrapper>
             <div>예약기간</div>
-            <div>{`${startDate} - ${endDate}`}</div>
+            {status === 'CANCELED' ? (
+              <div>{`${lendCardData.startDate}`}</div>
+            ) : (
+              <div>{`${lendCardData.startDate} - ${lendCardData.endDate}`}</div>
+            )}
           </LendDatesWrapper>
           <LendButtonWapper>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.deepMintColor}
-            >
-              예약 확정
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.cancleButtonColor}
-            >
-              거절 하기
-            </DefaultBtn>
+            {status === 'REQUESTED' && (
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.deepMintColor}
+              >
+                예약 확정
+              </DefaultBtn>
+            )}
+            {status === 'REQUESTED' && (
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.cancleButtonColor}
+              >
+                거절 하기
+              </DefaultBtn>
+            )}
           </LendButtonWapper>
         </LendContentWrapper>
       </LendCardWrapper>

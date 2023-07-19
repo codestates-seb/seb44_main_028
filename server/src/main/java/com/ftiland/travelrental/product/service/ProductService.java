@@ -90,7 +90,7 @@ public class ProductService {
     }
 
     @Transactional
-    @CacheEvict(key = "#productId", value = "products")
+    //@CacheEvict(key = "#productId", value = "products")
     public UpdateProduct.Response updateProduct(UpdateProduct.Request request,
                                                 String productId, Long memberId) {
         Member member = memberService.findMember(memberId);
@@ -137,7 +137,7 @@ public class ProductService {
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
     }
 
-    @Cacheable(key = "#productId", value = "products")
+    //@Cacheable(key = "#productId", value = "products")
     public ProductDetailDto findProductDetail(String productId) {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
