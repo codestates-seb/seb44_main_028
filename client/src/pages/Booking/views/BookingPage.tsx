@@ -10,6 +10,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMonthlyReservation } from '../store/MonthlyReservationStore';
 import { RootState } from '../../../common/store/RootStore';
 
+const convertStringToDateObject = (dateStr: string) => {
+  const dateParts = dateStr.split('-');
+  return {
+    year: parseInt(dateParts[0], 10),
+    month: parseInt(dateParts[1], 10),
+    date: parseInt(dateParts[2], 10),
+  };
+};
+
+const convertReservationDates = (reservations: any) => {
+  return reservations.map((reservation: any) => {
+    return {
+      startDate: convertStringToDateObject(reservation.startDate),
+      endDate: convertStringToDateObject(reservation.endDate),
+    };
+  });
+};
+
 function BookingPage() {
   // GET요청으로 기존 예약 정보 가져오기
   const dispatch = useDispatch();
@@ -36,21 +54,23 @@ function BookingPage() {
             `/api/reservations/products/${itemId}/calendar?date1=${year}-${currentMonth}&date2=${year}-${nextMonth}`,
         )
         .then((res) => {
-          // console.log('제목', res.data.productTitle);
-          // console.log('기본료', res.data.baseFee);
-          // console.log('하루 사용료', res.data.feePerDay);
-          // console.log('최소 렌탈 기간', res.data.minimumRentalPeriod);
-          // console.log('이번 달 예약 배열', res.data.reservationsDate1);
-          // console.log('다음 달 예약 배열', res.data.reservationsDate2);
-          // console.log('예약 정보', res.data);
+          console.log('다음 달 예약 배열', res.data.reservationsDate2);
+          console.log(
+            '다음 달 예약 배열',
+            convertReservationDates(res.data.reservationsDate2),
+          );
           dispatch(
             setMonthlyReservation({
               productTitle: res.data.productTitle,
               baseFee: res.data.baseFee,
               feePerDay: res.data.feePerDay,
               minimumRentalPeriod: res.data.minimumRentalPeriod,
-              reservationsDate1: res.data.reservationsDate1,
-              reservationsDate2: res.data.reservationsDate2,
+              reservationsDate1: convertReservationDates(
+                res.data.reservationsDate1,
+              ),
+              reservationsDate2: convertReservationDates(
+                res.data.reservationsDate2,
+              ),
             }),
           );
         })
@@ -63,6 +83,7 @@ function BookingPage() {
   const monthlyReservation = useSelector(
     (state: RootState) => state.monthlyReservation,
   );
+  console.log('예약 정보', monthlyReservation);
   return (
     <BookingPageContainer>
       <BookingDates />
