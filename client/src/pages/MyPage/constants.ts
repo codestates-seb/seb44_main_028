@@ -5,88 +5,88 @@ import {
 } from '../../common/type';
 export const TAP = ['빌려준내역', '빌린내역', '관심 목록'];
 
-export const LENDCARD_DATA: lendCardProps[] = [
-  {
-    reservationId: '1',
-    status: 'INUSE',
-    username: '첫번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '2',
-    status: 'INUSE',
-    username: '두번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '3',
-    status: 'INUSE',
-    username: '세번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '4',
-    status: 'INUSE',
-    username: '네번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '5',
-    status: 'INUSE',
-    username: '다섯번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '6',
-    status: 'INUSE',
-    username: '여섯번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '7',
-    status: 'INUSE',
-    username: '일곱번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-  {
-    reservationId: '8',
-    status: 'INUSE',
-    username: '여덟번째',
-    totalFee: '100,000',
-    startDate: '2023 - 06 - 10',
-    endDate: '2023 - 06 - 14',
-    image:
-      'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
-  },
-];
+// export const LENDCARD_DATA: lendCardProps[] = [
+//   {
+//     reservationId: '1',
+//     status: 'INUSE',
+//     username: '첫번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '2',
+//     status: 'INUSE',
+//     username: '두번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '3',
+//     status: 'INUSE',
+//     username: '세번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '4',
+//     status: 'INUSE',
+//     username: '네번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '5',
+//     status: 'INUSE',
+//     username: '다섯번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '6',
+//     status: 'INUSE',
+//     username: '여섯번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '7',
+//     status: 'INUSE',
+//     username: '일곱번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+//   {
+//     reservationId: '8',
+//     status: 'INUSE',
+//     username: '여덟번째',
+//     totalFee: '100,000',
+//     startDate: '2023 - 06 - 10',
+//     endDate: '2023 - 06 - 14',
+//     image:
+//       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
+//   },
+// ];
 
 export const BORROWCARD_DATA: borrowCardProps[] = [
   {
