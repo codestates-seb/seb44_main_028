@@ -10,7 +10,7 @@ import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
+import CheckBoxList from '../../../common/components/CheckBox/CheckBoxList';
 import {
   CONTENT_DESCRIPTION,
   INPIT_VALIDATION,
