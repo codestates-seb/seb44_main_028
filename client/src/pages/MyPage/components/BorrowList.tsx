@@ -26,14 +26,15 @@ function BorrowList() {
   const [items, setItems] = useState<borrowCardProps[]>([]);
 
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage] = useState(6);
-  // const [totalItemsCount, setTotalItemsCount] = useState(0);
-  const [totalItemsCount, setTotalItemsCount] = useState(
-    BORROWCARD_DATA.length,
-  );
+  const [itemsPerPage] = useState(9);
+  const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
+  // const [totalItemsCount, setTotalItemsCount] = useState(
+  //   BORROWCARD_DATA.length,
+  // );
   const [currentStatus, setCurrentStatus] = useState('REQUESTED');
-  const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+  const totalPages = Math.ceil(totalItemsCount / itemsPerPage) * itemsPerPage;
   console.log('currentStatus:', currentStatus);
+  console.log('totalPages:', totalPages);
 
   useEffect(() => {
     fetchItemsForPage(currentPage, currentStatus);
@@ -68,13 +69,14 @@ function BorrowList() {
             status: currentStatus,
           },
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response.data));
       setItems(response.data.reservations);
-      setTotalItemsCount(response.data.pageInfo.totalPages);
+      setTotalItemsCount(response.data.pageInfo.totalElements);
       console.log('setItems:', response.data);
       console.log('currentPage:', currentPage);
       // console.log('currentStatus:', currentStatus);
@@ -174,17 +176,14 @@ function BorrowList() {
           items.map((item, index) => (
             <BorrowCard key={index} borrowCardData={item} />
           ))} */}
-        {/* {items.length > 0 ? (
-          items.map((item, index) => (
-            <BorrowCard key={index} borrowCardData={item} />
-          ))
-        ) : (
-          <div>데이터를 불러오는 중입니다...</div>
-        )} */}
-        {BORROWCARD_DATA.map((item, index) => (
+        {items.map((item, index) => (
           <BorrowCard key={index} borrowCardData={item} />
         ))}
       </BorrowCardWrappre>
+      {/* {BORROWCARD_DATA.map((item, index) => (
+          <BorrowCard key={index} borrowCardData={item} />
+        ))}
+     
       {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal> */}
