@@ -28,19 +28,19 @@ export const DISTANCE_OPTIONS: SelectOption[] = [
 
 export const PRODUCT_FILTER_OPTIONS: SelectOption[] = [
   {
-    value: 'new',
+    value: 'createdAt',
     label: '최신순',
   },
   {
-    value: 'starRating',
+    value: 'totalRateScore',
     label: '별점순',
   },
   {
-    value: 'view',
+    value: 'viewCount',
     label: '조회순',
   },
   {
-    value: 'nearest',
+    value: 'distance',
     label: '가까운순',
   },
 ];
