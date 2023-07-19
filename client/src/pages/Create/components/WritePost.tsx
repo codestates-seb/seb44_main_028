@@ -1,6 +1,7 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -11,11 +12,9 @@ import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import {
-  CONTENT_DESCRIPTION,
-  INPIT_VALIDATION,
-  INPUT_FIELD,
-} from '../constants';
+import { CONTENT_DESCRIPTION, MAX_IMAGE_COUNT, INPIT_VALIDATION, INPUT_FIELD } from '../constants';
+import { categories } from '../type';
+import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import {
   WritePostContainer,
@@ -25,18 +24,25 @@ import {
   CheckBoxTitle,
   Input,
 } from '../style';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
-const WritePost = () => {
-  const navigate = useNavigate();
-  const [selectedtCategory, setSelectedCategory] = useState<string[]>([]);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm();
+const WritePost = ({
+  productData,
+}: {
+  productData: IProductDetail | string;
+}) => {
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const [inputValues, setInputValues] = useState({
+  useEffect(() => {
+    const decrypt = useDecryptToken();
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    if (encryptedAccessToken) {
+      const decryptedToken = decrypt(encryptedAccessToken);
+      setAccessToken(decryptedToken);
+    }
+  }, []);
+  const defaultInputValues = {
     title: '',
     baseFee: '',
     feePerDay: '',
@@ -44,9 +50,62 @@ const WritePost = () => {
     minimumRentalPeriod: '',
     content: '',
     categoryIds: [] as string[],
-  });
-  const [uploadImages, setUploadImages] = useState<{ images: File[] }>({
-    images: [],
+  };
+  const initialInputValue =
+    typeof productData === 'string' ? defaultInputValues : productData;
+  const [inputValues, setInputValues] = useState(initialInputValue);
+  if (typeof productData === 'object') {
+    console.log('productData', productData);
+    console.log('productData-inputValue', inputValues);
+  }
+
+  const navigate = useNavigate();
+  const params = useParams();
+  const categoryIds =
+    typeof productData === 'object'
+      ? (productData.categories as unknown as categories[]).map(
+          (cat) => cat.categoryId,
+        )
+      : [];
+
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([
+    ...categoryIds,
+  ]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm();
+
+  // string[] -> File[]
+  const createFilesFromUrls = (urls: string[]): File[] => {
+    const files: File[] = [];
+
+    for (const url of urls) {
+      const file = new File([url], 'image.jpg', { type: 'image/jpeg' });
+      files.push(file);
+    }
+    return files;
+  };
+
+  const productDataImages =
+    typeof productData === 'object'
+      ? createFilesFromUrls(
+          productData?.productImages.slice().reverse() as unknown as string[],
+        )
+      : [];
+  const productShowImages =
+    typeof productData === 'object'
+      ? productData?.productImages.slice().reverse()
+      : [];
+  const [showImages, setShowImages] = useState<string[]>(
+    [...productShowImages].slice(0, MAX_IMAGE_COUNT),
+  );
+  const [uploadImages, setUploadImages] = useState<{
+    images: File[];
+  }>({
+    images: [...productDataImages].slice(0, MAX_IMAGE_COUNT),
   });
   //
   const handleQuillChange = (value: string) => {
@@ -59,14 +118,13 @@ const WritePost = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    let newValue: string | number;
-
+    let newValue: string | number | undefined;
+    console.log(e.target.name);
     if (e.target.name === 'minimumRentalPeriod') {
       newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
     } else {
       newValue = inputValue;
     }
-
     setInputValues((prev) => ({
       ...prev,
       [e.target.name]: newValue,
@@ -83,6 +141,7 @@ const WritePost = () => {
       .post(`${process.env.REACT_APP_API_URL}/api/products`, post, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((res) => {
@@ -94,33 +153,61 @@ const WritePost = () => {
         console.log(err);
       }),
   );
-  const onSubmit = () => {
-    const formData = new FormData();
-    const blobJson = new Blob([JSON.stringify(inputValues)], {
-      type: 'application/json',
-    });
-    formData.append('request', blobJson);
-    for (const image of uploadImages.images) {
-      formData.append('images', image || null);
-    }
-    console.log(uploadImages);
-    console.log(formData);
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
+  const updatePost = useMutation((update: object) =>
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/products/${params.itemId}`,
+        update,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        const { data } = res;
+        console.log('data', data);
+        navigate(`/detail/${params.itemId}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  );
 
-    newPost.mutate(formData);
+  const onSubmit = () => {
+    if (inputValues.content === '' || selectedCategory.length === 0) {
+      return null;
+    } else {
+      const formData = new FormData();
+      const blobJson = new Blob([JSON.stringify(inputValues)], {
+        type: 'application/json',
+      });
+      formData.append('request', blobJson);
+      console.log('inputValues', inputValues);
+      for (const image of uploadImages.images) {
+        formData.append('images', image);
+      }
+      if (typeof productData === 'object') {
+        updatePost.mutate(formData);
+      } else if (typeof productData === 'string') {
+        newPost.mutate(formData);
+      }
+    }
   };
   useEffect(() => {
     setInputValues({
       ...inputValues,
-      categoryIds: [...selectedtCategory],
+      categoryIds: [...selectedCategory],
     });
-  }, [selectedtCategory, uploadImages]);
-
+  }, [productData, UploadImage, selectedCategory]);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
-      <UploadImage setUploadImages={setUploadImages} />
+      <UploadImage
+        setUploadImages={setUploadImages}
+        showImages={showImages}
+        setShowImages={setShowImages}
+      />
       <WritePriceWrapper>
         <PriceInput errorMessage={!!errors}>
           최소 대여시간
@@ -129,26 +216,27 @@ const WritePost = () => {
             {...register('minimumRentalPeriod', {
               required: true,
             })}
+            value={inputValues?.minimumRentalPeriod}
             onChange={handleInputChange}
             className={
-              inputValues.minimumRentalPeriod
+              inputValues?.minimumRentalPeriod
                 ? 'success'
-                : errors.minimumRentalPeriod
+                : errors?.minimumRentalPeriod
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.minimumRentalPeriod && (
+          {inputValues?.minimumRentalPeriod && (
             <BsCheckLg className="check-icon" />
           )}
-          {!inputValues.minimumRentalPeriod &&
-            inputValues.minimumRentalPeriod === '' && (
+          {!inputValues?.minimumRentalPeriod &&
+            inputValues?.minimumRentalPeriod === '' && (
               <BiErrorCircle className="error-icon" />
             )}
-          {errors.minimumRentalPeriod && (
+          {errors?.minimumRentalPeriod && (
             <small
               className={`error-message ${
-                errors.minimumRentalPeriod ? 'show' : ''
+                errors?.minimumRentalPeriod ? 'show' : ''
               }`}
             >
               필수 입력사항입니다.
@@ -160,18 +248,18 @@ const WritePost = () => {
           <Input
             type="text"
             {...register('baseFee', { required: true })}
-            value={inputValues.baseFee}
+            value={inputValues?.baseFee}
             onChange={handleInputChange}
             className={
-              inputValues.baseFee ? 'success' : errors.baseFee ? 'error' : ''
+              inputValues?.baseFee ? 'success' : errors?.baseFee ? 'error' : ''
             }
           />
-          {inputValues.baseFee && <BsCheckLg className="check-icon" />}
-          {!inputValues.baseFee && inputValues.baseFee === '' && (
+          {inputValues?.baseFee && <BsCheckLg className="check-icon" />}
+          {!inputValues?.baseFee && inputValues?.baseFee === '' && (
             <BiErrorCircle className="error-icon" />
           )}
-          {errors.baseFee && (
-            <small className={`error-message ${errors.baseFee ? 'show' : ''}`}>
+          {errors?.baseFee && (
+            <small className={`error-message ${errors?.baseFee ? 'show' : ''}`}>
               필수 입력사항입니다.
             </small>
           )}
@@ -181,23 +269,23 @@ const WritePost = () => {
           <Input
             type="text"
             {...register('feePerDay', { required: true })}
-            value={inputValues.feePerDay}
+            value={inputValues?.feePerDay}
             onChange={handleInputChange}
             className={
-              inputValues.feePerDay
+              inputValues?.feePerDay
                 ? 'success'
-                : errors.feePerDay
+                : errors?.feePerDay
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.feePerDay && <BsCheckLg className="check-icon" />}
-          {!inputValues.feePerDay && inputValues.feePerDay === '' && (
+          {inputValues?.feePerDay && <BsCheckLg className="check-icon" />}
+          {!inputValues?.feePerDay && inputValues?.feePerDay === '' && (
             <BiErrorCircle className="error-icon" />
           )}
           {errors.feePerDay && (
             <small
-              className={`error-message ${errors.feePerDay ? 'show' : ''}`}
+              className={`error-message ${errors?.feePerDay ? 'show' : ''}`}
             >
               필수 입력사항입니다.
             </small>
@@ -208,23 +296,23 @@ const WritePost = () => {
           <Input
             type="text"
             {...register('overdueFee', { required: true })}
-            value={inputValues.overdueFee}
+            value={inputValues?.overdueFee}
             onChange={handleInputChange}
             className={
-              inputValues.overdueFee
+              inputValues?.overdueFee
                 ? 'success'
-                : errors.overdueFee
+                : errors?.overdueFee
                 ? 'error'
                 : ''
             }
           />
-          {inputValues.overdueFee && <BsCheckLg className="check-icon" />}
-          {!inputValues.overdueFee && inputValues.overdueFee === '' && (
+          {inputValues?.overdueFee && <BsCheckLg className="check-icon" />}
+          {!inputValues?.overdueFee && inputValues?.overdueFee === '' && (
             <BiErrorCircle className="error-icon" />
           )}
-          {errors.overdueFee && (
+          {errors?.overdueFee && (
             <small
-              className={`error-message ${errors.overdueFee ? 'show' : ''}`}
+              className={`error-message ${errors?.overdueFee ? 'show' : ''}`}
             >
               필수 입력사항입니다.
             </small>
@@ -236,30 +324,31 @@ const WritePost = () => {
         제목
         <Input
           {...register('title', { required: true })}
-          value={inputValues.title}
+          value={inputValues?.title}
           onChange={handleInputChange}
           className={
-            inputValues.title ? 'success' : errors.title ? 'error' : ''
+            inputValues?.title ? 'success' : errors?.title ? 'error' : ''
           }
         />
-        {inputValues.title && <BsCheckLg className="check-icon" />}
-        {!inputValues.title && inputValues.title === '' && (
+        {inputValues?.title && <BsCheckLg className="check-icon" />}
+        {!inputValues?.title && inputValues?.title === '' && (
           <BiErrorCircle className="error-icon" />
         )}
-        {errors.title && (
-          <small className={`error-message ${errors.title ? 'show' : ''}`}>
+        {errors?.title && (
+          <small className={`error-message ${errors?.title ? 'show' : ''}`}>
             필수 입력사항입니다.
           </small>
         )}
       </PriceInput>
       <ReactQuill
+        defaultValue={inputValues?.content}
         theme="snow"
         onChange={handleQuillChange}
         placeholder={CONTENT_DESCRIPTION}
       />
       <CheckBoxTitle>카테고리</CheckBoxTitle>
       <CheckBoxList
-        selectedtCategory={selectedtCategory}
+        selectedtCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
 

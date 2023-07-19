@@ -58,9 +58,6 @@ public class ProductService {
             throw new BusinessLogicException(NOT_FOUND_LOCATION);
         }
 
-        Random random = new Random();
-        int totalRateScore = random.nextInt(1000);
-
         Product productEntity = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .title(request.getTitle())
@@ -69,9 +66,9 @@ public class ProductService {
                 .baseFee(request.getBaseFee())
                 .feePerDay(request.getFeePerDay())
                 .minimumRentalPeriod(request.getMinimumRentalPeriod())
-                .totalRateCount(totalRateScore / (random.nextInt(totalRateScore - 5) + 5))
-                .totalRateScore(totalRateScore)
-                .viewCount(random.nextInt(5000))
+                .totalRateCount(0)
+                .totalRateScore(0)
+                .viewCount(0)
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
                 .address(member.getAddress())
@@ -141,28 +138,19 @@ public class ProductService {
     }
 
     @Cacheable(key = "#productId", value = "products")
-    public ProductDetailDto findProductDetail(String productId, Long memberId) {
+    public ProductDetailDto findProductDetail(String productId) {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
-        // 로그인 안된 사용자일 경우
-        boolean isOwner = false;
-        if (!Objects.isNull(memberId)) {
-            Member member = memberService.findMember(memberId);
-            if (Objects.equals(member.getMemberId(), product.getMember().getMemberId())) {
-                isOwner = true;
-            }
-        }
-
         List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
 
-        List<String> images = imageService.findImageProduct(productId).stream()
+        List<String> images = imageService.findImageProducts(productId).stream()
                 .map(image -> image.getImageUrl())
                 .collect(Collectors.toList());
 
         String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
 
-        return ProductDetailDto.from(product, categories, images, userImage, isOwner);
+        return ProductDetailDto.from(product, categories, images, userImage);
     }
 
     public GetProducts findProducts(Long memberId, int size, int page) {
@@ -178,7 +166,6 @@ public class ProductService {
         Product product = findProduct(productId);
         product.setViewCount(product.getViewCount() + 1);
     }
-
 
     public List<Product> findProductByMemberId(Long memberId) {
         return productRepository.findAllByMemberMemberId(memberId);
