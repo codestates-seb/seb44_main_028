@@ -12,6 +12,7 @@ import {
   PRODUCT_FILTER_OPTIONS,
 } from '../../../common/constants';
 import { ItemCardProps } from '../../../common/type';
+import ItemCardWrapper from '../components/ItemCardWrapper';
 import NoData from '../../../common/components/NoData';
 import ErrorPage from '../../../common/components/ErrorPage';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
@@ -97,7 +98,9 @@ function ItemListPage() {
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
             >
-              <ItemCard itemCardData={product} />
+              <ItemCardWrapper key={product.productId}>
+                <ItemCard itemCardData={product} />
+              </ItemCardWrapper>
             </motion.div>
           ))}
         </AnimatePresence>
