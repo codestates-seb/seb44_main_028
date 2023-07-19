@@ -6,7 +6,7 @@ import { interestProducts } from './InterestStore';
 import { monthlyReservation } from '../../pages/Booking/store/MonthlyReservationStore';
 import { mypageProfileSlice } from '../../pages/MyPage/store/ProfileSlice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   userInfo: userInfo.reducer,
   calendar: calendar.reducer,
   reservation: reservation.reducer,
