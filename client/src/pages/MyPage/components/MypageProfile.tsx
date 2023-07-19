@@ -23,7 +23,6 @@ import { IUserInfo } from '../../../common/model/IUserInfo';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 import LendCard from '../../../common/components/MypageCard/LendCard';
-import Loading from '../../../common/components/Loading';
 import useGeoLocation from '../utils/customHooks/useGeoLocation';
 import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
