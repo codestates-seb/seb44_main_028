@@ -21,7 +21,6 @@ public class Member extends BaseEntity {
     private String email;
     @Column(nullable = false)
     private String displayName;
-    private String imageUrl;
     private Double latitude;
     private Double longitude;
     private String address;

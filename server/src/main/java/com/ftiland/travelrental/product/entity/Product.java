@@ -41,7 +41,7 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private Integer viewCount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String mainImage;
 
     @Column(nullable = false)
