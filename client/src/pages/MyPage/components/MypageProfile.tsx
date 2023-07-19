@@ -9,7 +9,10 @@ import {
   MypageLeft,
   EvaluationScore,
   Location,
+  TownBtn,
+  LocationContent,
 } from '../style';
+import Loading from '../../../common/components/Loading';
 import ProfileImage0 from '../../../asset/my_page/myprofile_adobe_express.svg';
 import GradeIcon from './GradeIcon';
 import { FaMapMarkerAlt } from 'react-icons/fa';
@@ -21,13 +24,17 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 import LendCard from '../../../common/components/MypageCard/LendCard';
 import Loading from '../../../common/components/Loading';
+import useGeoLocation from '../utils/customHooks/useGeoLocation';
+import { set } from 'react-hook-form';
+import { LocationProps } from '../type';
+import { useMutation, useQuery } from 'react-query';
+import { access } from 'fs';
 
 function MypageProfile() {
   const queryClient = useQueryClient();
   const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);
-
   const iconProps = { itemCount: 0 };
   const [user, setUser] = useState<IUserInfo | null>(null);
   const [displayName, setDisplayName] = useState<string>('');
@@ -71,6 +78,46 @@ function MypageProfile() {
     }
   }, []);
 
+  const [isGetLocationData, setIsGetLocationData] = useState<string>(
+    userData?.address || '',
+  );
+
+  const encryptedAccessToken: string | null =
+    localStorage.getItem(ACCESS_TOKEN);
+  let accessToken: string | null = null;
+  if (encryptedAccessToken) {
+    accessToken = decrypt(encryptedAccessToken);
+  } else {
+    return null;
+  }
+
+  const location = useGeoLocation();
+  const formData = new FormData();
+
+  const patchUserLocation = useMutation(async () =>
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/members/location`,
+        formData,
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      )
+      .then((res) => {
+        console.log(res);
+        setIsGetLocationData(res.data.address);
+      })
+      .catch((err) => {
+        console.log(err);
+      }),
+  );
+
+  const handleLocation = () => {
+    if (location) {
+      formData.append('latitude', String(location?.coordinates?.lat));
+      formData.append('longitude', String(location?.coordinates?.lng));
+      formData.append('memberId', String(userData?.memberId));
+    }
+    patchUserLocation.mutate();
+  };
   useEffect(() => {
     getUserInfo();
   }, [getUserInfo]);
@@ -91,11 +138,13 @@ function MypageProfile() {
             </span>
           </div>
           <Location>
-            <span>
-              <FaMapMarkerAlt />
-            </span>
-            {/**유저위치입력 */}
-            <span>{address}</span>
+            {isGetLocationData && (
+              <LocationContent>
+                <FaMapMarkerAlt />
+                <div>{isGetLocationData}</div>
+              </LocationContent>
+            )}
+            <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>
           </Location>
         </MypageInfo>
       </MypageLeft>
