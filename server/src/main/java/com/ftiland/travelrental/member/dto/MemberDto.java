@@ -41,6 +41,7 @@ public class MemberDto {
                     .displayName(member.getDisplayName())
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
+                    .imageUrl(member.getImageUrl())
                     .build();
         }
     }

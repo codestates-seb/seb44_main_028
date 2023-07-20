@@ -18,7 +18,7 @@ public class ImageProductService {
     private final ImageProductRepository imageProductRepository;
 
     public List<String> findImageFileName(String productId) {
-        List<ImageProduct> images = imageProductRepository.findByProductId(productId);
+        List<ImageProduct> images = imageProductRepository.findByProductProductId(productId);
         imageProductRepository.deleteAll(images);
         return images.stream()
                 .map(i -> i.getFileName())
