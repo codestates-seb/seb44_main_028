@@ -11,6 +11,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 // import { BORROWCARD_DATA } from '../constants';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 interface borrowCardProps {
+  reservationId: string;
   title: string;
   image: string;
   status: string;
@@ -55,8 +56,8 @@ function BorrowList() {
             status: currentStatus,
           },
           headers: {
-            // Authorization: `Bearer ${accessToken}`,
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
+            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
@@ -169,7 +170,7 @@ function BorrowList() {
       {/* {BORROWCARD_DATA.map((item, index) => (
           <BorrowCard key={index} borrowCardData={item} />
         ))}
-     
+    
       {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal> */}

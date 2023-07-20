@@ -80,13 +80,8 @@ function MypageProfile() {
   );
 
   const encryptedAccessToken: string | null =
-    localStorage.getItem(ACCESS_TOKEN);
-  let accessToken: string | null = null;
-  if (encryptedAccessToken) {
-    accessToken = decrypt(encryptedAccessToken);
-  } else {
-    return null;
-  }
+    localStorage.getItem(ACCESS_TOKEN) || '';
+  const accessToken = decrypt(encryptedAccessToken);
 
   const location = useGeoLocation();
   const formData = new FormData();
@@ -99,7 +94,7 @@ function MypageProfile() {
         { headers: { Authorization: `Bearer ${accessToken}` } },
         // {
         //   headers: {
-        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJkaXNwbGF5TmFtZSI6IuuvvO2KuCIsImVtYWlsIjoia2V1bWhlMDExMEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MjgsInN1YiI6ImtldW1oZTAxMTBAZ21haWwuY29tIiwiaWF0IjoxNjg5NzQwOTU1LCJleHAiOjE2ODk3NDI3NTV9.0pjNsb7VIaknXE3ci2tTPCJ9FXc1fJg8lZz65vLjYAUbmAXCpWuot2DAiNQQ6eg07bGkIDAAyybSJkG-7INwqw`,
+        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
         //   },
         // },
       )

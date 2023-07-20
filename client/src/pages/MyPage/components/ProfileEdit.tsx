@@ -84,8 +84,8 @@ function ProfileEdit() {
   };
 
   const onDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDisplayName(e.target.value);
-    console.log('수정 할 이름 :', e.target.value);
+    setNewDisplayName(e.currentTarget.value);
+    console.log('수정 할 이름 :', e.currentTarget.value);
   };
 
   useEffect(() => {
