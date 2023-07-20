@@ -59,6 +59,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET,"/*/categories").permitAll()
                         .antMatchers(HttpMethod.GET,"/api/products/**").permitAll()
                         .antMatchers("/api/chat/**").permitAll()
+                        .antMatchers("/ws/chat/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
