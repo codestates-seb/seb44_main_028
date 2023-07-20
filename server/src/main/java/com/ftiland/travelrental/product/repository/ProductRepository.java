@@ -18,8 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     List<Product> findAllByMemberMemberId(Long memberId);
 
-    List<Product> findTop3ByOrderByViewCountDesc();
-
     @Query("SELECT new com.ftiland.travelrental.product.dto.ProductDto(p.productId, p.title, p.content, p.baseFee, p.feePerDay, p.minimumRentalPeriod, p.mainImage, p.address) " +
             "FROM ProductCategory pc " +
             "JOIN pc.product p " +
@@ -66,6 +64,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
                                                            @Param("lng") double lng,
                                                            Pageable pageable, @Param("bound") Double bound);
 
+    List<Product> findTop3ByOrderByViewCountDesc();
 
     @Query("SELECT p FROM Product p ORDER BY p.totalRateScore / p.totalRateCount DESC")
     List<Product> findTop3ByOrderByTotalRateScoreRatioDesc(Pageable pageable);

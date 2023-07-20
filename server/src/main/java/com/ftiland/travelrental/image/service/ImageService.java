@@ -92,8 +92,6 @@ public class ImageService {
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
-
-
     }
 
     public List<ImageDto> storeImages(List<MultipartFile> files) {
@@ -209,8 +207,8 @@ public class ImageService {
     }
 
     // 상품 이미지
-    public List<ImageProduct> findImageProducts(String productId) {
-        return imageProductRepository.findByProductProductIdOrderByCreatedAtAsc(productId);
+    public List<String> findImageProducts(String productId) {
+        return imageProductRepository.findImageUrlByProductId(productId);
     }
 
     public ImageProduct findFirstImageProduct(String productId) {

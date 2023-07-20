@@ -1,6 +1,7 @@
 package com.ftiland.travelrental.product.dto;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
+import com.ftiland.travelrental.category.dto.CategoryDtoForProductDetail;
 import com.ftiland.travelrental.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,7 @@ public class ProductDetailDto {
     private Double rate;
     private Integer viewCount;
 
-    private List<CategoryDto> categories;
+    private List<CategoryDtoForProductDetail> categories;
     private List<String> productImages;
 
     private String userImage;
@@ -34,9 +35,8 @@ public class ProductDetailDto {
     private String address;
 
     public static ProductDetailDto from(Product product,
-                                        List<CategoryDto> categories,
-                                        List<String> images,
-                                        String userImage) {
+                                        List<CategoryDtoForProductDetail> categories,
+                                        List<String> images) {
         return ProductDetailDto.builder()
                 .title(product.getTitle())
                 .content(product.getContent())
@@ -49,7 +49,7 @@ public class ProductDetailDto {
                 .username(product.getMember().getDisplayName())
                 .address(product.getAddress())
                 .productImages(images)
-                .userImage(userImage)
+                .userImage(product.getMember().getImageUrl())
                 .ownerMemberId(product.getMember().getMemberId())
                 .categories(categories).build();
     }
