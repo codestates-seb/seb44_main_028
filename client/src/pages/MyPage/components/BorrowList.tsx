@@ -2,26 +2,35 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import Modal from './Modal';
-import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
-import { borrowCardProps } from '../../../common/type';
+// import BorrowCard from '../../.././common/components/MypageCard/BorrowCard';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
-
+import { BORROWCARD_DATA } from '../constants';
+import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
+interface borrowCardProps {
+  title: string;
+  image: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+}
 function BorrowList() {
   const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
 
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
-  // const [items, setItems] = useState<borrowCardProps[]>([]);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(6);
-  const [totalItemsCount, setTotalItemsCount] = useState(0);
-  // const [totalItemsCount, setTotalItemsCount] = useState(BORROWCARD_DATA.length);
+  // const [totalItemsCount, setTotalItemsCount] = useState(0);
+  const [totalItemsCount, setTotalItemsCount] = useState(
+    BORROWCARD_DATA.length,
+  );
   const [currentStatus, setCurrentStatus] = useState('REQUESTED');
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
   console.log('currentStatus:', currentStatus);
@@ -165,13 +174,16 @@ function BorrowList() {
           items.map((item, index) => (
             <BorrowCard key={index} borrowCardData={item} />
           ))} */}
-        {items.length > 0 ? (
+        {/* {items.length > 0 ? (
           items.map((item, index) => (
             <BorrowCard key={index} borrowCardData={item} />
           ))
         ) : (
           <div>데이터를 불러오는 중입니다...</div>
-        )}
+        )} */}
+        {BORROWCARD_DATA.map((item, index) => (
+          <BorrowCard key={index} borrowCardData={item} />
+        ))}
       </BorrowCardWrappre>
       {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.

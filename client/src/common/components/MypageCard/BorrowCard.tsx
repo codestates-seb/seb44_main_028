@@ -1,8 +1,8 @@
-import React from 'react';
 import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
 import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
+import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 import axios from 'axios';
 import {
   BorrowCardWrapper,
@@ -20,9 +20,7 @@ const BorrowCard = ({
 }: {
   borrowCardData: borrowCardProps;
 }) => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([] as borrowCardProps[]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -30,7 +28,12 @@ const BorrowCard = ({
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/reservations/members`,
         );
-        setItems(response.data);
+        const processedItems = response.data.map((item: borrowCardProps) => {
+          const { startDate, endDate } = processDataWithRegex(item.startDate);
+          return { ...item, startDate, endDate };
+        });
+
+        setItems(processedItems);
       } catch (error) {
         console.error('아이템을 불러올 수없습니다.', error);
       }
@@ -38,34 +41,42 @@ const BorrowCard = ({
     fetchItems();
   }, []);
 
-  useEffect(() => {
-    const fetchDates = () => {
-      const startDate = new Date();
-      const endDate = new Date();
-      endDate.setDate(endDate.getDate() + 7);
-      setStartDate(startDate.toISOString().split('T')[0]);
-      setEndDate(endDate.toISOString().split('T')[0]);
-    };
-    fetchDates();
-  }, []);
   return (
     <>
       <BorrowCardContainer>
         <BorrowCardWrapper>
           <ImgWrapper>
-            <ItemImage src={borrowCardData.images} />
+            <ItemImage src={borrowCardData.image} />
           </ImgWrapper>
           <ContentWrapper>
             <TitleWrapper>{borrowCardData.title}</TitleWrapper>
             <DatesWrapper>
               <div>예약기간</div>
-              {borrowCardData.status === 'CANCELED' ? (
-                <div>{`${startDate}`}</div>
+              {status === 'CANCELED' ? (
+                <div>{`${borrowCardData.startDate}`}</div>
               ) : (
-                <div>{`${startDate} - ${endDate}`}</div>
+                <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
               )}
             </DatesWrapper>
-            {borrowCardData.status === 'REQUESTED' && (
+
+            <ButtonWapper>
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.cancleButtonColor}
+              >
+                취소요청
+              </DefaultBtn>
+            </ButtonWapper>
+
+            {status === 'COMPLETED' && (
+              <DefaultBtn
+                color={colorPalette.whiteColor}
+                backgroundColor={colorPalette.accentColor}
+              >
+                별점 주기
+              </DefaultBtn>
+            )}
+            {/* {status === 'REQUESTED' && (
               <ButtonWapper>
                 <DefaultBtn
                   color={colorPalette.whiteColor}
@@ -74,7 +85,7 @@ const BorrowCard = ({
                   취소요청
                 </DefaultBtn>
               </ButtonWapper>
-            )}
+            )} */}
           </ContentWrapper>
         </BorrowCardWrapper>
       </BorrowCardContainer>

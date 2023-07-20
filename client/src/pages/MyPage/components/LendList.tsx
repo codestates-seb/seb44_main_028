@@ -2,9 +2,23 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
-import LENDCARD_DATA from '../../../common/components/MypageCard/BorrowCard';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
+import LendCard from '../../../common/components/MypageCard/LendCard';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../Login/constants';
+import { LENDCARD_DATA } from '../constants';
+
+interface lendCardProps {
+  reservationId: string;
+  status: string;
+  username: string;
+  totalFee: string;
+  startDate: string;
+  endDate: string;
+  image: string;
+}
 
 function LendList() {
   const [items, setItems] = useState([]);
@@ -72,11 +86,15 @@ function LendList() {
         </DefaultBtn>
       </LendWrapper>
       <LendListWrapper>
-        <div>
-          {items.map((item, index) => (
-            <LENDCARD_DATA key={index} borrowCardData={item} />
-          ))}
-        </div>
+        {/* {items.length > 0 ?(items.map((item, index) => (
+            <LendCard key={index} lendCardData={item} />
+          ))
+          ):(
+          <div>데이터를 불러오는 중입니다...</div>
+        )} */}
+        {LENDCARD_DATA.map((item, index) => (
+          <LendCard key={index} lendCardData={item} />
+        ))}
       </LendListWrapper>
       <div>
         <Paging

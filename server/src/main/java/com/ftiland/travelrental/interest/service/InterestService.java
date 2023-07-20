@@ -41,8 +41,8 @@ public class InterestService {
         this.memberService = memberService;
         this.imageService = imageService;
         this.interestMapper = interestMapper;
-        this.productService = productService;
 
+        this.productService = productService;
 
     }
 

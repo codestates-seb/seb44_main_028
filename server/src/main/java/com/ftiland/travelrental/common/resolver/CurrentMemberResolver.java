@@ -33,7 +33,8 @@ public class CurrentMemberResolver implements HandlerMethodArgumentResolver {
         boolean required = methodParameter.getParameterAnnotation(CurrentMember.class).required();
         Long memberId = (Long) nativeWebRequest.getAttribute("memberId", NativeWebRequest.SCOPE_REQUEST);
 
-        if(Objects.isNull(memberId) && required) {
+        // required가 true인데 memberId가 null이라면 예외발생
+        if(required && Objects.isNull(memberId)) {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         }
         return memberId;

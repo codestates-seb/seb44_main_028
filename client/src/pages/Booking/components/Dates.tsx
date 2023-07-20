@@ -40,7 +40,17 @@ function Dates({ calendar, reservationDataFromServer }: CalendarProps) {
           day={j}
           reservationDataFromServer={reservationDataFromServer}
           onClick={() => {
-            if (!reservationDatesClickedByUser.startDate) {
+            if (
+              !reservationDatesClickedByUser.startDate ||
+              // startDate과 endDate 둘 다 있는데 유저가 원래 startDate보다 이전 날짜를 클릭했을 때
+              (reservationDatesClickedByUser.startDate &&
+                reservationDatesClickedByUser.endDate &&
+                new Date(
+                  reservationDatesClickedByUser.startDate.year,
+                  reservationDatesClickedByUser.startDate.month - 1,
+                  reservationDatesClickedByUser.startDate.date,
+                ).getTime() > new Date(year, month - 1, date).getTime())
+            ) {
               dispatch(
                 setStartDate({
                   ...reservationDatesClickedByUser,
