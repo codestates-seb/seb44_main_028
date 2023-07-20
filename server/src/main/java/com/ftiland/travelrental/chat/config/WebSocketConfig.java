@@ -18,6 +18,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "ws/chat").setAllowedOrigins("http://localhost:3000/","https://playpack-e541f.web.app");
+        registry.addHandler(webSocketHandler, "ws/chat").setAllowedOrigins("http://localhost:3000/","https://playpack-e541f.web.app").withSockJS();
     }
 }
