@@ -45,7 +45,7 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
-
+        member.setImageUrl(defaultImageUrl);
         Member savedMember = memberRepository.save(member);
         ImageMember imageMember = new ImageMember();
         imageMember.setImageUrl(defaultImageUrl);
@@ -83,6 +83,7 @@ public class MemberService {
         String imageUrl = imageService.storeImageMember(imageFile, memberId).getImageUrl();
         Optional.ofNullable(displayName)
                 .ifPresent(name -> member.setDisplayName(name));
+        member.setImageUrl(imageUrl);
         memberRepository.save(member);
         return MemberDto.Response.from(member, imageUrl);
     }
