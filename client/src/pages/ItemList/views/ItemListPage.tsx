@@ -12,6 +12,7 @@ import {
   DISTANCE_OPTIONS,
   PRODUCT_FILTER_OPTIONS,
 } from '../../../common/constants';
+import { queryParams } from '../type';
 import { ItemCardProps } from '../../../common/type';
 import ItemCardWrapper from '../components/ItemCardWrapper';
 import NoData from '../../../common/components/NoData';
@@ -34,7 +35,7 @@ function ItemListPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
 
-  const queryParams = {
+  const queryParams: queryParams = {
     page: page,
     size: size,
     categoryId: params.categoryId,
@@ -43,30 +44,13 @@ function ItemListPage() {
     )?.value,
   };
 
-  // const {
-  //   data: products,
-  //   isLoading,
-  //   error,
-  // } = useQuery('products', async () => {
-  //   try {
-  //     const res = await axios.get(
-  //       `${process.env.REACT_APP_API_URL}/api/products`,
-  //       {
-  //         params: queryParams,
-  //       },
-  //     );
-  //     console.log('res', res);
-  //     return res.data;
-  //   } catch (err) {
-  //     console.log('err', err);
-  //   }
-  // });
   const {
     data: products,
     isLoading,
     error,
     isFetching,
-  } = useQuery(['products', page], async () => {
+    refetch,
+  } = useQuery([JSON.stringify(queryParams), page], async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products`,
@@ -75,19 +59,16 @@ function ItemListPage() {
         },
       );
       setItems((prevIetm) => [...prevIetm, ...res.data.products]);
+      console.log('받아온 상품', res.data.products);
       return res.data.products;
     } catch (err) {
       console.log('err', err);
     }
   });
 
-  console.log(distanceSelectedValue, productFilterSelectedValue);
-  console.log(userData);
-
   useEffect(() => {
     // 멤버 유저 아닌 경우
     if (!userData && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
-      console.log('로그인');
       navigate('/login');
     }
     // 멤버 유저인데 위치 정보 없는 경우
@@ -96,14 +77,16 @@ function ItemListPage() {
     }
     const distanceSelect = DISTANCE_OPTIONS.find(
       (option) => option.label === distanceSelectedValue,
-    );
+    )?.value;
+
     if (distanceSelect && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
-      queryParams.distance = distanceSelectedValue;
+      queryParams.distance = distanceSelect;
     } else {
       delete queryParams.distance;
     }
-    console.log('디스턴스 벨ㅠ~~~');
+    refetch();
   }, [distanceSelectedValue]);
+
   useEffect(() => {
     function handleScroll() {
       if (
