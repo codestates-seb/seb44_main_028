@@ -1,6 +1,6 @@
-import ScrollToTop from '../../../common/components/ScrollToTop';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import ScrollToTop from '../../../common/components/ScrollToTop';
 import Category from '../../../common/components/Category/Category';
 import { MainPageContainer } from '../style';
 import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
@@ -22,11 +22,13 @@ function MainPage() {
   );
   if (isLoading) return <Loading />;
   if (error) return <ErrorPage />;
+
   console.log(data);
   return (
     <MainPageContainer>
       <Category />
       <ScrollToTop />
+
       <ItemCardList
         itemCardListTitle={ITEMCARDLIST_TITLE[0]}
         itemCardListContentData={data.top3ByTotalRateScoreRatio}
