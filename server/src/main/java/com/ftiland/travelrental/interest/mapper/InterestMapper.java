@@ -41,15 +41,15 @@ public interface InterestMapper {
         return response;
     }
 
-    default InterestDto.ResponsesDto interestsToResponsesDto (ImageService imageService, Page<Interest> interests){
+    default InterestDto.ResponsesDto interestsToResponsesDto ( Page<Interest> interests){
         InterestDto.ResponsesDto responses = new InterestDto.ResponsesDto();
         PageInfo pageInfo = new PageInfo(interests.getPageable().getPageNumber(),interests.getPageable().getPageSize(),interests.getTotalElements(),interests.getTotalPages());
         for(Interest interest : interests.getContent()){
             InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
-            ImageProduct image = imageService.findMainImageProduct(interest.getProduct().getProductId());
+            //ImageProduct image = imageService.findMainImageProduct(interest.getProduct().getProductId());
 
             // response 에 image 추가
-            response.setImageUrl(image.getImageUrl());
+            response.setImageUrl(interest.getProduct().getMainImage());
             responses.addResponse(response);
         }
         responses.setPageInfo(pageInfo);

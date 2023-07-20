@@ -8,7 +8,7 @@ function WishList() {
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [itemsPerPage] = useState(3);
-  const [totalItemsCount, setTotalItemsCount] = useState(0);
+  const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
   useEffect(() => {

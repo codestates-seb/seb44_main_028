@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { motion, AnimatePresence } from 'framer-motion';
 import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
-import { ItemListPageContainer, ProductListWrapper } from '../style';
 import Loading from '../../../common/components/Loading';
 import {
   DISTANCE_DEFAULT_VALUE,
@@ -11,19 +12,23 @@ import {
   PRODUCT_FILTER_OPTIONS,
 } from '../../../common/constants';
 import { ItemCardProps } from '../../../common/type';
-import { useParams } from 'react-router-dom';
+import ItemCardWrapper from '../components/ItemCardWrapper';
 import NoData from '../../../common/components/NoData';
+import ErrorPage from '../../../common/components/ErrorPage';
+import { ItemListPageContainer, ProductListWrapper } from '../style';
 
 function ItemListPage() {
   const params = useParams();
   const [page, setPage] = useState(1);
-  console.log(params);
-  const size = 10;
+  const size = 3;
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [items, setItems] = useState<ItemCardProps[]>([]);
   const {
     data: products,
     isLoading,
     error,
-  } = useQuery('products', async () => {
+    isFetching,
+  } = useQuery(['products', page], async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products`,
@@ -35,49 +40,74 @@ function ItemListPage() {
           },
         },
       );
-      console.log('res', res);
-      return res.data;
+      setItems((prevIetm) => [...prevIetm, ...res.data.products]);
+      return res.data.products;
     } catch (err) {
       console.log('err', err);
     }
   });
-  if (isLoading) {
+
+  useEffect(() => {
+    function handleScroll() {
+      if (
+        containerRef.current &&
+        containerRef.current.getBoundingClientRect().bottom <=
+          window.innerHeight
+      ) {
+        if (!isFetching) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isFetching]);
+
+  if (isLoading && page === 1) {
     return <Loading />;
   }
+
   if (error) {
-    return <div>에러가 발생했습니다.</div>;
+    return <ErrorPage />;
   }
-  if (products.products.length === 0) {
+
+  if (!isLoading && items?.length === 0) {
     return <NoData />;
   }
   console.log(products);
   return (
     <ItemListPageContainer>
-      {
-        <div>
-          <SelectBox
-            selectOptionData={DISTANCE_OPTIONS}
-            selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-          />
-          <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-        </div>
-      }
-      {products?.map((product: ItemCardProps) => (
-        <ItemCard key={product.productId} itemCardData={product} />
-      ))}
-      {/* //    <div>
-   //     <SelectBox
-    //      selectOptionData={DISTANCE_OPTIONS}
-   //       selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-   //     />
-   //     <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-   //   </div>
-   //   <ProductListWrapper>
-     //   {products?.products.map((product: ItemCardProps) => (
-     //     <ItemCard key={product.productId} itemCardData={product} />
-      //  ))}
-     // </ProductListWrapper> */}
+      <div>
+        <SelectBox
+          selectOptionData={DISTANCE_OPTIONS}
+          selectDefaultOption={DISTANCE_DEFAULT_VALUE}
+        />
+        <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
+      </div>
+      <ProductListWrapper ref={containerRef}>
+        <AnimatePresence>
+          {items?.map((product: ItemCardProps) => (
+            <motion.div
+              key={product.productId}
+              ref={containerRef}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ItemCardWrapper key={product.productId}>
+                <ItemCard itemCardData={product} />
+              </ItemCardWrapper>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </ProductListWrapper>
+      {isFetching && <Loading />}
     </ItemListPageContainer>
   );
 }
+
 export default ItemListPage;

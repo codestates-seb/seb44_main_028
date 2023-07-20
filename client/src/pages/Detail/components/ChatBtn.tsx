@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import BigDefaultBtn from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 function makeChatRoomName(senderId: number, receiverId: number) {
   const chatRoomName = [String(senderId), String(receiverId)].sort().join('');
@@ -14,6 +15,8 @@ function ChatBtn() {
   const { itemId } = useParams<{ itemId: string }>();
   const navigate = useNavigate();
   const [receiverId, setReceiverId] = useState<number>(0);
+  const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
+  const accessToken = encryptedAccessToken || '';
 
   // 판매자의 memberId를 가져온다.
   useEffect(() => {
@@ -21,8 +24,14 @@ function ChatBtn() {
       try {
         const response = await axios.get(
           process.env.REACT_APP_API_URL +
-            `/api/chat/seller?product-id=${itemId}`,
+            `/api/chat/seller?productId=${itemId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
         );
+        console.log('판매자의 memberId', response.data.sellerId);
         // 컴포넌트가 아직 마운트된 상태라면 상태를 설정
         setReceiverId(response.data.sellerId);
       } catch (error) {
@@ -53,6 +62,7 @@ function ChatBtn() {
         },
       );
 
+      console.log('채팅방 생성 결과', response.data);
       const chatRoomId = response.data.roomId;
       // post 요청을 보낸 후, 채팅방으로 이동한다.
       navigate(`/chatting/${chatRoomId}`);

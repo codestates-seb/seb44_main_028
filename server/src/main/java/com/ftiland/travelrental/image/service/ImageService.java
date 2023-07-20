@@ -19,7 +19,9 @@ import com.ftiland.travelrental.image.repository.ImageMemberRepository;
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.image.utils.FileNameGenerator;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.repository.ProductRepository;
+import com.ftiland.travelrental.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +53,7 @@ public class ImageService {
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
-                        ImageMemberRepository imageMemberRepository, MemberRepository memberRepository,
+                        ImageMemberRepository imageMemberRepository,MemberRepository memberRepository,
                         CategoryRepository categoryRepository,
                         ImageCategoryRepository imageCategoryRepository,
                         FileNameGenerator fileNameGenerator) {
@@ -59,7 +61,8 @@ public class ImageService {
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
-        this.memberRepository = memberRepository;
+
+        this.memberRepository =memberRepository;
         this.categoryRepository = categoryRepository;
         this.imageCategoryRepository = imageCategoryRepository;
         this.fileNameGenerator = fileNameGenerator;
@@ -150,8 +153,10 @@ public class ImageService {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
 
+
             ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
-            createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(), createdImage.getFileType()));
+            createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());

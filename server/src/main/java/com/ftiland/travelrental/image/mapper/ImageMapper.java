@@ -10,8 +10,10 @@ import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
+import com.ftiland.travelrental.product.service.ProductService;
 import org.mapstruct.Mapper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +26,14 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface ImageMapper {
 
-    default ImageProduct fileToImageProduct(MultipartFile multipartFile, ProductRepository productRepository, String productId) {
+    default ImageProduct fileToImageProduct(MultipartFile multipartFile, ProductService productService, String productId) {
         ImageProduct imageProduct = new ImageProduct();
         imageProduct.setImageId(UUID.randomUUID().toString());
         imageProduct.setFileType(multipartFile.getContentType());
 
         // service 구현 필요
-        Product product = productRepository.findById(productId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        //Product product = productRepository.findById(productId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        Product product = productService.findProduct(productId);
         imageProduct.setProduct(product);
         return imageProduct;
     }
@@ -51,6 +54,7 @@ public interface ImageMapper {
 
         // service 구현 필요
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        //Member member =  memberService.findMember(memberId);
         imageMember.setMember(member);
 
         return imageMember;
