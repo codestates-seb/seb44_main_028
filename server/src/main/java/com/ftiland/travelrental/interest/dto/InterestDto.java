@@ -41,8 +41,8 @@ public class InterestDto {
         private Integer minimumRentalPeriod;
         private Integer baseFee;
         private Integer feePerDay;
-        private ArrayList<String> images= new ArrayList<>();
-        public void addImageProduct(String imageUrl){ this.images.add(imageUrl);}
+        private String imageUrl;
+
      }
 
     @Getter

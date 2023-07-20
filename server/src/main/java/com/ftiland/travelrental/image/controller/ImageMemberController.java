@@ -1,5 +1,6 @@
 package com.ftiland.travelrental.image.controller;
 
+import com.ftiland.travelrental.common.annotation.CurrentMember;
 import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.mapper.ImageMapper;
@@ -24,7 +25,7 @@ public class ImageMemberController {
 
     // 사진 등록 ( 맴버 프로필 , Post)
     @PostMapping
-    public ResponseEntity postImageMember(@RequestParam("imageFile") MultipartFile multipartFile, @RequestParam("memberId") Long memberId) {
+    public ResponseEntity postImageMember(@RequestParam("imageFile") MultipartFile multipartFile, @CurrentMember Long memberId) {
         ImageMember imageMember = imageService.storeImageMember(multipartFile, memberId);
         ImageDto.ResponseForMember response = imageMapper.imageMemberToResponse(imageMember);
 
@@ -38,9 +39,10 @@ public class ImageMemberController {
         return HttpStatus.OK;
     }
 
+
     // 사진 조회 ( 맴버 , Get )
     @GetMapping
-    public ResponseEntity getImageMember(@RequestParam("memberId") Long memberId) {
+    public ResponseEntity getImageMember(@CurrentMember Long memberId) {
         ImageMember image = imageService.findImageMember(memberId);
         ImageDto.ResponseForMember response = imageMapper.imageMemberToResponse(image);
 

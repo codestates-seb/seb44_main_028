@@ -32,8 +32,11 @@ import ErrorPage from '../../../common/components/ErrorPage';
 import ChatBtn from './ChatBtn';
 import { ICategory } from '../type';
 import ImageCarousel from './ImageCarousel';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 const ItemContent = () => {
+  const { data: userData } = useGetMe();
+  console.log(userData);
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
@@ -69,7 +72,7 @@ const ItemContent = () => {
     const { data } = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
     );
-    console.log(data);
+    console.log('update', data);
     return data;
   });
   if (isLoading) {
@@ -78,6 +81,7 @@ const ItemContent = () => {
   if (error) {
     return <ErrorPage />;
   }
+  console.log('updateData', data);
 
   return (
     <ItemContentContainer>
@@ -88,7 +92,11 @@ const ItemContent = () => {
         </ItemImageWrapper>
         <ItemUserWrapper>
           {/* 유저 정보 */}
-          <ItemUserInfo userName={data.username} address={data.address} />
+          <ItemUserInfo
+            userName={data.username}
+            address={data.address}
+            userImage={data.userImage}
+          />
           {/* 가격 정보 */}
 
           <ItemPrice
@@ -118,7 +126,7 @@ const ItemContent = () => {
             >
               예약하기
             </BigDefaultBtn>
-            {/* <ChatBtn /> */}
+            <ChatBtn />
           </ItemActionBtn>
         </ItemUserWrapper>
       </ItemInfoWrapper>
@@ -142,7 +150,7 @@ const ItemContent = () => {
             ))}
           </ItemTagSection>
           <ProductBtn>
-            {data.isOwner ? (
+            {userData?.memberId === data.ownerMemberId ? (
               <>
                 <div onClick={handleUpdate}>{USER_BTN[0]}</div>
                 <div onClick={handleDelete}>{USER_BTN[1]}</div>

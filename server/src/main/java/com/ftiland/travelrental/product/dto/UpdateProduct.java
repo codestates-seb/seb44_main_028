@@ -35,10 +35,12 @@ public class UpdateProduct {
     public static class Response {
 
         private String productId;
+        private List<String> deletedImageName;
 
-        public static Response from(Product product) {
+        public static Response from(Product product, List<String> imageFileNames) {
             return Response.builder()
                     .productId(product.getProductId())
+                    .deletedImageName(imageFileNames)
                     .build();
         }
     }

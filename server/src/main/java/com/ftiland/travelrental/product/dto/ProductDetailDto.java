@@ -21,7 +21,7 @@ public class ProductDetailDto {
     private Integer feePerDay;
     private Integer overdueFee;
     private Integer minimumRentalPeriod;
-    private Boolean isOwner;
+    private Long ownerMemberId;
 
     private Double rate;
     private Integer viewCount;
@@ -36,8 +36,7 @@ public class ProductDetailDto {
     public static ProductDetailDto from(Product product,
                                         List<CategoryDto> categories,
                                         List<String> images,
-                                        String userImage,
-                                        Boolean isOwner) {
+                                        String userImage) {
         return ProductDetailDto.builder()
                 .title(product.getTitle())
                 .content(product.getContent())
@@ -51,7 +50,7 @@ public class ProductDetailDto {
                 .address(product.getAddress())
                 .productImages(images)
                 .userImage(userImage)
-                .isOwner(isOwner)
+                .ownerMemberId(product.getMember().getMemberId())
                 .categories(categories).build();
     }
 }

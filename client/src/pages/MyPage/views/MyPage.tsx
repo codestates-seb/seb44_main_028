@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ParentTap from '../components/ParentTap';
 import MypageProfile from '../components/MypageProfile';
 import { ProfileWrapper, EditWrapper, ProfileDataWrapper } from '../style';
@@ -13,16 +13,13 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 const MyPage = () => {
   const decrypt = useDecryptToken();
-  const { data: userData } = useGetMe();
-  console.log('userData', userData);
   const navigator = useNavigate();
-  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-  console.log('유저 정보gg', userInfo);
+  const { data: userData } = useGetMe();
   const isLoggedIn = useSelector(
     (state: RootState) => state.userInfo.isLoggedIn,
   );
+  console.log('Mypage userData', userData);
   console.log('로그인 상태인가?', isLoggedIn);
-  console.log('유저 정보', userInfo);
 
   const [profileData, setProfileData] = useState<ProfileDataType | undefined>(
     undefined,
@@ -48,12 +45,11 @@ const MyPage = () => {
           },
         );
         setProfileData(response.data);
+        console.log('setProfileData:', response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-
-    fetchUserData();
   }, []);
 
   const handleEditProfile = () => {

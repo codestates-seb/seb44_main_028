@@ -68,20 +68,23 @@ public class ReservationController {
     @GetMapping
     public ResponseEntity<GetBorrowReservations> getReservationsByBorrower(
             @RequestParam ReservationStatus status,
-            @RequestParam int size,
-            @RequestParam int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "0") int page,
             @CurrentMember Long memberId) {
         log.info("[ReservationController] getReservationsByBorrower called");
-
-        return ResponseEntity.ok(reservationService.getReservationByBorrower(memberId, status, size, page));
+        long start = System.currentTimeMillis();
+        GetBorrowReservations response = reservationService.getReservationByBorrower(memberId, status, size, page);
+        long end = System.currentTimeMillis();
+        log.info("getReservationByBorrower total time = {}", end - start);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/products/{product-id}")
     public ResponseEntity<GetLendReservations> getReservationsByLender(
             @PathVariable("product-id") String productId,
             @RequestParam ReservationStatus status,
-            @RequestParam int size,
-            @RequestParam int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "0") int page,
             @CurrentMember Long memberId) {
         log.info("[ReservationController] getReservationsByLender called");
 

@@ -3,7 +3,7 @@ import { CreatePageContainer } from '../style';
 function CreatePage() {
   return (
     <CreatePageContainer>
-      <WritePost />
+      <WritePost productData="" />
     </CreatePageContainer>
   );
 }

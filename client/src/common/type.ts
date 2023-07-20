@@ -74,8 +74,9 @@ export type lendCardProps = {
 };
 
 export type borrowCardProps = {
+  // reservationId: string;
   title: string;
-  images: string;
+  image: string;
   status: string;
   startDate: string;
   endDate: string;
