@@ -44,13 +44,6 @@ const SearchPage = () => {
 
   return (
     <SearchPageContainer>
-      <div>
-        <SelectBox
-          selectOptionData={DISTANCE_OPTIONS}
-          selectDefaultOption={DISTANCE_DEFAULT_VALUE}
-        />
-        <SelectBox selectOptionData={PRODUCT_FILTER_OPTIONS} />
-      </div>
       <SearchProductListWrapper>
         {data?.products.map((item: ItemCardProps) => (
           <ItemCard key={item.productId} itemCardData={item} />
