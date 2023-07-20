@@ -25,6 +25,7 @@ import java.util.UUID;
 public class InitData {
 
 /*
+
     private final CategoryService categoryService;
     private final MemberRepository memberRepository;
     private final ImageCategoryRepository imageCategoryRepository;
@@ -822,5 +823,6 @@ public class InitData {
         CreateProduct.Response product40 = productService.createProduct(request40, 20L,
                 List.of(new ImageDto(null, image40.getImageUrl(), null)));
     }*/
+
 }
 
