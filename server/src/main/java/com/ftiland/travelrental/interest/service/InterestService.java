@@ -13,6 +13,7 @@ import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
+import com.ftiland.travelrental.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,21 +29,21 @@ import java.util.UUID;
 // Test 필요
 @Service
 public class InterestService {
-    private MemberRepository memberRepository;
-    private ProductRepository productRepository;
     private InterestRepository interestRepository;
     private MemberService memberService;
     private ImageService imageService;
     private InterestMapper interestMapper;
+    private ProductService productService;
 
     @Autowired
-    public  InterestService (MemberRepository memberRepository, ProductRepository productRepository, InterestRepository interestRepository, MemberService memberService, ImageService imageService, InterestMapper interestMapper){
-        this.memberRepository = memberRepository;
-        this.productRepository = productRepository;
+    public  InterestService ( InterestRepository interestRepository, MemberService memberService, ImageService imageService, InterestMapper interestMapper,ProductService productService){
         this.interestRepository = interestRepository;
         this.memberService = memberService;
         this.imageService = imageService;
         this.interestMapper = interestMapper;
+
+        this.productService = productService;
+
     }
 
     // 특정 관심객체 검색
@@ -70,10 +71,8 @@ public class InterestService {
 
         // 이미 관심 목록에 등록했으면 에러 리턴
         if (findVerifiedInterest(memberId,productId).isPresent()){throw new BusinessLogicException(ExceptionCode.INTEREST_EXISTS);}
-
-        Member member = memberRepository.findById(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        Product product = productRepository.findById(productId).orElseThrow(()->new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
-
+        Member member = memberService.findMember(memberId);
+        Product product = productService.findProduct(productId);
         Interest interest = Interest.builder().interestId(UUID.randomUUID().toString()).member(member).product(product).build();
 
         return interestRepository.save(interest);
