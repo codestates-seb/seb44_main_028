@@ -17,6 +17,7 @@ const SearchPage = () => {
   const params = useParams();
   const [page, setPage] = useState(0);
   const size = 10;
+  console.log(params.serachContent);
   const { data, isLoading, error } = useQuery('searchProduct', async () => {
     try {
       const res = await axios.get(

@@ -32,19 +32,28 @@ function ItemListPage() {
     PRODUCT_FILTER_OPTIONS[0].label,
   );
   const { data: userData } = useGetMe();
-  const [page, setPage] = useState(1);
-  const size = 3;
+  const [page, setPage] = useState(0);
+  const size = 10;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const queryParams: queryParams = {
+  // const queryParams: queryParams = {
+  //   page: page,
+  //   size: size,
+  //   categoryId: params.categoryId,
+  //   sortBy: PRODUCT_FILTER_OPTIONS.find(
+  //     (option) => option.label === productFilterSelectedValue,
+  //   )?.value,
+  // };
+  const [queryParams, setQueryParams] = useState<queryParams>({
     page: page,
     size: size,
     categoryId: params.categoryId,
     sortBy: PRODUCT_FILTER_OPTIONS.find(
       (option) => option.label === productFilterSelectedValue,
     )?.value,
-  };
+  });
+  console.log(queryParams);
   useEffect(() => {
     const decrypt = useDecryptToken();
     const encryptedAccessToken: string | null =
@@ -71,7 +80,12 @@ function ItemListPage() {
           },
         },
       );
-      setItems((prevIetm) => [...prevIetm, ...res.data.products]);
+      const newDatas = res.data.products;
+      const filteredProducts = newDatas.filter(
+        (newData: any) =>
+          !items.some((item) => item.productId === newData.productId),
+      );
+      setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
       console.log('받아온 상품', res.data.products);
       return res.data.products;
     } catch (err) {
@@ -92,14 +106,30 @@ function ItemListPage() {
       (option) => option.label === distanceSelectedValue,
     )?.value;
 
-    if (distanceSelect && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
-      queryParams.distance = distanceSelect;
-    } else {
-      delete queryParams.distance;
-    }
+    // if (distanceSelect && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
+    //   queryParams.distance = distanceSelect;
+    // } else {
+    //   delete queryParams.distance;
+    // }
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      sortBy: PRODUCT_FILTER_OPTIONS.find(
+        (option) => option.label === productFilterSelectedValue,
+      )?.value,
+      distance: distanceSelect || undefined,
+    }));
     refetch();
   }, [distanceSelectedValue]);
 
+  useEffect(() => {
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      sortBy: PRODUCT_FILTER_OPTIONS.find(
+        (option) => option.label === productFilterSelectedValue,
+      )?.value,
+    }));
+    refetch();
+  }, [productFilterSelectedValue]);
   useEffect(() => {
     function handleScroll() {
       if (
