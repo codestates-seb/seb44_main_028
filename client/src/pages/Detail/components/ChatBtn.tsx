@@ -53,7 +53,7 @@ function ChatBtn() {
   // 판매자의 memberId를 이용해 채팅방을 생성한다. TODO: 추후 custom hook으로 분리할 예정
   const createChatRoom = async () => {
     try {
-      const response = await axios.post(
+      const postResponse = await axios.post(
         process.env.REACT_APP_API_URL + '/api/chat',
         {
           senderId,
@@ -61,9 +61,15 @@ function ChatBtn() {
           name: makeChatRoomName(senderId, receiverId),
         },
       );
+      console.log('채팅방 생성 결과', postResponse);
 
-      console.log('채팅방 생성 결과', response.data);
-      const chatRoomId = response.data.roomId;
+      const getResponse = await axios.get(
+        process.env.REACT_APP_API_URL +
+          `/api/chat/chatroom?senderId=${senderId}&receiverId=${receiverId}`,
+      );
+      console.log('채팅방 생성 결과', getResponse.data);
+      const chatRoomId = getResponse.data.chatroomId;
+      console.log('채팅방 아이디', chatRoomId);
       // post 요청을 보낸 후, 채팅방으로 이동한다.
       navigate(`/chatting/${chatRoomId}`);
     } catch (error) {
