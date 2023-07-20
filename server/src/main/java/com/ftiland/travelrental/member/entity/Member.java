@@ -24,6 +24,7 @@ public class Member extends BaseEntity {
     private Double latitude;
     private Double longitude;
     private String address;
+    private String imageUrl;
 
     public Member(String email, String displayName) {
         this.email = email;
