@@ -92,7 +92,7 @@ public class ChatController {
 
     // 채팅방 리스트 불러오기
     @GetMapping("/chatroom")
-    public ResponseEntity findChatRooms(@Param("memberId") Long senderId,@Param("receiverId")Long receiverId){
+    public ResponseEntity findChatRoom(@Param("senderId") Long senderId,@Param("receiverId") Long receiverId){
         ChatRoom chatRoom = chatEntityService.findChatRoom(senderId,receiverId);
         ResponseDto.ChatRoom response = chatMapper.ChatRoomToResponseChatRoom(chatRoom);
 
