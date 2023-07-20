@@ -1,6 +1,5 @@
 package com.ftiland.travelrental.chat.service;
 
-import com.ftiland.travelrental.chat.dto.ResponseDto;
 import com.ftiland.travelrental.chat.entity.ChatMessage;
 import com.ftiland.travelrental.chat.entity.ChatRoom;
 import com.ftiland.travelrental.chat.entity.ChatRoomMembers;
@@ -15,7 +14,6 @@ import com.ftiland.travelrental.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -83,7 +81,7 @@ public class ChatEntityService {
         return messages;
     }
 
-    public List<ChatRoom> findChatRoom(Long memberId){
+    public List<ChatRoom> existsChatRooms(Long memberId){
         List<ChatRoom> rooms = chatRoomRepository.findChatRoomsByUserId(memberId);
 
         return rooms;
@@ -95,10 +93,15 @@ public class ChatEntityService {
         return messages;
     }
 
-    public BusinessLogicException findChatRoom(Long memberId1, Long memberId2){
+    public ChatRoom findChatRoom(Long memberId,Long memberId2){
+
+        return chatRoomRepository.findChatRoomsWithMembers(memberId,memberId2).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
+    }
+
+    public Boolean existsChatRooms(Long memberId1, Long memberId2){
         if(chatRoomRepository.findChatRoomsWithMembers(memberId1,memberId2).isPresent()){
-            return new BusinessLogicException(ExceptionCode.CHATROOM_ALREADY_EXISTS);
+            return true;
         }
-        return null;
+        return false;
     }
 }
