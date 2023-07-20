@@ -18,8 +18,11 @@ function BookingDates() {
     (state: RootState) => state.reservation.endDate,
   );
 
-  const startDateFilledWithZero = makeDateFilledWithZero(reservationStartDate);
-  const endDateFilledWithZero = makeDateFilledWithZero(reservationEndDate);
+  const startDateFilledWithZero = makeDateFilledWithZero(
+    reservationStartDate,
+    '.',
+  );
+  const endDateFilledWithZero = makeDateFilledWithZero(reservationEndDate, '.');
 
   return (
     <BookingDatesForm>

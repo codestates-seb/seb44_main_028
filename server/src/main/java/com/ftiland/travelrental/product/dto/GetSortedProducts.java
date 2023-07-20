@@ -3,29 +3,26 @@ package com.ftiland.travelrental.product.dto;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.product.entity.Product;
+import com.ftiland.travelrental.product.sort.SortBy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class UpdateProduct {
-
-
+public class GetSortedProducts {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class Request {
-        private String title;
-        private Integer baseFee;
-        private Integer feePerDay;
-        private Integer overdueFee;
-        private String content;
-        private Integer minimumRentalPeriod;
-
-        private List<String> categoryIds;
+        @NotNull
+        private String categoryId;
+        private Integer distance;
+        @NotNull
+        private SortBy sortBy;
     }
 
     @Getter
@@ -35,12 +32,12 @@ public class UpdateProduct {
     public static class Response {
 
         private String productId;
-        private List<String> deletedImageName;
+        private List<CategoryDto> categories;
 
-        public static Response from(Product product, List<String> imageFileNames) {
-            return Response.builder()
+        public static CreateProduct.Response from(Product product, List<CategoryDto> categories) {
+            return CreateProduct.Response.builder()
                     .productId(product.getProductId())
-                    .deletedImageName(imageFileNames)
+                    .categories(categories)
                     .build();
         }
     }

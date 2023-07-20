@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageCategory;
 import com.ftiland.travelrental.image.repository.ImageCategoryRepository;
 import com.ftiland.travelrental.image.entity.ImageProduct;
@@ -18,17 +19,18 @@ import com.ftiland.travelrental.image.repository.ImageMemberRepository;
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.image.utils.FileNameGenerator;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.repository.ProductRepository;
+import com.ftiland.travelrental.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -38,22 +40,23 @@ public class ImageService {
     private ImageMapper imageMapper;
 
     //@Value("${cloud.aws.s3.bucket}")
-    private String buckName="seb44main028image-bucket";
+    private String buckName = "seb44main028image-bucket";
 
     private final AmazonS3 amazonS3;
 
     private ImageProductRepository imageProductRepository;
     private ImageMemberRepository imageMemberRepository;
-    private ProductRepository productRepository;
-    private MemberRepository memberRepository;
+
+    private ProductService productService;
+    private MemberService memberService;
     private final CategoryRepository categoryRepository;
     private final ImageCategoryRepository imageCategoryRepository;
-    private FileNameGenerator fileNameGenerator ;
+    private FileNameGenerator fileNameGenerator;
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
-                        ImageMemberRepository imageMemberRepository, MemberRepository memberRepository,
-                        ProductRepository productRepository,
+                        ImageMemberRepository imageMemberRepository,MemberService memberService,
+                        ProductService productService,
                         CategoryRepository categoryRepository,
                         ImageCategoryRepository imageCategoryRepository,
                         FileNameGenerator fileNameGenerator) {
@@ -61,8 +64,8 @@ public class ImageService {
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
-        this.productRepository = productRepository;
-        this.memberRepository = memberRepository;
+        this.productService = productService;
+        this.memberService = memberService;
         this.categoryRepository = categoryRepository;
         this.imageCategoryRepository = imageCategoryRepository;
         this.fileNameGenerator = fileNameGenerator;
@@ -78,7 +81,7 @@ public class ImageService {
             }
             ImageCategory imageCategory = imageMapper.fileToImageCategory(file, categoryRepository, categoryId);
 
-            imageCategory.setFileName(fileNameGenerator.uuidName(imageCategory.getImageId(),imageCategory.getFileType()));
+            imageCategory.setFileName(fileNameGenerator.uuidName(imageCategory.getImageId(), imageCategory.getFileType()));
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
@@ -96,36 +99,53 @@ public class ImageService {
 
     }
 
-    public List<ImageProduct> storeImageProducts(List<MultipartFile> files, String productId) {
+    public List<ImageDto> storeImages(List<MultipartFile> files) {
+        if (files.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
+        }
+
         return files.stream()
-                .map(file -> storeImageProduct(file, productId))
+                .map(file -> storeImage(file))
                 .collect(Collectors.toList());
     }
 
     // 이미지 업로드(상품)
-    public ImageProduct storeImageProduct(MultipartFile file, String productId) {
+    public ImageDto storeImage(MultipartFile file) {
 
         try {
             // 파일이 비었을 때 예외처리
             if (file.isEmpty()) {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
-            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
-            createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
 
+            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productService, productId);
+            createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             metadata.setContentDisposition("inline");
 
-            //S3 버킷에 파일 업로드
-            amazonS3.putObject(new PutObjectRequest(buckName, createdImageProduct.getFileName(), file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-            createdImageProduct.setImageUrl(amazonS3.getUrl(buckName, createdImageProduct.getFileName()).toString());
+            String fileName = createImageName(file.getOriginalFilename());
 
-            return imageProductRepository.save(createdImageProduct);
+            //S3 버킷에 파일 업로드
+            amazonS3.putObject(new PutObjectRequest(buckName, fileName, file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+            String imageUrl = amazonS3.getUrl(buckName, fileName).toString();
+
+            return new ImageDto(fileName, imageUrl, file.getContentType());
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
+    }
+
+    private String createImageName(String originalImageName) {
+        String uuid = UUID.randomUUID().toString();
+        String ext = extractExt(originalImageName);
+        return uuid + ext;
+    }
+
+    private String extractExt(String originalImageName) {
+        int idx = originalImageName.lastIndexOf(".");
+        return originalImageName.substring(idx);
     }
 
     // 이미지 업로드(맴버)
@@ -137,8 +157,10 @@ public class ImageService {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
 
-            ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
+
+            ImageMember createdImage = imageMapper.fileToImageMember(file, memberService, memberId);
             createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
@@ -146,7 +168,7 @@ public class ImageService {
 
             //S3 버킷에 파일 업로드
             amazonS3.putObject(new PutObjectRequest(buckName, createdImage.getFileName(), file.getInputStream(), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
-            createdImage.setImageUrl(amazonS3.getUrl(buckName,createdImage.getFileName()).toString());
+            createdImage.setImageUrl(amazonS3.getUrl(buckName, createdImage.getFileName()).toString());
 
             return imageMemberRepository.save(createdImage);
         } catch (IOException e) {
@@ -154,21 +176,18 @@ public class ImageService {
         }
     }
 
-    public void deleteImageProducts(String productId) {
-        ArrayList<ImageProduct> images = imageProductRepository.findByProductId(productId);
+    public void deleteImages(List<String> imageNames) {
         // 파일 확인
-        imageProductRepository.deleteAll(images);
+        imageNames.forEach(i -> deleteImage(i));
     }
 
     // 이미지 삭제(상품)
-    public void deleteImageProduct(String imageId) {
+    public void deleteImage(String imageNames) {
         // 파일 확인
-        ImageProduct imageProduct = imageProductRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
         try {
-            if(imageProduct.getFileName()!="defaultImage.png"||imageProduct.getFileName()!=null){
-                amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageProduct.getFileName()));
+            if (imageNames != "defaultImage.png" || imageNames != null) {
+                amazonS3.deleteObject(new DeleteObjectRequest(buckName, imageNames));
             }
-            imageProductRepository.delete(imageProduct);
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED);
         }
@@ -178,8 +197,8 @@ public class ImageService {
     public void deleteImageMember(String imageId) {
         ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
         try {
-            if(imageMember.getFileName()!= "defaultImage.png" ||imageMember.getFileName()!=null){
-                amazonS3.deleteObject(new DeleteObjectRequest(buckName,imageMember.getImageUrl()));
+            if (imageMember.getFileName() != "defaultImage.png" || imageMember.getFileName() != null) {
+                amazonS3.deleteObject(new DeleteObjectRequest(buckName, imageMember.getImageUrl()));
             }
             imageMemberRepository.delete(imageMember);
         } catch (BusinessLogicException e) {
@@ -187,10 +206,10 @@ public class ImageService {
         }
     }
 
-    // 상품 이미지
-    public ArrayList<ImageProduct> findImageProduct(String productId) {
-        ArrayList<ImageProduct> imageProducts = imageProductRepository.findByProductId(productId);
-        return imageProducts;
+    public ImageProduct findMainImageProduct(String productId) {
+        ImageProduct imageProduct = imageProductRepository.findFirstByProductProductId(productId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_EMPTY));
+
+        return imageProduct;
     }
 
     // 상품 이미지
@@ -198,7 +217,7 @@ public class ImageService {
         return imageProductRepository.findByProductProductIdOrderByCreatedAtAsc(productId);
     }
 
-    public ImageProduct findFirstImageProduct(String productId){
+    public ImageProduct findFirstImageProduct(String productId) {
         return imageProductRepository.findFirstByProductProductIdOrderByCreatedAtAsc(productId);
     }
 

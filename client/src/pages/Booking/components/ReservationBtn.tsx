@@ -75,8 +75,8 @@ function ReservationBtn() {
     }
 
     mutation.mutate({
-      startDate: makeDateFilledWithZero(startDate),
-      endDate: makeDateFilledWithZero(endDate),
+      startDate: makeDateFilledWithZero(startDate, '-'),
+      endDate: makeDateFilledWithZero(endDate, '-'),
       productId: itemId,
       accessToken,
     });

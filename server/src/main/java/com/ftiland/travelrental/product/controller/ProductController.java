@@ -1,8 +1,7 @@
 package com.ftiland.travelrental.product.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.common.annotation.CurrentMember;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageProduct;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.entity.Member;
@@ -11,6 +10,8 @@ import com.ftiland.travelrental.product.dto.*;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.service.ProductCategoryService;
 import com.ftiland.travelrental.product.service.ProductService;
+import com.ftiland.travelrental.product.sort.SortBy;
+import com.ftiland.travelrental.reservation.dto.GetBorrowReservations;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,7 +40,6 @@ public class ProductController {
     private final ProductService productService;
     private final ImageService imageService;
     private final ProductCategoryService productCategoryService;
-
     private final MemberService memberService;
 
     @PostMapping
@@ -49,10 +49,10 @@ public class ProductController {
             @CurrentMember Long memberId) {
         log.info("[ProductController] createProduct called");
 
-        CreateProduct.Response response = productService.createProduct(request, memberId);
+        List<ImageDto> imageDtos = imageService.storeImages(images);
 
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.storeImageProducts(i, response.getProductId()));
+        CreateProduct.Response response = productService.createProduct(request, memberId, imageDtos);
+
 
         URI uri = URI.create(String.format("/api/products/%s", response.getProductId()));
         return ResponseEntity.created(uri).body(response);
@@ -60,17 +60,18 @@ public class ProductController {
 
     @PatchMapping("/{product-id}")
     public ResponseEntity<UpdateProduct.Response> updateProduct(@PathVariable("product-id") String productId,
-                                                                @Valid @RequestPart(required = false) UpdateProduct.Request request,
-                                                                @RequestPart(required = false) List<MultipartFile> images,
+                                                                @Valid @RequestPart UpdateProduct.Request request,
+                                                                @RequestPart List<MultipartFile> images,
                                                                 @CurrentMember Long memberId) {
         log.info("[ProductController] updateProduct called");
 
-        UpdateProduct.Response response = productService.updateProduct(request, productId, memberId);
+        // 이미지 저장
+        List<ImageDto> imageDtos = imageService.storeImages(images);
 
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.deleteImageProducts(productId));
-        Optional.ofNullable(images)
-                .ifPresent(i -> imageService.storeImageProducts(i, productId));
+        UpdateProduct.Response response = productService.updateProduct(request, productId, memberId, imageDtos);
+
+        // 이전 이미지 삭제
+        imageService.deleteImages(response.getDeletedImageName());
 
         return ResponseEntity.ok(response);
     }
@@ -98,8 +99,8 @@ public class ProductController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<GetProducts> findProducts(@RequestParam int size,
-                                                    @RequestParam int page,
+    public ResponseEntity<GetProducts> findProducts(@RequestParam(defaultValue = "20") int size,
+                                                    @RequestParam(defaultValue = "0") int page,
                                                     @CurrentMember Long memberId) {
         log.info("[ProductController] findProducts called");
 
@@ -146,7 +147,7 @@ public class ProductController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping
+/*    @GetMapping
     public ResponseEntity<GetProducts> getProductsByCategory(
             @RequestParam("categoryId") String categoryId,
             @RequestParam(defaultValue = "0") int page,
@@ -157,33 +158,25 @@ public class ProductController {
         GetProducts products = productCategoryService.getProductsByCategory(categoryId, pageable);
 
         return new ResponseEntity(products, HttpStatus.OK);
-    }
+    }*/
 
-    @GetMapping("/filter")
+    @GetMapping
     public ResponseEntity<GetProducts> getProductsByCategoryAndLocation(
-            @RequestParam("categoryId") String categoryId,
-            @RequestParam("distance") double distance,
-            @RequestParam("sortBy") String sortBy,
+            @CurrentMember(required = false) Long memberId,
+            @RequestParam String categoryId,
+            @RequestParam(required = false) Double distance,
+            @RequestParam SortBy sortBy,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
+        long start = System.currentTimeMillis();
+        GetProducts responseDto = productService
+                .getProductsByCategoryAndLocation(categoryId, memberId, distance, sortBy, size, page);
+        long end = System.currentTimeMillis();
+        log.info("getReservationByBorrower total time = {}", end - start);
 
-        Pageable pageable = PageRequest.of(page, size);
-
-        Long memberId = 1L;
-        Member member = memberService.findMember(1L);
-
-        double latitude = 37.5211085848039;
-        double longitude = 126.88117354710396;
-        latitude = member.getLatitude();
-        longitude = member.getLongitude();
-
-        GetProducts responseDto =
-                productService.getProductsByCategoryAndLocation(categoryId, latitude, longitude, distance, sortBy, pageable);
 
         return new ResponseEntity(responseDto, HttpStatus.OK);
     }
-
 
     private void countView(String productId, HttpServletRequest request, HttpServletResponse response) {
         /* 조회수 로직 */
@@ -213,6 +206,7 @@ public class ProductController {
             response.addCookie(newCookie);
         }
     }
+
     private List<ProductDto> convertToProductDtoList(List<Product> products) {
         return products.stream()
                 .map(product -> ProductDto.from(product, getImageUrlForProduct(product)))

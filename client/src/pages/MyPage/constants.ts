@@ -245,6 +245,7 @@ export const LENDCARD_DATA: lendCardProps[] = [
 //       'https://image.newdaily.co.kr/site/data/img/2019/12/03/2019120300097_0.jpg',
 //   },
 // ];
+
 // export const BORROWCARD_DATA: borrowCardProps[] = [
 //   {
 //     title: '충전기 빌려드려요 1',

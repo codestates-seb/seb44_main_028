@@ -76,7 +76,7 @@ public class MemberService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
-        ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.IMAGE_EMPTY));
+        ImageMember imageMember = imageMemberRepository.findByMemberId(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_EMPTY));
 
         imageService.deleteImageMember(imageMember.getImageId());
 

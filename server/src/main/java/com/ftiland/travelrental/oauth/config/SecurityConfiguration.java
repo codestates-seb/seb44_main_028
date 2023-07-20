@@ -8,6 +8,7 @@ import com.ftiland.travelrental.oauth.auth.handler.Oauth2MemberSuccessHandler;
 import com.ftiland.travelrental.oauth.jwt.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -52,8 +53,13 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/api/members").authenticated()
-                        .anyRequest().permitAll()
+                        .antMatchers(HttpMethod.GET,"/*/products/members/**" ).authenticated()
+                        .antMatchers(HttpMethod.GET,"/*/reservations/products/*/calendar" ).permitAll()
+                        .antMatchers(HttpMethod.GET,"/*/reservations/products/*/moreCalendar" ).permitAll()
+                        .antMatchers(HttpMethod.GET,"/*/categories").permitAll()
+                        .antMatchers(HttpMethod.GET,"/api/products/**").permitAll()
+                        .antMatchers("/api/chat/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new Oauth2MemberSuccessHandler(jwtTokenizer, memberService, urlConfig))
