@@ -52,7 +52,9 @@ public class ChatController {
     @PostMapping
     public ResponseEntity createRoom(@RequestBody RequestDto.Post requestBody){
 
-        chatEntityService.findChatRoom(requestBody.getSenderId(), requestBody.getReceiverId());
+        if(chatEntityService.existsChatRooms(requestBody.getSenderId(), requestBody.getReceiverId())==true){
+            return null;
+        }
 
         ChatRoomDto chatRoomDto = chatDtoService.createRoom(requestBody.getName());
         ChatRoom chatRoom = chatEntityService.storeChatRoom(requestBody.getSenderId(), requestBody.getReceiverId(), chatRoomDto.getRoomId(), requestBody.getName());
@@ -80,10 +82,19 @@ public class ChatController {
     }
 
     // 채팅방 리스트 불러오기
-    @GetMapping("/chatroom")
+    @GetMapping("/chatrooms")
     public ResponseEntity findChatRooms(@Param("memberId") Long memberId){
-        List<ChatRoom> chatRooms = chatEntityService.findChatRoom(memberId);
+        List<ChatRoom> chatRooms = chatEntityService.existsChatRooms(memberId);
         ResponseDto.ChatRooms response = chatMapper.ChatRoomsToChatRoomList(chatRooms);
+
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
+
+    // 채팅방 리스트 불러오기
+    @GetMapping("/chatroom")
+    public ResponseEntity findChatRooms(@Param("memberId") Long senderId,@Param("receiverId")Long receiverId){
+        ChatRoom chatRoom = chatEntityService.findChatRoom(senderId,receiverId);
+        ResponseDto.ChatRoom response = chatMapper.ChatRoomToResponseChatRoom(chatRoom);
 
         return new ResponseEntity(response,HttpStatus.OK);
     }

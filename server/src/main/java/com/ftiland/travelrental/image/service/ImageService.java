@@ -24,6 +24,7 @@ import com.ftiland.travelrental.product.repository.ProductRepository;
 import com.ftiland.travelrental.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class ImageService {
         this.imageCategoryRepository = imageCategoryRepository;
         this.fileNameGenerator = fileNameGenerator;
     }
-
+    @Transactional
     // 이미지 업로드(카테고리)
     public ImageCategory storeImageCategory(MultipartFile file, String categoryId) {
 
@@ -95,7 +96,7 @@ public class ImageService {
 
 
     }
-
+    @Transactional
     public List<ImageDto> storeImages(List<MultipartFile> files) {
         if (files.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
@@ -105,7 +106,7 @@ public class ImageService {
                 .map(file -> storeImage(file))
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     // 이미지 업로드(상품)
     public ImageDto storeImage(MultipartFile file) {
 
@@ -144,6 +145,7 @@ public class ImageService {
         return originalImageName.substring(idx);
     }
 
+    @Transactional
     // 이미지 업로드(맴버)
     public ImageMember storeImageMember(MultipartFile file, Long memberId) {
 
@@ -189,6 +191,7 @@ public class ImageService {
         }
     }
 
+    @Transactional
     // 이미지 삭제(맴버)
     public void deleteImageMember(String imageId) {
         ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
