@@ -8,6 +8,7 @@ import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 import Loading from '../../../common/components/Loading';
 import {
+  ACCESS_TOKEN,
   DISTANCE_DEFAULT_VALUE,
   DISTANCE_OPTIONS,
   PRODUCT_FILTER_OPTIONS,
@@ -19,6 +20,7 @@ import NoData from '../../../common/components/NoData';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import ErrorPage from '../../../common/components/ErrorPage';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function ItemListPage() {
   const params = useParams();
@@ -34,7 +36,7 @@ function ItemListPage() {
   const size = 3;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
-
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const queryParams: queryParams = {
     page: page,
     size: size,
@@ -43,7 +45,15 @@ function ItemListPage() {
       (option) => option.label === productFilterSelectedValue,
     )?.value,
   };
-
+  useEffect(() => {
+    const decrypt = useDecryptToken();
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    if (encryptedAccessToken) {
+      const decryptedToken = decrypt(encryptedAccessToken);
+      setAccessToken(decryptedToken);
+    }
+  }, []);
   const {
     data: products,
     isLoading,
@@ -56,6 +66,9 @@ function ItemListPage() {
         `${process.env.REACT_APP_API_URL}/api/products`,
         {
           params: queryParams,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
       );
       setItems((prevIetm) => [...prevIetm, ...res.data.products]);
