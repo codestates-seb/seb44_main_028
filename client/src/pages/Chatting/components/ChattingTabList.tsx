@@ -9,7 +9,7 @@ function ChattingTabList({ chatRoomList }: { chatRoomList: any[] }) {
         return (
           <ChattingTab key={idx}>
             <div>
-              <h1>chatroomId: {chatRoom?.chatroomId}</h1>
+              <h3>chatroomId: {chatRoom?.chatroomId}</h3>
             </div>
           </ChattingTab>
         );
