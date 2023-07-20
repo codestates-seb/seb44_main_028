@@ -94,7 +94,6 @@ public class ChatEntityService {
     }
 
     public ChatRoom findChatRoom(Long memberId,Long memberId2){
-
         return chatRoomRepository.findChatRoomsWithMembers(memberId,memberId2).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
     }
 
