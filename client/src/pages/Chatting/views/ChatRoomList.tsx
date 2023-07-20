@@ -21,7 +21,7 @@ function ChatRoomList() {
     const getChatRoomList = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/chat/chatroom?memberId=${memberId}`,
+          `${process.env.REACT_APP_API_URL}/api/chat/chatrooms?memberId=${memberId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
