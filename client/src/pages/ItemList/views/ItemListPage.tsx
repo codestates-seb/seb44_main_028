@@ -37,14 +37,7 @@ function ItemListPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  // const queryParams: queryParams = {
-  //   page: page,
-  //   size: size,
-  //   categoryId: params.categoryId,
-  //   sortBy: PRODUCT_FILTER_OPTIONS.find(
-  //     (option) => option.label === productFilterSelectedValue,
-  //   )?.value,
-  // };
+
   const [queryParams, setQueryParams] = useState<queryParams>({
     page: page,
     size: size,
@@ -53,7 +46,6 @@ function ItemListPage() {
       (option) => option.label === productFilterSelectedValue,
     )?.value,
   });
-  console.log(queryParams);
   useEffect(() => {
     const decrypt = useDecryptToken();
     const encryptedAccessToken: string | null =
@@ -82,11 +74,10 @@ function ItemListPage() {
       );
       const newDatas = res.data.products;
       const filteredProducts = newDatas.filter(
-        (newData: any) =>
+        (newData: ItemCardProps) =>
           !items.some((item) => item.productId === newData.productId),
       );
       setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
-      console.log('받아온 상품', res.data.products);
       return res.data.products;
     } catch (err) {
       console.log('err', err);
@@ -106,11 +97,6 @@ function ItemListPage() {
       (option) => option.label === distanceSelectedValue,
     )?.value;
 
-    // if (distanceSelect && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
-    //   queryParams.distance = distanceSelect;
-    // } else {
-    //   delete queryParams.distance;
-    // }
     setQueryParams((prevParams) => ({
       ...prevParams,
       sortBy: PRODUCT_FILTER_OPTIONS.find(
