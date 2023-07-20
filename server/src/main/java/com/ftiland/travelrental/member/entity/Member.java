@@ -2,6 +2,7 @@ package com.ftiland.travelrental.member.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
+import com.ftiland.travelrental.image.entity.ImageMember;
 import lombok.*;
 
 import javax.persistence.*;
