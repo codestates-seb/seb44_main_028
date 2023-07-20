@@ -23,8 +23,25 @@ function ChatRoomArea() {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    newClient.onConnect = () => {
+      console.log('Connected to WebSocket server.');
+    };
+
+    newClient.activate();
     setClient(newClient);
+
+    newClient.onWebSocketError = (error) => {
+      console.log('WebSocket Error', error);
+    };
+
+    return () => {
+      if (newClient.connected) {
+        newClient.deactivate();
+      }
+    };
   }, [accessToken]);
+  console.log('client', client);
   return (
     <ChatRoomAreaWrapper>
       <ChattingMessages client={client} />

@@ -11,24 +11,11 @@ function ChattingMessages({ client }: ChattingMessagesProps) {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    if (client) {
-      client.onConnect = function (frame) {
-        client.subscribe(`/topic/${roomId}`, function (message) {
-          setMessages((prev) => [...prev, message.body]);
-        });
-      };
-      client.onStompError = function (frame) {
-        console.log('Broker reported error: ' + frame.headers['message']);
-        console.log('Additional details: ' + frame.body);
-      };
-      client.activate();
+    if (client && client.connected) {
+      client.subscribe(`/topic/${roomId}`, function (message) {
+        setMessages((prev) => [...prev, message.body]);
+      });
     }
-
-    return () => {
-      if (client) {
-        client.deactivate();
-      }
-    };
   }, [client, roomId]);
 
   return (
