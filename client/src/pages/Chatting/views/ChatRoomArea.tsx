@@ -7,6 +7,7 @@ import ChattingMessages from '../components/ChattingMessages';
 import { ChatRoomAreaWrapper } from '../style';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import useGetMe from '../../../common/utils/customHooks/useGetMe';
 
 function ChatRoomArea() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -15,38 +16,101 @@ function ChatRoomArea() {
   const encryptedToken = localStorage.getItem(ACCESS_TOKEN);
   const accessToken = decrypt(encryptedToken || '');
 
-  useEffect(() => {
-    const newClient = new Client({
-      webSocketFactory: () =>
-        new SockJS(process.env.REACT_APP_API_URL + '/chat'),
-      connectHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+  const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [newMessage, setNewMessage] = useState<string>('');
 
-    newClient.onConnect = () => {
-      console.log('Connected to WebSocket server.');
+  const { data: userData } = useGetMe();
+
+  const handleNewMessage = (message: any) => {
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
+  const connectWebSocket = () => {
+    const socket = new WebSocket('wss://playpack.shop/ws/chat');
+
+    socket.onopen = () => {
+      console.log('WebSocket connected');
+      // Perform any additional actions when the WebSocket connection is established
+      if (socket) {
+        const message = {
+          type: 'CONNECT',
+          content: '',
+          senderId: `${userData?.memberId}`,
+          roomId: `${roomId}`,
+        };
+        socket.send(JSON.stringify(message));
+      }
     };
 
-    newClient.activate();
-    setClient(newClient);
+    socket.onmessage = (event) => {
+      const message = event.data;
+      console.log('WebSocket message received:', message);
+      handleNewMessage(message);
+    };
 
-    newClient.onWebSocketError = (error) => {
+    socket.onerror = (error) => {
       console.log('WebSocket Error', error);
     };
 
-    return () => {
-      if (newClient.connected) {
-        newClient.deactivate();
-      }
+    socket.onclose = () => {
+      console.log('WebSocket connection closed. Attempting to reconnect...');
+      // Attempt to reconnect after a certain interval
+      setTimeout(connectWebSocket, 2000);
     };
-  }, [accessToken]);
-  console.log('client', client);
+
+    setWebSocket(socket);
+  };
+
+  useEffect(() => {
+    connectWebSocket();
+
+    // return () => {
+    //   if (webSocket) {
+    //     webSocket.close();
+    //   }
+    // };
+  }, []);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewMessage(event.target.value);
+    console.log('newMessage', newMessage);
+  };
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (webSocket) {
+      {
+        const message = {
+          type: 'TALK',
+          content: newMessage,
+          senderId: `${userData?.memberId}`,
+          roomId: `${roomId}`,
+        };
+        webSocket.send(JSON.stringify(message));
+      }
+    }
+    setNewMessage('');
+  };
+
   return (
-    <ChatRoomAreaWrapper>
-      <ChattingMessages client={client} />
-      <ChattingInput client={client} />
-    </ChatRoomAreaWrapper>
+    <div>
+      <div>
+        {messages.map((message, index) => (
+          <p key={index}>{message}</p>
+        ))}
+      </div>
+      <form onSubmit={onSubmit}>
+        <input value={newMessage} onChange={onChange} />
+        <button>전송</button>
+      </form>
+    </div>
   );
+  // return (
+  //   <ChatRoomAreaWrapper>
+  //     <ChattingMessages client={client} />
+  //     <ChattingInput client={client} />
+  //   </ChatRoomAreaWrapper>
+  // );
 }
 export default ChatRoomArea;
