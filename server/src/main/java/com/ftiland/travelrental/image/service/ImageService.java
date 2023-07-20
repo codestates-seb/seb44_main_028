@@ -46,17 +46,14 @@ public class ImageService {
 
     private ImageProductRepository imageProductRepository;
     private ImageMemberRepository imageMemberRepository;
-
-    private ProductService productService;
-    private MemberService memberService;
+    private MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final ImageCategoryRepository imageCategoryRepository;
     private FileNameGenerator fileNameGenerator;
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
-                        ImageMemberRepository imageMemberRepository,MemberService memberService,
-                        ProductService productService,
+                        ImageMemberRepository imageMemberRepository,MemberRepository memberRepository,
                         CategoryRepository categoryRepository,
                         ImageCategoryRepository imageCategoryRepository,
                         FileNameGenerator fileNameGenerator) {
@@ -64,8 +61,8 @@ public class ImageService {
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
-        this.productService = productService;
-        this.memberService = memberService;
+
+        this.memberRepository =memberRepository;
         this.categoryRepository = categoryRepository;
         this.imageCategoryRepository = imageCategoryRepository;
         this.fileNameGenerator = fileNameGenerator;
@@ -118,8 +115,7 @@ public class ImageService {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
 
-            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productService, productId);
-            createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
@@ -158,7 +154,7 @@ public class ImageService {
             }
 
 
-            ImageMember createdImage = imageMapper.fileToImageMember(file, memberService, memberId);
+            ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
             createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
 
             ObjectMetadata metadata = new ObjectMetadata();

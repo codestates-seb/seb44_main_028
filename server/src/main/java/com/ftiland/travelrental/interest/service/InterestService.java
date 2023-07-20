@@ -61,7 +61,7 @@ public class InterestService {
         // 맴버 존재하는지 검사
         memberService.findMember(memberId);
         Page<Interest> pagedList = interestRepository.findByMemberId(memberId, pageable);
-        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(imageService,pagedList);
+        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(pagedList);
 
         return responses;
     }

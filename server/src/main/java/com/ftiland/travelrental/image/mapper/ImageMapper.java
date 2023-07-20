@@ -47,14 +47,14 @@ public interface ImageMapper {
     }
 
 
-    default ImageMember fileToImageMember(MultipartFile multipartFile, MemberService memberService, Long memberId) {
+    default ImageMember fileToImageMember(MultipartFile multipartFile, MemberRepository memberRepository, Long memberId) {
         ImageMember imageMember = new ImageMember();
         imageMember.setImageId(UUID.randomUUID().toString());
         imageMember.setFileType(multipartFile.getContentType());
 
         // service 구현 필요
-        //Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
-        Member member =  memberService.findMember(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_IMPLEMENTATION));
+        //Member member =  memberService.findMember(memberId);
         imageMember.setMember(member);
 
         return imageMember;
