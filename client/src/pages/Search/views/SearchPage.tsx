@@ -3,14 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import SelectBox from '../../../common/components/SelectBox';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
 import { ItemCardProps } from '../../../common/type';
-import {
-  DISTANCE_DEFAULT_VALUE,
-  DISTANCE_OPTIONS,
-  PRODUCT_FILTER_OPTIONS,
-} from '../../../common/constants';
 import { SearchPageContainer, SearchProductListWrapper } from '../style';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
