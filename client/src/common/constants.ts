@@ -13,15 +13,15 @@ import others from '../assets/category_icon/기타.svg';
 export const DISTANCE_DEFAULT_VALUE = '내 주변에서 찾기';
 export const DISTANCE_OPTIONS: SelectOption[] = [
   {
-    value: '10',
+    value: 10,
     label: '10k㎡',
   },
   {
-    value: '20',
+    value: 20,
     label: '20k㎡',
   },
   {
-    value: '30',
+    value: 30,
     label: '30k㎡',
   },
 ];

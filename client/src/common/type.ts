@@ -7,7 +7,7 @@ export type CategoryButtonProps = {
   imageName: string;
 };
 export type SelectOption = {
-  value: string;
+  value: string | number;
   label: string;
 };
 export type CategoryProps = {

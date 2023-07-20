@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import SelectBox from '../../../common/components/SelectBox';
@@ -20,22 +21,26 @@ import { ItemListPageContainer, ProductListWrapper } from '../style';
 
 function ItemListPage() {
   const params = useParams();
+  const navigate = useNavigate();
   const [distanceSelectedValue, setDistanceSelectedValue] = useState(
     DISTANCE_DEFAULT_VALUE,
   );
   const [productFilterSelectedValue, setProductFilterSelectedValue] = useState(
     PRODUCT_FILTER_OPTIONS[0].label,
   );
-  //const {data: userDate} = useGetMe();
+  const { data: userData } = useGetMe();
   const [page, setPage] = useState(1);
   const size = 3;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
+
   const queryParams = {
     page: page,
     size: size,
     categoryId: params.categoryId,
-    sortBy: 'createdAt',
+    sortBy: PRODUCT_FILTER_OPTIONS.find(
+      (option) => option.label === productFilterSelectedValue,
+    )?.value,
   };
 
   // const {
@@ -66,12 +71,7 @@ function ItemListPage() {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products`,
         {
-          params: {
-            page: page,
-            size: size,
-            categoryId: params.categoryId,
-            sortBy: 'createdAt',
-          },
+          params: queryParams,
         },
       );
       setItems((prevIetm) => [...prevIetm, ...res.data.products]);
@@ -81,17 +81,29 @@ function ItemListPage() {
     }
   });
 
-  console.log(products);
+  console.log(distanceSelectedValue, productFilterSelectedValue);
+  console.log(userData);
 
-  // useEffect(() => {
-  // 멤버 유저 아닌 경우
-  // 로그인 페이지로 리다이렉트
-  // 멤버 유저인데 위치 정보 없는 경우
-  // 위치 정보 수정 페이지로 리다이렉트
-  // if(distanceSelectedValue) {
-  //   queryParams.distance = distanceSelectedValue;
-  // }
-  // }, [distanceSelectedValue]);
+  useEffect(() => {
+    // 멤버 유저 아닌 경우
+    if (!userData && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
+      console.log('로그인');
+      navigate('/login');
+    }
+    // 멤버 유저인데 위치 정보 없는 경우
+    if (userData && !userData.address) {
+      navigate('/mypage');
+    }
+    const distanceSelect = DISTANCE_OPTIONS.find(
+      (option) => option.label === distanceSelectedValue,
+    );
+    if (distanceSelect && distanceSelectedValue !== DISTANCE_DEFAULT_VALUE) {
+      queryParams.distance = distanceSelectedValue;
+    } else {
+      delete queryParams.distance;
+    }
+    console.log('디스턴스 벨ㅠ~~~');
+  }, [distanceSelectedValue]);
   useEffect(() => {
     function handleScroll() {
       if (
