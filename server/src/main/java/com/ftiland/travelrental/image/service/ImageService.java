@@ -18,7 +18,9 @@ import com.ftiland.travelrental.image.repository.ImageMemberRepository;
 import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.image.utils.FileNameGenerator;
 import com.ftiland.travelrental.member.repository.MemberRepository;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.repository.ProductRepository;
+import com.ftiland.travelrental.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,16 +46,16 @@ public class ImageService {
 
     private ImageProductRepository imageProductRepository;
     private ImageMemberRepository imageMemberRepository;
-    private ProductRepository productRepository;
-    private MemberRepository memberRepository;
+    private ProductService productService;
+    private MemberService memberService;
     private final CategoryRepository categoryRepository;
     private final ImageCategoryRepository imageCategoryRepository;
     private FileNameGenerator fileNameGenerator ;
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
-                        ImageMemberRepository imageMemberRepository, MemberRepository memberRepository,
-                        ProductRepository productRepository,
+                        ImageMemberRepository imageMemberRepository,MemberService memberService,
+                        ProductService productService,
                         CategoryRepository categoryRepository,
                         ImageCategoryRepository imageCategoryRepository,
                         FileNameGenerator fileNameGenerator) {
@@ -61,8 +63,8 @@ public class ImageService {
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
-        this.productRepository = productRepository;
-        this.memberRepository = memberRepository;
+        this.productService = productService;
+        this.memberService = memberService;
         this.categoryRepository = categoryRepository;
         this.imageCategoryRepository = imageCategoryRepository;
         this.fileNameGenerator = fileNameGenerator;
@@ -110,7 +112,7 @@ public class ImageService {
             if (file.isEmpty()) {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
-            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productRepository, productId);
+            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productService, productId);
             createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
 
             ObjectMetadata metadata = new ObjectMetadata();
@@ -137,7 +139,7 @@ public class ImageService {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
 
-            ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
+            ImageMember createdImage = imageMapper.fileToImageMember(file, memberService, memberId);
             createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
