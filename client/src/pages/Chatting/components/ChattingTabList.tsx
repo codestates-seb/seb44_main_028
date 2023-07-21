@@ -1,4 +1,4 @@
-import { ChattingTab } from '../style';
+import { ChattingTab, ProfileImg } from '../style';
 
 function ChattingTabList({ chatRoomList }: { chatRoomList: any[] }) {
   console.log(chatRoomList);
@@ -9,7 +9,10 @@ function ChattingTabList({ chatRoomList }: { chatRoomList: any[] }) {
         return (
           <ChattingTab key={idx}>
             <div>
-              <h3>chatroomId: {chatRoom?.chatroomId}</h3>
+              <h3>{chatRoom?.displayName}</h3>
+              {chatRoom?.imageUrl && (
+                <ProfileImg src={chatRoom.imageUrl} alt="Chat Room Image" />
+              )}
             </div>
           </ChattingTab>
         );
