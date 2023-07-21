@@ -15,6 +15,8 @@ function ChatBtn() {
   const { itemId } = useParams<{ itemId: string }>();
   const navigate = useNavigate();
   const [receiverId, setReceiverId] = useState<number>(0);
+  const [hasChattingRecordWithReceiver, setHasChattingRecordWithReceiver] =
+    useState<boolean>(false);
   const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
   const accessToken = encryptedAccessToken || '';
 
@@ -31,9 +33,11 @@ function ChatBtn() {
             },
           },
         );
+        console.log('판매자 정보', response.data);
         console.log('판매자의 memberId', response.data.sellerId);
         // 컴포넌트가 아직 마운트된 상태라면 상태를 설정
         setReceiverId(response.data.sellerId);
+        setHasChattingRecordWithReceiver(response.data.hasChattingRecord);
       } catch (error) {
         console.error('Failed to fetch seller:', error);
       }
@@ -53,16 +57,20 @@ function ChatBtn() {
   // 판매자의 memberId를 이용해 채팅방을 생성한다. TODO: 추후 custom hook으로 분리할 예정
   const createChatRoom = async () => {
     try {
-      const postResponse = await axios.post(
-        process.env.REACT_APP_API_URL + '/api/chat',
-        {
-          senderId,
-          receiverId,
-          name: makeChatRoomName(senderId, receiverId),
-        },
-      );
-      console.log('채팅방 생성 결과', postResponse);
+      // 채팅방 생성 요청을 보낸다.
+      if (!hasChattingRecordWithReceiver) {
+        const postResponse = await axios.post(
+          process.env.REACT_APP_API_URL + '/api/chat',
+          {
+            senderId,
+            receiverId,
+            name: makeChatRoomName(senderId, receiverId),
+          },
+        );
+        console.log('채팅방 생성 결과', postResponse);
+      }
 
+      // 채팅방 아이디를 가져온다.
       const getResponse = await axios.get(
         process.env.REACT_APP_API_URL +
           `/api/chat/chatroom?senderId=${senderId}&receiverId=${receiverId}`,
