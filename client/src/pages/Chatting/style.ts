@@ -29,3 +29,9 @@ export const ChattingTab = styled.li`
     background-color: #f5f5f5;
   }
 `;
+
+export const ProfileImg = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+`;
