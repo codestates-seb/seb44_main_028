@@ -57,7 +57,6 @@ function BorrowList() {
           },
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            // Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
@@ -66,10 +65,6 @@ function BorrowList() {
       setTotalItemsCount(response.data.pageInfo.totalElements);
       console.log('setItems:', response.data);
       console.log('currentPage:', currentPage);
-      // console.log('currentStatus:', currentStatus);
-      // console.log('totalElements:', response.data);
-      // console.log('totalItemsCount:', totalItemsCount);
-      // console.log('response:', response.data.responses);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }

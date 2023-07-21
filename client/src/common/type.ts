@@ -64,7 +64,7 @@ export type ItemCardProps = {
 };
 
 export type lendCardProps = {
-  reservationId: string;
+  productId: string;
   status: string;
   username: string;
   totalFee: string;

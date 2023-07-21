@@ -1,30 +1,25 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import LendCard from '../../../common/components/MypageCard/LendCard';
-import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
-import { LENDCARD_DATA } from '../constants';
+import { lendCardProps } from '../../../common/type';
 
-interface lendCardProps {
-  reservationId: string;
-  status: string;
-  username: string;
-  totalFee: string;
-  startDate: string;
-  endDate: string;
-  image: string;
+interface LendListProps {
+  currentStatus: string;
+  lendCardData: lendCardProps[];
 }
 
-function LendList() {
+function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const decrypt = useDecryptToken();
-
-  const [items, setItems] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const { productId } = useParams<{ productId: string }>();
+  const [items, setItems] = useState<lendCardProps[]>([]);
+  const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [currentStatus, setCurrentStatus] = useState(''); //현재상태
   const [itemsPerPage] = useState(3);
@@ -43,17 +38,30 @@ function LendList() {
 
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/products/members`,
+        `${process.env.REACT_APP_API_URL}/api/reservations/products/${productId}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
+          params: {
+            size: itemsPerPage,
+            page: currentPage,
+            status: currentStatus,
+          },
         },
-      ); // 실제 API 엔드포인트에 맞게 수정
+      );
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.productId === productId
+            ? { ...item, status: 'REQUESTED' }
+            : item,
+        ),
+      );
+      // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response));
       setItems(response.data.products);
       setTotalItemsCount(response.data.pageInfo.totalElements);
       console.log('product"', response);
     } catch (error) {
-      console.error('Error fetching wishlist:', error);
+      console.error('Error fetching LendList:', error);
     }
   };
   console.log('items:', items);
@@ -65,67 +73,75 @@ function LendList() {
     //예약 요청을 누르면 실행되는 함수
     setCurrentStatus('REQUESTED');
     setCurrentPage(0);
-    setIsOpen(true);
+    setIsItemCardClicked(false);
     console.log('예약요청:', items);
   };
   const handleReservedItems = () => {
     setCurrentStatus('RESERVED');
     setCurrentPage(0);
-    setIsOpen(true);
+    setIsItemCardClicked(false);
     console.log('예약확정:', items);
   };
 
   const handleCompletedItems = () => {
     setCurrentStatus('COMPLETED');
     setCurrentPage(0);
-    setIsOpen(true);
-    console.log('사용 완료한 플레이팩:', items);
+    setIsItemCardClicked(false);
+    console.log('지난예약:', items);
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
   const handleCanceledItems = () => {
     setCurrentStatus('CANCELED');
     setCurrentPage(0);
-    setIsOpen(true);
-    console.log('예약 취소한 내역:', items);
+    setIsItemCardClicked(false);
+    console.log('거절한 예약:', items);
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
+
   return (
     <WishListWrapper>
-      <LendWrapper>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-          onClick={handleReservationRequest}
-        >
-          예약요청
-        </DefaultBtn>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-          onClick={handleReservedItems}
-        >
-          예약확정
-        </DefaultBtn>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-          onClick={handleCanceledItems}
-        >
-          거절한 예약
-        </DefaultBtn>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-          onClick={handleCompletedItems}
-        >
-          지난예약
-        </DefaultBtn>
-      </LendWrapper>
+      {isItemCardClicked === true ? (
+        <LendWrapper>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleReservationRequest}
+          >
+            예약요청
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleReservedItems}
+          >
+            예약확정
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleCanceledItems}
+          >
+            거절한 예약
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleCompletedItems}
+          >
+            지난예약
+          </DefaultBtn>
+        </LendWrapper>
+      ) : null}
       <LendListWrapper>
         {items?.map((item, index) => (
-          <LendCard key={index} lendCardData={item} />
+          <LendCard
+            key={index}
+            lendCardData={item}
+            isItemCardClicked={isItemCardClicked}
+            setIsItemCardClicked={setIsItemCardClicked}
+          />
         ))}
         {/* {LENDCARD_DATA.map((item, index) => (
           <LendCard key={index} lendCardData={item} />

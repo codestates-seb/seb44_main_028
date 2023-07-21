@@ -18,15 +18,21 @@ import useDecryptToken from '../../utils/customHooks/useDecryptToken';
 import useGetMe from '../../utils/customHooks/useGetMe';
 import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 
-const LendCard = ({ lendCardData }: { lendCardData: lendCardProps }) => {
+const LendCard = ({
+  lendCardData,
+  setIsItemCardClicked,
+}: {
+  lendCardData: lendCardProps;
+  isItemCardClicked: boolean;
+  setIsItemCardClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  console.log('lendCardData:', lendCardData);
   const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
   const [items, setItems] = useState([]);
   const [currentStatus, setCurrentStatus] = useState('');
-  const [isClicked, setIsClicked] = useState(false);
+
   console.log('currentStatus:', currentStatus);
 
   useEffect(() => {
@@ -68,9 +74,9 @@ const LendCard = ({ lendCardData }: { lendCardData: lendCardProps }) => {
     }
   };
   const handleProductClick = (e: any) => {
-    setCurrentStatus('RQUESTED');
-    setIsClicked(true);
-    console.log('handleProductClick 을 눌렀습니다.', e.target.value);
+    setCurrentStatus('REQUESTED');
+    setIsItemCardClicked(true);
+    console.log('handleProductClick을 눌렀습니다.:', e.target.value);
   };
   return (
     <>

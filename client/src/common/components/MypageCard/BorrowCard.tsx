@@ -1,5 +1,6 @@
 import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
 import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
@@ -14,10 +15,6 @@ import {
   ItemImage,
   BorrowCardContainer,
 } from '../../style/style';
-import { useParams } from 'react-router-dom';
-import BorrowList from '../../../pages/MyPage/components/BorrowList';
-import { set } from 'immer/dist/internal';
-import useGetMe from '../../utils/customHooks/useGetMe';
 import useDecryptToken from '../../utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../constants';
 
@@ -31,8 +28,6 @@ const BorrowCard = ({
   const [canceled, setCanceled] = useState(false);
 
   const decrypt = useDecryptToken();
-  const { data: userData } = useGetMe();
-  console.log('userData', userData);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -60,14 +55,9 @@ const BorrowCard = ({
 
     try {
       await axios.patch(
-        `https://playpack.shop/api/reservations/${reservationId}/cancel`,
+        `${process.env.REACT_APP_API_URL}/api/reservations/${reservationId}/cancel`,
         { params: { status: 'CANCELED' } },
         { headers: { Authorization: `Bearer ${accessToken}` } },
-        // {
-        //   headers: {
-        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
-        //   },
-        // },
       );
       //get 요청으로 취소 내역 가져오기
       // 취소 요청 후 items 배열을 업데이트하고 해당 상품을 'CANCELED' 상태로 변경합니다.

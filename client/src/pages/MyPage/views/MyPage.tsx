@@ -64,7 +64,7 @@ const MyPage = () => {
       </ProfileWrapper>
       <EditWrapper onClick={handleEditProfile}>회원 정보 수정</EditWrapper>
 
-      <ParentTap />
+      <ParentTap lendCardData={[]} />
     </div>
   );
 };
