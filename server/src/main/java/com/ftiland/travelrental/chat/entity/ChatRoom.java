@@ -5,6 +5,7 @@ import com.ftiland.travelrental.common.aduit.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,10 @@ public class ChatRoom extends BaseEntity {
     private String chatroomId;
 
     private String name;
+    private String lastMessage;
+    private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<ChatRoomMembers> members = new ArrayList<>();
+
 }

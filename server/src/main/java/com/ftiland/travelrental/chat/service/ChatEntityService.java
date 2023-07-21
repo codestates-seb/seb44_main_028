@@ -10,9 +10,12 @@ import com.ftiland.travelrental.chat.repository.ChatMessageRepository;
 import com.ftiland.travelrental.chat.repository.ChatRoomRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,13 +36,18 @@ public class ChatEntityService {
     }
 
     public void storeChatMessage(String roomId,String content,Long senderId){
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
+
         ChatMessage chatMessage = ChatMessage
                 .builder()
                 .messageId(UUID.randomUUID().toString())
                 .content(content)
                 .senderId(senderId)
-                .roomId(roomId)
+                .chatRoom(chatRoom)
+                .createAt(LocalDateTime.now())
                 .build();
+        chatRoom.setLastMessage(chatMessage.getContent());
+        chatRoom.setUpdateAt(LocalDateTime.now());
 
         chatMessageRepository.save(chatMessage);
     }
@@ -102,5 +110,10 @@ public class ChatEntityService {
             return true;
         }
         return false;
+    }
+    public Member findReceiver(Long senderId,String roomId){
+        Member receiver = chatRoomMembersRepository.findByReceiverId(roomId,senderId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        return receiver;
     }
 }
