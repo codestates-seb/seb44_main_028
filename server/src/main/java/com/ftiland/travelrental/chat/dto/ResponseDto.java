@@ -52,10 +52,19 @@ public class ResponseDto {
 
     @Getter
     @Setter
-    public static class ChatRooms{
-        List<ChatRoom> chatRooms = new ArrayList<>();
+    public static class ElementOfChatRoomList{
+        private String chatRoomId;
+        private String displayName;
+        private String imageUrl;
+        private String roomName;
+    }
 
-        public void addChatRoom(ResponseDto.ChatRoom chatRoom){this.chatRooms.add(chatRoom);}
+    @Getter
+    @Setter
+    public static class ChatRooms{
+        List<ElementOfChatRoomList> chatRooms = new ArrayList<>();
+
+        public void addChatRoom(ResponseDto.ElementOfChatRoomList element){this.chatRooms.add(element);}
     }
 
 }

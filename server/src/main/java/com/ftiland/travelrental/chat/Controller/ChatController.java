@@ -10,6 +10,8 @@ import com.ftiland.travelrental.chat.mapper.ChatMapper;
 import com.ftiland.travelrental.chat.repository.ChatRoomMembersRepository;
 import com.ftiland.travelrental.chat.service.ChatDtoService;
 import com.ftiland.travelrental.chat.service.ChatEntityService;
+import com.ftiland.travelrental.member.entity.Member;
+import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,14 +32,16 @@ public class ChatController {
     private ChatEntityService chatEntityService;
     private ChatRoomMembersRepository chatRoomMembersRepository;
     private ProductService productService;
+    private MemberService memberService;
 
     @Autowired
-    public void ChatController(ChatDtoService chatDtoService, ChatEntityService chatEntityService, ChatMapper chatMapper, ChatRoomMembersRepository chatRoomMembersRepository,ProductService productService){
+    public void ChatController(ChatDtoService chatDtoService, ChatEntityService chatEntityService, ChatMapper chatMapper, ChatRoomMembersRepository chatRoomMembersRepository,ProductService productService,MemberService memberService){
         this.chatDtoService = chatDtoService;
         this.chatEntityService = chatEntityService;
         this.chatMapper = chatMapper;
         this.chatRoomMembersRepository= chatRoomMembersRepository;
         this.productService = productService;
+        this.memberService = memberService;
     }
 
     @GetMapping("/seller")
@@ -84,15 +89,22 @@ public class ChatController {
     // 채팅방 리스트 불러오기
     @GetMapping("/chatrooms")
     public ResponseEntity findChatRooms(@Param("memberId") Long memberId){
+
         List<ChatRoom> chatRooms = chatEntityService.existsChatRooms(memberId);
-        ResponseDto.ChatRooms response = chatMapper.ChatRoomsToChatRoomList(chatRooms);
+        List<Member> senderList = new ArrayList<>();
+        for (ChatRoom chatRoom : chatRooms){
+            String roomId = chatRoom.getChatroomId();
+            senderList.add(chatEntityService.findReceiver(memberId,roomId));
+        }
+        ResponseDto.ChatRooms response = chatMapper.ChatRoomsToChatRoomList(chatRooms,senderList);
 
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
-    // 채팅방 리스트 불러오기
+    // 특정 채팅방 정보 불러오기
     @GetMapping("/chatroom")
     public ResponseEntity findChatRoom(@Param("senderId") Long senderId,@Param("receiverId") Long receiverId){
+
         ChatRoom chatRoom = chatEntityService.findChatRoom(senderId,receiverId);
         ResponseDto.ChatRoom response = chatMapper.ChatRoomToResponseChatRoom(chatRoom);
 

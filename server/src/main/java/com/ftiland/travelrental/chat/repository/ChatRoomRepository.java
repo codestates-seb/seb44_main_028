@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom,String> {
-    @Query("SELECT cr FROM ChatRoomMembers crm JOIN crm.chatroom cr WHERE crm.member.memberId = :userId")
+    @Query("SELECT cr FROM ChatRoomMembers crm JOIN crm.chatroom cr WHERE crm.member.memberId = :userId order by cr.updatedAt DESC")
     List<ChatRoom> findChatRoomsByUserId(Long userId);
 
     @Query("SELECT cr FROM ChatRoom cr JOIN cr.members crm1 JOIN cr.members crm2 WHERE crm1.member.memberId = :member1Id AND crm2.member.memberId = :member2Id")
