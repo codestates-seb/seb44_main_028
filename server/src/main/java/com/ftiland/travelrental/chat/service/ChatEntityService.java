@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +44,7 @@ public class ChatEntityService {
                 .messageId(UUID.randomUUID().toString())
                 .content(content)
                 .senderId(senderId)
-                .chatRoom(chatRoom)
+                .chatroom(chatRoom)
                 .createAt(LocalDateTime.now())
                 .build();
         chatRoom.setUpdateAt(LocalDateTime.now());
@@ -82,8 +83,8 @@ public class ChatEntityService {
     return validAccess;
     }
 
-    public List<ChatMessage> findChatroomMessages(String chatroomId){
-        List<ChatMessage> messages = chatMessageRepository.findByRoomId(chatroomId);
+    public ArrayList<ChatMessage> findChatroomMessages(String chatroomId){
+        ArrayList<ChatMessage> messages = chatRoomRepository.findByRoomId(chatroomId);
 
         return messages;
     }
