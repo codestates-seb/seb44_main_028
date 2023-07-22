@@ -23,7 +23,10 @@ public class ChatMessage extends BaseEntity {
     private Long senderId;
     private LocalDateTime createAt;
 
-    @ManyToOne(cascade = CascadeType.DETACH,fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "chatroom_id")
-    ChatRoom chatRoom;
+    ChatRoom chatroom;
+
+
+
 }

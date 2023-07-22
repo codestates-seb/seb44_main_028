@@ -20,9 +20,6 @@ public interface ChatRoomMembersRepository extends JpaRepository<ChatRoomMembers
     @Query("SELECT c.member FROM ChatRoomMembers c WHERE c.chatroom.chatroomId =:roomId ANd c.member.memberId=:memberId")
     Optional<Member> findByChatroomIdAndMemberId(@Param("roomId")String roomId, @Param("memberId")long memberId);
 
-    @Query("select c.chatroom FROM ChatRoomMembers c WHERE c.member.memberId = :memberId")
-    List<ChatRoom> findByMemberId(@Param("memberId") Long memberId);
-
     @Query("SELECT c.member FROM ChatRoomMembers c where c.chatroom.chatroomId = :roomId AND c.member.memberId != :senderId")
     Optional<Member> findByReceiverId(@Param("roomId")String roomId,@Param("senderId")Long senderId);
 

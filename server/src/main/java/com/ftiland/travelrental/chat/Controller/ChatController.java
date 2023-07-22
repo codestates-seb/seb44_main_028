@@ -46,7 +46,7 @@ public class ChatController {
     }
 
     @GetMapping("/seller")
-    public ResponseEntity getSellerId(@Param("senderId")long senderId,@Param("productId") String productId){
+    public ResponseEntity getSellerId(@CurrentMember long senderId,@Param("productId") String productId){
         Long receiverId = productService.findSellerId(productId);
         ResponseDto.SellerInfoForCustomer response = ResponseDto.SellerInfoForCustomer.builder()
                 .sellerId(receiverId)
@@ -76,7 +76,7 @@ public class ChatController {
     // 채팅방 이전 메세지 불러오기 case 1
     @GetMapping("/message1")
     public ResponseEntity findChatroomMessages(@Param("roomId")String roomId){
-        List<ChatMessage> chatMessageList = chatEntityService.findChatroomMessages(roomId);
+        ArrayList<ChatMessage> chatMessageList = chatEntityService.findChatroomMessages(roomId);
         ResponseDto.Messages response = chatMapper.ChatMessagesToResponseMessages(chatMessageList);
 
         return new ResponseEntity(response,HttpStatus.OK);
