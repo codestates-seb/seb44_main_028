@@ -24,7 +24,7 @@ public class ProductDto {
 
     private String address;
 
-    public static ProductDto from(Product product, String image) {
+    public static ProductDto from(Product product) {
         return ProductDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
@@ -33,6 +33,6 @@ public class ProductDto {
                 .feePerDay(product.getFeePerDay())
                 .minimumRentalPeriod(product.getMinimumRentalPeriod())
                 .address(product.getAddress())
-                .image(image).build();
+                .image(product.getMainImage()).build();
     }
 }

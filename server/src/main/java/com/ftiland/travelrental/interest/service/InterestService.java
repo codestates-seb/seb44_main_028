@@ -14,6 +14,8 @@ import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import com.ftiland.travelrental.product.service.ProductService;
+import com.ftiland.travelrental.reservation.dto.GetBorrowReservations;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ import java.util.UUID;
 
 
 // Test 필요
+@Slf4j
 @Service
 public class InterestService {
     private InterestRepository interestRepository;
@@ -61,8 +64,15 @@ public class InterestService {
 
         // 맴버 존재하는지 검사
         memberService.findMember(memberId);
+        long start = System.currentTimeMillis();
         Page<Interest> pagedList = interestRepository.findByMemberId(memberId, pageable);
+        long end = System.currentTimeMillis();
+        log.info("findByMemberId total time = {}", end - start);
+        long start2 = System.currentTimeMillis();
         InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(pagedList);
+        long end2 = System.currentTimeMillis();
+        log.info("interestsToResponsesDto total time = {}", end2 - start2);
+
 
         return responses;
     }

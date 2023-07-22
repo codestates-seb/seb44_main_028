@@ -53,7 +53,6 @@ public class ProductController {
 
         CreateProduct.Response response = productService.createProduct(request, memberId, imageDtos);
 
-
         URI uri = URI.create(String.format("/api/products/%s", response.getProductId()));
         return ResponseEntity.created(uri).body(response);
     }
@@ -110,19 +109,9 @@ public class ProductController {
     @GetMapping("/featured")
     public ResponseEntity<FeaturedProductsResponseDto> findFeaturedProducts() {
 
-        List<Product> top3ByTotalRateScoreRatio = productService.getTop3ByTotalRateScoreRatio();
-        List<ProductDto> top3ByTotalRateScoreRatioDtoList = convertToProductDtoList(top3ByTotalRateScoreRatio);
 
-        List<Product> top3ByViewCount = productService.getTop3ByViewCount();
-        List<ProductDto> top3ByViewCountDtoList = convertToProductDtoList(top3ByViewCount);
+        FeaturedProductsResponseDto responseDto = productService.findMainPage();
 
-        List<Product> top3ByBaseFeeZero = productService.getTop3ByBaseFeeZero(0);
-        List<ProductDto> top3ByBaseFeeZeroDtoList = convertToProductDtoList(top3ByBaseFeeZero);
-
-        FeaturedProductsResponseDto responseDto = new FeaturedProductsResponseDto();
-        responseDto.setTop3ByTotalRateScoreRatio(top3ByTotalRateScoreRatioDtoList);
-        responseDto.setTop3ByViewCount(top3ByViewCountDtoList);
-        responseDto.setTop3ByBaseFeeZero(top3ByBaseFeeZeroDtoList);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -135,14 +124,7 @@ public class ProductController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Product> productPage = productService.searchProductsByKeyword(keyword, pageable);
-        Page<ProductDto> productDtoPage = productPage.map(product -> {
-            ImageProduct firstImage = imageService.findFirstImageProduct(product.getProductId());
-            String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
-            return ProductDto.from(product, imageUrl);
-        });
-
-        GetProducts responseDto = GetProducts.from(productDtoPage);
+        GetProducts responseDto = productService.searchProductsByKeyword(keyword, pageable);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -205,19 +187,5 @@ public class ProductController {
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
-    }
-
-    private List<ProductDto> convertToProductDtoList(List<Product> products) {
-        return products.stream()
-                .map(product -> ProductDto.from(product, getImageUrlForProduct(product)))
-                .collect(Collectors.toList());
-    }
-
-    private String getImageUrlForProduct(Product product) {
-        ImageProduct imageProduct = imageService.findFirstImageProduct(product.getProductId());
-        if (imageProduct != null) {
-            return imageProduct.getImageUrl();
-        }
-        return null;
     }
 }
