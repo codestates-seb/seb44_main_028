@@ -62,6 +62,7 @@ public interface ChatMapper {
             response.setRoomName(chatRoom.getName());
             response.setImageUrl(member.getImageUrl());
             response.setDisplayName(member.getDisplayName());
+
             responses.addChatRoom(response);
         }
 

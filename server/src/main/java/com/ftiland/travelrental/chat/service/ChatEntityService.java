@@ -46,7 +46,6 @@ public class ChatEntityService {
                 .chatRoom(chatRoom)
                 .createAt(LocalDateTime.now())
                 .build();
-        chatRoom.setLastMessage(chatMessage.getContent());
         chatRoom.setUpdateAt(LocalDateTime.now());
 
         chatMessageRepository.save(chatMessage);
