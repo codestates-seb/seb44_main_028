@@ -8,7 +8,6 @@ import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
-// import { BORROWCARD_DATA } from '../constants';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 interface borrowCardProps {
   reservationId: string;
@@ -24,7 +23,6 @@ function BorrowList() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
-
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(9);
   const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
@@ -60,11 +58,8 @@ function BorrowList() {
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
-      console.log(Array.isArray(response.data));
       setItems(response.data.reservations);
       setTotalItemsCount(response.data.pageInfo.totalElements);
-      console.log('setItems:', response.data);
-      console.log('currentPage:', currentPage);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
@@ -72,8 +67,6 @@ function BorrowList() {
   useEffect(() => {
     console.log('렌더링 될 items:', items);
   }, [items]);
-
-  console.log('items:', items);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

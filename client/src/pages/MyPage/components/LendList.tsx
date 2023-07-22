@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
@@ -17,7 +16,7 @@ interface LendListProps {
 
 function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const decrypt = useDecryptToken();
-  const { productId } = useParams<{ productId: string }>();
+
   const [items, setItems] = useState<lendCardProps[]>([]);
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
@@ -27,10 +26,6 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
   console.log('currentStatus:', currentStatus);
 
-  useEffect(() => {
-    fetchItemsForPage(currentPage);
-    // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
-  }, [currentPage]);
   const fetchItemsForPage = async (page: number) => {
     const encryptedAccessToken: string | null =
       localStorage.getItem(ACCESS_TOKEN) || '';
@@ -38,30 +33,17 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
 
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/reservations/products/${productId}`,
+        `${process.env.REACT_APP_API_URL}/api/products/members`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
-          params: {
-            size: itemsPerPage,
-            page: currentPage,
-            status: currentStatus,
-          },
         },
-      );
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.productId === productId
-            ? { ...item, status: 'REQUESTED' }
-            : item,
-        ),
-      );
-      // 실제 API 엔드포인트에 맞게 수정
+      ); // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response));
       setItems(response.data.products);
       setTotalItemsCount(response.data.pageInfo.totalElements);
       console.log('product"', response);
     } catch (error) {
-      console.error('Error fetching LendList:', error);
+      console.error('Error fetching wishlist:', error);
     }
   };
   console.log('items:', items);
@@ -69,24 +51,29 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
     setCurrentPage(page);
   };
 
+  useEffect(() => {
+    fetchItemsForPage(currentPage);
+    // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
+  }, [currentPage]);
+
   const handleReservationRequest = () => {
     //예약 요청을 누르면 실행되는 함수
     setCurrentStatus('REQUESTED');
     setCurrentPage(0);
-    setIsItemCardClicked(false);
+    // setIsItemCardClicked(false);
     console.log('예약요청:', items);
   };
   const handleReservedItems = () => {
     setCurrentStatus('RESERVED');
     setCurrentPage(0);
-    setIsItemCardClicked(false);
+    // setIsItemCardClicked(false);
     console.log('예약확정:', items);
   };
 
   const handleCompletedItems = () => {
     setCurrentStatus('COMPLETED');
     setCurrentPage(0);
-    setIsItemCardClicked(false);
+    // setIsItemCardClicked(false);
     console.log('지난예약:', items);
     // handlePageChange(currentPage);
     // setIsOpen(true);
@@ -94,7 +81,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const handleCanceledItems = () => {
     setCurrentStatus('CANCELED');
     setCurrentPage(0);
-    setIsItemCardClicked(false);
+    // setIsItemCardClicked(false);
     console.log('거절한 예약:', items);
     // handlePageChange(currentPage);
     // setIsOpen(true);

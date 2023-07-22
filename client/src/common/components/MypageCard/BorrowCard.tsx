@@ -1,6 +1,5 @@
 import { colorPalette } from '../../utils/enum/colorPalette';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
 import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
@@ -23,7 +22,6 @@ const BorrowCard = ({
 }: {
   borrowCardData: borrowCardProps;
 }) => {
-  const { reservationId } = useParams<{ reservationId: string }>();
   const [items, setItems] = useState([] as borrowCardProps[]);
   const [canceled, setCanceled] = useState(false);
 

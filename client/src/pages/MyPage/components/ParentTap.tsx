@@ -31,6 +31,7 @@ function ParentTap({ lendCardData }: { lendCardData: lendCardProps[] }) {
           <LendList
             lendCardData={{
               productId: '',
+              reservationId: '',
               status: '',
               username: '',
               totalFee: '',
