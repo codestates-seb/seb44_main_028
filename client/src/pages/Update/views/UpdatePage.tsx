@@ -2,6 +2,8 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import WritePost from '../../Create/components/WritePost';
+import Loading from '../../../common/components/Loading';
+import ErrorPage from '../../../common/components/ErrorPage';
 function UpdatePage() {
   const param = useParams();
 
@@ -11,6 +13,8 @@ function UpdatePage() {
     );
     return data;
   });
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorPage />;
   return (
     <div>
       <WritePost productData={data} />

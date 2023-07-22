@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
@@ -40,6 +40,7 @@ const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
+
   console.log(param.itemId);
   const handleReservation = () => {
     navigate(`/booking/${param.itemId}`);
@@ -66,6 +67,7 @@ const ItemContent = () => {
   );
   const handleDelete = () => {
     removeItem.mutate(param.itemId);
+    setItemData(null);
     navigate(`/`);
   };
   const { data, isLoading, error } = useQuery('productDtail', async () => {
@@ -75,6 +77,11 @@ const ItemContent = () => {
     console.log('update', data);
     return data;
   });
+  useEffect(() => {
+    setItemData(data);
+    console.log(itemData);
+  }, [data]);
+  const [itemData, setItemData] = useState(data);
   if (isLoading) {
     return <Loading />;
   }
@@ -85,82 +92,86 @@ const ItemContent = () => {
 
   return (
     <ItemContentContainer>
-      <ItemInfoWrapper>
-        {/* <ItemImageWrapper images={data.images}> */}
-        <ItemImageWrapper>
-          <ImageCarousel images={data.productImages} />
-        </ItemImageWrapper>
-        <ItemUserWrapper>
-          {/* 유저 정보 */}
-          <ItemUserInfo
-            userName={data.username}
-            address={data.address}
-            userImage={data.userImage}
-          />
-          {/* 가격 정보 */}
+      {itemData && (
+        <>
+          <ItemInfoWrapper>
+            {/* <ItemImageWrapper images={data.images}> */}
+            <ItemImageWrapper>
+              <ImageCarousel images={data.productImages} />
+            </ItemImageWrapper>
+            <ItemUserWrapper>
+              {/* 유저 정보 */}
+              <ItemUserInfo
+                userName={data.username}
+                address={data.address}
+                userImage={data.userImage}
+              />
+              {/* 가격 정보 */}
 
-          <ItemPrice
-            itemKey={ITEM_PRICE[0]}
-            itemValue={data.minimumRentalPeriod}
-          />
-          <ItemPrice itemKey={ITEM_PRICE[1]} itemValue={data.baseFee} />
-          <ItemPrice itemKey={ITEM_PRICE[2]} itemValue={data.feePerDay} />
-          <ItemPrice itemKey={ITEM_PRICE[3]} itemValue={data.overdueFee} />
+              <ItemPrice
+                itemKey={ITEM_PRICE[0]}
+                itemValue={data.minimumRentalPeriod}
+              />
+              <ItemPrice itemKey={ITEM_PRICE[1]} itemValue={data.baseFee} />
+              <ItemPrice itemKey={ITEM_PRICE[2]} itemValue={data.feePerDay} />
+              <ItemPrice itemKey={ITEM_PRICE[3]} itemValue={data.overdueFee} />
 
-          {/* 별점 */}
-          <p className="rate">상품 별점</p>
-          <ItemRate>
-            <RatingStar
-              ratingIndex={data.rate}
-              setRatingIndex={setRatingIndex}
-            />
-          </ItemRate>
-          <ItemActionBtn>
-            <BigDefaultBtn
-              color={colorPalette.whiteColor}
-              backgroundColor={colorPalette.heavyColor}
-              hoverBackgroundColor={colorPalette.rightButtonHoverColor}
-              height={64}
-              width={198}
-              onClick={handleReservation}
-            >
-              예약하기
-            </BigDefaultBtn>
-            <ChatBtn />
-          </ItemActionBtn>
-        </ItemUserWrapper>
-      </ItemInfoWrapper>
-      <ItemDescriptionWrapper>
-        <ProductInfo>
-          <div>상품정보</div>
-          <div></div>
-        </ProductInfo>
-        <ProductView>
-          <GrFormView />
-          <div>{data.viewCount}</div>
-        </ProductView>
-        <ProductDescription>
-          <ProductTitle>{data.title}</ProductTitle>
-          <ProductContent>{data.content}</ProductContent>
-          <ProductNotice>{ITEM_NOTICE}</ProductNotice>
-          {/* 카테고리 */}
-          <ItemTagSection>
-            {data?.categories.map((tag: ICategory) => (
-              <ItemTag key={tag.categoryId} itemtag={tag.title} />
-            ))}
-          </ItemTagSection>
-          <ProductBtn>
-            {userData?.memberId === data.ownerMemberId ? (
-              <>
-                <div onClick={handleUpdate}>{USER_BTN[0]}</div>
-                <div onClick={handleDelete}>{USER_BTN[1]}</div>
-              </>
-            ) : (
+              {/* 별점 */}
+              <p className="rate">상품 별점</p>
+              <ItemRate>
+                <RatingStar
+                  ratingIndex={data.rate}
+                  setRatingIndex={setRatingIndex}
+                />
+              </ItemRate>
+              <ItemActionBtn>
+                <BigDefaultBtn
+                  color={colorPalette.whiteColor}
+                  backgroundColor={colorPalette.heavyColor}
+                  hoverBackgroundColor={colorPalette.rightButtonHoverColor}
+                  height={64}
+                  width={198}
+                  onClick={handleReservation}
+                >
+                  예약하기
+                </BigDefaultBtn>
+                <ChatBtn />
+              </ItemActionBtn>
+            </ItemUserWrapper>
+          </ItemInfoWrapper>
+          <ItemDescriptionWrapper>
+            <ProductInfo>
+              <div>상품정보</div>
               <div></div>
-            )}
-          </ProductBtn>
-        </ProductDescription>
-      </ItemDescriptionWrapper>
+            </ProductInfo>
+            <ProductView>
+              <GrFormView />
+              <div>{data.viewCount}</div>
+            </ProductView>
+            <ProductDescription>
+              <ProductTitle>{data.title}</ProductTitle>
+              <ProductContent>{data.content}</ProductContent>
+              <ProductNotice>{ITEM_NOTICE}</ProductNotice>
+              {/* 카테고리 */}
+              <ItemTagSection>
+                {data?.categories.map((tag: ICategory) => (
+                  <ItemTag key={tag.categoryId} itemtag={tag.title} />
+                ))}
+              </ItemTagSection>
+              <ProductBtn>
+                {userData?.memberId === data.ownerMemberId ? (
+                  <>
+                    <div onClick={handleUpdate}>{USER_BTN[0]}</div>
+                    <div onClick={handleDelete}>{USER_BTN[1]}</div>
+                  </>
+                ) : (
+                  <div></div>
+                )}
+              </ProductBtn>
+            </ProductDescription>
+          </ItemDescriptionWrapper>
+        </>
+      )}
     </ItemContentContainer>
   );
 };
