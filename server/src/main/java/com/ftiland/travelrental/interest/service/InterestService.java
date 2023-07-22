@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,6 +63,17 @@ public class InterestService {
         memberService.findMember(memberId);
         Page<Interest> pagedList = interestRepository.findByMemberId(memberId, pageable);
         InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(pagedList);
+
+        return responses;
+    }
+
+    // 한 사용자의 관심 목록 (페이징 x)
+    public InterestDto.Responses2Dto  findInterest(Long memberId){
+
+        // 맴버 존재하는지 검사
+        memberService.findMember(memberId);
+        ArrayList<Interest> interestList = interestRepository.findByMemberId2(memberId);
+        InterestDto.Responses2Dto responses = interestMapper.interestsToResponses2Dto(interestList);
 
         return responses;
     }

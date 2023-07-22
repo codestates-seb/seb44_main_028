@@ -55,4 +55,18 @@ public interface InterestMapper {
         responses.setPageInfo(pageInfo);
         return responses;
     }
+    default InterestDto.Responses2Dto interestsToResponses2Dto ( ArrayList<Interest> interests){
+        InterestDto.Responses2Dto responses = new InterestDto.Responses2Dto();
+
+        for(Interest interest : interests){
+            InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
+            //ImageProduct image = imageService.findMainImageProduct(interest.getProduct().getProductId());
+
+            // response 에 image 추가
+            response.setImageUrl(interest.getProduct().getMainImage());
+            responses.addResponse(response);
+        }
+
+        return responses;
+    }
 }

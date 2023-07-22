@@ -41,6 +41,15 @@ public class InterestMemberController {
         return new ResponseEntity(responses, HttpStatus.OK);
     }
 
+    // 특정 맴버의 관심목록 검색 ( 맴버 , Get , 페이징 x )
+    @GetMapping("/find")
+    public ResponseEntity getInterest2(@CurrentMember Long memberId){
+
+        InterestDto.Responses2Dto responses = interestService.findInterest(memberId);
+
+        return new ResponseEntity(responses, HttpStatus.OK);
+    }
+
     // 관심 목록에 추가 ( * , Post )
     @PostMapping
     public ResponseEntity postInterest(@CurrentMember Long memberId,@RequestBody InterestDto.PostRequestDto requestBody) {
