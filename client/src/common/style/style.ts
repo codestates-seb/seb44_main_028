@@ -185,13 +185,6 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
     transition: color 0.2s ease-in-out;
   }
 `;
-// export const PriceFavoriteWrapper = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   font-size: 12px;
-//   color: ${colorPalette.heavyColor};
-//   margin-bottom: 1.248rem;
-// `;
 export const ItemPrice = styled.div`
   font-weight: 500;
 `;
