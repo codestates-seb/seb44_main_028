@@ -33,6 +33,8 @@ import ChatBtn from './ChatBtn';
 import { ICategory } from '../type';
 import ImageCarousel from './ImageCarousel';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../Login/constants';
 
 const ItemContent = () => {
   const { data: userData } = useGetMe();
@@ -40,7 +42,17 @@ const ItemContent = () => {
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
   const param = useParams();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
+  useEffect(() => {
+    const decrypt = useDecryptToken();
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    if (encryptedAccessToken) {
+      const decryptedToken = decrypt(encryptedAccessToken);
+      setAccessToken(decryptedToken);
+    }
+  }, []);
   console.log(param.itemId);
   const handleReservation = () => {
     navigate(`/booking/${param.itemId}`);
@@ -54,7 +66,11 @@ const ItemContent = () => {
   const removeItem = useMutation(
     (productId: string | undefined) =>
       axios
-        .delete(`${process.env.REACT_APP_API_URL}/api/products/${productId}`)
+        .delete(`${process.env.REACT_APP_API_URL}/api/products/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
         .then((res) => {
           const { data } = res;
           console.log(data);
