@@ -22,7 +22,6 @@ public class ChatRoom extends BaseEntity {
     private String chatroomId;
 
     private String name;
-    private String lastMessage;
     private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "chatroom", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
