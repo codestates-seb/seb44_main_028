@@ -1,8 +1,7 @@
 package com.ftiland.travelrental.chat.dto;
 
 import com.ftiland.travelrental.member.entity.Member;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +23,13 @@ public class ResponseDto {
 
     @Getter
     @Setter
-    public static class sellerId{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class SellerInfoForCustomer {
         private long sellerId;
+        private boolean chatRoomExists;
+
     }
 
     @Getter
@@ -57,6 +61,7 @@ public class ResponseDto {
         private String displayName;
         private String imageUrl;
         private String roomName;
+        private String lastMessage;
     }
 
     @Getter
