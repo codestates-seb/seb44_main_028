@@ -15,6 +15,7 @@ const SearchPage = () => {
   const [page, setPage] = useState(0);
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const size = 10;
+
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data, isLoading, error, isFetching } = useQuery(
     'searchProduct',
