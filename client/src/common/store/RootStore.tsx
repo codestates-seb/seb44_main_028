@@ -5,6 +5,7 @@ import { reservation } from '../../pages/Booking/store/ReservationDateStore';
 import { interestProducts } from './InterestStore';
 import { monthlyReservation } from '../../pages/Booking/store/MonthlyReservationStore';
 import { mypageProfileSlice } from '../../pages/MyPage/store/ProfileSlice';
+import { productInfo } from '../../pages/Detail/store/CurrentProductInfo';
 
 export const rootReducer = combineReducers({
   userInfo: userInfo.reducer,
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
   interestProducts: interestProducts.reducer,
   monthlyReservation: monthlyReservation.reducer,
   mypageProfileSlice: mypageProfileSlice.reducer,
+  productInfo: productInfo.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
