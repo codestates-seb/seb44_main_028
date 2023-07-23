@@ -428,6 +428,7 @@ export const LendCardWrapper = styled.div`
   height: 11rem;
   width: 23rem;
   margin-bottom: 2rem;
+  cursor: pointer;
 `;
 
 export const LendImgWrapper = styled.div`
