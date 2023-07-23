@@ -17,9 +17,10 @@ function makeChatRoomName(senderId: number, receiverId: number) {
 const fetchChatRoomExistsOrNot = async (
   productId: string | undefined,
   accessToken: string,
+  senderId: number,
 ) => {
   const response = await axios.get(
-    `${process.env.REACT_APP_API_URL}/api/chat/seller?productId=${productId}`,
+    `${process.env.REACT_APP_API_URL}/api/chat/seller?productId=${productId}&senderId=${senderId}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -29,33 +30,46 @@ const fetchChatRoomExistsOrNot = async (
   return response.data;
 };
 
+const createChatRoom = async (
+  senderId: number,
+  itemId: string | undefined,
+  accessToken: string,
+  name: string,
+) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/chat/chatroom`,
+      {
+        productId: itemId,
+        name: name,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    const chatRoomId = response.data.chatroomId;
+    return chatRoomId;
+  } catch (error) {
+    console.error('Failed to create chat room:', error);
+    throw error;
+  }
+};
+
 const fetchChatRoomId = async (
   senderId: number,
   itemId: string | undefined,
   accessToken: string,
+  name: string,
 ) => {
   try {
-    // 채팅방 생성 요청을 보낸다.
-    // if (!chatRoomExistsOrNot) {
-    //   const postResponse = await axios.post(
-    //     process.env.REACT_APP_API_URL + '/api/chat',
-    //     {
-    //       senderId,
-    //       receiverId,
-    //       name: makeChatRoomName(senderId, receiverId),
-    //     },
-    //   );
-    //   console.log('채팅방 생성 결과', postResponse);
-    // }
+    console.log('itemId', itemId);
 
     // 채팅방 아이디를 가져온다.
     const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/chat/chatroom`,
+      `${process.env.REACT_APP_API_URL}/api/chat/chatroom?productId=${itemId}`,
       {
-        params: {
-          senderId: senderId,
-          productId: itemId,
-        },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -104,24 +118,6 @@ function ChatBtn() {
   //   };
   //   fetchReceiverId();
   // }, []);
-  const {
-    data: chatRoomExistsOrNot,
-    isLoading,
-    error,
-    isError,
-  } = useQuery(
-    ['chatRoomExistsOrNot', itemId],
-    () => fetchChatRoomExistsOrNot(itemId, accessToken),
-    {
-      retry: 1,
-      refetchOnWindowFocus: true,
-      staleTime: 5 * 1000,
-      cacheTime: 30 * 1000,
-    },
-  );
-
-  // boolean 값
-  console.log('채팅방 존재 여부', chatRoomExistsOrNot);
 
   const { data: userData } = useGetMe();
   if (!userData) {
@@ -133,12 +129,28 @@ function ChatBtn() {
 
   console.log('내 아이디', senderId);
 
-  const createChatRoomMutation = useMutation(
-    () => fetchChatRoomId(senderId, itemId, accessToken),
+  const {
+    data: chatRoomExistsOrNot,
+    isLoading,
+    error,
+    isError,
+  } = useQuery(
+    ['chatRoomExistsOrNot', itemId],
+    () => fetchChatRoomExistsOrNot(itemId, accessToken, senderId),
     {
-      onSuccess: (chatRoomId) => {
-        console.log('채팅방 아이디', chatRoomId);
-      },
+      retry: 1,
+      refetchOnWindowFocus: true,
+      staleTime: 5 * 1000,
+      cacheTime: 30 * 1000,
+    },
+  );
+
+  // boolean 값
+  console.log('채팅방 존재 여부', chatRoomExistsOrNot);
+
+  const createChatRoomMutation = useMutation(
+    (name: string) => createChatRoom(senderId, itemId, accessToken, name),
+    {
       onError: (error) => {
         console.error('Failed to create chat room:', error);
         // TODO: 상태코드에 따른 에러 처리
@@ -146,14 +158,30 @@ function ChatBtn() {
     },
   );
 
+  // const createChatRoomMutation = useMutation(
+  //   () => fetchChatRoomId(senderId, itemId, 'das', accessToken),
+  //   {
+  //     onSuccess: (chatRoomId) => {
+  //       console.log('채팅방 아이디', chatRoomId);
+  //     },
+  //     onError: (error) => {
+  //       console.error('Failed to create chat room:', error);
+  //       // TODO: 상태코드에 따른 에러 처리
+  //     },
+  //   },
+  // );
+
   const handleNavigateToChatRoom = async () => {
     if (chatRoomExistsOrNot) {
+      console.log('채팅방이 존재합니다.');
       // 채팅방이 이미 있으면 채팅방 Id를 GET 요청으로 받아서 채팅 페이지로 이동
-      const { data: chatRoomId } = await createChatRoomMutation.mutateAsync();
-      navigate(`/chatting/${itemId}/${chatRoomId}`);
+      // const { data: chatRoomId } = await createChatRoomMutation.mutateAsync();
+      // navigate(`/chatting/${itemId}/${chatRoomId}`);
     } else {
-      // 채팅방이 일단 채팅방으로 이동
-      navigate(`/chatting/${itemId}`);
+      console.log('채팅방이 존재하지 않습니다.');
+      // 채팅방이 없으면 채팅방을 생성하고 채팅 페이지로 이동
+      const response = await createChatRoomMutation.mutateAsync('채팅방');
+      console.log('채팅방 생성 결과', response);
     }
   };
 
