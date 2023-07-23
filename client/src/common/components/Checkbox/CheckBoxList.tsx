@@ -27,7 +27,7 @@ const CheckBoxList = ({
   if (isError) {
     return <ErrorPage />;
   }
-
+  console.log('체크된 값', selectedtCategory);
   return (
     <div>
       {category?.map((checkbox, index) => {
