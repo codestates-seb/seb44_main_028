@@ -25,6 +25,7 @@ export enum colorPalette {
   ModalBackgroundColor = 'rgba(0, 0, 0, 0.5)',
   rightButtonHoverColor = '#1d5799',
   refusalButtonColor = '#FF7B69',
+  itemCardHeartFillColor = '#FE4802',
   checkColor = '#61cf5f',
   errorColor = '#f44336',
   cancleButtonColor = '#FF7B69',

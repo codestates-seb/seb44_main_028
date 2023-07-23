@@ -2,6 +2,7 @@ package com.ftiland.travelrental.member.entity;
 
 
 import com.ftiland.travelrental.common.aduit.BaseEntity;
+import com.ftiland.travelrental.image.entity.ImageMember;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,10 +22,10 @@ public class Member extends BaseEntity {
     private String email;
     @Column(nullable = false)
     private String displayName;
-    private String imageUrl;
     private Double latitude;
     private Double longitude;
     private String address;
+    private String imageUrl;
 
     public Member(String email, String displayName) {
         this.email = email;

@@ -41,6 +41,9 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private Integer viewCount;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String mainImage;
+
     @Column(nullable = false)
     private Double latitude;
     @Column(nullable = false)
@@ -52,4 +55,5 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "member_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
+
 }

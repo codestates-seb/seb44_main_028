@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -20,5 +21,12 @@ public class ChatMessage extends BaseEntity {
     private String messageId;
     private String content;
     private Long senderId;
-    private String roomId;
+    private LocalDateTime createAt;
+
+    @ManyToOne
+    @JoinColumn(name = "chatroom_id")
+    ChatRoom chatroom;
+
+
+
 }

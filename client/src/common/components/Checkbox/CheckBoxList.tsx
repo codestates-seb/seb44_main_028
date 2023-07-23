@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import CheckBox from './CheckBox';
+import CheckBox from './Checkbox';
 import { CategoryListProps } from '../../type';
 import { ICategory } from '../../model/ICategory';
 import Loading from '../Loading';
@@ -27,7 +27,7 @@ const CheckBoxList = ({
   if (isError) {
     return <ErrorPage />;
   }
-
+  console.log('체크된 값', selectedtCategory);
   return (
     <div>
       {category?.map((checkbox, index) => {

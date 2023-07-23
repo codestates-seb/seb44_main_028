@@ -33,10 +33,10 @@ const UploadImages = ({
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
         newImageURLs.push(currentImageUrl);
       }
-      console.log('업로드 ㅇ미ㅣ지', imageLists);
       if (newImages.length + showImages.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         setIsClick(true);
+        setTimeout(() => setIsClick(false), 3000);
         const diff = showImages.length + newImages.length - MAX_IMAGE_COUNT;
         newImages = newImages.slice(0, newImages.length - diff);
         newImageURLs = newImageURLs.slice(0, newImageURLs.length - diff);
@@ -59,6 +59,7 @@ const UploadImages = ({
   useEffect(() => {
     setImageURLs(showImages);
   }, [showImages]);
+
   useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
       showImages.slice(0, MAX_IMAGE_COUNT);

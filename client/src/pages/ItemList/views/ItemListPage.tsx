@@ -31,6 +31,7 @@ function ItemListPage() {
   const [productFilterSelectedValue, setProductFilterSelectedValue] = useState(
     PRODUCT_FILTER_OPTIONS[0].label,
   );
+
   const { data: userData } = useGetMe();
   const [page, setPage] = useState(0);
   const size = 10;
@@ -55,6 +56,7 @@ function ItemListPage() {
       setAccessToken(decryptedToken);
     }
   }, []);
+
   const {
     data: products,
     isLoading,
@@ -134,6 +136,7 @@ function ItemListPage() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [isFetching]);
+
   if (isLoading && page === 1) {
     return <Loading />;
   }
@@ -160,7 +163,6 @@ function ItemListPage() {
           selectOptionData={PRODUCT_FILTER_OPTIONS}
         />
       </div>
-
       <ProductListWrapper ref={containerRef}>
         <AnimatePresence>
           {items?.map((product: ItemCardProps) => (
@@ -183,4 +185,5 @@ function ItemListPage() {
     </ItemListPageContainer>
   );
 }
+
 export default ItemListPage;

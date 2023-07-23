@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { QueryClient, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
 import {
   MypageProfileWrapper,
   MypageImage,
@@ -25,37 +25,36 @@ import LendCard from '../../../common/components/MypageCard/LendCard';
 import useGeoLocation from '../utils/customHooks/useGeoLocation';
 import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
-import { useMutation, useQuery } from 'react-query';
 import { access } from 'fs';
+import { useLocation } from 'react-router-dom';
 
 function MypageProfile() {
   const queryClient = useQueryClient();
   const decrypt = useDecryptToken();
-  const { data: userData } = useGetMe();
-  console.log('userData', userData);
+
   const iconProps = { itemCount: 0 };
   const [user, setUser] = useState<IUserInfo | null>(null);
   const [displayName, setDisplayName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
 
+  const { data: userData } = useGetMe();
+  console.log('userData', userData);
+
+  //userData 객체가 변경되면 displayName 상태를 업데이트
   useEffect(() => {
     if (userData) {
       if (userData && userData.displayName)
         setDisplayName(userData.displayName);
     }
   }, [userData]);
+  const displayNameToRender = userData?.displayName || ''; // 화면에 렌더링
 
   const getUserInfo = useCallback(async () => {
     try {
       queryClient.invalidateQueries('me');
       const encryptedAccessToken: string | null =
-        localStorage.getItem(ACCESS_TOKEN);
-      let accessToken: string | null = null;
-      if (encryptedAccessToken) {
-        accessToken = decrypt(encryptedAccessToken);
-      } else {
-        return null;
-      }
+        localStorage.getItem(ACCESS_TOKEN) || '';
+      const accessToken = decrypt(encryptedAccessToken);
 
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/members`,
@@ -70,7 +69,7 @@ function MypageProfile() {
       setDisplayName(response.data.displayName);
       setAddress(response.data.address);
       console.log('setUser', response.data.user);
-      console.log('setDisplayName', response.data.displayName);
+      console.log('setDisplayName', response.data);
     } catch (error) {
       console.error('회원 정보 가져오기 중에 오류가 발생했습니다.', error);
     }
@@ -81,13 +80,8 @@ function MypageProfile() {
   );
 
   const encryptedAccessToken: string | null =
-    localStorage.getItem(ACCESS_TOKEN);
-  let accessToken: string | null = null;
-  if (encryptedAccessToken) {
-    accessToken = decrypt(encryptedAccessToken);
-  } else {
-    return null;
-  }
+    localStorage.getItem(ACCESS_TOKEN) || '';
+  const accessToken = decrypt(encryptedAccessToken);
 
   const location = useGeoLocation();
   const formData = new FormData();
@@ -98,6 +92,11 @@ function MypageProfile() {
         `${process.env.REACT_APP_API_URL}/api/members/location`,
         formData,
         { headers: { Authorization: `Bearer ${accessToken}` } },
+        // {
+        //   headers: {
+        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
+        //   },
+        // },
       )
       .then((res) => {
         console.log(res);
@@ -132,7 +131,7 @@ function MypageProfile() {
         <MypageInfo>
           <div style={{ fontWeight: 'bold', fontSize: 20 }}>
             <span>
-              <h4>{displayName}</h4>
+              <h4>{displayNameToRender}</h4>
             </span>
           </div>
           <Location>

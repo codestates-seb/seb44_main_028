@@ -31,16 +31,15 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<MemberDto.Response> getMember(@CurrentMember Long memberId) {
         Member member = memberService.findMember(memberId);
-        MemberDto.Response response = MemberDto.Response.from(member,imageService.findImageMember(memberId).getImageUrl());
+        MemberDto.Response response = MemberDto.Response.from(member);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId,@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
+    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId, @RequestParam("displayName") String displayName, @RequestParam("imageFile") MultipartFile imageFile) {
 
-        MemberDto.Response response = memberService.updateMember(displayName,imageFile,memberId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-
+        MemberDto.Response response = memberService.updateMember(displayName, imageFile, memberId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping
