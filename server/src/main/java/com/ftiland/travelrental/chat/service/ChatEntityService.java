@@ -1,6 +1,5 @@
 package com.ftiland.travelrental.chat.service;
 
-import com.ftiland.travelrental.chat.dto.ResponseDto;
 import com.ftiland.travelrental.chat.entity.ChatMessage;
 import com.ftiland.travelrental.chat.entity.ChatRoom;
 import com.ftiland.travelrental.chat.entity.ChatRoomMembers;
@@ -11,11 +10,14 @@ import com.ftiland.travelrental.chat.repository.ChatMessageRepository;
 import com.ftiland.travelrental.chat.repository.ChatRoomRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
+import com.ftiland.travelrental.member.entity.Member;
 import com.ftiland.travelrental.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -35,13 +37,17 @@ public class ChatEntityService {
     }
 
     public void storeChatMessage(String roomId,String content,Long senderId){
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
+
         ChatMessage chatMessage = ChatMessage
                 .builder()
                 .messageId(UUID.randomUUID().toString())
                 .content(content)
                 .senderId(senderId)
-                .roomId(roomId)
+                .chatroom(chatRoom)
+                .createAt(LocalDateTime.now())
                 .build();
+        chatRoom.setUpdateAt(LocalDateTime.now());
 
         chatMessageRepository.save(chatMessage);
     }
@@ -77,13 +83,13 @@ public class ChatEntityService {
     return validAccess;
     }
 
-    public List<ChatMessage> findChatroomMessages(String chatroomId){
-        List<ChatMessage> messages = chatMessageRepository.findByRoomId(chatroomId);
+    public ArrayList<ChatMessage> findChatroomMessages(String chatroomId){
+        ArrayList<ChatMessage> messages = chatRoomRepository.findByRoomId(chatroomId);
 
         return messages;
     }
 
-    public List<ChatRoom> findChatRoom(Long memberId){
+    public List<ChatRoom> existsChatRooms(Long memberId){
         List<ChatRoom> rooms = chatRoomRepository.findChatRoomsByUserId(memberId);
 
         return rooms;
@@ -95,10 +101,19 @@ public class ChatEntityService {
         return messages;
     }
 
-    public BusinessLogicException findChatRoom(Long memberId1, Long memberId2){
+    public ChatRoom findChatRoom(Long memberId,Long memberId2){
+        return chatRoomRepository.findChatRoomsWithMembers(memberId,memberId2).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
+    }
+
+    public Boolean existsChatRooms(Long memberId1, Long memberId2){
         if(chatRoomRepository.findChatRoomsWithMembers(memberId1,memberId2).isPresent()){
-            return new BusinessLogicException(ExceptionCode.CHATROOM_ALREADY_EXISTS);
+            return true;
         }
-        return null;
+        return false;
+    }
+    public Member findReceiver(Long senderId,String roomId){
+        Member receiver = chatRoomMembersRepository.findByReceiverId(roomId,senderId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        return receiver;
     }
 }

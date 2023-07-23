@@ -2,6 +2,7 @@ package com.ftiland.travelrental.category.repository;
 
 
 import com.ftiland.travelrental.category.entity.Category;
+import com.ftiland.travelrental.product.entity.ProductCategory;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,5 @@ public interface CategoryRepository extends JpaRepository<Category, String> {
     List<Category> findAll();
 
     List<Category> findAllByCategoryIdIn(List<String> categoryIds);
+
 }

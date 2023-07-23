@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,18 +55,18 @@ public class ReservationService {
 
         // 예약 시작날짜가 예약 종료날짜보다 짧을 경우 or 현재 날짜보다 이전인 경우
         if (request.getStartDate().isAfter(request.getEndDate()) || request.getStartDate().isBefore(LocalDate.now())) {
-            throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
+            throw new BusinessLogicException(WRONG_RESERVATION);
         }
 
         // 예약 날짜가 최소 빌리는 기간보다 짧을 때
         Period period = request.getStartDate().until(request.getEndDate());
         if (product.getMinimumRentalPeriod() > period.getDays() + 1) {
-            throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
+            throw new BusinessLogicException(WRONG_MINIMUM_PERIOD);
         }
 
         // 예약 날짜가 겹치는 경우
         if (checkReservationDuplication(productId, request.getEndDate().plusDays(1), request.getStartDate())) {
-            throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
+            throw new BusinessLogicException(EXIST_RESERVATION);
         }
 
         // 비용계산
@@ -98,12 +99,6 @@ public class ReservationService {
         Reservation reservation = findReservation(reservationId);
 
         validateOwner(reservation, member);
-
-//        LocalDate date = LocalDate.now().plusDays(7);
-        // 예약 시작일 일주일 전부터는 예약취소 불가능
-        /*if (date.isAfter(reservation.getStartDate())) {
-            throw new BusinessLogicException(NOT_POSSIBLE_CANCEL);
-        }*/
 
         // 예약상태가 Requested가 아니면 취소 불가능
         if (reservation.getStatus() != ReservationStatus.REQUESTED) {
@@ -175,10 +170,17 @@ public class ReservationService {
 
     public GetBorrowReservations getReservationByBorrower(Long memberId, ReservationStatus status,
                                                           int size, int page) {
-        Member member = memberService.findMember(memberId);
+        long start1 = System.currentTimeMillis();
+        memberService.findMember(memberId);
+        long end1 = System.currentTimeMillis();
+        log.info("findMember total time = {}", end1 - start1);
 
+
+        long start = System.currentTimeMillis();
         Page<BorrowReservationDto> reservations = reservationRepository
-                .findBorrowReservationDtosByMemberId(memberId, status, PageRequest.of(page, size));
+                .findBorrowReservationDtosByMemberId(memberId, status, PageRequest.of(page, size,  Sort.by("createdAt").ascending()));
+        long end = System.currentTimeMillis();
+        log.info("findBorrowReservationDtosByMemberId total time = {}", end - start);
 
         return GetBorrowReservations.from(reservations);
     }
@@ -191,7 +193,7 @@ public class ReservationService {
         validateOwner(product, member);
 
         Page<LendReservationDto> reservations = reservationRepository
-                .findLendReservationDtosByMemberId(productId, status, PageRequest.of(page, size));
+                .findLendReservationDtosByProductId(productId, status, PageRequest.of(page, size));
 
         return GetLendReservations.from(reservations);
     }

@@ -36,11 +36,10 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId,@RequestParam("displayName") String displayName, @RequestParam("imageFile")MultipartFile imageFile) {
+    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId, @RequestParam("displayName") String displayName, @RequestParam("imageFile") MultipartFile imageFile) {
 
-        MemberDto.Response response = memberService.updateMember(displayName,imageFile,memberId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-
+        MemberDto.Response response = memberService.updateMember(displayName, imageFile, memberId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping

@@ -2,38 +2,46 @@ import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
-import LENDCARD_DATA from '../../../common/components/MypageCard/BorrowCard';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
+import LendCard from '../../../common/components/MypageCard/LendCard';
+import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../Login/constants';
+import { lendCardProps } from '../../../common/type';
 
-function LendList() {
-  const [items, setItems] = useState([]);
+interface LendListProps {
+  currentStatus: string;
+  lendCardData: lendCardProps[];
+}
+
+function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
+  const decrypt = useDecryptToken();
+
+  const [items, setItems] = useState<lendCardProps[]>([]);
+  const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
+  const [currentStatus, setCurrentStatus] = useState(''); //현재상태
   const [itemsPerPage] = useState(3);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+  console.log('currentStatus:', currentStatus);
 
-  useEffect(() => {
-    fetchItemsForPage(currentPage);
-    // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
-  }, [currentPage]);
   const fetchItemsForPage = async (page: number) => {
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN) || '';
+    const accessToken = decrypt(encryptedAccessToken);
+
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/reservations/products/`,
+        `${process.env.REACT_APP_API_URL}/api/products/members`,
         {
-          params: {
-            reservationId: 1,
-            size: itemsPerPage,
-            page: currentPage,
-            status: 'INUSE',
-          },
+          headers: { Authorization: `Bearer ${accessToken}` },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       console.log(Array.isArray(response));
-      setItems(response.data.responses);
-      setTotalItemsCount(response.data.listSize);
-      console.log(response.data.responses);
+      setItems(response.data.products);
+      setTotalItemsCount(response.data.pageInfo.totalElements);
+      console.log('product"', response);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
     }
@@ -42,41 +50,89 @@ function LendList() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    fetchItemsForPage(currentPage);
+    // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
+  }, [currentPage]);
+
+  const handleReservationRequest = () => {
+    //예약 요청을 누르면 실행되는 함수
+    setCurrentStatus('REQUESTED');
+    setCurrentPage(0);
+    // setIsItemCardClicked(false);
+    console.log('예약요청:', items);
+  };
+  const handleReservedItems = () => {
+    setCurrentStatus('RESERVED');
+    setCurrentPage(0);
+    // setIsItemCardClicked(false);
+    console.log('예약확정:', items);
+  };
+
+  const handleCompletedItems = () => {
+    setCurrentStatus('COMPLETED');
+    setCurrentPage(0);
+    // setIsItemCardClicked(false);
+    console.log('지난예약:', items);
+    // handlePageChange(currentPage);
+    // setIsOpen(true);
+  };
+  const handleCanceledItems = () => {
+    setCurrentStatus('CANCELED');
+    setCurrentPage(0);
+    // setIsItemCardClicked(false);
+    console.log('거절한 예약:', items);
+    // handlePageChange(currentPage);
+    // setIsOpen(true);
+  };
+
   return (
     <WishListWrapper>
-      빌려준내역
-      <LendWrapper>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-        >
-          예약요청
-        </DefaultBtn>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-        >
-          예약확정
-        </DefaultBtn>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-        >
-          거절한 예약
-        </DefaultBtn>
-        <DefaultBtn
-          color={colorPalette.deepMintColor}
-          backgroundColor={colorPalette.whiteColor}
-        >
-          지난예약
-        </DefaultBtn>
-      </LendWrapper>
+      {isItemCardClicked === true ? (
+        <LendWrapper>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleReservationRequest}
+          >
+            예약요청
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleReservedItems}
+          >
+            예약확정
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleCanceledItems}
+          >
+            거절한 예약
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleCompletedItems}
+          >
+            지난예약
+          </DefaultBtn>
+        </LendWrapper>
+      ) : null}
       <LendListWrapper>
-        <div>
-          {items.map((item, index) => (
-            <LENDCARD_DATA key={index} borrowCardData={item} />
-          ))}
-        </div>
+        {items?.map((item, index) => (
+          <LendCard
+            key={index}
+            lendCardData={item}
+            isItemCardClicked={isItemCardClicked}
+            setIsItemCardClicked={setIsItemCardClicked}
+          />
+        ))}
+        {/* {LENDCARD_DATA.map((item, index) => (
+          <LendCard key={index} lendCardData={item} />
+        ))} */}
       </LendListWrapper>
       <div>
         <Paging

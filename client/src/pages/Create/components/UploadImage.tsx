@@ -13,34 +13,42 @@ import {
   PreViewImageWrapper,
 } from '../style';
 import { UploadImagesProps } from '../type';
-const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
-  const [showImages, setShowImages] = useState<string[]>([]);
+const UploadImages = ({
+  setUploadImages,
+  showImages,
+  setShowImages,
+}: UploadImagesProps) => {
   const [imageOverflow, setImageOverflow] = useState<boolean>(false);
   const [isClick, setIsClick] = useState<boolean>(false);
+  const [imageURLs, setImageURLs] = useState<string[]>([]);
 
   const handleAddImages = (e: ChangeEvent<HTMLInputElement>) => {
     const imageLists = e.target.files;
+    let newImages: File[] = [];
+    let newImageURLs: string[] = [];
     if (imageLists) {
-      let newImages: File[] = [];
       for (let i = 0; i < imageLists.length; i++) {
         newImages.push(imageLists[i]);
 
         const currentImageUrl = URL.createObjectURL(imageLists[i]);
-        setShowImages((prev) => [...prev, currentImageUrl]);
+        newImageURLs.push(currentImageUrl);
       }
-
       if (newImages.length + showImages.length > MAX_IMAGE_COUNT) {
         setImageOverflow(true);
         setIsClick(true);
-        newImages = newImages.slice(0, MAX_IMAGE_COUNT - showImages.length);
+        setTimeout(() => setIsClick(false), 3000);
+        const diff = showImages.length + newImages.length - MAX_IMAGE_COUNT;
+        newImages = newImages.slice(0, newImages.length - diff);
+        newImageURLs = newImageURLs.slice(0, newImageURLs.length - diff);
       }
 
       setUploadImages((prev) => ({ images: [...prev.images, ...newImages] }));
-      console.log(newImages);
+      setShowImages((prev) => [...prev, ...newImageURLs]);
     }
   };
 
   const handleDeleteImage = (index: number) => {
+    URL.revokeObjectURL(imageURLs[index]);
     setShowImages((prev) => prev.filter((_, i) => i !== index));
     setUploadImages((prev) => {
       const updatedImages = [...prev.images];
@@ -49,7 +57,12 @@ const UploadImages = ({ setUploadImages }: UploadImagesProps) => {
     });
   };
   useEffect(() => {
+    setImageURLs(showImages);
+  }, [showImages]);
+
+  useEffect(() => {
     if (showImages.length > MAX_IMAGE_COUNT) {
+      showImages.slice(0, MAX_IMAGE_COUNT);
       setImageOverflow(true);
     } else {
       setImageOverflow(false);

@@ -41,14 +41,22 @@ public class InterestDto {
         private Integer minimumRentalPeriod;
         private Integer baseFee;
         private Integer feePerDay;
-        private ArrayList<String> images= new ArrayList<>();
-        public void addImageProduct(String imageUrl){ this.images.add(imageUrl);}
+        private String imageUrl;
+
      }
 
     @Getter
     @Setter
     public static class ResponsesDto{
         private PageInfo pageInfo;
+        private ArrayList<GetResponseDto> responses = new ArrayList<>();
+        public void addResponse(GetResponseDto responseDto){
+            this.responses.add(responseDto);
+        }
+    }
+    @Getter
+    @Setter
+    public static class Responses2Dto{
         private ArrayList<GetResponseDto> responses = new ArrayList<>();
         public void addResponse(GetResponseDto responseDto){
             this.responses.add(responseDto);

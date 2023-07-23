@@ -1,4 +1,5 @@
 export interface IInterest {
-  isHeartClicked: boolean;
-  interest: string[];
+  interestId: string;
+  memberId: string;
+  productId: string;
 }

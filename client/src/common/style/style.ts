@@ -148,11 +148,13 @@ export const ItemImage = styled.img`
 export const ItemInfo = styled.div`
   max-width: 13.266rem;
 `;
-export const ItemName = styled.p`
-  width: 22.5rem;
+export const ItemName = styled.div`
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 4.15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 export const ItemDescription = styled.div`
   overflow: hidden;
@@ -174,13 +176,14 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   justify-content: space-between;
   font-size: 12px;
   color: ${colorPalette.heavyColor};
+  font-weight: bold;
   margin-bottom: 1.248rem;
   & svg {
     color: ${(prop) =>
       prop.isHeartClicked
-        ? `${colorPalette.heavyColor}`
+        ? `${colorPalette.itemCardHeartFillColor}`
         : `${colorPalette.itemCardHeartColor}`};
-    font-size: 18px;
+    font-size: 16px;
     transform: translateY(-5px);
     transition: color 0.2s ease-in-out;
   }
@@ -237,6 +240,7 @@ export const Selected = styled.div<{ isClick: boolean }>`
   padding: 0.713rem 0;
   padding-left: 1.75rem;
   padding-right: 0.888rem;
+
   & svg {
     font-size: 1.5rem;
     margin-left: -35px;
@@ -270,6 +274,7 @@ const fadeOut = keyframes`
     }
 `;
 export const OptionWrapper = styled.ul<{ isClick: boolean }>`
+  z-index: 10;
   width: 16.75rem;
   border: ${border.basic};
   position: absolute;
@@ -366,6 +371,7 @@ export const BorrowCardWrapper = styled.div`
   transform: translateY(4rem);
   height: 11rem;
   width: 23rem;
+  margin-bottom: 2rem;
 `;
 export const ImgWrapper = styled.div`
   margin-left: 1rem;
@@ -426,6 +432,8 @@ export const LendCardWrapper = styled.div`
   transform: translateY(4rem);
   height: 11rem;
   width: 23rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
 `;
 
 export const LendImgWrapper = styled.div`
@@ -444,11 +452,12 @@ export const LendImgWrapper = styled.div`
 export const LendContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 1rem;
 `;
 export const LendDatesWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   height: 4rem;
   width: 10rem;
   font-size: ${fontSize.small};
