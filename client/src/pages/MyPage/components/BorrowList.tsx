@@ -8,9 +8,9 @@ import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
-// import { BORROWCARD_DATA } from '../constants';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 interface borrowCardProps {
+  reservationId: string;
   title: string;
   image: string;
   status: string;
@@ -23,7 +23,6 @@ function BorrowList() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
-
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(9);
   const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
@@ -55,20 +54,12 @@ function BorrowList() {
             status: currentStatus,
           },
           headers: {
-            // Authorization: `Bearer ${accessToken}`,
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
-      console.log(Array.isArray(response.data));
       setItems(response.data.reservations);
       setTotalItemsCount(response.data.pageInfo.totalElements);
-      console.log('setItems:', response.data);
-      console.log('currentPage:', currentPage);
-      // console.log('currentStatus:', currentStatus);
-      // console.log('totalElements:', response.data);
-      // console.log('totalItemsCount:', totalItemsCount);
-      // console.log('response:', response.data.responses);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
@@ -76,8 +67,6 @@ function BorrowList() {
   useEffect(() => {
     console.log('렌더링 될 items:', items);
   }, [items]);
-
-  console.log('items:', items);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -169,7 +158,7 @@ function BorrowList() {
       {/* {BORROWCARD_DATA.map((item, index) => (
           <BorrowCard key={index} borrowCardData={item} />
         ))}
-     
+    
       {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal> */}

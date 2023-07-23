@@ -10,7 +10,8 @@ public class RequestDto {
     public static class Post{
         private String name;
         private long senderId;
-        private long receiverId;
+        private String productId;
+        private Long receiverId;
 
     }
 

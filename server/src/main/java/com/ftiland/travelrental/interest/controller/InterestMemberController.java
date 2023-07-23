@@ -6,7 +6,9 @@ import com.ftiland.travelrental.interest.dto.InterestDto;
 import com.ftiland.travelrental.interest.entity.Interest;
 import com.ftiland.travelrental.interest.mapper.InterestMapper;
 import com.ftiland.travelrental.interest.service.InterestService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/members/interests")
 public class InterestMemberController {
@@ -35,8 +37,20 @@ public class InterestMemberController {
     // 특정 맴버의 관심목록 검색 ( 맴버 , Get )
     @GetMapping
     public ResponseEntity getInterest(@CurrentMember Long memberId, @Param("page")@Positive Integer page, @Param("size")@Positive Integer size){
-
+        long start = System.currentTimeMillis();
         InterestDto.ResponsesDto responses = interestService.findInterest(memberId,page,size);
+        long end = System.currentTimeMillis();
+        log.info("findByMemberId total time = {}", end - start);
+
+
+        return new ResponseEntity(responses, HttpStatus.OK);
+    }
+
+    // 특정 맴버의 관심목록 검색 ( 맴버 , Get , 페이징 x )
+    @GetMapping("/find")
+    public ResponseEntity getInterest2(@CurrentMember Long memberId){
+
+        InterestDto.Responses2Dto responses = interestService.findInterest(memberId);
 
         return new ResponseEntity(responses, HttpStatus.OK);
     }

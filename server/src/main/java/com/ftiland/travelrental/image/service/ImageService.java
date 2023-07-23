@@ -24,6 +24,7 @@ import com.ftiland.travelrental.product.repository.ProductRepository;
 import com.ftiland.travelrental.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -46,17 +47,14 @@ public class ImageService {
 
     private ImageProductRepository imageProductRepository;
     private ImageMemberRepository imageMemberRepository;
-
-    private ProductService productService;
-    private MemberService memberService;
+    private MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final ImageCategoryRepository imageCategoryRepository;
     private FileNameGenerator fileNameGenerator;
 
     @Autowired
     public ImageService(AmazonS3 amazonS3, ImageMapper imageMapper, ImageProductRepository imageProductRepository,
-                        ImageMemberRepository imageMemberRepository,MemberService memberService,
-                        ProductService productService,
+                        ImageMemberRepository imageMemberRepository,MemberRepository memberRepository,
                         CategoryRepository categoryRepository,
                         ImageCategoryRepository imageCategoryRepository,
                         FileNameGenerator fileNameGenerator) {
@@ -64,13 +62,13 @@ public class ImageService {
         this.imageMapper = imageMapper;
         this.imageProductRepository = imageProductRepository;
         this.imageMemberRepository = imageMemberRepository;
-        this.productService = productService;
-        this.memberService = memberService;
+
+        this.memberRepository =memberRepository;
         this.categoryRepository = categoryRepository;
         this.imageCategoryRepository = imageCategoryRepository;
         this.fileNameGenerator = fileNameGenerator;
     }
-
+    @Transactional
     // 이미지 업로드(카테고리)
     public ImageCategory storeImageCategory(MultipartFile file, String categoryId) {
 
@@ -95,10 +93,8 @@ public class ImageService {
         } catch (IOException e) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_SAVE_FAILED);
         }
-
-
     }
-
+    @Transactional
     public List<ImageDto> storeImages(List<MultipartFile> files) {
         if (files.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
@@ -108,7 +104,7 @@ public class ImageService {
                 .map(file -> storeImage(file))
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     // 이미지 업로드(상품)
     public ImageDto storeImage(MultipartFile file) {
 
@@ -118,8 +114,7 @@ public class ImageService {
                 throw new BusinessLogicException(ExceptionCode.IMAGE_EMPTY);
             }
 
-            ImageProduct createdImageProduct = imageMapper.fileToImageProduct(file, productService, productId);
-            createdImageProduct.setFileName(fileNameGenerator.uuidName(createdImageProduct.getImageId(),createdImageProduct.getFileType()));
+
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
@@ -148,6 +143,7 @@ public class ImageService {
         return originalImageName.substring(idx);
     }
 
+    @Transactional
     // 이미지 업로드(맴버)
     public ImageMember storeImageMember(MultipartFile file, Long memberId) {
 
@@ -158,7 +154,7 @@ public class ImageService {
             }
 
 
-            ImageMember createdImage = imageMapper.fileToImageMember(file, memberService, memberId);
+            ImageMember createdImage = imageMapper.fileToImageMember(file, memberRepository, memberId);
             createdImage.setFileName(fileNameGenerator.uuidName(createdImage.getImageId(),createdImage.getFileType()));
 
             ObjectMetadata metadata = new ObjectMetadata();
@@ -193,6 +189,7 @@ public class ImageService {
         }
     }
 
+    @Transactional
     // 이미지 삭제(맴버)
     public void deleteImageMember(String imageId) {
         ImageMember imageMember = imageMemberRepository.findById(imageId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_DELETE_FAILED));
@@ -213,8 +210,8 @@ public class ImageService {
     }
 
     // 상품 이미지
-    public List<ImageProduct> findImageProducts(String productId) {
-        return imageProductRepository.findByProductProductIdOrderByCreatedAtAsc(productId);
+    public List<String> findImageProducts(String productId) {
+        return imageProductRepository.findImageUrlByProductId(productId);
     }
 
     public ImageProduct findFirstImageProduct(String productId) {

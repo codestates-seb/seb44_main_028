@@ -31,7 +31,7 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<MemberDto.Response> getMember(@CurrentMember Long memberId) {
         Member member = memberService.findMember(memberId);
-        MemberDto.Response response = MemberDto.Response.from(member, imageService.findImageMember(memberId).getImageUrl());
+        MemberDto.Response response = MemberDto.Response.from(member);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

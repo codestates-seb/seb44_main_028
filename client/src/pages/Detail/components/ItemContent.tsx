@@ -35,12 +35,15 @@ import ImageCarousel from './ImageCarousel';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
+import { useDispatch } from 'react-redux';
+import { createLenderInfo } from '../store/CurrentLenderInfo';
 
 const ItemContent = () => {
   const { data: userData } = useGetMe();
   console.log(userData);
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const param = useParams();
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -81,6 +84,7 @@ const ItemContent = () => {
       },
     },
   );
+
   const handleDelete = () => {
     removeItem.mutate(param.itemId);
     setItemData(null);
@@ -104,7 +108,11 @@ const ItemContent = () => {
   if (error) {
     return <ErrorPage />;
   }
-  console.log('updateData', data);
+  console.log('updateData', data.username);
+  console.log('updateData', data.userImage);
+  dispatch(
+    createLenderInfo({ displayName: data.username, imageUrl: data.userImage }),
+  );
 
   return (
     <ItemContentContainer>

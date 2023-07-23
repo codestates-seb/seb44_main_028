@@ -1,6 +1,7 @@
 package com.ftiland.travelrental.product.service;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
+import com.ftiland.travelrental.category.dto.CategoryDtoForProductDetail;
 import com.ftiland.travelrental.category.entity.Category;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
@@ -32,11 +33,11 @@ public class ProductCategoryService {
     private final CategoryRepository categoryRepository;
     private final ImageService imageService;
 
-    public List<CategoryDto> findCategoriesByProductId(String productId) {
-        List<ProductCategory> productCategories = productCategoryRepository.findByProductProductId(productId);
+    public List<CategoryDtoForProductDetail> findCategoriesByProductId(String productId) {
+        List<ProductCategory> productCategories = productCategoryRepository.findByProductId(productId);
 
         return productCategories.stream()
-                .map(p -> CategoryDto.from(p.getCategory()))
+                .map(p -> CategoryDtoForProductDetail.from(p.getCategory()))
                 .collect(Collectors.toList());
     }
 
@@ -94,7 +95,7 @@ public class ProductCategoryService {
                 .map(product -> {
                     ImageProduct firstImage = imageService.findFirstImageProduct(product.getProductId());
                     String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
-                    return ProductDto.from(product, imageUrl);
+                    return ProductDto.from(product);
                 })
                 .collect(Collectors.toList());
 

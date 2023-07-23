@@ -1,6 +1,7 @@
 package com.ftiland.travelrental.product.service;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
+import com.ftiland.travelrental.category.dto.CategoryDtoForProductDetail;
 import com.ftiland.travelrental.category.entity.Category;
 import com.ftiland.travelrental.category.repository.CategoryRepository;
 
@@ -45,9 +46,6 @@ public class ProductService {
     private final MemberService memberService;
     private final ProductCategoryService productCategoryService;
     private final ImageService imageService;
-    private final CategoryRepository categoryRepository;
-    private final ProductCategoryRepository productCategoryRepository;
-    private final ImageProductRepository imageProductRepository;
     private final ImageProductService imageProductService;
 
     @Transactional
@@ -162,15 +160,11 @@ public class ProductService {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
-        List<CategoryDto> categories = productCategoryService.findCategoriesByProductId(productId);
+        List<CategoryDtoForProductDetail> categories = productCategoryService.findCategoriesByProductId(productId);
 
-        List<String> images = imageService.findImageProducts(productId).stream()
-                .map(image -> image.getImageUrl())
-                .collect(Collectors.toList());
+        List<String> images = imageService.findImageProducts(productId);
 
-        String userImage = imageService.findImageMember(product.getMember().getMemberId()).getImageUrl();
-
-        return ProductDetailDto.from(product, categories, images, userImage);
+        return ProductDetailDto.from(product, categories, images);
     }
 
     public GetProducts findProducts(Long memberId, int size, int page) {
@@ -207,9 +201,12 @@ public class ProductService {
         return productRepository.findTop3ByBaseFeeOrderByCreatedAtDesc(0);
     }
 
-    public Page<Product> searchProductsByKeyword(String keyword, Pageable pageable) {
+    public GetProducts searchProductsByKeyword(String keyword, Pageable pageable) {
         Page<Product> products = productRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
-        return products;
+
+        Page<ProductDto> productDtos= products.map(product -> ProductDto.from(product));
+
+        return GetProducts.from(productDtos);
     }
 
     public Long findSellerId(String productId) {
@@ -221,6 +218,7 @@ public class ProductService {
 
     public GetProducts getProductsByCategoryAndLocation(String categoryId, Long memberId,
                                                         Double distance, SortBy sortBy, int size, int page) {
+
         PageRequest pageable = PageRequest.of(page, size);
         // distance 없을 때
         if (distance == null) {
@@ -268,64 +266,29 @@ public class ProductService {
                 return GetProducts.from(productRepository.findByCategoryIdLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, distance));
             }
         }
+    }
 
-/*
+    public FeaturedProductsResponseDto findMainPage() {
+        List<Product> top3ByTotalRateScoreRatio = getTop3ByTotalRateScoreRatio();
+        List<ProductDto> top3ByTotalRateScoreRatioDtoList = convertToProductDtoList(top3ByTotalRateScoreRatio);
 
-        // 특정 카테고리에 속한 상품-카테고리 연결 객체 목록 조회
-        List<ProductCategory> productCategories = productCategoryService.findCategories(categoryId);
+        List<Product> top3ByViewCount = getTop3ByViewCount();
+        List<ProductDto> top3ByViewCountDtoList = convertToProductDtoList(top3ByViewCount);
 
-        // 거리 필터링을 위한 결과 목록
-        List<Product> filteredProducts = new ArrayList<>();
+        List<Product> top3ByBaseFeeZero = getTop3ByBaseFeeZero(0);
+        List<ProductDto> top3ByBaseFeeZeroDtoList = convertToProductDtoList(top3ByBaseFeeZero);
 
-        // 거리 필터링
-        for (ProductCategory productCategory : productCategories) {
-            Product product = productCategory.getProduct();
-            double productDistance = GeoUtils.calculateDistance(latitude, longitude, product.getLatitude(), product.getLongitude());
-            if (productDistance <= distance) {
-                filteredProducts.add(product);
-            }
-        }
+        FeaturedProductsResponseDto responseDto = new FeaturedProductsResponseDto();
+        responseDto.setTop3ByTotalRateScoreRatio(top3ByTotalRateScoreRatioDtoList);
+        responseDto.setTop3ByViewCount(top3ByViewCountDtoList);
+        responseDto.setTop3ByBaseFeeZero(top3ByBaseFeeZeroDtoList);
 
-        // 정렬
-        switch (sortBy) {
-            case "totalRateScore":
-                // 기본적으로 total Rate Score로 정렬이지만 새로운 rate field 생기면 그것으로 수정
-                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
-                break;
-            case "viewCount":
-                filteredProducts.sort(Comparator.comparing(Product::getViewCount).reversed());
-                break;
-            case "createdAt":
-                filteredProducts.sort(Comparator.comparing(Product::getCreatedAt).reversed());
-                break;
-            default:
-                // 디폴트는 평점 좋은 순
-                filteredProducts.sort(Comparator.comparing(Product::getTotalRateScore).reversed());
-                break;
-        }
+        return responseDto;
+    }
 
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List<ProductDto> productDtos;
-
-        if (filteredProducts.size() < startItem) {
-            productDtos = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, filteredProducts.size());
-            List<Product> pagedProducts = filteredProducts.subList(startItem, toIndex);
-            productDtos = pagedProducts.stream()
-                    .map(product -> {
-                        ImageProduct firstImage = imageProductRepository.findFirstByProductOrderByCreatedAtAsc(product);
-                        String imageUrl = firstImage != null ? firstImage.getImageUrl() : null;
-                        return ProductDto.from(product, imageUrl);
-                    })
-                    .collect(Collectors.toList());
-        }
-
-        Page<ProductDto> productDtoPage = new PageImpl<>(productDtos, pageable, filteredProducts.size());
-
-
-        return GetProducts.from(productDtoPage);*/
+    private List<ProductDto> convertToProductDtoList(List<Product> products) {
+        return products.stream()
+                .map(product -> ProductDto.from(product))
+                .collect(Collectors.toList());
     }
 }
