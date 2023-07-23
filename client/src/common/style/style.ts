@@ -148,11 +148,13 @@ export const ItemImage = styled.img`
 export const ItemInfo = styled.div`
   max-width: 13.266rem;
 `;
-export const ItemName = styled.p`
-  width: 22.5rem;
+export const ItemName = styled.div`
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 4.15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 export const ItemDescription = styled.div`
   overflow: hidden;
@@ -174,13 +176,14 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   justify-content: space-between;
   font-size: 12px;
   color: ${colorPalette.heavyColor};
+  font-weight: bold;
   margin-bottom: 1.248rem;
   & svg {
     color: ${(prop) =>
       prop.isHeartClicked
-        ? `${colorPalette.heavyColor}`
+        ? `${colorPalette.itemCardHeartFillColor}`
         : `${colorPalette.itemCardHeartColor}`};
-    font-size: 18px;
+    font-size: 16px;
     transform: translateY(-5px);
     transition: color 0.2s ease-in-out;
   }
