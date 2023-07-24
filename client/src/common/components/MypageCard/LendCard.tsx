@@ -9,6 +9,7 @@ import {
   LendDatesWrapper,
   LendButtonWapper,
   LendTitleWrapper,
+  LendPeriod,
   LendImgWrapper,
   LendContentWrapper,
   ItemImage,
@@ -119,7 +120,7 @@ const LendCard = ({
         <LendContentWrapper>
           <LendTitleWrapper>{lendCardData.username}</LendTitleWrapper>
           <LendDatesWrapper>
-            <div>예약기간</div>
+            <LendPeriod>예약기간</LendPeriod>
             {lendCardData.status === 'CANCELED' ? (
               <div>{`${lendCardData.startDate}`}</div>
             ) : (
