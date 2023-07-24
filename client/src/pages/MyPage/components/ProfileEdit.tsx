@@ -21,13 +21,14 @@ import {
   MyPageEdit,
   DelBtn,
 } from '../style';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import profileImage from '../../../../src/asset/my_page/profile-image.svg';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { DefaultBtn } from '../../../common/components/Button';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import WithDrawalBtn from './WithdrawalBtn';
 
 function ProfileEdit() {
   const navigate = useNavigate();
@@ -134,6 +135,7 @@ function ProfileEdit() {
     }
   };
   console.log('이름수정', newDisplayName);
+
   return (
     <MyPageEdit>
       <ProfileEditWrapper>
@@ -190,7 +192,7 @@ function ProfileEdit() {
           수정
         </DefaultBtn>
       </StyledForm>
-      <DelBtn>회원 탈퇴</DelBtn>
+      <WithDrawalBtn />
     </MyPageEdit>
   );
 }

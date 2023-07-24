@@ -121,7 +121,7 @@ function ChatBtn() {
 
   const { data: userData } = useGetMe();
   if (!userData) {
-    navigate('/login');
+    // navigate('/login');
     return null;
   }
   // 3. senderId 아이디를 가져온다.

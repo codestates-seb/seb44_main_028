@@ -39,7 +39,7 @@ import { useDispatch } from 'react-redux';
 import { createLenderInfo } from '../store/CurrentLenderInfo';
 
 const ItemContent = () => {
-  const { data: userData } = useGetMe();
+  const { data: userData, isError } = useGetMe();
   console.log(userData);
   const [ratingIndex, setRatingIndex] = useState(3);
   const navigate = useNavigate();
@@ -58,7 +58,12 @@ const ItemContent = () => {
   }, []);
   console.log(param.itemId);
   const handleReservation = () => {
-    navigate(`/booking/${param.itemId}`);
+    if (isError) {
+      console.log('로그인 후 이용해주세요.');
+      alert('로그인 후 이용해주세요.');
+    } else {
+      navigate(`/booking/${param.itemId}`);
+    }
   };
   const handleChatting = () => {
     navigate(`/chatting/${param.itemId}`);
