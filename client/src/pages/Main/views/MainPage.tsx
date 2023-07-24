@@ -7,8 +7,10 @@ import ItemCardList from '../../../common/components/ItemCard/ItemCardList';
 import { ITEMCARDLIST_TITLE, ITEMCARD_DEVELOPMENT_DATA } from '../constants';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function MainPage() {
+  useScrollToTop();
   const fetchFeaturedProducts = async () => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/products/featured`,

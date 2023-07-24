@@ -21,8 +21,10 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import ErrorPage from '../../../common/components/ErrorPage';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function ItemListPage() {
+  useScrollToTop();
   const params = useParams();
   const navigate = useNavigate();
   const [distanceSelectedValue, setDistanceSelectedValue] = useState(
@@ -34,14 +36,14 @@ function ItemListPage() {
 
   const { data: userData } = useGetMe();
   const [page, setPage] = useState(0);
-  const size = 10;
+  const size = 3;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const [queryParams, setQueryParams] = useState<queryParams>({
-    page: page,
-    size: size,
+    // page: page,
+    // size: size,
     categoryId: params.categoryId,
     sortBy: PRODUCT_FILTER_OPTIONS.find(
       (option) => option.label === productFilterSelectedValue,
@@ -63,10 +65,10 @@ function ItemListPage() {
     error,
     isFetching,
     refetch,
-  } = useQuery([JSON.stringify(queryParams), page], async () => {
+  } = useQuery([JSON.stringify(queryParams), page, size], async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/products`,
+        `${process.env.REACT_APP_API_URL}/api/products?page=${page}&size=${size}`,
         {
           params: queryParams,
           headers: {
@@ -128,6 +130,14 @@ function ItemListPage() {
         if (!isFetching) {
           setPage((prevPage) => prevPage + 1);
         }
+        // const { scrollY, innerHeight, scrollHeight } =
+        //   window as unknown as Window & {
+        //     scrollHeight: number;
+        //   };
+        // const isNearBottom = scrollY + innerHeight >= scrollHeight - 100; // You can adjust the threshold (100) if needed.
+        // if (isNearBottom && !isFetching) {
+        //   setPage((prevPage) => prevPage + 1);
+        // }
       }
     }
 

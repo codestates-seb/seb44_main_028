@@ -28,9 +28,12 @@ import { DefaultBtn } from '../../../common/components/Button';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 import WithDrawalBtn from './WithdrawalBtn';
 
 function ProfileEdit() {
+  useScrollToTop();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const decrypt = useDecryptToken();
   const [previewImage, setPreviewImage] = useState<string | null>(profileImage);

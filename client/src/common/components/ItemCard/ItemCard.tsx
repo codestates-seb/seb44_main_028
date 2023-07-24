@@ -19,6 +19,7 @@ import useDecryptToken from '../../utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../constants';
 import { IInterest } from '../../model/IInterest';
 import useGetMe from '../../utils/customHooks/useGetMe';
+import { addressForMatter } from '../../../pages/MyPage/helper/addressForMatter';
 
 const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const navigate = useNavigate();
@@ -137,7 +138,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
         <ItemDescription>{itemCardData.content}</ItemDescription>
         <ItemLocationWrapper>
           <MdLocationOn />
-          <span>{itemCardData.address}</span>
+          <span>{addressForMatter(itemCardData.address)}</span>
         </ItemLocationWrapper>
       </ItemInfo>
       <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>

@@ -399,7 +399,6 @@ export const DatesWrapper = styled.div`
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
   div {
-    margin-bottom: -0.5rem;
     transform: translateY(1rem);
   }
 `;
@@ -464,12 +463,10 @@ export const LendDatesWrapper = styled.div`
   width: 10rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
-  div {
-    margin-bottom: -0.5rem;
-    transform: translateY(1rem);
-  }
 `;
-
+export const LendPeriod = styled.p`
+  margin-bottom: 0.5rem;
+`;
 export const LendTitleWrapper = styled.div`
   display: flex;
   /* border: 1px solid black; */

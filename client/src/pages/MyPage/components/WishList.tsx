@@ -3,17 +3,19 @@ import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper, WishCardWrapper } from '../style';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
 
 function WishList() {
   const decrypt = useDecryptToken();
-
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [itemsPerPage] = useState(6);
   const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+  
+  useScrollToTop();
 
   useEffect(() => {
     fetchItemsForPage(currentPage);

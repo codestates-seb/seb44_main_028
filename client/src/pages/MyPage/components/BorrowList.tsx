@@ -33,7 +33,7 @@ function BorrowList() {
   useEffect(() => {
     fetchItemsForPage(currentPage, currentStatus);
     // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
-  }, [currentPage, currentStatus]);
+  }, [currentPage, currentStatus, items]);
 
   const fetchItemsForPage = async (page: number, status: string) => {
     const encryptedAccessToken: string | null =
@@ -55,6 +55,7 @@ function BorrowList() {
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       setItems(response.data.reservations);
+      console.log('api 데이터들', items);
       setTotalItemsCount(response.data.pageInfo.totalElements);
       console.log('product"', response.data);
     } catch (error) {
@@ -103,6 +104,7 @@ function BorrowList() {
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
+
   return (
     <div>
       <BorrowWrapper>

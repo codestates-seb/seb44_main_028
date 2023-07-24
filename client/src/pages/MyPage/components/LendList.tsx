@@ -25,10 +25,16 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const [items, setItems] = useState<lendCardProps[]>([]);
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [currentStatus, setCurrentStatus] = useState(''); //현재상태
-  const [itemsPerPage] = useState(9);
+
+  const [currentStatus, setCurrentStatus] = useState('REQUESTED'); //현재상태
+  const [itemsPerPage] = useState(100);
+
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+
+  const [selectedLendCard, setSelectedLendCard] =
+    useState<lendCardProps | null>(null);
+
   console.log('currentStatus:', currentStatus);
 
   const fetchItemsForPage = async (page: number) => {
@@ -40,6 +46,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products/members`,
         {
+          params: { page: 0, size: 100 },
           headers: { Authorization: `Bearer ${accessToken}` },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
@@ -91,64 +98,76 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
-
+  console.log('sekect', selectedLendCard);
   return (
-    <>
-      <LendListContainer>
-        {isItemCardClicked === true ? (
-          <LendWrapper>
-            <DefaultBtn
-              color={colorPalette.deepMintColor}
-              backgroundColor={colorPalette.whiteColor}
-              onClick={handleReservationRequest}
-            >
-              예약요청
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.deepMintColor}
-              backgroundColor={colorPalette.whiteColor}
-              onClick={handleReservedItems}
-            >
-              예약확정
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.deepMintColor}
-              backgroundColor={colorPalette.whiteColor}
-              onClick={handleCanceledItems}
-            >
-              거절한 예약
-            </DefaultBtn>
-            <DefaultBtn
-              color={colorPalette.deepMintColor}
-              backgroundColor={colorPalette.whiteColor}
-              onClick={handleCompletedItems}
-            >
-              지난예약
-            </DefaultBtn>
-          </LendWrapper>
-        ) : null}
-        <LendListWrapper>
-          {items?.map((item, index) => (
+    <WishListWrapper>
+      {isItemCardClicked === true ? (
+        <LendWrapper>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleReservationRequest}
+          >
+            예약요청
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleReservedItems}
+          >
+            예약확정
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleCanceledItems}
+          >
+            거절한 예약
+          </DefaultBtn>
+          <DefaultBtn
+            color={colorPalette.deepMintColor}
+            backgroundColor={colorPalette.whiteColor}
+            onClick={handleCompletedItems}
+          >
+            지난예약
+          </DefaultBtn>
+        </LendWrapper>
+      ) : null}
+      <LendListWrapper>
+        {isItemCardClicked && selectedLendCard ? (
+          <LendCard
+            lendCardData={selectedLendCard}
+            setIsItemCardClicked={setIsItemCardClicked}
+            setSelectedLendCard={setSelectedLendCard}
+            currentStatus={currentStatus}
+          />
+        ) : (
+          items?.map((item, index) => (
             <LendCard
               key={index}
               lendCardData={item}
               isItemCardClicked={isItemCardClicked}
               setIsItemCardClicked={setIsItemCardClicked}
+              setSelectedLendCard={setSelectedLendCard}
+              currentStatus={currentStatus}
+              setCurrentStatus={setCurrentStatus}
             />
-          ))}
-          {/* {LENDCARD_DATA.map((item, index) => (
+          ))
+        )}
+        {/* {LENDCARD_DATA.map((item, index) => (
           <LendCard key={index} lendCardData={item} />
         ))} */}
-        </LendListWrapper>
-      </LendListContainer>
-      <Paging
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-        itemsPerPage={itemsPerPage}
-        totalItemsCount={totalItemsCount}
-        totalPages={totalPages}
-      />
-    </>
+      </LendListWrapper>
+      {/* <div>
+        <Paging
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          itemsPerPage={itemsPerPage}
+          totalItemsCount={totalItemsCount}
+          totalPages={totalPages}
+        />
+      </div> */}
+    </WishListWrapper>
   );
 }
 
