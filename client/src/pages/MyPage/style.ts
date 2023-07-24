@@ -344,6 +344,9 @@ export const LendListWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 `;
+export const LendListContainer = styled.div`
+  display: flex;
+`;
 //BorrowList
 
 export const BorrowWrapper = styled.div`

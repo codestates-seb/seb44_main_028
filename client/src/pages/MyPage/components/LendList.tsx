@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
-import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
+import {
+  WishListWrapper,
+  LendListWrapper,
+  LendWrapper,
+  LendListContainer,
+} from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import LendCard from '../../../common/components/MypageCard/LendCard';
@@ -88,62 +93,62 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   };
 
   return (
-    <WishListWrapper>
-      {isItemCardClicked === true ? (
-        <LendWrapper>
-          <DefaultBtn
-            color={colorPalette.deepMintColor}
-            backgroundColor={colorPalette.whiteColor}
-            onClick={handleReservationRequest}
-          >
-            예약요청
-          </DefaultBtn>
-          <DefaultBtn
-            color={colorPalette.deepMintColor}
-            backgroundColor={colorPalette.whiteColor}
-            onClick={handleReservedItems}
-          >
-            예약확정
-          </DefaultBtn>
-          <DefaultBtn
-            color={colorPalette.deepMintColor}
-            backgroundColor={colorPalette.whiteColor}
-            onClick={handleCanceledItems}
-          >
-            거절한 예약
-          </DefaultBtn>
-          <DefaultBtn
-            color={colorPalette.deepMintColor}
-            backgroundColor={colorPalette.whiteColor}
-            onClick={handleCompletedItems}
-          >
-            지난예약
-          </DefaultBtn>
-        </LendWrapper>
-      ) : null}
-      <LendListWrapper>
-        {items?.map((item, index) => (
-          <LendCard
-            key={index}
-            lendCardData={item}
-            isItemCardClicked={isItemCardClicked}
-            setIsItemCardClicked={setIsItemCardClicked}
-          />
-        ))}
-        {/* {LENDCARD_DATA.map((item, index) => (
+    <>
+      <LendListContainer>
+        {isItemCardClicked === true ? (
+          <LendWrapper>
+            <DefaultBtn
+              color={colorPalette.deepMintColor}
+              backgroundColor={colorPalette.whiteColor}
+              onClick={handleReservationRequest}
+            >
+              예약요청
+            </DefaultBtn>
+            <DefaultBtn
+              color={colorPalette.deepMintColor}
+              backgroundColor={colorPalette.whiteColor}
+              onClick={handleReservedItems}
+            >
+              예약확정
+            </DefaultBtn>
+            <DefaultBtn
+              color={colorPalette.deepMintColor}
+              backgroundColor={colorPalette.whiteColor}
+              onClick={handleCanceledItems}
+            >
+              거절한 예약
+            </DefaultBtn>
+            <DefaultBtn
+              color={colorPalette.deepMintColor}
+              backgroundColor={colorPalette.whiteColor}
+              onClick={handleCompletedItems}
+            >
+              지난예약
+            </DefaultBtn>
+          </LendWrapper>
+        ) : null}
+        <LendListWrapper>
+          {items?.map((item, index) => (
+            <LendCard
+              key={index}
+              lendCardData={item}
+              isItemCardClicked={isItemCardClicked}
+              setIsItemCardClicked={setIsItemCardClicked}
+            />
+          ))}
+          {/* {LENDCARD_DATA.map((item, index) => (
           <LendCard key={index} lendCardData={item} />
         ))} */}
-      </LendListWrapper>
-      <div>
-        <Paging
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          itemsPerPage={itemsPerPage}
-          totalItemsCount={totalItemsCount}
-          totalPages={totalPages}
-        />
-      </div>
-    </WishListWrapper>
+        </LendListWrapper>
+      </LendListContainer>
+      <Paging
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        itemsPerPage={itemsPerPage}
+        totalItemsCount={totalItemsCount}
+        totalPages={totalPages}
+      />
+    </>
   );
 }
 

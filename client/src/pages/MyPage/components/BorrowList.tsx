@@ -25,9 +25,6 @@ function BorrowList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(9);
   const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
-  // const [totalItemsCount, setTotalItemsCount] = useState(
-  //   BORROWCARD_DATA.length,
-  // );
   const [currentStatus, setCurrentStatus] = useState('REQUESTED');
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
   console.log('currentStatus:', currentStatus);
@@ -59,6 +56,7 @@ function BorrowList() {
       ); // 실제 API 엔드포인트에 맞게 수정
       setItems(response.data.reservations);
       setTotalItemsCount(response.data.pageInfo.totalElements);
+      console.log('product"', response.data);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
@@ -72,26 +70,26 @@ function BorrowList() {
   const handleReservationRequest = () => {
     //예약 요청을 누르면 실행되는 함수
     setCurrentStatus('REQUESTED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('예약요청:', items);
   };
   const handleReservedItems = () => {
     setCurrentStatus('RESERVED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('예약확정:', items);
   };
   const handleInUseItems = () => {
     setCurrentStatus('INUSE');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('사용중인 플레이팩:', items);
   };
 
   const handleCompletedItems = () => {
     setCurrentStatus('COMPLETED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('사용 완료한 플레이팩:', items);
     // handlePageChange(currentPage);
@@ -99,7 +97,7 @@ function BorrowList() {
   };
   const handleCanceledItems = () => {
     setCurrentStatus('CANCELED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('예약 취소한 내역:', items);
     // handlePageChange(currentPage);
@@ -154,10 +152,6 @@ function BorrowList() {
           <BorrowCard key={index} borrowCardData={item} />
         ))}
       </BorrowCardWrappre>
-      {/* {BORROWCARD_DATA.map((item, index) => (
-          <BorrowCard key={index} borrowCardData={item} />
-        ))}
-    
       {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal> */}
