@@ -30,6 +30,7 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 import WithDrawalBtn from './WithdrawalBtn';
+import { useQueryClient } from 'react-query';
 
 function ProfileEdit() {
   useScrollToTop();
