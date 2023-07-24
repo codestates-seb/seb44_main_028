@@ -22,10 +22,14 @@ import { processDataWithRegex } from '../../utils/helperFunctions/processDataWit
 const LendCard = ({
   lendCardData,
   setIsItemCardClicked,
+  setSelectedLendCard,
 }: {
   lendCardData: lendCardProps;
-  isItemCardClicked: boolean;
+  isItemCardClicked?: boolean;
   setIsItemCardClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedLendCard: React.Dispatch<
+    React.SetStateAction<lendCardProps | null>
+  >;
 }) => {
   console.log('lendCardData:', lendCardData);
   const decrypt = useDecryptToken();
@@ -108,6 +112,7 @@ const LendCard = ({
   const handleProductClick = (e: any) => {
     setCurrentStatus('REQUESTED');
     setIsItemCardClicked(true);
+    setSelectedLendCard(lendCardData);
     console.log('handleProductClick을 눌렀습니다.:', e.target.value);
   };
 

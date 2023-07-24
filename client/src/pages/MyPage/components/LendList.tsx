@@ -19,11 +19,15 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
 
   const [items, setItems] = useState<lendCardProps[]>([]);
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [currentStatus, setCurrentStatus] = useState(''); //현재상태
+  const [currentPage, setCurrentPage] = useState(0); //현재페이지
+  const [currentStatus, setCurrentStatus] = useState('REQUESTED'); //현재상태
   const [itemsPerPage] = useState(3);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+
+  const [selectedLendCard, setSelectedLendCard] =
+    useState<lendCardProps | null>(null);
+
   console.log('currentStatus:', currentStatus);
 
   const fetchItemsForPage = async (page: number) => {
@@ -86,7 +90,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
-
+  console.log('sekect', selectedLendCard);
   return (
     <WishListWrapper>
       {isItemCardClicked === true ? (
@@ -122,14 +126,23 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
         </LendWrapper>
       ) : null}
       <LendListWrapper>
-        {items?.map((item, index) => (
+        {isItemCardClicked && selectedLendCard ? (
           <LendCard
-            key={index}
-            lendCardData={item}
-            isItemCardClicked={isItemCardClicked}
+            lendCardData={selectedLendCard}
             setIsItemCardClicked={setIsItemCardClicked}
+            setSelectedLendCard={setSelectedLendCard}
           />
-        ))}
+        ) : (
+          items?.map((item, index) => (
+            <LendCard
+              key={index}
+              lendCardData={item}
+              isItemCardClicked={isItemCardClicked}
+              setIsItemCardClicked={setIsItemCardClicked}
+              setSelectedLendCard={setSelectedLendCard}
+            />
+          ))
+        )}
         {/* {LENDCARD_DATA.map((item, index) => (
           <LendCard key={index} lendCardData={item} />
         ))} */}
