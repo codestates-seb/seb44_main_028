@@ -19,9 +19,9 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
 
   const [items, setItems] = useState<lendCardProps[]>([]);
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0); //현재페이지
+  const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [currentStatus, setCurrentStatus] = useState('REQUESTED'); //현재상태
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(100);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
@@ -39,6 +39,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products/members`,
         {
+          params: { page: 0, size: 100 },
           headers: { Authorization: `Bearer ${accessToken}` },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
@@ -131,6 +132,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
             lendCardData={selectedLendCard}
             setIsItemCardClicked={setIsItemCardClicked}
             setSelectedLendCard={setSelectedLendCard}
+            currentStatus={currentStatus}
           />
         ) : (
           items?.map((item, index) => (
@@ -140,6 +142,8 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
               isItemCardClicked={isItemCardClicked}
               setIsItemCardClicked={setIsItemCardClicked}
               setSelectedLendCard={setSelectedLendCard}
+              currentStatus={currentStatus}
+              setCurrentStatus={setCurrentStatus}
             />
           ))
         )}
@@ -147,7 +151,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
           <LendCard key={index} lendCardData={item} />
         ))} */}
       </LendListWrapper>
-      <div>
+      {/* <div>
         <Paging
           currentPage={currentPage}
           onPageChange={handlePageChange}
@@ -155,7 +159,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
           totalItemsCount={totalItemsCount}
           totalPages={totalPages}
         />
-      </div>
+      </div> */}
     </WishListWrapper>
   );
 }

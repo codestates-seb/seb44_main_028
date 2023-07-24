@@ -37,6 +37,7 @@ import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import { useDispatch } from 'react-redux';
 import { createLenderInfo } from '../store/CurrentLenderInfo';
+import { addressForMatter } from '../../MyPage/helper/addressForMatter';
 
 const ItemContent = () => {
   const { data: userData } = useGetMe();
@@ -127,7 +128,7 @@ const ItemContent = () => {
               {/* 유저 정보 */}
               <ItemUserInfo
                 userName={data.username}
-                address={data.address}
+                address={addressForMatter(data.address)}
                 userImage={data.userImage}
               />
               {/* 가격 정보 */}

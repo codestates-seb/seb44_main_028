@@ -9,6 +9,7 @@ import { StartEndDateProps } from '../model/IStartEndDateProps';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMonthlyReservation } from '../store/MonthlyReservationStore';
 import { RootState } from '../../../common/store/RootStore';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 const convertStringToDateObject = (dateStr: string) => {
   const dateParts = dateStr.split('-');
@@ -31,7 +32,7 @@ const convertReservationDates = (reservations: any) => {
 function BookingPage() {
   // GET요청으로 기존 예약 정보 가져오기
   const dispatch = useDispatch();
-
+  useScrollToTop();
   interface IMonthlyReservation {
     productTitle: string;
     baseFee: number;

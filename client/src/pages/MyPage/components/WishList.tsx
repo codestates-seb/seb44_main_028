@@ -3,8 +3,10 @@ import Paging from './Paging';
 import axios from 'axios';
 import { WishListWrapper } from '../style';
 import ItemCard from '../../../common/components/ItemCard/ItemCard';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function WishList() {
+  useScrollToTop();
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [itemsPerPage] = useState(3);

@@ -57,10 +57,11 @@ export type ItemCardProps = {
   overdueFee: number;
   content: string;
   minimumRentalPeriod: number;
-  category: number[];
+  category: string[];
   address: string;
   minRental: number;
   image: string;
+  username?: string;
 };
 
 export type lendCardProps = {

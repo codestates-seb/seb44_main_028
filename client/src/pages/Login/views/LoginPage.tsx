@@ -4,8 +4,10 @@ import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import KakaoLogin from '../components/KakaoLogin';
 import { LoginPageContainer } from '../style';
 import { ACCESS_TOKEN } from '../constants';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function LoginPage() {
+  useScrollToTop();
   const navigate = useNavigate();
   const decrypt = useDecryptToken();
   const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN) || '';

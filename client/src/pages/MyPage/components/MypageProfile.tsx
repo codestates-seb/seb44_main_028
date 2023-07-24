@@ -27,8 +27,11 @@ import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
 import { access } from 'fs';
 import { useLocation } from 'react-router-dom';
+import { addressForMatter } from '../helper/addressForMatter';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function MypageProfile() {
+  useScrollToTop();
   const queryClient = useQueryClient();
   const decrypt = useDecryptToken();
 
@@ -138,7 +141,7 @@ function MypageProfile() {
             {isGetLocationData && (
               <LocationContent>
                 <FaMapMarkerAlt />
-                <div>{isGetLocationData}</div>
+                <div>{addressForMatter(isGetLocationData)}</div>
               </LocationContent>
             )}
             <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>

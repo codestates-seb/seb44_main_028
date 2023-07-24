@@ -10,8 +10,10 @@ import { RootState } from '../../../common/store/RootStore';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 const MyPage = () => {
+  useScrollToTop();
   const decrypt = useDecryptToken();
   const navigator = useNavigate();
   const { data: userData } = useGetMe();

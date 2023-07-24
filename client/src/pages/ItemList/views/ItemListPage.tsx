@@ -21,8 +21,10 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import ErrorPage from '../../../common/components/ErrorPage';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function ItemListPage() {
+  useScrollToTop();
   const params = useParams();
   const navigate = useNavigate();
   const [distanceSelectedValue, setDistanceSelectedValue] = useState(
