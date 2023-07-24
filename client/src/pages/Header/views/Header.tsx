@@ -32,6 +32,7 @@ function Header() {
     if (isLoggedIn) {
       dispatch(deleteUserInfo());
       //TODO: "로그아웃 되었습니다."모달창 띄워주기
+      alert('로그아웃 되었습니다.');
     }
     navigate('/login');
   };

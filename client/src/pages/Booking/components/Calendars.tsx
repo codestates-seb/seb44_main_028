@@ -37,7 +37,6 @@ function Calendars() {
           reservationDataFromServer={reservationData2}
         />
       </CalendarWrapper>
-      <button onClick={handleClearReservation}>시작 날짜 재설정</button>
     </CalendarContainer>
   );
 }

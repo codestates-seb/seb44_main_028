@@ -52,10 +52,6 @@ export const BookingDatesForm = styled.form`
   box-shadow: 1px 1px 3px #999;
 `;
 
-export const BookingDatesLabel = styled.label`
-  font-weight: 600;
-`;
-
 export const DatesWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,9 +60,16 @@ export const DatesWrapper = styled.div`
 `;
 
 export const ReservationDate = styled.h6`
+  position: absolute;
   font-size: 20px;
   font-weight: 300;
-  margin-top: 10px;
+  margin-top: 25px;
+`;
+
+export const BookingDatesLabel = styled.label`
+  position: absolute;
+  font-weight: 600;
+  margin-bottom: 25px;
 `;
 
 export const Table = styled.table`
