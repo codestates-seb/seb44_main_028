@@ -59,6 +59,7 @@ function BorrowList() {
         },
       ); // 실제 API 엔드포인트에 맞게 수정
       setItems(response.data.reservations);
+      console.log('api 데이터들', items);
       setTotalItemsCount(response.data.pageInfo.totalElements);
     } catch (error) {
       console.error('Error fetching reservations:', error);

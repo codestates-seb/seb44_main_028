@@ -89,11 +89,16 @@ const BorrowCard = ({
           <ContentWrapper>
             <TitleWrapper>{borrowCardData.title}</TitleWrapper>
             <DatesWrapper>
-              <div>예약기간</div>
               {borrowCardData.status === 'CANCELED' ? (
-                <div>{`${borrowCardData.startDate}`}</div>
+                <>
+                  <div>취소된 날짜</div>
+                  <div>{`${borrowCardData.startDate}`}</div>
+                </>
               ) : (
-                <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+                <>
+                  <div>예약기간</div>
+                  <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+                </>
               )}
             </DatesWrapper>
 
