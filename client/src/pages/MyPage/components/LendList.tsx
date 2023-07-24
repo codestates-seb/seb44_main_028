@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
-import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
+import {
+  WishListWrapper,
+  LendListWrapper,
+  LendWrapper,
+  LendListContainer,
+} from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import LendCard from '../../../common/components/MypageCard/LendCard';
@@ -20,8 +25,10 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const [items, setItems] = useState<lendCardProps[]>([]);
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
+
   const [currentStatus, setCurrentStatus] = useState('REQUESTED'); //현재상태
   const [itemsPerPage] = useState(100);
+
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
