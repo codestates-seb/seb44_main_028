@@ -250,20 +250,22 @@ public class ProductService {
                 throw new BusinessLogicException(MEMBER_NOT_FOUND);
             }
             Member member = memberService.findMember(memberId);
+            Double bound = distance/100;
+
             // 가까운 순 정렬일 때
             if (sortBy == SortBy.distance) {
 
                 // member가 위치를 가지고 있는지 검증
                 validateLocation(member);
                 Page<ProductDto> products = productRepository.findByCategoryIdOrderByDistanceLimitBound(
-                        categoryId, member.getLatitude(), member.getLongitude(), pageable, distance);
+                        categoryId, member.getLatitude(), member.getLongitude(), pageable, bound);
                 return GetProducts.from(products);
             } else if (sortBy == SortBy.totalRateScore) {
                 return GetProducts.from(productRepository
-                        .findByCategoryIdOrderByRateLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, distance));
+                        .findByCategoryIdOrderByRateLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, bound));
             } else {
                 pageable = PageRequest.of(page, size, Sort.by("p." + sortBy.toString()).descending());
-                return GetProducts.from(productRepository.findByCategoryIdLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, distance));
+                return GetProducts.from(productRepository.findByCategoryIdLimitBound(categoryId, member.getLatitude(), member.getLongitude(), pageable, bound));
             }
         }
     }
