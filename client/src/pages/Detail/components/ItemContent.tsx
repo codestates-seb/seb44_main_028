@@ -165,7 +165,7 @@ const ItemContent = () => {
                 >
                   예약하기
                 </BigDefaultBtn>
-                <ChatBtn />
+                {/* <ChatBtn /> */}
               </ItemActionBtn>
             </ItemUserWrapper>
           </ItemInfoWrapper>
