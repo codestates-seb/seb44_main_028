@@ -147,7 +147,7 @@ public class ProductController {
             @CurrentMember(required = false) Long memberId,
             @RequestParam String categoryId,
             @RequestParam(required = false) Double distance,
-            @RequestParam SortBy sortBy,
+            @RequestParam(required = false) SortBy sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         long start = System.currentTimeMillis();
