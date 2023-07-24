@@ -37,7 +37,7 @@ function BorrowList() {
   useEffect(() => {
     fetchItemsForPage(currentPage, currentStatus);
     // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
-  }, [currentPage, currentStatus]);
+  }, [currentPage, currentStatus, items]);
 
   const fetchItemsForPage = async (page: number, status: string) => {
     const encryptedAccessToken: string | null =
@@ -107,6 +107,7 @@ function BorrowList() {
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
+
   return (
     <div>
       <BorrowWrapper>
