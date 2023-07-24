@@ -14,7 +14,7 @@ function WishList() {
   const [itemsPerPage] = useState(6);
   const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
-  
+
   useScrollToTop();
 
   useEffect(() => {
