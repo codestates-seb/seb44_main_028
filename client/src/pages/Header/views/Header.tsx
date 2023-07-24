@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';
 import { MdSearch, MdSend, MdLogout, MdError } from 'react-icons/md';
 import { LogoText, NavMenuList } from '../constants';
+import logo from '../../../assets/logo/logo.svg';
 import {
   HeaderContainer,
   LogoWrapper,
@@ -43,7 +44,9 @@ function Header() {
   return (
     <HeaderContainer>
       <LogoWrapper>
-        <Link to="/">{LogoText}</Link>
+        <Link to="/">
+          <img src={logo}></img>
+        </Link>
       </LogoWrapper>
       <NavWrapper>
         <ol>
