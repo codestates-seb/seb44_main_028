@@ -5,7 +5,7 @@ import Modal from './Modal';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
-import useGetMe from '../../../common/utils/customHooks/useGetMe';
+
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
@@ -19,7 +19,6 @@ interface borrowCardProps {
 }
 function BorrowList() {
   const decrypt = useDecryptToken();
-  const { data: userData } = useGetMe();
 
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);

@@ -21,7 +21,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [currentStatus, setCurrentStatus] = useState(''); //현재상태
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(9);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
   console.log('currentStatus:', currentStatus);

@@ -67,7 +67,7 @@ function ProfileEdit() {
       console.error('업데이트된 유저정보를 가져오는데 실패했습니다.', error);
     }
   }, [decrypt]);
-
+  console.log('newDisplayName:', newDisplayName);
   const onUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const reader = new FileReader();
