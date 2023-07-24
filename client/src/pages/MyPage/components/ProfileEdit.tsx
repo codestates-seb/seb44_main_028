@@ -155,12 +155,6 @@ function ProfileEdit() {
               accept="image/*"
               onChange={onUploadImage}
             />
-            <input
-              type="text"
-              placeholder="닉네임"
-              value={newDisplayName}
-              onChange={onDisplayNameChange}
-            />
           </ProfilerEdit>
           <UploadBtn onClick={onInputButtonClick}>파일 선택</UploadBtn>
         </ProfileSection>
@@ -171,7 +165,12 @@ function ProfileEdit() {
           </NameWrapper>
           <InputWrapper>
             <InputBox>
-              <input type="text" placeholder="닉네임" />
+              <input
+                type="text"
+                placeholder="닉네임"
+                value={newDisplayName}
+                onChange={onDisplayNameChange}
+              />
             </InputBox>
             {/* <TownBtn>내 동네 설정</TownBtn> */}
           </InputWrapper>
