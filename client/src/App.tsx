@@ -40,7 +40,7 @@ function App() {
                 }
               />
             </Routes>
-            <Footer prop1={'플레이 팩'} />
+            {/* <Footer prop1={'플레이 팩'} /> */}
           </WebSocketProvider>
         </BrowserRouter>
       </Provider>
