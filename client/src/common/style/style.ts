@@ -118,6 +118,7 @@ export const ItemCardListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 8.063rem;
+
   & p {
     font-size: 24px;
     margin-bottom: 1.25rem;
@@ -132,6 +133,7 @@ export const ItemCardWrapper = styled.div`
 export const ItemCardContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 2rem;
   width: 22.5rem;
   height: 22rem;
   border-bottom: 1px solid ${colorPalette.borderColor};

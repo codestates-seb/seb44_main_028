@@ -92,11 +92,7 @@ function MypageProfile() {
         `${process.env.REACT_APP_API_URL}/api/members/location`,
         formData,
         { headers: { Authorization: `Bearer ${accessToken}` } },
-        // {
-        //   headers: {
-        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
-        //   },
-        // },
+        //
       )
       .then((res) => {
         console.log(res);
@@ -150,15 +146,6 @@ function MypageProfile() {
           <GradeIcon {...iconProps} />
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
-        {/* <BorrowCard
-          borrowCardData={{
-            title: '감자팔아요',
-            image: '',
-            status: 'REQUESTED',
-            startDate: '2021-01-12',
-            endDate: '2050-12-10',
-          }}
-        /> */}
       </MypageRight>
     </MypageProfileWrapper>
   );
