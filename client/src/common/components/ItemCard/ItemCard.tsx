@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { addInterest, removeInterest } from '../../store/InterestStore';
+import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
@@ -16,33 +14,63 @@ import {
   PriceFavoriteWrapper,
 } from '../../style/style';
 import { ItemCardProps } from '../../type';
-import { INTEREST_KEY } from '../../../pages/Main/constants';
 import { useNavigate } from 'react-router-dom';
+import useDecryptToken from '../../utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../constants';
+import { IInterest } from '../../model/IInterest';
+import useGetMe from '../../utils/customHooks/useGetMe';
+import { addressForMatter } from '../../../pages/MyPage/helper/addressForMatter';
 
 const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const navigate = useNavigate();
-  const storedInterest = localStorage.getItem(INTEREST_KEY);
-  const initialFavorites = storedInterest ? JSON.parse(storedInterest) : [];
-  const [interestItems, setInterestItems] =
-    useState<string[]>(initialFavorites);
-  const dispatch = useDispatch();
+  const [isHeartClicked, setIsHeartClicked] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const [interestId, setInterestId] = useState('');
+  const { data: userData } = useGetMe();
 
   useEffect(() => {
-    localStorage.setItem(INTEREST_KEY, JSON.stringify(interestItems));
-  }, [interestItems]);
+    setIsHeartClicked(isHeartClicked);
+  }, [isHeartClicked]);
 
-  const isInterest = interestItems.includes(itemCardData.productId);
+  useEffect(() => {
+    const decrypt = useDecryptToken();
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN);
+    if (encryptedAccessToken) {
+      const decryptedToken = decrypt(encryptedAccessToken);
+      setAccessToken(decryptedToken);
+    }
+  }, []);
+
+  const { data: interestItems, refetch } = useQuery(
+    'interests',
+    () =>
+      axios.get(`${process.env.REACT_APP_API_URL}/api/members/interests/find`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    {
+      enabled: !!accessToken,
+    },
+  );
   const addInterestMutation = useMutation((productId: string) =>
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/members/interests`, {
-        memberId: '1',
-        productId: productId,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/members/interests`,
+        {
+          productId: productId,
+          memberId: String(userData?.memberId),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
       .then((res) => {
-        const { data } = res;
-        setInterestId(data.interestId);
+        setIsHeartClicked(true);
+        refetch();
       }),
   );
 
@@ -50,44 +78,70 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
     (interestId: string) =>
       axios.delete(`${process.env.REACT_APP_API_URL}/api/members/interests`, {
         data: {
-          memberId: '1', // 멤버 id는 임시로 1로 설정
+          memberId: String(userData?.memberId),
           interestId: interestId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     {
       onError: (error) => {
         console.error('removeInterestMutation error:', error);
       },
+      onSettled: () => {
+        setIsHeartClicked(false);
+        refetch();
+      },
     },
   );
-  const handleHeartClick = () => {
-    if (isInterest) {
-      removeInterestMutation.mutate(interestId);
-      dispatch(removeInterest(interestId));
-      setInterestItems(
-        interestItems.filter((id) => id !== itemCardData.productId),
+  useEffect(() => {
+    if (interestItems && interestItems.data.responses) {
+      const interestList = interestItems.data.responses.find(
+        (interestItem: IInterest) =>
+          interestItem.productId === itemCardData.productId,
       );
+      setIsHeartClicked(!!interestList);
+    }
+  }, [interestItems, itemCardData.productId]);
+  const handleHeartClick = async () => {
+    if (!userData) {
+      navigate('/login');
+      return;
+    }
+    if (!interestItems) {
+      return;
+    }
+    const interestList = interestItems.data.responses.find(
+      (interestItem: IInterest) =>
+        interestItem.productId === itemCardData.productId,
+    );
+
+    if (interestList) {
+      removeInterestMutation.mutate(interestList.interestId);
     } else {
       addInterestMutation.mutate(itemCardData.productId);
-      dispatch(addInterest(itemCardData.productId));
-      setInterestItems([...interestItems, itemCardData.productId]);
     }
   };
+
   const handleItemOnClick = () => {
     navigate(`/detail/${itemCardData.productId}`);
   };
   return (
-    <ItemCardContainer onClick={handleItemOnClick}>
-      <ItemImage src={itemCardData.image}></ItemImage>
+    <ItemCardContainer>
+      <ItemImage
+        src={itemCardData.image}
+        onClick={handleItemOnClick}
+      ></ItemImage>
       <ItemInfo>
         <ItemName>{itemCardData.title}</ItemName>
         <ItemDescription>{itemCardData.content}</ItemDescription>
         <ItemLocationWrapper>
           <MdLocationOn />
-          <span>{itemCardData.address}</span>
+          <span>{addressForMatter(itemCardData.address)}</span>
         </ItemLocationWrapper>
       </ItemInfo>
-      <PriceFavoriteWrapper isHeartClicked={isInterest}>
+      <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>
         <ItemPrice>
           {`최소 대여기간 ${itemCardData.minimumRentalPeriod}일 고정금 ${itemCardData.baseFee}
           만원 / 1일 ${itemCardData.feePerDay}만원`}

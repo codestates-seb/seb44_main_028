@@ -7,7 +7,6 @@ const Paging = ({
   onPageChange,
   itemsPerPage,
   totalItemsCount,
-  totalPages,
 }: PagingType) => {
   const handlePageChange = (page: number) => {
     onPageChange(page);

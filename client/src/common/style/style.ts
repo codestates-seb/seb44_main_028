@@ -118,6 +118,7 @@ export const ItemCardListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 8.063rem;
+
   & p {
     font-size: 24px;
     margin-bottom: 1.25rem;
@@ -132,6 +133,7 @@ export const ItemCardWrapper = styled.div`
 export const ItemCardContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 2rem;
   width: 22.5rem;
   height: 22rem;
   border-bottom: 1px solid ${colorPalette.borderColor};
@@ -148,11 +150,13 @@ export const ItemImage = styled.img`
 export const ItemInfo = styled.div`
   max-width: 13.266rem;
 `;
-export const ItemName = styled.p`
-  width: 22.5rem;
+export const ItemName = styled.div`
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 4.15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 export const ItemDescription = styled.div`
   overflow: hidden;
@@ -174,13 +178,14 @@ export const PriceFavoriteWrapper = styled.div<{ isHeartClicked: boolean }>`
   justify-content: space-between;
   font-size: 12px;
   color: ${colorPalette.heavyColor};
+  font-weight: bold;
   margin-bottom: 1.248rem;
   & svg {
     color: ${(prop) =>
       prop.isHeartClicked
-        ? `${colorPalette.heavyColor}`
+        ? `${colorPalette.itemCardHeartFillColor}`
         : `${colorPalette.itemCardHeartColor}`};
-    font-size: 18px;
+    font-size: 16px;
     transform: translateY(-5px);
     transition: color 0.2s ease-in-out;
   }
@@ -237,6 +242,7 @@ export const Selected = styled.div<{ isClick: boolean }>`
   padding: 0.713rem 0;
   padding-left: 1.75rem;
   padding-right: 0.888rem;
+
   & svg {
     font-size: 1.5rem;
     margin-left: -35px;
@@ -270,6 +276,7 @@ const fadeOut = keyframes`
     }
 `;
 export const OptionWrapper = styled.ul<{ isClick: boolean }>`
+  z-index: 10;
   width: 16.75rem;
   border: ${border.basic};
   position: absolute;
@@ -392,7 +399,6 @@ export const DatesWrapper = styled.div`
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
   div {
-    margin-bottom: -0.5rem;
     transform: translateY(1rem);
   }
 `;
@@ -428,6 +434,7 @@ export const LendCardWrapper = styled.div`
   height: 11rem;
   width: 23rem;
   margin-bottom: 2rem;
+  cursor: pointer;
 `;
 
 export const LendImgWrapper = styled.div`
@@ -456,12 +463,10 @@ export const LendDatesWrapper = styled.div`
   width: 10rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
-  div {
-    margin-bottom: -0.5rem;
-    transform: translateY(1rem);
-  }
 `;
-
+export const LendPeriod = styled.p`
+  margin-bottom: 0.5rem;
+`;
 export const LendTitleWrapper = styled.div`
   display: flex;
   /* border: 1px solid black; */

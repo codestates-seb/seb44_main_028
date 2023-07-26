@@ -4,6 +4,9 @@ import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
 import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/ko';
 import {
   BorrowCardWrapper,
   DatesWrapper,
@@ -14,18 +17,20 @@ import {
   ItemImage,
   BorrowCardContainer,
 } from '../../style/style';
-import { useParams } from 'react-router-dom';
-import BorrowList from '../../../pages/MyPage/components/BorrowList';
-import { set } from 'immer/dist/internal';
+import useDecryptToken from '../../utils/customHooks/useDecryptToken';
+import { ACCESS_TOKEN } from '../../constants';
 
 const BorrowCard = ({
   borrowCardData,
 }: {
   borrowCardData: borrowCardProps;
 }) => {
-  const reservationId = useParams();
+  const now = dayjs();
+
   const [items, setItems] = useState([] as borrowCardProps[]);
-  const [canceled, setCanceled] = useState([]);
+  const [canceled, setCanceled] = useState(false);
+
+  const decrypt = useDecryptToken();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -46,54 +51,39 @@ const BorrowCard = ({
     fetchItems();
   }, []);
 
-  useEffect(() => {
-    reservationCancel();
-  }, [BorrowList]);
+  const reservationCancel = async (reservationId: string) => {
+    const encryptedAccessToken: string | null =
+      localStorage.getItem(ACCESS_TOKEN) || '';
+    const accessToken = decrypt(encryptedAccessToken);
 
-  const reservationCancel = async () => {
     try {
-      await axios.patch(`/api/reservations${reservationId}/cancel`, {
-        canceled: true,
-      });
+      await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/reservations/${reservationId}/cancel`,
+        { params: { status: 'CANCELED' } },
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
       //get 요청으로 취소 내역 가져오기
-      const response = await axios.get(`/api/reservations`);
-      setCanceled(response.data);
+      // 취소 요청 후 items 배열을 업데이트하고 해당 상품을 'CANCELED' 상태로 변경합니다.
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.reservationId === reservationId
+            ? { ...item, status: 'CANCELED' }
+            : item,
+        ),
+      );
     } catch (error) {
-      console.error('취소 내역을 가져오는데 실패했습니다.', error);
+      console.error('취소 요청을 보내는데 실패했습니다.', error);
     }
   };
+
   const handleBorrowCancel = () => {
-    reservationCancel();
+    if (borrowCardData.reservationId) {
+      reservationCancel(borrowCardData.reservationId);
+    } else {
+      console.error('reservationId가 없습니다.');
+    }
   };
 
-  //상품 취소를 누르면 상품이 cancel에 추가되고, 예약내역에 있는 상품은 삭제되어야 함
-  // const handleCancelClick = (reservationId: string) => {
-  //   const itemIndex = items.findIndex((item) => item.reservationId === reservationId);
-
-  //   if (itemIndex !== -1) {
-  //     // 상품이 이미 예약내역에 있는 경우
-  //     setItems((prevItems) => {
-  //       const updatedItems = [...prevItems];
-  //       const updatedItem = { ...updatedItems[itemIndex] };
-  //       updatedItem.quantity -= 1;
-
-  //       if (updatedItem.quantity <= 0) {
-  //         // 수량이 0 이하면 예약내역에서 삭제
-  //         updatedItems.splice(itemIndex, 1);
-  //       } else {
-  //         updatedItems[itemIndex] = updatedItem;
-  //       }
-
-  //       return updatedItems;
-  //     });
-  //   } else {
-  //     // 상품이 새로 추가되는 경우
-  //     setCanceled((prevCanceled) => [
-  //       ...prevCanceled,
-  //       { reservationId: reservationId, quantity: 1 },
-  //     ]);
-  //   }
-  // };
   return (
     <>
       <BorrowCardContainer>
@@ -104,11 +94,20 @@ const BorrowCard = ({
           <ContentWrapper>
             <TitleWrapper>{borrowCardData.title}</TitleWrapper>
             <DatesWrapper>
-              <div>예약기간</div>
               {borrowCardData.status === 'CANCELED' ? (
-                <div>{`${borrowCardData.startDate}`}</div>
+                <>
+                  <div>취소된 날짜</div>
+                  <div>
+                    <span className="product-date">
+                      {now.format('YYYY.MM.DD')}
+                    </span>
+                  </div>
+                </>
               ) : (
-                <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+                <>
+                  <div>예약기간</div>
+                  <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+                </>
               )}
             </DatesWrapper>
 

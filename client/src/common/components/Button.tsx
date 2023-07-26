@@ -42,6 +42,7 @@ function BigBtn({
   width,
   children,
   onClick,
+  style,
 }: {
   color: string;
   backgroundColor: string;
@@ -50,6 +51,7 @@ function BigBtn({
   width: number;
   children: React.ReactNode;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }) {
   return (
     <BigDefaultBtn
@@ -59,6 +61,7 @@ function BigBtn({
       height={height}
       width={width}
       onClick={onClick}
+      style={style}
     >
       {children}
     </BigDefaultBtn>

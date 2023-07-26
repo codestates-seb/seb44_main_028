@@ -9,9 +9,6 @@ import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage,String> {
 
-
-    List<ChatMessage> findByRoomId(String roomId);
-
-    @Query("SELECT cm FROM ChatMessage cm JOIN ChatRoomMembers crm ON cm.roomId = crm.chatroom.chatroomId WHERE crm.member.memberId = :memberId ")
+    @Query("SELECT cm FROM ChatMessage cm JOIN ChatRoomMembers crm ON cm.chatroom.chatroomId = crm.chatroom.chatroomId WHERE crm.member.memberId = :memberId ")
     List<ChatMessage> findByMemberId(@Param("memberId") long memberId);
 }

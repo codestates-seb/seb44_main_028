@@ -49,11 +49,21 @@ public interface ChatMapper {
         return response;
     }
 
-    default ResponseDto.ChatRooms ChatRoomsToChatRoomList(List<ChatRoom> chatRooms){
+    default ResponseDto.ChatRooms ChatRoomsToChatRoomList(List<ChatRoom> chatRooms,List<Member> receiverList){
         ResponseDto.ChatRooms responses = new ResponseDto.ChatRooms();
-        for (ChatRoom chatRoom : chatRooms){
-            ResponseDto.ChatRoom chatRoomElement = ChatRoomToResponseChatRoom(chatRoom);
-            responses.addChatRoom(chatRoomElement);
+
+        for (int idx=0;idx<chatRooms.size();idx++){
+            ChatRoom chatRoom = chatRooms.get(idx);
+            Member member= receiverList.get(idx);
+            ResponseDto.ElementOfChatRoomList response = new ResponseDto.ElementOfChatRoomList();
+
+            response.setChatRoomId(chatRoom.getChatroomId());
+            response.setRoomName(chatRoom.getName());
+            response.setRoomName(chatRoom.getName());
+            response.setImageUrl(member.getImageUrl());
+            response.setDisplayName(member.getDisplayName());
+
+            responses.addChatRoom(response);
         }
 
         return responses;

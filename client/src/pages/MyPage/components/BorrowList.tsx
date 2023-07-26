@@ -5,12 +5,12 @@ import Modal from './Modal';
 import { BorrowWrapper, BorrowCardWrappre } from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
-import useGetMe from '../../../common/utils/customHooks/useGetMe';
+
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../Login/constants';
-// import { BORROWCARD_DATA } from '../constants';
 import BorrowCard from '../../../common/components/MypageCard/BorrowCard';
 interface borrowCardProps {
+  reservationId: string;
   title: string;
   image: string;
   status: string;
@@ -19,17 +19,12 @@ interface borrowCardProps {
 }
 function BorrowList() {
   const decrypt = useDecryptToken();
-  const { data: userData } = useGetMe();
 
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<borrowCardProps[]>([]);
-
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(9);
   const [totalItemsCount, setTotalItemsCount] = useState(currentPage);
-  // const [totalItemsCount, setTotalItemsCount] = useState(
-  //   BORROWCARD_DATA.length,
-  // );
   const [currentStatus, setCurrentStatus] = useState('REQUESTED');
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
   console.log('currentStatus:', currentStatus);
@@ -38,7 +33,7 @@ function BorrowList() {
   useEffect(() => {
     fetchItemsForPage(currentPage, currentStatus);
     // 페이지 번호를 인수로 받아 해당 페이지에 해당하는 데이터를 가져오는 방식
-  }, [currentPage, currentStatus]);
+  }, [currentPage, currentStatus, items]);
 
   const fetchItemsForPage = async (page: number, status: string) => {
     const encryptedAccessToken: string | null =
@@ -55,20 +50,14 @@ function BorrowList() {
             status: currentStatus,
           },
           headers: {
-            // Authorization: `Bearer ${accessToken}`,
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
-      console.log(Array.isArray(response.data));
       setItems(response.data.reservations);
+      console.log('api 데이터들', items);
       setTotalItemsCount(response.data.pageInfo.totalElements);
-      console.log('setItems:', response.data);
-      console.log('currentPage:', currentPage);
-      // console.log('currentStatus:', currentStatus);
-      // console.log('totalElements:', response.data);
-      // console.log('totalItemsCount:', totalItemsCount);
-      // console.log('response:', response.data.responses);
+      console.log('product"', response.data);
     } catch (error) {
       console.error('Error fetching reservations:', error);
     }
@@ -76,34 +65,32 @@ function BorrowList() {
   useEffect(() => {
     console.log('렌더링 될 items:', items);
   }, [items]);
-
-  console.log('items:', items);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
   const handleReservationRequest = () => {
     //예약 요청을 누르면 실행되는 함수
     setCurrentStatus('REQUESTED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('예약요청:', items);
   };
   const handleReservedItems = () => {
     setCurrentStatus('RESERVED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('예약확정:', items);
   };
   const handleInUseItems = () => {
     setCurrentStatus('INUSE');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('사용중인 플레이팩:', items);
   };
 
   const handleCompletedItems = () => {
     setCurrentStatus('COMPLETED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('사용 완료한 플레이팩:', items);
     // handlePageChange(currentPage);
@@ -111,12 +98,13 @@ function BorrowList() {
   };
   const handleCanceledItems = () => {
     setCurrentStatus('CANCELED');
-    setCurrentPage(0);
+    setCurrentPage(currentPage);
     setIsOpen(true);
     console.log('예약 취소한 내역:', items);
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
+
   return (
     <div>
       <BorrowWrapper>
@@ -166,10 +154,6 @@ function BorrowList() {
           <BorrowCard key={index} borrowCardData={item} />
         ))}
       </BorrowCardWrappre>
-      {/* {BORROWCARD_DATA.map((item, index) => (
-          <BorrowCard key={index} borrowCardData={item} />
-        ))}
-     
       {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         솔직한 별점을 입력해주세요.
       </Modal> */}

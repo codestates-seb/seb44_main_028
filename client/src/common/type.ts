@@ -7,7 +7,7 @@ export type CategoryButtonProps = {
   imageName: string;
 };
 export type SelectOption = {
-  value: string;
+  value: string | number;
   label: string;
 };
 export type CategoryProps = {
@@ -57,13 +57,15 @@ export type ItemCardProps = {
   overdueFee: number;
   content: string;
   minimumRentalPeriod: number;
-  category: number[];
+  category: string[];
   address: string;
   minRental: number;
   image: string;
+  username?: string;
 };
 
 export type lendCardProps = {
+  productId: string;
   reservationId: string;
   status: string;
   username: string;
@@ -74,7 +76,7 @@ export type lendCardProps = {
 };
 
 export type borrowCardProps = {
-  // reservationId: string;
+  reservationId: string;
   title: string;
   image: string;
   status: string;

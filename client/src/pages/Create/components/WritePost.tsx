@@ -11,7 +11,7 @@ import { BsCheckLg } from 'react-icons/bs';
 import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
-import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
+import CheckBoxList from '../../../common/components/CheckBox/CheckBoxList';
 import {
   CONTENT_DESCRIPTION,
   MAX_IMAGE_COUNT,
@@ -59,10 +59,6 @@ const WritePost = ({
   const initialInputValue =
     typeof productData === 'string' ? defaultInputValues : productData;
   const [inputValues, setInputValues] = useState(initialInputValue);
-  if (typeof productData === 'object') {
-    console.log('productData', productData);
-    console.log('productData-inputValue', inputValues);
-  }
 
   const navigate = useNavigate();
   const params = useParams();
@@ -81,6 +77,7 @@ const WritePost = ({
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
+    reset,
   } = useForm();
 
   // string[] -> File[]
@@ -96,14 +93,10 @@ const WritePost = ({
 
   const productDataImages =
     typeof productData === 'object'
-      ? createFilesFromUrls(
-          productData?.productImages.slice().reverse() as unknown as string[],
-        )
+      ? createFilesFromUrls(productData?.productImages as unknown as string[])
       : [];
   const productShowImages =
-    typeof productData === 'object'
-      ? productData?.productImages.slice().reverse()
-      : [];
+    typeof productData === 'object' ? productData?.productImages : [];
   const [showImages, setShowImages] = useState<string[]>(
     [...productShowImages].slice(0, MAX_IMAGE_COUNT),
   );
@@ -124,7 +117,7 @@ const WritePost = ({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     let newValue: string | number | undefined;
-    console.log(e.target.name);
+
     if (e.target.name === 'minimumRentalPeriod') {
       newValue = /^\d+$/.test(inputValue) ? Number(inputValue) : '';
     } else {
@@ -184,12 +177,26 @@ const WritePost = ({
     if (inputValues.content === '' || selectedCategory.length === 0) {
       return null;
     } else {
+      const parsedInputValues = {
+        ...inputValues,
+        baseFee: inputValues.baseFee ? Number(inputValues.baseFee) : undefined,
+        feePerDay: inputValues.feePerDay
+          ? Number(inputValues.feePerDay)
+          : undefined,
+        overdueFee: inputValues.overdueFee
+          ? Number(inputValues.overdueFee)
+          : undefined,
+        minimumRentalPeriod: inputValues.minimumRentalPeriod
+          ? Number(inputValues.minimumRentalPeriod)
+          : undefined,
+        categoryIds: [...selectedCategory],
+      };
+
       const formData = new FormData();
-      const blobJson = new Blob([JSON.stringify(inputValues)], {
+      const blobJson = new Blob([JSON.stringify(parsedInputValues)], {
         type: 'application/json',
       });
       formData.append('request', blobJson);
-      console.log('inputValues', inputValues);
       for (const image of uploadImages.images) {
         formData.append('images', image);
       }
@@ -199,13 +206,25 @@ const WritePost = ({
         newPost.mutate(formData);
       }
     }
+    reset();
   };
   useEffect(() => {
+    const categoryIds =
+      typeof productData === 'object'
+        ? (productData.categories as unknown as categories[]).map(
+            (cat) => cat.categoryId,
+          )
+        : [];
+    setSelectedCategory(categoryIds);
     setInputValues({
       ...inputValues,
       categoryIds: [...selectedCategory],
     });
-  }, [productData, UploadImage, selectedCategory]);
+  }, [productData]);
+
+  useEffect(() => {
+    setShowImages([...productShowImages].slice(0, MAX_IMAGE_COUNT));
+  }, []);
   return (
     <WritePostContainer onSubmit={handleSubmit(onSubmit)}>
       <UploadImage

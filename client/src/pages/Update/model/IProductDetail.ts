@@ -1,11 +1,12 @@
 export interface IProductDetail {
   title: string;
-  baseFee: number;
-  categories: string[];
+  baseFee: number | string;
+  categories?: string[];
+  categoryIds?: string[] | undefined;
   content: string;
-  feePerDay: number;
+  feePerDay: number | string;
   minimumRentalPeriod: number | string;
-  overdueFee: number;
+  overdueFee: number | string;
   ownerMemberId: number;
   productImages: string[];
   rate: number;

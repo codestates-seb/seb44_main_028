@@ -27,8 +27,11 @@ import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
 import { access } from 'fs';
 import { useLocation } from 'react-router-dom';
+import { addressForMatter } from '../helper/addressForMatter';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function MypageProfile() {
+  useScrollToTop();
   const queryClient = useQueryClient();
   const decrypt = useDecryptToken();
 
@@ -80,13 +83,8 @@ function MypageProfile() {
   );
 
   const encryptedAccessToken: string | null =
-    localStorage.getItem(ACCESS_TOKEN);
-  let accessToken: string | null = null;
-  if (encryptedAccessToken) {
-    accessToken = decrypt(encryptedAccessToken);
-  } else {
-    return null;
-  }
+    localStorage.getItem(ACCESS_TOKEN) || '';
+  const accessToken = decrypt(encryptedAccessToken);
 
   const location = useGeoLocation();
   const formData = new FormData();
@@ -97,11 +95,7 @@ function MypageProfile() {
         `${process.env.REACT_APP_API_URL}/api/members/location`,
         formData,
         { headers: { Authorization: `Bearer ${accessToken}` } },
-        // {
-        //   headers: {
-        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJkaXNwbGF5TmFtZSI6IuuvvO2KuCIsImVtYWlsIjoia2V1bWhlMDExMEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MjgsInN1YiI6ImtldW1oZTAxMTBAZ21haWwuY29tIiwiaWF0IjoxNjg5NzQwOTU1LCJleHAiOjE2ODk3NDI3NTV9.0pjNsb7VIaknXE3ci2tTPCJ9FXc1fJg8lZz65vLjYAUbmAXCpWuot2DAiNQQ6eg07bGkIDAAyybSJkG-7INwqw`,
-        //   },
-        // },
+        //
       )
       .then((res) => {
         console.log(res);
@@ -143,7 +137,7 @@ function MypageProfile() {
             {isGetLocationData && (
               <LocationContent>
                 <FaMapMarkerAlt />
-                <div>{isGetLocationData}</div>
+                <div>{addressForMatter(isGetLocationData)}</div>
               </LocationContent>
             )}
             <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>
@@ -155,15 +149,6 @@ function MypageProfile() {
           <GradeIcon {...iconProps} />
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
-        {/* <BorrowCard
-          borrowCardData={{
-            title: '감자팔아요',
-            image: '',
-            status: 'REQUESTED',
-            startDate: '2021-01-12',
-            endDate: '2050-12-10',
-          }}
-        /> */}
       </MypageRight>
     </MypageProfileWrapper>
   );

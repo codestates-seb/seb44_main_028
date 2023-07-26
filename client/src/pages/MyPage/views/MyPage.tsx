@@ -10,8 +10,10 @@ import { RootState } from '../../../common/store/RootStore';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 const MyPage = () => {
+  useScrollToTop();
   const decrypt = useDecryptToken();
   const navigator = useNavigate();
   const { data: userData } = useGetMe();
@@ -28,13 +30,9 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const encryptedAccessToken: string | null =
-        localStorage.getItem(ACCESS_TOKEN);
-      let accessToken: string | null = null;
-      if (encryptedAccessToken) {
-        accessToken = decrypt(encryptedAccessToken);
-      } else {
-        return;
-      }
+        localStorage.getItem(ACCESS_TOKEN) || '';
+      const accessToken = decrypt(encryptedAccessToken);
+
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/members`,
@@ -43,6 +41,10 @@ const MyPage = () => {
               Authorization: `Bearer ${accessToken}`,
             },
           },
+          // {
+          //   headers: {
+          //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
+          //   },}
         );
         setProfileData(response.data);
         console.log('setProfileData:', response.data);
@@ -64,7 +66,7 @@ const MyPage = () => {
       </ProfileWrapper>
       <EditWrapper onClick={handleEditProfile}>회원 정보 수정</EditWrapper>
 
-      <ParentTap />
+      <ParentTap lendCardData={[]} />
     </div>
   );
 };

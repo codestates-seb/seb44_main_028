@@ -71,4 +71,12 @@ public class InterestDto {
             this.responses.add(responseDto);
         }
     }
+    @Getter
+    @Setter
+    public static class Responses2Dto{
+        private ArrayList<GetResponseDto> responses = new ArrayList<>();
+        public void addResponse(GetResponseDto responseDto){
+            this.responses.add(responseDto);
+        }
+    }
 }

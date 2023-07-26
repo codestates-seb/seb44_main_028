@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';
 import { MdSearch, MdSend, MdLogout, MdError } from 'react-icons/md';
 import { LogoText, NavMenuList } from '../constants';
+import logo from '../../../assets/logo/logo.svg';
 import {
   HeaderContainer,
   LogoWrapper,
@@ -31,6 +32,7 @@ function Header() {
     if (isLoggedIn) {
       dispatch(deleteUserInfo());
       //TODO: "로그아웃 되었습니다."모달창 띄워주기
+      alert('로그아웃 되었습니다.');
     }
     navigate('/login');
   };
@@ -43,7 +45,9 @@ function Header() {
   return (
     <HeaderContainer>
       <LogoWrapper>
-        <Link to="/">{LogoText}</Link>
+        <Link to="/">
+          <img src={logo}></img>
+        </Link>
       </LogoWrapper>
       <NavWrapper>
         <ol>

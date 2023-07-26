@@ -3,12 +3,37 @@ import BookingDates from '../components/BookingDates';
 import Calendars from '../components/Calendars';
 import ReservationBtn from '../components/ReservationBtn';
 import { BookingPageContainer } from '../style';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { StartEndDateProps } from '../model/IStartEndDateProps';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMonthlyReservation } from '../store/MonthlyReservationStore';
 import { RootState } from '../../../common/store/RootStore';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
+import { clearReservationDates } from '../store/ReservationDateStore';
+import styled from 'styled-components';
+
+export const ProductInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+`;
+
+export const ProductInfoTitle = styled.p`
+  margin: 0 0 20px 0;
+  padding: 10px;
+  font-size: 18px;
+`;
+
+export const ProductInfo = styled.p`
+  margin: 10px;
+  padding: 10px;
+  font-size: 15px;
+`;
 
 const convertStringToDateObject = (dateStr: string) => {
   const dateParts = dateStr.split('-');
@@ -31,6 +56,15 @@ const convertReservationDates = (reservations: any) => {
 function BookingPage() {
   // GET요청으로 기존 예약 정보 가져오기
   const dispatch = useDispatch();
+
+  useScrollToTop();
+
+  const location = useLocation();
+  useEffect(() => {
+    return () => {
+      dispatch(clearReservationDates());
+    };
+  }, [location]);
 
   interface IMonthlyReservation {
     productTitle: string;
@@ -88,11 +122,19 @@ function BookingPage() {
     <BookingPageContainer>
       <BookingDates />
       <Calendars />
-      <h1>productTitle: {monthlyReservation.productTitle}</h1>
-      <h1>baseFee: {monthlyReservation.baseFee}원</h1>
-      <h1>feePerDay: {monthlyReservation.feePerDay}원</h1>
-      <h1>minimumRentalPeriod: {monthlyReservation.minimumRentalPeriod}일</h1>
-      <ReservationBtn />
+      <ProductInfoTitle>
+        렌탈 상품명 : {monthlyReservation.productTitle}
+      </ProductInfoTitle>
+      <ProductInfoWrapper>
+        <ProductInfo>기본료 : {monthlyReservation.baseFee}원</ProductInfo>
+        <ProductInfo>1일 사용료 : {monthlyReservation.feePerDay}원</ProductInfo>
+        <ProductInfo>
+          최소 예약 기간 : {monthlyReservation.minimumRentalPeriod}일
+        </ProductInfo>
+      </ProductInfoWrapper>
+      <ReservationBtn
+        minimumRentalPeriod={monthlyReservation.minimumRentalPeriod}
+      />
     </BookingPageContainer>
   );
 }
