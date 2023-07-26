@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,16 @@ public class ReservationService {
     private final ProductService productService;
     private final MailService mailService;
 
+    @Scheduled
+    public void setInuse(){
+
+    }
+
+    @Scheduled
+    public void setCompleted(){
+
+    }
+
     @Transactional
     public CreateReservation.Response createReservation(CreateReservation.Request request,
                                                         String productId,
@@ -48,6 +59,29 @@ public class ReservationService {
         Member member = memberService.findMember(memberId);
         Product product = productService.findProduct(productId);
 
+        int period = validateReservation(request, productId, member, product);
+
+        // 비용계산
+        int overDays = period - product.getMinimumRentalPeriod();
+        int totalFee = product.getBaseFee() + overDays * product.getFeePerDay();
+
+        Reservation reservation = Reservation.builder()
+                .reservationId(UUID.randomUUID().toString())
+                .totalFee(totalFee)
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate().plusDays(1))
+                .status(ReservationStatus.REQUESTED)
+                .member(member)
+                .product(product).build();
+
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+//        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
+
+        return CreateReservation.Response.from(savedReservation);
+    }
+
+    private int validateReservation(CreateReservation.Request request, String productId, Member member, Product product) {
         // 제품의 주인이 예약을 요청할 경우
         if (Objects.equals(product.getMember().getMemberId(), member.getMemberId())) {
             throw new BusinessLogicException(RESERVATION_NOT_ALLOWED);
@@ -68,25 +102,7 @@ public class ReservationService {
         if (checkReservationDuplication(productId, request.getEndDate().plusDays(1), request.getStartDate())) {
             throw new BusinessLogicException(EXIST_RESERVATION);
         }
-
-        // 비용계산
-        int overDays = period.getDays() + 1 - product.getMinimumRentalPeriod();
-        int totalFee = product.getBaseFee() + overDays * product.getFeePerDay();
-
-        Reservation reservation = Reservation.builder()
-                .reservationId(UUID.randomUUID().toString())
-                .totalFee(totalFee)
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate().plusDays(1))
-                .status(ReservationStatus.REQUESTED)
-                .member(member)
-                .product(product).build();
-
-        Reservation savedReservation = reservationRepository.save(reservation);
-
-//        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
-
-        return CreateReservation.Response.from(savedReservation);
+        return period.getDays() + 1;
     }
 
     public boolean checkReservationDuplication(String productId, LocalDate startDate, LocalDate endDate) {
@@ -170,17 +186,10 @@ public class ReservationService {
 
     public GetBorrowReservations getReservationByBorrower(Long memberId, ReservationStatus status,
                                                           int size, int page) {
-        long start1 = System.currentTimeMillis();
         memberService.findMember(memberId);
-        long end1 = System.currentTimeMillis();
-        log.info("findMember total time = {}", end1 - start1);
 
-
-        long start = System.currentTimeMillis();
         Page<BorrowReservationDto> reservations = reservationRepository
                 .findBorrowReservationDtosByMemberId(memberId, status, PageRequest.of(page, size,  Sort.by("createdAt").ascending()));
-        long end = System.currentTimeMillis();
-        log.info("findBorrowReservationDtosByMemberId total time = {}", end - start);
 
         return GetBorrowReservations.from(reservations);
     }

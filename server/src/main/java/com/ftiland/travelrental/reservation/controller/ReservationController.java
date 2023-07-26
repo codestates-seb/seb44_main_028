@@ -15,7 +15,6 @@ import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/reservations")
 @RequiredArgsConstructor
@@ -24,11 +23,9 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/products/{product-id}")
-    public ResponseEntity<CreateReservation.Response> createReservation(
-            @Valid @RequestBody CreateReservation.Request request,
-            @Positive @PathVariable("product-id") String productId,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] createReservation called");
+    public ResponseEntity<?> createReservation(@Valid @RequestBody CreateReservation.Request request,
+                                               @Positive @PathVariable("product-id") String productId,
+                                               @CurrentMember Long memberId) {
 
         CreateReservation.Response response = reservationService.createReservation(request, productId, memberId);
 
@@ -37,85 +34,65 @@ public class ReservationController {
     }
 
     @PatchMapping("/{reservation-id}/cancel")
-    public ResponseEntity<CancelReservation.Response> cancelReservationByBorrower(
-            @Positive @PathVariable("reservation-id") String reservationId,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] cancelReservationByBorrower called");
+    public ResponseEntity<?> cancelReservationByBorrower(@Positive @PathVariable("reservation-id") String reservationId,
+                                                         @CurrentMember Long memberId) {
 
         return ResponseEntity.ok(reservationService.cancelReservationByBorrower(reservationId, memberId));
     }
 
     @PatchMapping("/{reservation-id}/products/{product-id}/cancel")
-    public ResponseEntity<CancelReservation.Response> cancelReservationByLender(
-            @Positive @PathVariable("reservation-id") String reservationId,
-            @Positive @PathVariable("product-id") String productId,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] cancelReservationByLender called");
+    public ResponseEntity<?> cancelReservationByLender(@Positive @PathVariable("reservation-id") String reservationId,
+                                                       @Positive @PathVariable("product-id") String productId,
+                                                       @CurrentMember Long memberId) {
 
         return ResponseEntity.ok(reservationService.cancelReservationByLender(reservationId, productId, memberId));
     }
 
     @PatchMapping("/{reservation-id}/products/{product-id}/accept")
-    public ResponseEntity<AcceptReservation.Response> acceptReservationByLender(
-            @Positive @PathVariable("reservation-id") String reservationId,
-            @Positive @PathVariable("product-id") String productId,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] acceptReservationByLender called");
-
+    public ResponseEntity<?> acceptReservationByLender(@Positive @PathVariable("reservation-id") String reservationId,
+                                                       @Positive @PathVariable("product-id") String productId,
+                                                       @CurrentMember Long memberId) {
         return ResponseEntity.ok(reservationService.acceptReservationByLender(reservationId, productId, memberId));
     }
 
     @GetMapping
-    public ResponseEntity<GetBorrowReservations> getReservationsByBorrower(
-            @RequestParam ReservationStatus status,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "0") int page,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] getReservationsByBorrower called");
-        long start = System.currentTimeMillis();
+    public ResponseEntity<?> getReservationsByBorrower(@RequestParam ReservationStatus status,
+                                                       @RequestParam(defaultValue = "20") int size,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @CurrentMember Long memberId) {
         GetBorrowReservations response = reservationService.getReservationByBorrower(memberId, status, size, page);
-        long end = System.currentTimeMillis();
-        log.info("getReservationByBorrower total time = {}", end - start);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/products/{product-id}")
-    public ResponseEntity<GetLendReservations> getReservationsByLender(
-            @PathVariable("product-id") String productId,
-            @RequestParam ReservationStatus status,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "0") int page,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] getReservationsByLender called");
+    public ResponseEntity<?> getReservationsByLender(@PathVariable("product-id") String productId,
+                                                     @RequestParam ReservationStatus status,
+                                                     @RequestParam(defaultValue = "20") int size,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @CurrentMember Long memberId) {
 
         return ResponseEntity.ok(reservationService.getReservationByLender(memberId, productId, status, size, page));
     }
 
     @GetMapping("/products/{product-id}/calendar")
-    public ResponseEntity<GetReservationsMonth.Response> getReservationsByMonth(
-            @PathVariable("product-id") String productId,
-            @RequestParam String date1,
-            @RequestParam String date2) {
-        log.info("[ReservationController] getReservationsByMonth called");
+    public ResponseEntity<?> getReservationsByMonth(@PathVariable("product-id") String productId,
+                                                    @RequestParam String date1,
+                                                    @RequestParam String date2) {
 
         return ResponseEntity.ok(reservationService.getReservationsByMonth(productId, date1, date2));
     }
 
     @GetMapping("/products/{product-id}/moreCalendar")
-    public ResponseEntity<List<ReservationCalendarDto>> getReservationsByMoreMonth(
-            @PathVariable("product-id") String productId,
-            @RequestParam String date) {
-        log.info("[ReservationController] getReservationsByMoreMonth called");
+    public ResponseEntity<?> getReservationsByMoreMonth(@PathVariable("product-id") String productId,
+                                                        @RequestParam String date) {
 
         return ResponseEntity.ok(reservationService.getReservationByMonth(productId, date));
     }
 
     @PostMapping("/{reservation-id}/rate")
-    public ResponseEntity<Void> rateReservation(
-            @Valid @RequestBody RateReservation.Request request,
-            @Positive @PathVariable("reservation-id") String reservationId,
-            @CurrentMember Long memberId) {
-        log.info("[ReservationController] getReservationsByMoreMonth called");
+    public ResponseEntity<?> rateReservation(@Valid @RequestBody RateReservation.Request request,
+                                             @Positive @PathVariable("reservation-id") String reservationId,
+                                             @CurrentMember Long memberId) {
 
         reservationService.rateReservation(reservationId, memberId, request.getScore());
 
@@ -123,8 +100,7 @@ public class ReservationController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<Long> countAllReservation(@CurrentMember Long memberId) {
-        log.info("[ReservationController] countAllReservation called");
+    public ResponseEntity<?> countAllReservation(@CurrentMember Long memberId) {
 
         return ResponseEntity.ok(reservationService.countAllReservation(memberId));
     }

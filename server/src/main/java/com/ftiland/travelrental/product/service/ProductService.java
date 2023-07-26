@@ -2,30 +2,21 @@ package com.ftiland.travelrental.product.service;
 
 import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.category.dto.CategoryDtoForProductDetail;
-import com.ftiland.travelrental.category.entity.Category;
-import com.ftiland.travelrental.category.repository.CategoryRepository;
 
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
-import com.ftiland.travelrental.common.utils.GeoUtils;
 import com.ftiland.travelrental.image.dto.ImageDto;
-import com.ftiland.travelrental.image.entity.ImageProduct;
-import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.image.service.ImageProductService;
-import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.service.MemberService;
 
 import com.ftiland.travelrental.member.entity.Member;
 
 import com.ftiland.travelrental.product.dto.*;
 import com.ftiland.travelrental.product.entity.Product;
-import com.ftiland.travelrental.product.entity.ProductCategory;
-import com.ftiland.travelrental.product.repository.ProductCategoryRepository;
 import com.ftiland.travelrental.product.repository.ProductRepository;
 import com.ftiland.travelrental.product.sort.SortBy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -45,7 +36,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final MemberService memberService;
     private final ProductCategoryService productCategoryService;
-    private final ImageService imageService;
     private final ImageProductService imageProductService;
 
     @Transactional
@@ -54,9 +44,6 @@ public class ProductService {
         Member member = memberService.findMember(memberId);
 
         validateLocation(member);
-
-        /*Random random = new Random();
-        int totalRateCount = random.nextInt(100) + 1;*/
 
         Product productEntity = Product.builder()
                 .productId(UUID.randomUUID().toString())
@@ -69,9 +56,6 @@ public class ProductService {
                 .totalRateCount(0)
                 .totalRateScore(0)
                 .viewCount(0)
-                /*.totalRateCount(totalRateCount)
-                .totalRateScore(totalRateCount * (random.nextInt(5)+1))
-                .viewCount(random.nextInt(1000))*/
                 .latitude(member.getLatitude())
                 .longitude(member.getLongitude())
                 .address(member.getAddress())
@@ -139,7 +123,7 @@ public class ProductService {
     }
 
     @Transactional
-    @CacheEvict(key = "#productId", value = "products")
+//    @CacheEvict(key = "#productId", value = "products")
     public void deleteProduct(String productId, Long memberId) {
         Member member = memberService.findMember(memberId);
 
@@ -155,19 +139,19 @@ public class ProductService {
                 .orElseThrow(() -> new BusinessLogicException(PRODUCT_NOT_FOUND));
     }
 
-    //@Cacheable(key = "#productId", value = "products")
+    @Cacheable(key = "#productId", value = "products")
     public ProductDetailDto findProductDetail(String productId) {
         log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
         List<CategoryDtoForProductDetail> categories = productCategoryService.findCategoriesByProductId(productId);
 
-        List<String> images = imageService.findImageProducts(productId);
+        List<String> images = imageProductService.findImageProducts(productId);
 
         return ProductDetailDto.from(product, categories, images);
     }
 
-    public GetProducts findProducts(Long memberId, int size, int page) {
+    public GetProducts findProductsByMember(Long memberId, int size, int page) {
         Member member = memberService.findMember(memberId);
 
         Page<ProductDto> products = productRepository.findProductDtosByMemberId(memberId, PageRequest.of(page, size));
