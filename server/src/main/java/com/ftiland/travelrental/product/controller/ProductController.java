@@ -28,8 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -39,18 +37,13 @@ public class ProductController {
 
     private final ProductService productService;
     private final ImageService imageService;
-    private final ProductCategoryService productCategoryService;
-    private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<CreateProduct.Response> createProduct(
-            @Valid @RequestPart CreateProduct.Request request,
-            @RequestPart List<MultipartFile> images,
-            @CurrentMember Long memberId) {
-        log.info("[ProductController] createProduct called");
+    public ResponseEntity<?> createProduct(@Valid @RequestPart CreateProduct.Request request,
+                                           @RequestPart List<MultipartFile> images,
+                                           @CurrentMember Long memberId) {
 
         List<ImageDto> imageDtos = imageService.storeImages(images);
-
         CreateProduct.Response response = productService.createProduct(request, memberId, imageDtos);
 
         URI uri = URI.create(String.format("/api/products/%s", response.getProductId()));
@@ -58,15 +51,12 @@ public class ProductController {
     }
 
     @PatchMapping("/{product-id}")
-    public ResponseEntity<UpdateProduct.Response> updateProduct(@PathVariable("product-id") String productId,
-                                                                @Valid @RequestPart UpdateProduct.Request request,
-                                                                @RequestPart List<MultipartFile> images,
-                                                                @CurrentMember Long memberId) {
-        log.info("[ProductController] updateProduct called");
-
+    public ResponseEntity<?> updateProduct(@PathVariable("product-id") String productId,
+                                           @Valid @RequestPart UpdateProduct.Request request,
+                                           @RequestPart List<MultipartFile> images,
+                                           @CurrentMember Long memberId) {
         // 이미지 저장
         List<ImageDto> imageDtos = imageService.storeImages(images);
-
         UpdateProduct.Response response = productService.updateProduct(request, productId, memberId, imageDtos);
 
         // 이전 이미지 삭제
@@ -76,86 +66,58 @@ public class ProductController {
     }
 
     @DeleteMapping("/{product-id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("product-id") String productId,
-                                              @CurrentMember Long memberId) {
-        log.info("[ProductController] deleteProduct called");
+    public ResponseEntity<?> deleteProduct(@PathVariable("product-id") String productId,
+                                           @CurrentMember Long memberId) {
 
         productService.deleteProduct(productId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{product-id}")
-    public ResponseEntity<ProductDetailDto> findProductDetail(@PathVariable("product-id") String productId,
-                                                              HttpServletRequest request,
-                                                              HttpServletResponse response) {
-        log.info("[ProductController] findProductDetail called");
-        ProductDetailDto productDetail = productService.findProductDetail(productId);
+    public ResponseEntity<?> findProductDetail(@PathVariable("product-id") String productId,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) {
 
+        ProductDetailDto productDetail = productService.findProductDetail(productId);
         // 조회수 로직
         countView(productId, request, response);
-
         return ResponseEntity.ok(productDetail);
     }
 
     @GetMapping("/members")
-    public ResponseEntity<GetProducts> findProducts(@RequestParam(defaultValue = "20") int size,
-                                                    @RequestParam(defaultValue = "0") int page,
-                                                    @CurrentMember Long memberId) {
-        log.info("[ProductController] findProducts called");
+    public ResponseEntity<?> findProducts(@RequestParam(defaultValue = "20") int size,
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @CurrentMember Long memberId) {
 
-        return ResponseEntity.ok(productService.findProducts(memberId, size, page));
+        return ResponseEntity.ok(productService.findProductsByMember(memberId, size, page));
     }
 
     @GetMapping("/featured")
     public ResponseEntity<FeaturedProductsResponseDto> findFeaturedProducts() {
 
-
         FeaturedProductsResponseDto responseDto = productService.findMainPage();
-
-
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<GetProducts> searchProductsByKeyword(
-            @RequestParam("keyword") String keyword,
-            @RequestParam("size") int size,
-            @RequestParam("page") int page) {
-
+    public ResponseEntity<?> searchProductsByKeyword(@RequestParam("keyword") String keyword,
+                                                     @RequestParam("size") int size,
+                                                     @RequestParam("page") int page) {
         Pageable pageable = PageRequest.of(page, size);
-
         GetProducts responseDto = productService.searchProductsByKeyword(keyword, pageable);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-/*    @GetMapping
-    public ResponseEntity<GetProducts> getProductsByCategory(
-            @RequestParam("categoryId") String categoryId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        GetProducts products = productCategoryService.getProductsByCategory(categoryId, pageable);
-
-        return new ResponseEntity(products, HttpStatus.OK);
-    }*/
-
     @GetMapping
-    public ResponseEntity<GetProducts> getProductsByCategoryAndLocation(
-            @CurrentMember(required = false) Long memberId,
-            @RequestParam String categoryId,
-            @RequestParam(required = false) Double distance,
-            @RequestParam(required = false) SortBy sortBy,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        long start = System.currentTimeMillis();
+    public ResponseEntity<?> getProductsByCategoryAndLocation(@CurrentMember(required = false) Long memberId,
+                                                              @RequestParam String categoryId,
+                                                              @RequestParam(required = false) Double distance,
+                                                              @RequestParam SortBy sortBy,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size) {
         GetProducts responseDto = productService
                 .getProductsByCategoryAndLocation(categoryId, memberId, distance, sortBy, size, page);
-        long end = System.currentTimeMillis();
-        log.info("getReservationByBorrower total time = {}", end - start);
-
 
         return new ResponseEntity(responseDto, HttpStatus.OK);
     }

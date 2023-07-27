@@ -209,10 +209,7 @@ public class ImageService {
         return imageProduct;
     }
 
-    // 상품 이미지
-    public List<String> findImageProducts(String productId) {
-        return imageProductRepository.findImageUrlByProductId(productId);
-    }
+
 
     public ImageProduct findFirstImageProduct(String productId) {
         return imageProductRepository.findFirstByProductProductIdOrderByCreatedAtAsc(productId);
