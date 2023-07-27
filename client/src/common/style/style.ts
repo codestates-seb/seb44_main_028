@@ -4,6 +4,7 @@ import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
 import { borderRadius } from '../utils/enum/borderRadius';
+import { WishCardWrapper } from '../../pages/MyPage/style';
 
 // ScrollToTop 컴포넌트의 스타일을 정의
 export const ScrollToTopButtonContainer = styled.div`
@@ -426,6 +427,9 @@ export const ButtonWapper = styled.div`
   }
 `;
 //LendCard
+export const WishListWrapper = styled.div``;
+export const LendWrapper = styled.div``;
+export const LendListWrapper = styled.div``;
 export const LendCardWrapper = styled.div`
   display: flex;
   align-items: center;

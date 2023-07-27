@@ -27,6 +27,11 @@ const LendCard = ({
   currentStatus,
   setCurrentStatus,
   isItemCardClicked,
+  setReqeustList,
+  setConfirmList,
+  setRejectedList,
+  setPastList,
+  handleProductClick,
 }: {
   lendCardData: lendCardProps;
   isItemCardClicked?: boolean;
@@ -36,6 +41,11 @@ const LendCard = ({
   >;
   currentStatus?: string | undefined;
   setCurrentStatus?: React.Dispatch<React.SetStateAction<string>>;
+  setReqeustList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  setConfirmList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  setRejectedList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  setPastList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  handleProductClick?: any;
 }) => {
   console.log('lendCardData:', lendCardData);
   const decrypt = useDecryptToken();
@@ -44,10 +54,10 @@ const LendCard = ({
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(0);
   const [reservation, setReservation] = useState<ILendCard[]>([]);
-  const [requestList, setReqeustList] = useState([]);
-  const [confirmList, setConfirmList] = useState([]);
-  const [rejectedList, setRejectedList] = useState([]);
-  const [pastList, setPastList] = useState([]);
+  // const [requestList, setReqeustList] = useState([]);
+  // const [confirmList, setConfirmList] = useState([]);
+  // const [rejectedList, setRejectedList] = useState([]);
+  // const [pastList, setPastList] = useState([]);
 
   console.log('currentStatus:', currentStatus);
 
@@ -65,15 +75,17 @@ const LendCard = ({
             headers: { Authorization: `Bearer ${accessToken}` },
           },
         );
-        if (currentStatus === 'REQUESTED') {
+
+        if (currentStatus === 'REQUESTED' && setReqeustList) {
           setReqeustList(response.data.reservations);
-        } else if (currentStatus === 'RESERVED') {
-          setReqeustList(response.data.reservations);
-        } else if (currentStatus === 'COMPLETED') {
-          setReqeustList(response.data.reservations);
-        } else if (currentStatus === 'CANCELED') {
-          setReqeustList(response.data.reservations);
+        } else if (currentStatus === 'RESERVED' && setPastList) {
+          setPastList(response.data.reservations);
+        } else if (currentStatus === 'COMPLETED' && setConfirmList) {
+          setConfirmList(response.data.reservations);
+        } else if (currentStatus === 'CANCELED' && setRejectedList) {
+          setRejectedList(response.data.reservations);
         }
+
         if (reservation) console.log('받아온거', reservation);
       } catch (error) {
         console.error('아이템을 불러올 수없습니다.', error);
@@ -135,12 +147,12 @@ const LendCard = ({
   //     }
   //   };
 
-  const handleProductClick = (e: any) => {
-    //setCurrentStatus('REQUESTED');
-    setIsItemCardClicked(true);
-    setSelectedLendCard(lendCardData);
-    console.log('handleProductClick을 눌렀습니다.:', e.target.value);
-  };
+  // const handleProductClick = (e: any) => {
+  //   //setCurrentStatus('REQUESTED');
+  //   setIsItemCardClicked(true);
+  //   setSelectedLendCard(lendCardData);
+  //   console.log('handleProductClick을 눌렀습니다.:', e.target.value);
+  // };
 
   return (
     <>

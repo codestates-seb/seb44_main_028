@@ -36,14 +36,12 @@ function ItemListPage() {
 
   const { data: userData } = useGetMe();
   const [page, setPage] = useState(0);
-  const size = 3;
+  const size = 5;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const [queryParams, setQueryParams] = useState<queryParams>({
-    // page: page,
-    // size: size,
     categoryId: params.categoryId,
     sortBy: PRODUCT_FILTER_OPTIONS.find(
       (option) => option.label === productFilterSelectedValue,
@@ -58,35 +56,46 @@ function ItemListPage() {
       setAccessToken(decryptedToken);
     }
   }, []);
-
+  // useEffect(() => {
+  //   setPage(0);
+  //   console.log('item~이지롱', items);
+  // }, [distanceSelectedValue, productFilterSelectedValue]);
   const {
     data: products,
     isLoading,
     error,
     isFetching,
     refetch,
-  } = useQuery([JSON.stringify(queryParams), page, size], async () => {
-    try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/products?page=${page}&size=${size}`,
-        {
-          params: queryParams,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
+  } = useQuery(
+    [queryParams.categoryId, queryParams.sortBy, queryParams.distance, page],
+    async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/products?page=${page}&size=${size}`,
+          {
+            params: {
+              categoryId: queryParams.categoryId,
+              sortBy: queryParams.sortBy,
+              distance: queryParams.distance,
+            },
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
           },
-        },
-      );
-      const newDatas = res.data.products;
-      const filteredProducts = newDatas.filter(
-        (newData: ItemCardProps) =>
-          !items.some((item) => item.productId === newData.productId),
-      );
-      setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
-      return res.data.products;
-    } catch (err) {
-      console.log('err', err);
-    }
-  });
+        );
+        const newDatas = res.data.products;
+        const filteredProducts = newDatas.filter(
+          (newData: ItemCardProps) =>
+            !items.some((item) => item.productId === newData.productId),
+        );
+        setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
+        console.log(products);
+        return res.data.products;
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
+  );
 
   useEffect(() => {
     // 멤버 유저 아닌 경우
@@ -120,6 +129,7 @@ function ItemListPage() {
     }));
     refetch();
   }, [productFilterSelectedValue]);
+
   useEffect(() => {
     function handleScroll() {
       if (
@@ -130,17 +140,8 @@ function ItemListPage() {
         if (!isFetching) {
           setPage((prevPage) => prevPage + 1);
         }
-        // const { scrollY, innerHeight, scrollHeight } =
-        //   window as unknown as Window & {
-        //     scrollHeight: number;
-        //   };
-        // const isNearBottom = scrollY + innerHeight >= scrollHeight - 100; // You can adjust the threshold (100) if needed.
-        // if (isNearBottom && !isFetching) {
-        //   setPage((prevPage) => prevPage + 1);
-        // }
       }
     }
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
