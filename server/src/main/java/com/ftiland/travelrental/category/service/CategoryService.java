@@ -20,7 +20,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    //@Cacheable(value = "categories")
+    @Cacheable(value = "categories")
     public List<CategoryDto> findCategoriesAll() {
         return categoryRepository.findAll().stream()
                 .map(CategoryDto::from)

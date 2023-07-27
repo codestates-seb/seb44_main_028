@@ -27,8 +27,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.ftiland.travelrental.common.exception.ExceptionCode.*;
-import static com.ftiland.travelrental.reservation.status.ReservationStatus.CANCELED;
-import static com.ftiland.travelrental.reservation.status.ReservationStatus.RESERVED;
+import static com.ftiland.travelrental.reservation.status.ReservationStatus.*;
 
 
 @Service
@@ -42,14 +41,18 @@ public class ReservationService {
     private final ProductService productService;
     private final MailService mailService;
 
-    @Scheduled
+    @Scheduled(cron = "0 0 0 * * *")
     public void setInuse(){
-
+        reservationRepository.findReservationByStatus(RESERVED).stream()
+                .filter(r -> r.getStartDate().isAfter(LocalDate.now().minusDays(1)))
+                .forEach(r -> r.setStatus(INUSE));
     }
 
-    @Scheduled
+    @Scheduled(cron = "0 1 0 * * *")
     public void setCompleted(){
-
+        reservationRepository.findReservationByStatus(INUSE).stream()
+                .filter(r -> r.getEndDate().isBefore(LocalDate.now()))
+                .forEach(r -> r.setStatus(COMPLETED));
     }
 
     @Transactional
@@ -76,7 +79,7 @@ public class ReservationService {
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
-//        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
+        mailService.sendMail(product.getMember().getEmail(), member.getDisplayName(), product.getTitle());
 
         return CreateReservation.Response.from(savedReservation);
     }

@@ -7,6 +7,8 @@ import com.ftiland.travelrental.product.entity.Product;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
+
 @Mapper(componentModel = "spring")
 public interface InterestMapper {
     default InterestDto.PostResponseDto interestToPostResponseDto(Interest interest) {
@@ -54,10 +56,11 @@ public interface InterestMapper {
         responses.setPageInfo(pageInfo);
         return responses;
     }
-    default InterestDto.Responses2Dto interestsToResponses2Dto ( ArrayList<Interest> interests){
+
+    default InterestDto.Responses2Dto interestsToResponses2Dto(ArrayList<Interest> interests) {
         InterestDto.Responses2Dto responses = new InterestDto.Responses2Dto();
 
-        for(Interest interest : interests){
+        for (Interest interest : interests) {
             InterestDto.GetResponseDto response = interestToGetResponseDto(interest);
             //ImageProduct image = imageService.findMainImageProduct(interest.getProduct().getProductId());
 

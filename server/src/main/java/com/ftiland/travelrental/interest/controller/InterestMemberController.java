@@ -39,11 +39,7 @@ public class InterestMemberController {
     public ResponseEntity getInterest(@CurrentMember Long memberId,
                                       @Param("page") @Positive Integer page,
                                       @Param("size") @Positive Integer size) {
-        long start = System.currentTimeMillis();
         InterestDto.ResponsesDto responses = interestService.findInterest(memberId, page, size);
-        long end = System.currentTimeMillis();
-        log.info("findInterest total time = {}", end - start);
-
 
         return new ResponseEntity(responses, HttpStatus.OK);
     }

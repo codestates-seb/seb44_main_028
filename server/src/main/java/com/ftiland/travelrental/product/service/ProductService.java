@@ -17,8 +17,10 @@ import com.ftiland.travelrental.product.repository.ProductRepository;
 import com.ftiland.travelrental.product.sort.SortBy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +88,7 @@ public class ProductService {
     }
 
     @Transactional
-    //@CacheEvict(key = "#productId", value = "products")
+    @CacheEvict(key = "#productId", value = "products")
     public UpdateProduct.Response updateProduct(UpdateProduct.Request request,
                                                 String productId,
                                                 Long memberId,
@@ -123,7 +125,7 @@ public class ProductService {
     }
 
     @Transactional
-//    @CacheEvict(key = "#productId", value = "products")
+    @CacheEvict(key = "#productId", value = "products")
     public void deleteProduct(String productId, Long memberId) {
         Member member = memberService.findMember(memberId);
 
@@ -141,7 +143,6 @@ public class ProductService {
 
     @Cacheable(key = "#productId", value = "products")
     public ProductDetailDto findProductDetail(String productId) {
-        log.info("[ProductService] findProductDetail called");
         Product product = findProduct(productId);
 
         List<CategoryDtoForProductDetail> categories = productCategoryService.findCategoriesByProductId(productId);
