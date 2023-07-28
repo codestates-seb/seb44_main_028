@@ -95,11 +95,7 @@ function ReservationBtn({
 
   const decrypt = useDecryptToken();
   const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
-  if (!encryptedAccessToken) {
-    // navigate('/login');
-    return null;
-  }
-  const accessToken = decrypt(encryptedAccessToken);
+  const accessToken = decrypt(encryptedAccessToken || '');
 
   console.log('startDate', currentReservationDate.startDate);
   console.log('endDate', currentReservationDate.endDate);
