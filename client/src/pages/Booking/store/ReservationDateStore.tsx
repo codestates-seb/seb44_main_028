@@ -1,36 +1,7 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { StartEndDateProps } from '../model/IStartEndDateProps';
 import { DateType } from '../type';
-
-function isWithinPeriod(
-  startDate: DateType,
-  endDate: DateType,
-  reservation: StartEndDateProps,
-) {
-  const start = new Date(startDate.year, startDate.month - 1, startDate.date);
-  const end = new Date(endDate.year, endDate.month - 1, endDate.date);
-
-  const reservationStart = new Date(
-    reservation.startDate.year,
-    reservation.startDate.month - 1,
-    reservation.startDate.date,
-  );
-  const reservationEnd = new Date(
-    reservation.endDate.year,
-    reservation.endDate.month - 1,
-    reservation.endDate.date,
-  );
-
-  // 시작 날짜와 종료 날짜가 예약 기간 안에 있는지 확인
-  if (start >= reservationStart && start <= reservationEnd) return true;
-  if (end >= reservationStart && end <= reservationEnd) return true;
-
-  // 예약이 시작 날짜와 종료 날짜 사이에 있는지 확인
-  if (reservationStart >= start && reservationStart <= end) return true;
-  if (reservationEnd >= start && reservationEnd <= end) return true;
-
-  return false;
-}
+import { isWithinPeriod } from '../../../common/utils/helperFunctions/isWithinPeriod';
 
 type ReservationProps = {
   startDate: DateType | null;
@@ -62,7 +33,6 @@ export const reservation = createSlice({
       const todaysDate = today.getDate();
 
       const allReservations = action.payload.allReservations;
-      console.log('allReservations', allReservations);
 
       for (const reservation of allReservations) {
         if (
@@ -77,11 +47,8 @@ export const reservation = createSlice({
       }
 
       if (
-        newStartYear > todaysYear ||
-        (newStartYear === todaysYear && newStartMonth > todaysMonth) ||
-        (newStartYear === todaysYear &&
-          newStartMonth === todaysMonth &&
-          newStartDate >= todaysDate)
+        new Date(newStartYear, newStartMonth - 1, newStartDate) >=
+        new Date(todaysYear, todaysMonth - 1, todaysDate)
       ) {
         state.startDate = newStart;
       }
@@ -112,11 +79,8 @@ export const reservation = createSlice({
       }
 
       if (
-        currentStartYear < newEndYear ||
-        (currentStartYear === newEndYear && currentStartMonth < newEndMonth) ||
-        (currentStartYear === newEndYear &&
-          currentStartMonth === newEndMonth &&
-          currentStartDate <= newEndDate)
+        new Date(currentStartYear, currentStartMonth - 1, currentStartDate) <=
+        new Date(newEndYear, newEndMonth - 1, newEndDate)
       ) {
         state.endDate = newEnd;
       }
