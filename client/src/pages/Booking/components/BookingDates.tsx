@@ -1,13 +1,8 @@
 import { useSelector } from 'react-redux';
-import {
-  BookingDatesForm,
-  BookingDatesLabel,
-  DatesWrapper,
-  ReservationDate,
-  SeparationLine,
-} from '../style';
+import { BookingDatesForm, SeparationLine } from '../style';
 import { makeDateFilledWithZero } from '../../../common/utils/helperFunctions/makeDateFilledWithZero';
 import { RootState } from '../../../common/store/RootStore';
+import DatesUserClickd from './DatesUserClicked';
 
 function BookingDates() {
   const reservationStartDate = useSelector(
@@ -26,15 +21,9 @@ function BookingDates() {
 
   return (
     <BookingDatesForm>
-      <DatesWrapper>
-        <BookingDatesLabel>예약 시작 날짜</BookingDatesLabel>
-        <ReservationDate>{startDateFilledWithZero}</ReservationDate>
-      </DatesWrapper>
+      <DatesUserClickd text="예약 시작 날짜" date={startDateFilledWithZero} />
       <SeparationLine>|</SeparationLine>
-      <DatesWrapper>
-        <BookingDatesLabel>예약 마감 날짜</BookingDatesLabel>
-        <ReservationDate>{endDateFilledWithZero}</ReservationDate>
-      </DatesWrapper>
+      <DatesUserClickd text="예약 마감 날짜" date={endDateFilledWithZero} />
     </BookingDatesForm>
   );
 }
