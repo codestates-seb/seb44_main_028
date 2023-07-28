@@ -19,7 +19,6 @@ export const monthlyReservation = createSlice({
       state,
       action: PayloadAction<IMonthlyReservation>,
     ) => {
-      console.log('예약 정보', action.payload);
       state.productTitle = action.payload.productTitle;
       state.baseFee = action.payload.baseFee;
       state.feePerDay = action.payload.feePerDay;

@@ -1,13 +1,10 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import BigDefaultBtn from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { ACCESS_TOKEN } from '../../Login/constants';
 import { useMutation, useQuery } from 'react-query';
-import Loading from '../../../common/components/Loading';
-import ErrorPage from '../../../common/components/ErrorPage';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 
 function makeChatRoomName(senderId: number, receiverId: number) {
@@ -178,5 +175,3 @@ function ChatBtn() {
   );
 }
 export default ChatBtn;
-
-//
