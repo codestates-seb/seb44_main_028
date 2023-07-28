@@ -14,7 +14,6 @@ import RentalProductInfo from '../components/RentalProductInfo';
 import useGetReservationData from '../../../common/utils/customHooks/useGetReservationData';
 
 function BookingPage() {
-  // GET요청으로 기존 예약 정보 가져오기
   const dispatch = useDispatch();
   const { itemId } = useParams<{ itemId: string }>();
 
