@@ -12,6 +12,7 @@ import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 import { clearReservationDates } from '../store/ReservationDateStore';
 import RentalProductInfo from '../components/RentalProductInfo';
 import useGetReservationData from '../../../common/utils/customHooks/useGetReservationData';
+import Refresh from '../components/Refresh';
 
 function BookingPage() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ function BookingPage() {
 
   const location = useLocation();
   useEffect(() => {
+    // window.location.reload();
     return () => {
       dispatch(clearReservationDates());
     };
@@ -46,18 +48,17 @@ function BookingPage() {
     }
   }, [isLoading, data, dispatch]);
 
-  const monthlyReservation = useSelector(
-    (state: RootState) => state.monthlyReservation,
+  const minimumRentalPeriod = useSelector(
+    (state: RootState) => state.monthlyReservation.minimumRentalPeriod,
   );
 
   return (
     <BookingPageContainer>
       <BookingDates />
+      <Refresh />
       <Calendars />
-      <RentalProductInfo monthlyReservation={monthlyReservation} />
-      <ReservationBtn
-        minimumRentalPeriod={monthlyReservation.minimumRentalPeriod}
-      />
+      <RentalProductInfo />
+      <ReservationBtn minimumRentalPeriod={minimumRentalPeriod} />
     </BookingPageContainer>
   );
 }

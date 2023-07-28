@@ -1,6 +1,12 @@
 import { ProductInfo, ProductInfoTitle, ProductInfoWrapper } from '../style';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../common/store/RootStore';
 
-function RentalProductInfo({ monthlyReservation }: any) {
+function RentalProductInfo() {
+  const monthlyReservation = useSelector(
+    (state: RootState) => state.monthlyReservation,
+  );
+
   return (
     <>
       <ProductInfoTitle>
