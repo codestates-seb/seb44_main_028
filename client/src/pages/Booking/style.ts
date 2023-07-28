@@ -304,3 +304,25 @@ export const SeparationLine = styled.span`
   font-weight: 300;
   color: rgba(0, 0, 0, 0.1);
 `;
+
+export const ProductInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+`;
+
+export const ProductInfoTitle = styled.p`
+  margin: 0 0 20px 0;
+  padding: 10px;
+  font-size: 18px;
+`;
+
+export const ProductInfo = styled.p`
+  margin: 10px;
+  padding: 10px;
+  font-size: 15px;
+`;
