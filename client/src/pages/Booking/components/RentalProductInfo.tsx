@@ -1,5 +1,5 @@
-import { ProductInfo, ProductInfoTitle, ProductInfoWrapper } from '../style';
 import { useSelector } from 'react-redux';
+import { ProductInfo, ProductInfoTitle, ProductInfoWrapper } from '../style';
 import { RootState } from '../../../common/store/RootStore';
 
 function RentalProductInfo() {
