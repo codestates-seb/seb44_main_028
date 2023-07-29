@@ -26,7 +26,7 @@ import {
   ProductBtn,
 } from '../style';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
-import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
+import { ITEM_PRICE, ITEM_NOTICE, USER_BTN } from '../constants';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 import ChatBtn from './ChatBtn';
