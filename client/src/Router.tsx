@@ -21,18 +21,15 @@ function Router() {
       <Route path="/auth/callback" element={<RedirectPage />} />
       <Route path="/itemlist/:categoryId" element={<ItemListPage />} />
       <Route path="/itemlist/search/:searchContent" element={<SearchPage />} />
-      <Route element={<PrivateRoutes />}>
-        <Route path="/booking/:itemId" element={<BookingPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/edit" element={<ProfileEdit />} />
-        <Route path="/create" element={<CreatePage />} />
-        <Route path="/update/:itemId" element={<UpdatePage />} />
-        <Route path="/chatting/:itemId/" element={<ChattingPage />} />
-        <Route
-          path="/chatting/:itemId/:chatRoomId"
-          element={<ChattingPage />}
-        />
-      </Route>
+      {/* <Route element={<PrivateRoutes />}> */}
+      <Route path="/booking/:itemId" element={<BookingPage />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/mypage/edit" element={<ProfileEdit />} />
+      <Route path="/create" element={<CreatePage />} />
+      <Route path="/update/:itemId" element={<UpdatePage />} />
+      <Route path="/chatting/:itemId/" element={<ChattingPage />} />
+      <Route path="/chatting/:itemId/:chatRoomId" element={<ChattingPage />} />
+      {/* </Route> */}
       <Route path="/detail/:itemId" element={<DetailPage />} />
     </Routes>
   );

@@ -46,6 +46,7 @@ function ItemListPage() {
     sortBy: PRODUCT_FILTER_OPTIONS.find(
       (option) => option.label === productFilterSelectedValue,
     )?.value,
+    size: size,
   });
   useEffect(() => {
     const decrypt = useDecryptToken();
@@ -56,10 +57,7 @@ function ItemListPage() {
       setAccessToken(decryptedToken);
     }
   }, []);
-  // useEffect(() => {
-  //   setPage(0);
-  //   console.log('item~이지롱', items);
-  // }, [distanceSelectedValue, productFilterSelectedValue]);
+
   const {
     data: products,
     isLoading,
@@ -67,11 +65,17 @@ function ItemListPage() {
     isFetching,
     refetch,
   } = useQuery(
-    [queryParams.categoryId, queryParams.sortBy, queryParams.distance, page],
+    [
+      queryParams.categoryId,
+      queryParams.sortBy,
+      queryParams.distance,
+      page,
+      queryParams.size,
+    ],
     async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products?page=${page}&size=${size}`,
+          `${process.env.REACT_APP_API_URL}/api/products?page=${page}&size=${queryParams.size}`,
           {
             params: {
               categoryId: queryParams.categoryId,
@@ -83,14 +87,7 @@ function ItemListPage() {
             },
           },
         );
-        const newDatas = res.data.products;
-        const filteredProducts = newDatas.filter(
-          (newData: ItemCardProps) =>
-            !items.some((item) => item.productId === newData.productId),
-        );
-        setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
-        console.log(products);
-        return res.data.products;
+        setItems((prevIetm) => [...prevIetm, ...res.data.products]);
       } catch (err) {
         console.log('err', err);
       }
@@ -117,8 +114,8 @@ function ItemListPage() {
       )?.value,
       distance: distanceSelect || undefined,
     }));
-    refetch();
-  }, [distanceSelectedValue]);
+    setPage(0);
+  }, [distanceSelectedValue, productFilterSelectedValue]);
 
   useEffect(() => {
     setQueryParams((prevParams) => ({
@@ -127,9 +124,19 @@ function ItemListPage() {
         (option) => option.label === productFilterSelectedValue,
       )?.value,
     }));
-    refetch();
+    setPage(0);
   }, [productFilterSelectedValue]);
 
+  useEffect(() => {
+    const distanceSelect = DISTANCE_OPTIONS.find(
+      (option) => option.label === distanceSelectedValue,
+    )?.value;
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      distance: distanceSelect || undefined,
+    }));
+    setPage(0);
+  }, [distanceSelectedValue]);
   useEffect(() => {
     function handleScroll() {
       if (
@@ -148,6 +155,13 @@ function ItemListPage() {
     };
   }, [isFetching]);
 
+  useEffect(() => {
+    refetch();
+  }, [page, queryParams]);
+  useEffect(() => {
+    console.log('queryParams ');
+    setItems([]);
+  }, [queryParams]);
   if (isLoading && page === 1) {
     return <Loading />;
   }
