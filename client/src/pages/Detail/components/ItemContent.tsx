@@ -38,6 +38,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import { useDispatch } from 'react-redux';
 import { createLenderInfo } from '../store/CurrentLenderInfo';
 import { addressForMatter } from '../../MyPage/helper/addressForMatter';
+import { priceForMatter } from '../../../common/utils/helperFunctions/priceForMatter';
 
 const ItemContent = () => {
   const { data: userData, isError } = useGetMe();
@@ -142,9 +143,18 @@ const ItemContent = () => {
                 itemKey={ITEM_PRICE[0]}
                 itemValue={data.minimumRentalPeriod}
               />
-              <ItemPrice itemKey={ITEM_PRICE[1]} itemValue={data.baseFee} />
-              <ItemPrice itemKey={ITEM_PRICE[2]} itemValue={data.feePerDay} />
-              <ItemPrice itemKey={ITEM_PRICE[3]} itemValue={data.overdueFee} />
+              <ItemPrice
+                itemKey={ITEM_PRICE[1]}
+                itemValue={priceForMatter(data.baseFee)}
+              />
+              <ItemPrice
+                itemKey={ITEM_PRICE[2]}
+                itemValue={priceForMatter(data.feePerDay)}
+              />
+              <ItemPrice
+                itemKey={ITEM_PRICE[3]}
+                itemValue={priceForMatter(data.overdueFee)}
+              />
 
               {/* 별점 */}
               <p className="rate">상품 별점</p>
