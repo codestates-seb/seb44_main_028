@@ -144,7 +144,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
       <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>
         <ItemPrice>
           {`최소 대여기간 ${itemCardData.minimumRentalPeriod}일 고정금 ${itemCardData.baseFee}
-          만원 / 1일 ${itemCardData.feePerDay}만원`}
+          원 / 1일 ${itemCardData.feePerDay}원`}
         </ItemPrice>
         <BsFillHeartFill onClick={handleHeartClick} />
       </PriceFavoriteWrapper>
