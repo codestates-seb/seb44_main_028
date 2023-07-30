@@ -7,7 +7,6 @@ import ItemListPage from './pages/ItemList/views/ItemListPage';
 import DetailPage from './pages/Detail/views/DetailPage';
 import CreatePage from './pages/Create/views/CreatePage';
 import UpdatePage from './pages/Update/views/UpdatePage';
-import ChattingPage from './pages/Chatting/views/ChattingPage';
 import BookingPage from './pages/Booking/views/BookingPage';
 import SearchPage from './pages/Search/views/SearchPage';
 import PrivateRoutes from './PrivateRoutes';
@@ -27,11 +26,6 @@ function Router() {
         <Route path="/mypage/edit" element={<ProfileEdit />} />
         <Route path="/create" element={<CreatePage />} />
         <Route path="/update/:itemId" element={<UpdatePage />} />
-        <Route path="/chatting/:itemId/" element={<ChattingPage />} />
-        <Route
-          path="/chatting/:itemId/:chatRoomId"
-          element={<ChattingPage />}
-        />
       </Route>
       <Route path="/detail/:itemId" element={<DetailPage />} />
     </Routes>
