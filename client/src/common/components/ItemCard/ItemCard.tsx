@@ -3,6 +3,7 @@ import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
+import { priceForMatter } from '../../utils/helperFunctions/priceForMatter';
 import {
   ItemCardContainer,
   ItemImage,
@@ -143,8 +144,10 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
       </ItemInfo>
       <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>
         <ItemPrice>
-          {`최소 대여기간 ${itemCardData.minimumRentalPeriod}일 고정금 ${itemCardData.baseFee}
-          만원 / 1일 ${itemCardData.feePerDay}만원`}
+          {`최소 대여기간 ${
+            itemCardData.minimumRentalPeriod
+          }일 고정금 ${priceForMatter(itemCardData.baseFee)}
+          원 / 1일 ${priceForMatter(itemCardData.feePerDay)}원`}
         </ItemPrice>
         <BsFillHeartFill onClick={handleHeartClick} />
       </PriceFavoriteWrapper>

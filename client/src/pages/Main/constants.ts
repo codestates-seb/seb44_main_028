@@ -6,24 +6,26 @@ import { ImageData } from './type';
 import { ItemCardProps } from '../../common/type';
 
 export const INTEREST_KEY = 'interest';
-export const IMAGE_SLIDER: ImageData[] = [
-  {
-    image: MainImage,
-    name: '메인',
-  },
-  {
-    image: CampingImage,
-    name: '캠핑',
-  },
-  {
-    image: BeachImage,
-    name: '바다',
-  },
-  {
-    image: SkiImage,
-    name: '스키',
-  },
-];
+// export const IMAGE_SLIDER: ImageData[] = [
+//   {
+//     image: MainImage,
+//     name: '메인',
+//   },
+//   {
+//     image: CampingImage,
+//     name: '캠핑',
+//   },
+//   {
+//     image: BeachImage,
+//     name: '바다',
+//   },
+//   {
+//     image: SkiImage,
+//     name: '스키',
+//   },
+// ];
+export const IMAGE_SLIDER = [MainImage, CampingImage, BeachImage, SkiImage];
+
 // 데이터 받기 전 임시 데이터
 export const ITEMCARDLIST_TITLE: string[] = [
   '평점 높은 순',

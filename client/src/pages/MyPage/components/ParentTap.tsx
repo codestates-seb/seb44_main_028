@@ -27,20 +27,21 @@ function ParentTap({ lendCardData }: { lendCardData: lendCardProps[] }) {
 
       <div>
         {/* {/* {tapList[0] === '빌려준내역' && <div>빌려준 내역</div>} /} */}
-        {tapList[0] === '빌려준내역' && (
-          <LendList
-            lendCardData={{
-              productId: '',
-              reservationId: '',
-              status: '',
-              username: '',
-              totalFee: '',
-              startDate: '',
-              endDate: '',
-              image: '',
-            }}
+        {/* {tapList[0] === '빌려준내역' && (
+          // <LendList
+          //   lendCardData={{
+          //     productId: '',
+          //     reservationId: '',
+          //     status: '',
+          //     username: '',
+          //     totalFee: '',
+          //     startDate: '',
+          //     endDate: '',
+          //     image: '',
+          //   }}
+          <LendList />
           />
-        )}
+        )} */}
 
         {/* {tapList[0] === '빌린내역' && <div>빌린 내역</div>} */}
         {tapList[0] === '빌린내역' && <BorrowList />}

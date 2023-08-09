@@ -26,7 +26,7 @@ import {
   ProductBtn,
 } from '../style';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
-import { ITEM_PRICE, ITEM_TAG, ITEM_NOTICE, USER_BTN } from '../constants';
+import { ITEM_PRICE, ITEM_NOTICE, USER_BTN } from '../constants';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 import { ICategory } from '../type';
@@ -37,6 +37,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import { useDispatch } from 'react-redux';
 import { createLenderInfo } from '../store/CurrentLenderInfo';
 import { addressForMatter } from '../../MyPage/helper/addressForMatter';
+import { priceForMatter } from '../../../common/utils/helperFunctions/priceForMatter';
 
 const ItemContent = () => {
   const { data: userData, isError } = useGetMe();
@@ -126,7 +127,7 @@ const ItemContent = () => {
           <ItemInfoWrapper>
             {/* <ItemImageWrapper images={data.images}> */}
             <ItemImageWrapper>
-              <ImageCarousel images={data.productImages} />
+              <ImageCarousel images={data.productImages} size="small" />
             </ItemImageWrapper>
             <ItemUserWrapper>
               {/* 유저 정보 */}
@@ -141,9 +142,18 @@ const ItemContent = () => {
                 itemKey={ITEM_PRICE[0]}
                 itemValue={data.minimumRentalPeriod}
               />
-              <ItemPrice itemKey={ITEM_PRICE[1]} itemValue={data.baseFee} />
-              <ItemPrice itemKey={ITEM_PRICE[2]} itemValue={data.feePerDay} />
-              <ItemPrice itemKey={ITEM_PRICE[3]} itemValue={data.overdueFee} />
+              <ItemPrice
+                itemKey={ITEM_PRICE[1]}
+                itemValue={priceForMatter(data.baseFee)}
+              />
+              <ItemPrice
+                itemKey={ITEM_PRICE[2]}
+                itemValue={priceForMatter(data.feePerDay)}
+              />
+              <ItemPrice
+                itemKey={ITEM_PRICE[3]}
+                itemValue={priceForMatter(data.overdueFee)}
+              />
 
               {/* 별점 */}
               <p className="rate">상품 별점</p>
