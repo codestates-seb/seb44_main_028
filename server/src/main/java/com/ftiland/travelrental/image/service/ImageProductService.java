@@ -38,4 +38,9 @@ public class ImageProductService {
 
         imageProductRepository.saveAll(images);
     }
+
+    // 상품 이미지
+    public List<String> findImageProducts(String productId) {
+        return imageProductRepository.findImageUrlByProductId(productId);
+    }
 }

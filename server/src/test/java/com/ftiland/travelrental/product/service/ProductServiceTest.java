@@ -82,7 +82,7 @@ class ProductServiceTest {
         );
 
         // when
-        CreateProduct.Response response = productService.createProduct(request, 2L);
+        CreateProduct.Response response = productService.createProduct(request, 2L, List.of());
 
         // then
         verify(productRepository, times(1)).save(captor.capture());
@@ -124,7 +124,7 @@ class ProductServiceTest {
 
         // when
         BusinessLogicException exception = assertThrows(BusinessLogicException.class,
-                () -> productService.createProduct(request, 2L));
+                () -> productService.createProduct(request, 2L, List.of()));
         // then
         assertThat(exception.getExceptionCode()).isEqualTo(ExceptionCode.NOT_FOUND_LOCATION);
     }
@@ -172,7 +172,8 @@ class ProductServiceTest {
         // when
         UpdateProduct.Response response = productService.updateProduct(request,
                 product.getProductId(),
-                2L);
+                2L,
+                List.of());
 
         // then
         verify(productCategoryService, times(1))
@@ -245,7 +246,7 @@ class ProductServiceTest {
 
         // when
         BusinessLogicException exception = assertThrows(BusinessLogicException.class,
-                () -> productService.updateProduct(request, product.getProductId(), 2L));
+                () -> productService.updateProduct(request, product.getProductId(), 2L, List.of()));
 
         // then
         assertThat(exception.getExceptionCode()).isEqualTo(ExceptionCode.UNAUTHORIZED);

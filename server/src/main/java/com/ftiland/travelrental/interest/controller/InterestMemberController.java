@@ -36,12 +36,10 @@ public class InterestMemberController {
 
     // 특정 맴버의 관심목록 검색 ( 맴버 , Get )
     @GetMapping
-    public ResponseEntity getInterest(@CurrentMember Long memberId, @Param("page")@Positive Integer page, @Param("size")@Positive Integer size){
-        long start = System.currentTimeMillis();
-        InterestDto.ResponsesDto responses = interestService.findInterest(memberId,page,size);
-        long end = System.currentTimeMillis();
-        log.info("findByMemberId total time = {}", end - start);
-
+    public ResponseEntity getInterest(@CurrentMember Long memberId,
+                                      @Param("page") @Positive Integer page,
+                                      @Param("size") @Positive Integer size) {
+        InterestDto.ResponsesDto responses = interestService.findInterest(memberId, page, size);
 
         return new ResponseEntity(responses, HttpStatus.OK);
     }
@@ -57,7 +55,7 @@ public class InterestMemberController {
 
     // 관심 목록에 추가 ( * , Post )
     @PostMapping
-    public ResponseEntity postInterest(@CurrentMember Long memberId,@RequestBody InterestDto.PostRequestDto requestBody) {
+    public ResponseEntity postInterest(@CurrentMember Long memberId, @RequestBody InterestDto.PostRequestDto requestBody) {
         requestBody.setMemberId(memberId);
         Interest interest = interestService.createInterest(requestBody.getMemberId(), requestBody.getProductId());
         InterestDto.PostResponseDto response = interestMapper.interestToPostResponseDto(interest);
@@ -67,7 +65,7 @@ public class InterestMemberController {
 
     // 관심 해제 ( 맴버 , Delete )
     @DeleteMapping
-    public HttpStatus deleteInterest(@CurrentMember Long memberId,@RequestBody InterestDto.DeleteRequestDto requestBody) {
+    public HttpStatus deleteInterest(@CurrentMember Long memberId, @RequestBody InterestDto.DeleteRequestDto requestBody) {
         requestBody.setMemberId(memberId);
         interestService.deleteInterest(requestBody.getMemberId(), requestBody.getInterestId());
 

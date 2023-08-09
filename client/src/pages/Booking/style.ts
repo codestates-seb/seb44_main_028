@@ -18,6 +18,7 @@ export const CalendarContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin-top: 0;
   width: 807px;
 `;
 
@@ -300,7 +301,40 @@ export const EachDate = styled.th<EachDatesProps>`
 
 export const SeparationLine = styled.span`
   position: absolute;
-  font-size: 70px;
-  font-weight: 300;
+  font-size: 60px;
+  font-weight: 100;
   color: rgba(0, 0, 0, 0.1);
+  border: none;
+`;
+
+export const ProductInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+`;
+
+export const ProductInfoTitle = styled.p`
+  margin: 0 0 20px 0;
+  padding: 10px;
+  font-size: 18px;
+`;
+
+export const ProductInfo = styled.p`
+  margin: 10px;
+  padding: 10px;
+  font-size: 15px;
+`;
+
+export const RefreshBtn = styled.button`
+  margin: 10px 0 -20px;
+  height: 40px;
+  width: 400px;
+  background-size: cover;
+  background-color: white;
+  border: rgba(0, 0, 0, 0.1) 1px solid;
+  cursor: pointer;
 `;

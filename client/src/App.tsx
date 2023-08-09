@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
 import Header from './pages/Header/views/Header';
-import Footer from './pages/Footer/views/Footer';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -12,15 +11,17 @@ import { WebSocketProvider } from './WebSocketProvider';
 import ImageCarousel from './pages/Detail/components/ImageCarousel';
 import { IMAGE_SLIDER } from './pages/Main/constants';
 import { MainImageCarousel } from './pages/Main/style';
+import { ErrorBoundary } from 'react-error-boundary';
+import Fallback from './common/components/Fallback';
 
 function App() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <WebSocketProvider>
+    <ErrorBoundary FallbackComponent={Fallback}>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <BrowserRouter>
             <Header />
             <Routes>
               <Route
@@ -45,11 +46,10 @@ function App() {
                 }
               />
             </Routes>
-            <Footer prop1={'플레이 팩'} />
-          </WebSocketProvider>
-        </BrowserRouter>
-      </Provider>
-    </QueryClientProvider>
+          </BrowserRouter>
+        </Provider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -29,7 +29,6 @@ import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { ITEM_PRICE, ITEM_NOTICE, USER_BTN } from '../constants';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
-import ChatBtn from './ChatBtn';
 import { ICategory } from '../type';
 import ImageCarousel from './ImageCarousel';
 import useGetMe from '../../../common/utils/customHooks/useGetMe';
@@ -175,7 +174,6 @@ const ItemContent = () => {
                 >
                   예약하기
                 </BigDefaultBtn>
-                <ChatBtn />
               </ItemActionBtn>
             </ItemUserWrapper>
           </ItemInfoWrapper>
