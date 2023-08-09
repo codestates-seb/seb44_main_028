@@ -128,7 +128,7 @@ const ItemContent = () => {
           <ItemInfoWrapper>
             {/* <ItemImageWrapper images={data.images}> */}
             <ItemImageWrapper>
-              <ImageCarousel images={data.productImages} />
+              <ImageCarousel images={data.productImages} size="small" />
             </ItemImageWrapper>
             <ItemUserWrapper>
               {/* 유저 정보 */}

@@ -9,6 +9,9 @@ import { store } from './common/store/RootStore';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Carousel from './pages/Main/components/Carousel';
 import { WebSocketProvider } from './WebSocketProvider';
+import ImageCarousel from './pages/Detail/components/ImageCarousel';
+import { IMAGE_SLIDER } from './pages/Main/constants';
+import { MainImageCarousel } from './pages/Main/style';
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,7 +27,9 @@ function App() {
                 path="/"
                 element={
                   <>
-                    <Carousel />
+                    <MainImageCarousel>
+                      <ImageCarousel images={IMAGE_SLIDER} size="large" />
+                    </MainImageCarousel>
                     <Container maxWidth="lg">
                       <Router />
                     </Container>
