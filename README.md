@@ -9,7 +9,7 @@
 빌려주고 빌리는 1:1 렌탈 플랫폼을 기획하게 되었습니다.</strong></p>
 </p>
   <ul>
-  <li><strong>팀 명:</strong>FT I랜드</li>
+  <li><strong>팀 명:</strong> FT I랜드</li>
   <li><strong>프로젝트 기간:</strong> 23.06.28 ~ 23.07.24</li>
   <li><strong>팀 원:</strong> 이민선, 박채연, 허금희, 최민환, 김아영, 이명규</li>
   <li><strong>배포링크:</strong><a target="_blank" href="https://playpack.shop"> PLAYPACK</a></li>
@@ -36,7 +36,7 @@
 <td><a target="_blank" rel="noopener noreferrer nofollow"><img src="https://github.com/codestates-seb/seb44_main_028/assets/72354092/0ed1ebca-f281-48c9-b011-977bbb839c28" width="150" style="max-width: 100%;"></a></td>
 
 
-<td><a target="_blank" rel="noopener noreferrer nofollow"><img src="https://github.com/codestates-seb/seb44_main_028/assets/72354092/98cec546-738a-445a-aaa3-4e73819419ed" width="150" style="max-width: 100%;"></a></td>
+<td><a target="_blank" rel="noopener noreferrer nofollow"><img src="https://github.com/codestates-seb/seb44_main_028/assets/72354092/98cec546-738a-445a-aaa3-4e73819419ed" width="170" style="max-width: 100%;"></a></td>
 
 
 <td><a target="_blank" rel="noopener noreferrer nofollow"><img src="https://github.com/codestates-seb/seb44_main_028/assets/72354092/dfd83578-6a2b-45e3-be6e-b30b2233c50f" width="150" style="max-width: 100%;"></a></td>
@@ -153,7 +153,7 @@
 |<b>달력 예약</b>|<b>상품 무한 스크롤</b>|
 |-|![Jul-24-2023 10-26-46](https://github.com/codestates-seb/seb44_main_028/assets/72354092/ceedfcd4-4396-446f-8555-0c628b6e9ea0)|
 |<b>상품 필터 정렬</b>|<b>마이 페이지</b>|
-|![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|-|
+|![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|![Aug-11-2023 03-52-54](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a8deb793-a749-41ce-b987-2254fdf7db1a)|
 
 ## 프로젝트 문서
 
