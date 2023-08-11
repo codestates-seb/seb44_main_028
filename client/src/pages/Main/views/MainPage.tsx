@@ -26,7 +26,6 @@ function MainPage() {
   if (isLoading) return <Loading />;
   if (error) return <ErrorPage />;
 
-  console.log(data);
   return (
     <MainPageContainer>
       <Category />

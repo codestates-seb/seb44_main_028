@@ -70,7 +70,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
           },
         },
       )
-      .then((res) => {
+      .then(() => {
         setIsHeartClicked(true);
         refetch();
       }),

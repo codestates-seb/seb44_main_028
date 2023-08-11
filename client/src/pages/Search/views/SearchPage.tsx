@@ -38,7 +38,6 @@ const SearchPage = () => {
             !items.some((item) => item.productId === newData.productId),
         );
         setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
-        console.log('res', res);
         return res.data;
       } catch (err) {
         console.log('err', err);

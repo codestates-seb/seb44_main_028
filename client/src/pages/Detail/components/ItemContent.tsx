@@ -58,10 +58,8 @@ const ItemContent = () => {
       setAccessToken(decryptedToken);
     }
   }, []);
-  console.log(param.itemId);
   const handleReservation = () => {
     if (isError) {
-      console.log('로그인 후 이용해주세요.');
       alert('로그인 후 이용해주세요.');
     } else {
       navigate(`/booking/${param.itemId}`);
@@ -83,7 +81,6 @@ const ItemContent = () => {
         })
         .then((res) => {
           const { data } = res;
-          console.log(data);
         }),
     {
       onError: (error) => {
@@ -103,13 +100,11 @@ const ItemContent = () => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
       );
-      console.log('update', data);
       return data;
     },
   );
   useEffect(() => {
     setItemData(data);
-    console.log(itemData);
   }, [data]);
   const [itemData, setItemData] = useState(data);
   if (isLoading) {
@@ -118,8 +113,7 @@ const ItemContent = () => {
   if (error) {
     return <ErrorPage />;
   }
-  console.log('updateData', data.username);
-  console.log('updateData', data.userImage);
+
   dispatch(
     createLenderInfo({ displayName: data.username, imageUrl: data.userImage }),
   );
