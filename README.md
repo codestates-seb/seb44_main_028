@@ -12,7 +12,6 @@
   <li><strong>팀 명:</strong> FT I랜드</li>
   <li><strong>프로젝트 기간:</strong> 23.06.28 ~ 23.07.24</li>
   <li><strong>팀 원:</strong> 이민선, 박채연, 허금희, 최민환, 김아영, 이명규</li>
-  <li><strong>배포링크:</strong><a target="_blank" href="https://playpack.shop"> PLAYPACK</a></li>
 </ul>
 
 
@@ -138,7 +137,6 @@
 <br>
 
 ## 기능 설명
-
 |카카오 로그인, 자동 로그인|내 동네 설정|
 |:---:|:---:|
 |-|![ezgif com-crop (2)](https://github.com/codestates-seb/seb44_main_028/assets/72354092/546d14b3-8b1d-46ee-b29b-ab1536268510)|
