@@ -9,6 +9,7 @@
 빌려주고 빌리는 1:1 렌탈 플랫폼을 기획하게 되었습니다.</strong></p>
 </p>
   <ul>
+  <li><strong>프로젝트 명:</strong> Playpack</li>
   <li><strong>팀 명:</strong> FT I랜드</li>
   <li><strong>프로젝트 기간:</strong> 23.06.28 ~ 23.07.24</li>
   <li><strong>팀 원:</strong> 이민선, 박채연, 허금희, 최민환, 김아영, 이명규</li>
@@ -74,9 +75,11 @@
   <td>
     <p align="center">
       소셜 로그인<br>
+      자동 로그인<br>
       달력예약 기능<br>
       라우터 관리<br>
       (중첩 라우터)
+      Firebase 배포
     </p>
   </td>
     <td>
