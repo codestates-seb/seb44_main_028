@@ -38,6 +38,7 @@ import { useDispatch } from 'react-redux';
 import { createLenderInfo } from '../store/CurrentLenderInfo';
 import { addressForMatter } from '../../MyPage/helper/addressForMatter';
 import { priceForMatter } from '../../../common/utils/helperFunctions/priceForMatter';
+import { QUERY_KEY } from '../../../common/utils/queryKet';
 
 const ItemContent = () => {
   const { data: userData, isError } = useGetMe();
@@ -96,13 +97,16 @@ const ItemContent = () => {
     setItemData(null);
     navigate(`/`);
   };
-  const { data, isLoading, error } = useQuery('productDtail', async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
-    );
-    console.log('update', data);
-    return data;
-  });
+  const { data, isLoading, error } = useQuery(
+    QUERY_KEY.PRODUCT_DETAIL,
+    async () => {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
+      );
+      console.log('update', data);
+      return data;
+    },
+  );
   useEffect(() => {
     setItemData(data);
     console.log(itemData);

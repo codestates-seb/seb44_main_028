@@ -5,6 +5,7 @@ import { CategoryListProps } from '../../type';
 import { ICategory } from '../../model/ICategory';
 import Loading from '../Loading';
 import ErrorPage from '../ErrorPage';
+import { QUERY_KEY } from '../../utils/queryKet';
 
 const CheckBoxList = ({
   selectedtCategory,
@@ -20,7 +21,7 @@ const CheckBoxList = ({
     data: category,
     isLoading,
     isError,
-  } = useQuery<ICategory[]>('categories', fetchCategoryData);
+  } = useQuery<ICategory[]>(QUERY_KEY.CATEGORY, fetchCategoryData);
   if (isLoading) {
     return <Loading />;
   }
