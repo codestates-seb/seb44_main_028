@@ -157,6 +157,30 @@
 
 ## 프로젝트 문서
 
+<details>
+<summary>와이어 프레임</summary>
+<div markdown="1">
+  <img src="https://github.com/codestates-seb/seb44_main_028/assets/72354092/2fc76a96-3e6a-45da-9911-de3dfafd435d">
+</div>
+</details>
+
+<details>
+<summary>사용자 요구사항 정의서</summary>
+<div markdown="1">
+  
+</div>
+</details>
+
+<details>
+<summary>유저 플로우</summary>
+<div markdown="1">
+  
+</div>
+</details>
+
+<a href="https://www.canva.com/design/DAFpdqNrWNQ/dC4TdsDqPZkc8aSpFZb7uw/view?utm_content=DAFpdqNrWNQ&utm_campaign=designshare&utm_medium=link&utm_source=viewer">서비스 메뉴얼</a>
+
+<a href="https://www.youtube.com/watch?v=8M7s-Lemkw8">기술 영상 발표</a>
 ## 트러블 슈팅
 
 ## 결과 및 성과
