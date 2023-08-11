@@ -13,6 +13,7 @@
   <li><strong>팀 명:</strong> FT I랜드</li>
   <li><strong>프로젝트 기간:</strong> 23.06.28 ~ 23.07.24</li>
   <li><strong>팀 원:</strong> 이민선, 박채연, 허금희, 최민환, 김아영, 이명규</li>
+  <li><strong>기술 발표 영상:</strong><a href="https://www.youtube.com/watch?v=8M7s-Lemkw8"> 유튜브 링크</a></li>
 </ul>
 
 
@@ -156,32 +157,6 @@
 |<b>상품 필터 정렬</b>|<b>마이 페이지</b>|
 |![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|![Aug-11-2023 03-52-54](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a8deb793-a749-41ce-b987-2254fdf7db1a)|
 
-## 프로젝트 문서
-
-<details>
-<summary>와이어 프레임</summary>
-<div markdown="1">
-  <img src="https://github.com/codestates-seb/seb44_main_028/assets/72354092/2fc76a96-3e6a-45da-9911-de3dfafd435d">
-</div>
-</details>
-
-<details>
-<summary>사용자 요구사항 정의서</summary>
-<div markdown="1">
-  
-</div>
-</details>
-
-<details>
-<summary>유저 플로우</summary>
-<div markdown="1">
-  
-</div>
-</details>
-
-<a href="https://www.canva.com/design/DAFpdqNrWNQ/dC4TdsDqPZkc8aSpFZb7uw/view?utm_content=DAFpdqNrWNQ&utm_campaign=designshare&utm_medium=link&utm_source=viewer">서비스 메뉴얼</a>
-
-<a href="https://www.youtube.com/watch?v=8M7s-Lemkw8">기술 영상 발표</a>
 ## 트러블 슈팅
 
 ## 결과 및 성과
