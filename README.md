@@ -78,8 +78,8 @@
       자동 로그인<br>
       달력예약 기능<br>
       라우터 관리<br>
-      (중첩 라우터)
-      Firebase 배포<br>
+      (중첩 라우터)<br>
+      Firebase 배포
     </p>
   </td>
     <td>
