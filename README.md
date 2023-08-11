@@ -79,7 +79,7 @@
       달력예약 기능<br>
       라우터 관리<br>
       (중첩 라우터)
-      Firebase 배포
+      Firebase 배포<br>
     </p>
   </td>
     <td>
