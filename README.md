@@ -143,21 +143,22 @@
 ## 화면 요약
 |카카오 로그인, 자동 로그인|내 동네 설정|
 |:---:|:---:|
-|-|![ezgif com-crop (2)](https://github.com/codestates-seb/seb44_main_028/assets/72354092/546d14b3-8b1d-46ee-b29b-ab1536268510)|
+|![화면-기록-2023-07-28-오전-7 57 53](https://github.com/codestates-seb/seb44_main_028/assets/117507731/17fb1431-b120-4aad-b2fb-ae14ce11df73)|![ezgif com-crop (2)](https://github.com/codestates-seb/seb44_main_028/assets/72354092/546d14b3-8b1d-46ee-b29b-ab1536268510)|
 |<b>메인 페이지</b>|<b>카테고리별 페이지</b>|
 |![ezgif com-gif-maker (1)](https://github.com/codestates-seb/seb44_main_028/assets/72354092/4276c617-4433-4cb0-ae8a-17b32bebdb79)|![Aug-10-2023 23-36-03](https://github.com/codestates-seb/seb44_main_028/assets/72354092/610c09d8-6e94-4ece-8cdb-1c1ad853aefe)|
 |<b>찜 기능</b>|<b>검색 기능</b>|
 |![Jul-23-2023 07-22-27](https://github.com/codestates-seb/seb44_main_028/assets/72354092/2b2f6f90-12d2-4e2e-be40-af0912812321)|![Aug-10-2023 23-35-49](https://github.com/codestates-seb/seb44_main_028/assets/72354092/07d05fb1-b140-425e-81a1-b2782e756c12)|
 |<b>상품 등록</b>|<b>상품 수정</b>|
 |![Jul-24-2023 00-36-46](https://github.com/codestates-seb/seb44_main_028/assets/72354092/ea4a31c4-0a8c-4fd2-bad4-2f5aecbcba0b)|![ezgif com-crop (1)](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a7a3294b-339d-460e-a00b-38867a6d4c38)|
-|<b>상품 삭제</b>|<b>상품 조회</b>|
-|-|![ezgif com-crop](https://github.com/codestates-seb/seb44_main_028/assets/72354092/da25a9cb-6211-4ff0-9934-843dba6b44bc)|
-|<b>달력 예약</b>|<b>상품 무한 스크롤</b>|
-|-|![Jul-24-2023 10-26-46](https://github.com/codestates-seb/seb44_main_028/assets/72354092/ceedfcd4-4396-446f-8555-0c628b6e9ea0)|
+|<b>상품 무한 스크롤</b>|<b>상품 조회</b>|
+|![Jul-24-2023 10-26-46](https://github.com/codestates-seb/seb44_main_028/assets/72354092/ceedfcd4-4396-446f-8555-0c628b6e9ea0)|![ezgif com-crop](https://github.com/codestates-seb/seb44_main_028/assets/72354092/da25a9cb-6211-4ff0-9934-843dba6b44bc)|
+|<b>기존 예약 확인</b>|<b>달력 예약</b>|
+|![화면-기록-2023-07-19-오후-8 00 32 (1)](https://github.com/codestates-seb/seb44_main_028/assets/117507731/555247db-03a7-4d6e-88d6-8731880d30ed)|![화면-기록-2023-07-17-오전-7 22 27 (1)](https://github.com/codestates-seb/seb44_main_028/assets/117507731/2cf56a8f-95d3-412d-bea3-f09c6154330d)|
 |<b>상품 필터 정렬</b>|<b>마이 페이지</b>|
 |![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|![Aug-11-2023 03-52-54](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a8deb793-a749-41ce-b987-2254fdf7db1a)|
 
 ## 협업 방식
+
 
 ## 결과 및 성과
 
