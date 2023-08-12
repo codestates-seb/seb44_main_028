@@ -157,7 +157,21 @@
 |<b>상품 필터 정렬</b>|<b>마이 페이지</b>|
 |![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|![Aug-11-2023 03-52-54](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a8deb793-a749-41ce-b987-2254fdf7db1a)|
 
+
+
 ## 협업 방식
+### 매일 아침 회의마다 사전에 지정된 Pull Request 템플릿을 활용하여 업무 진척도 및 각자의 배운 점 공유
+
+<b>PR template</b>
+<ul>
+  <li>기능 요약</li>
+  <li>화면 캡처</li>
+  <li>배운 점</li>
+</ul>
+
+|<img width="924" alt="스크린샷 2023-08-12 오후 4 37 54" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/9fa2cb57-7cd8-4634-983c-20bf326c593e">|<img width="924" alt="스크린샷 2023-08-12 오후 4 38 56" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/52c519e7-22fd-47fe-9074-400568755572">|
+|:---:|:---:|
+|<img width="924" alt="스크린샷 2023-08-12 오후 4 40 00" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/6d8ff9fd-e156-4e1e-96d6-27c5348c8fde">|<img width="924" alt="스크린샷 2023-08-12 오후 4 40 29" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/7e3d396c-fdc5-482c-835e-5cf12adc9d1e">|
 
 
 ## 결과 및 성과
