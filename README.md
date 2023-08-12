@@ -160,7 +160,7 @@
 
 
 ## 협업 방식
-### 매일 아침 회의마다 사전에 지정된 Pull Request 템플릿을 활용하여 업무 진척도 및 각자의 배운 점 공유
+### 매일 아침 회의마다 사전에 지정된 Pull Request 템플릿을 활용하여 각자의 배운 점 공유
 
 <b>PR template</b>
 <ul>
@@ -172,6 +172,12 @@
 |<img width="924" alt="스크린샷 2023-08-12 오후 4 37 54" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/9fa2cb57-7cd8-4634-983c-20bf326c593e">|<img width="924" alt="스크린샷 2023-08-12 오후 4 38 56" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/52c519e7-22fd-47fe-9074-400568755572">|
 |:---:|:---:|
 |<img width="924" alt="스크린샷 2023-08-12 오후 4 40 00" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/6d8ff9fd-e156-4e1e-96d6-27c5348c8fde">|<img width="924" alt="스크린샷 2023-08-12 오후 4 40 29" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/7e3d396c-fdc5-482c-835e-5cf12adc9d1e">|
+
+### 매일 아침 회의마다 daily task 공유
+|<img width="495" alt="스크린샷 2023-08-12 오후 4 57 15" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/a03d7d96-539a-46d6-affc-d01870131527">|<img width="495" alt="스크린샷 2023-08-12 오후 4 58 58" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/0d16f408-11b2-44d6-8d6f-3d603a93a3c8">|
+|:---:|:---:|
+|<img width="495" alt="스크린샷 2023-08-12 오후 5 00 10" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/ea5a2252-5780-4678-bb30-7ff3fc506a4f">|<img width="495" alt="스크린샷 2023-08-12 오후 4 55 35" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/cf8e927f-d1c3-47c6-9605-a2f9e6556b3e">|
+
 
 
 ## 결과 및 성과
