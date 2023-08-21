@@ -13,6 +13,7 @@ import { clearReservationDates } from '../store/ReservationDateStore';
 import RentalProductInfo from '../components/RentalProductInfo';
 import useGetReservationData from '../../../common/utils/customHooks/useGetReservationData';
 import Refresh from '../components/Refresh';
+import { QUERY_KEY } from '../../../common/utils/queryKey';
 
 function BookingPage() {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function BookingPage() {
   const getReservationData = useGetReservationData(itemId);
 
   const { isLoading, isError, error, data } = useQuery(
-    ['reservation', itemId],
+    [QUERY_KEY.RESERVATION, itemId],
     () => getReservationData(),
     {
       enabled: !!itemId,
