@@ -16,7 +16,8 @@ import {
 } from '../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../common/store/RootStore';
-import { deleteUserInfo } from '../../../common/store/UserInfoStore';
+import { QUERY_KEY } from '../../../common/utils/queryKey';
+import { useQueryClient } from 'react-query';
 
 function Header() {
   const navigate = useNavigate();
@@ -28,9 +29,11 @@ function Header() {
     setIsClick(!isClick);
   };
 
+  const queryClient = useQueryClient();
+
   const handleLoginStatus = async () => {
     if (isLoggedIn) {
-      dispatch(deleteUserInfo());
+      await queryClient.invalidateQueries(QUERY_KEY.ME);
       //TODO: "로그아웃 되었습니다."모달창 띄워주기
       alert('로그아웃 되었습니다.');
     }

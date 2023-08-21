@@ -10,6 +10,7 @@ import { ACCESS_TOKEN } from '../../Login/constants';
 import { calculateDateDifference } from '../../../common/utils/helperFunctions/calculateDateDifference';
 import usePostReservationData from '../../../common/utils/customHooks/usePostReservationData';
 import { decryptToken } from '../../../common/utils/helperFunctions/decryptToken';
+import { QUERY_KEY } from '../../../common/utils/queryKey';
 
 type ReservationBtnProps = {
   minimumRentalPeriod: number;
@@ -28,7 +29,7 @@ function ReservationBtn({ minimumRentalPeriod }: ReservationBtnProps) {
 
   const mutation = useMutation(sendReservationData, {
     onSuccess: () => {
-      queryClient.invalidateQueries('reservation');
+      queryClient.invalidateQueries(QUERY_KEY.RESERVATION);
       navigate('/mypage');
     },
     onError: (error: AxiosError) => {

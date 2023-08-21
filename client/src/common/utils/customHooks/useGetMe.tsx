@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { UseQueryResult, useQuery } from 'react-query';
 import axios, { AxiosError } from 'axios';
 import { IUserInfo } from '../../model/IUserInfo';
-import { ACCESS_TOKEN } from '../../constants';
+import { ACCESS_TOKEN, CACHE_TIME, STALE_TIME } from '../../constants';
 import { decryptToken } from '../helperFunctions/decryptToken';
 import { encryptToken } from '../helperFunctions/encryptToken';
+import { QUERY_KEY } from '../queryKey';
 
 // 추후 React Query 사용하여 유저 정보 캐싱하는 로직으로 변경 예정
 function useGetMe(): UseQueryResult<IUserInfo | null> {
@@ -52,9 +53,9 @@ function useGetMe(): UseQueryResult<IUserInfo | null> {
     }
   };
 
-  return useQuery('me', getMe, {
-    staleTime: 5 * 60 * 1000, // 5분동안 데이터가 신선하다고 간주
-    cacheTime: 30 * 60 * 1000, // 30분동안 캐시를 유지
+  return useQuery(QUERY_KEY.ME, getMe, {
+    staleTime: STALE_TIME, // 5분동안 데이터가 신선하다고 간주
+    cacheTime: CACHE_TIME, // 30분동안 캐시를 유지
   });
 }
 export default useGetMe;
