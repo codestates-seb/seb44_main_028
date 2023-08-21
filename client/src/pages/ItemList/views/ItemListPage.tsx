@@ -159,7 +159,6 @@ function ItemListPage() {
     refetch();
   }, [page, queryParams]);
   useEffect(() => {
-    console.log('queryParams ');
     setItems([]);
   }, [queryParams]);
   if (isLoading && page === 1) {

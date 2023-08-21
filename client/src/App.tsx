@@ -1,4 +1,3 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from './Router';
@@ -6,8 +5,6 @@ import Header from './pages/Header/views/Header';
 import Container from '@mui/material/Container';
 import { store } from './common/store/RootStore';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Carousel from './pages/Main/components/Carousel';
-import { WebSocketProvider } from './WebSocketProvider';
 import ImageCarousel from './pages/Detail/components/ImageCarousel';
 import { IMAGE_SLIDER } from './pages/Main/constants';
 import { MainImageCarousel } from './pages/Main/style';

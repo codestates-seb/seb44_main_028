@@ -21,6 +21,7 @@ import { ACCESS_TOKEN } from '../../constants';
 import { IInterest } from '../../model/IInterest';
 import useGetMe from '../../utils/customHooks/useGetMe';
 import { addressForMatter } from '../../../pages/MyPage/helper/addressForMatter';
+import { QUERY_KEY } from '../../utils/queryKet';
 
 const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   }, []);
 
   const { data: interestItems, refetch } = useQuery(
-    'interests',
+    QUERY_KEY.INTERESTS,
     () =>
       axios.get(`${process.env.REACT_APP_API_URL}/api/members/interests/find`, {
         headers: {
@@ -69,7 +70,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
           },
         },
       )
-      .then((res) => {
+      .then(() => {
         setIsHeartClicked(true);
         refetch();
       }),

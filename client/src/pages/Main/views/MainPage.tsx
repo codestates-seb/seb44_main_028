@@ -8,6 +8,7 @@ import { ITEMCARDLIST_TITLE, ITEMCARD_DEVELOPMENT_DATA } from '../constants';
 import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
+import { QUERY_KEY } from '../../../common/utils/queryKet';
 
 function MainPage() {
   useScrollToTop();
@@ -19,13 +20,12 @@ function MainPage() {
   };
 
   const { data, isLoading, error } = useQuery(
-    'featuredProducts',
+    QUERY_KEY.MAIN,
     fetchFeaturedProducts,
   );
   if (isLoading) return <Loading />;
   if (error) return <ErrorPage />;
 
-  console.log(data);
   return (
     <MainPageContainer>
       <Category />

@@ -10,6 +10,7 @@ import Loading from '../../../common/components/Loading';
 import ErrorPage from '../../../common/components/ErrorPage';
 import NoData from '../../../common/components/NoData';
 import ItemCardWrapper from '../../ItemList/components/ItemCardWrapper';
+import { QUERY_KEY } from '../../../common/utils/queryKet';
 const SearchPage = () => {
   const params = useParams();
   const [page, setPage] = useState(0);
@@ -18,7 +19,7 @@ const SearchPage = () => {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data, isLoading, error, isFetching } = useQuery(
-    'searchProduct',
+    QUERY_KEY.SEARCH,
     async () => {
       try {
         const res = await axios.get(
@@ -37,7 +38,6 @@ const SearchPage = () => {
             !items.some((item) => item.productId === newData.productId),
         );
         setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
-        console.log('res', res);
         return res.data;
       } catch (err) {
         console.log('err', err);

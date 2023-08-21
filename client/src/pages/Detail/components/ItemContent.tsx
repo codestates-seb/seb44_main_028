@@ -38,6 +38,7 @@ import { useDispatch } from 'react-redux';
 import { createLenderInfo } from '../store/CurrentLenderInfo';
 import { addressForMatter } from '../../MyPage/helper/addressForMatter';
 import { priceForMatter } from '../../../common/utils/helperFunctions/priceForMatter';
+import { QUERY_KEY } from '../../../common/utils/queryKet';
 
 const ItemContent = () => {
   const { data: userData, isError } = useGetMe();
@@ -57,10 +58,8 @@ const ItemContent = () => {
       setAccessToken(decryptedToken);
     }
   }, []);
-  console.log(param.itemId);
   const handleReservation = () => {
     if (isError) {
-      console.log('로그인 후 이용해주세요.');
       alert('로그인 후 이용해주세요.');
     } else {
       navigate(`/booking/${param.itemId}`);
@@ -82,7 +81,6 @@ const ItemContent = () => {
         })
         .then((res) => {
           const { data } = res;
-          console.log(data);
         }),
     {
       onError: (error) => {
@@ -96,16 +94,17 @@ const ItemContent = () => {
     setItemData(null);
     navigate(`/`);
   };
-  const { data, isLoading, error } = useQuery('productDtail', async () => {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
-    );
-    console.log('update', data);
-    return data;
-  });
+  const { data, isLoading, error } = useQuery(
+    QUERY_KEY.PRODUCT_DETAIL,
+    async () => {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/products/${param.itemId}`,
+      );
+      return data;
+    },
+  );
   useEffect(() => {
     setItemData(data);
-    console.log(itemData);
   }, [data]);
   const [itemData, setItemData] = useState(data);
   if (isLoading) {
@@ -114,8 +113,7 @@ const ItemContent = () => {
   if (error) {
     return <ErrorPage />;
   }
-  console.log('updateData', data.username);
-  console.log('updateData', data.userImage);
+
   dispatch(
     createLenderInfo({ displayName: data.username, imageUrl: data.userImage }),
   );

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { ImageCarouselContainer, ItemImageBox } from '../style';
 import Slider from 'react-slick';
 interface CarouselContainerStyle {

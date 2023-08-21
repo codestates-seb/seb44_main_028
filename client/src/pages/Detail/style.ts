@@ -15,8 +15,6 @@ export const ItemContentContainer = styled.div`
 export const ItemInfoWrapper = styled.div`
   display: flex;
   align-items: center;
-  /* height: 33.75rem;
-  width: 100%; */
   margin-bottom: 5rem;
 `;
 export const ItemImageWrapper = styled.div`
