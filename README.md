@@ -13,7 +13,6 @@
   <li><strong>팀 명:</strong> FT I랜드</li>
   <li><strong>프로젝트 기간:</strong> 23.06.28 ~ 23.07.24</li>
   <li><strong>팀 원:</strong> 이민선, 박채연, 허금희, 최민환, 김아영, 이명규</li>
-  <li><strong>기술 발표 영상:</strong><a href="https://www.youtube.com/watch?v=8M7s-Lemkw8"> 유튜브 링크</a></li>
 </ul>
 
 
