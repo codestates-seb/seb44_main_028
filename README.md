@@ -178,9 +178,3 @@
 |:---:|:---:|
 |<img width="495" alt="스크린샷 2023-08-12 오후 5 00 10" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/ea5a2252-5780-4678-bb30-7ff3fc506a4f">|<img width="495" alt="스크린샷 2023-08-12 오후 4 55 35" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/cf8e927f-d1c3-47c6-9605-a2f9e6556b3e">|
 
-
-
-## 결과 및 성과
-
-## 회고 및 추후 개선사항
-
