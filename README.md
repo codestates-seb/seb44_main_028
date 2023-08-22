@@ -154,6 +154,44 @@
 |<b>상품 필터 정렬</b>|<b>마이 페이지</b>|
 |![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|![Aug-11-2023 03-52-54](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a8deb793-a749-41ce-b987-2254fdf7db1a)|
 
+## 기술스택 결정 과정
+**Typescript, 장점 뚜렷하지만 학습 곡선 우려되는 상황**
+
+기술스택 논의 당시, Frontend 팀원 3명 중 2명이 Typescript 활용 경험이 없었습니다.
+
+|  | Javascript | Typescript |
+| --- | --- | --- |
+| 장점 | - type 적용 방법을 별도로 배우지 않아도 즉시 개발 시작 가능 | - 정적 타이핑 지원하므로 디버깅 시간 감소하여 시간 리소스 측면에서 오히려 유리- 타입의 문서화 가능 |
+| 우려점 | - 코드의 실행 시점이 되어서야 type 에러 포착하므로 디버깅 어려움 | - 학습 곡선 |
+
+**Typescript 최종 선택 이유**
+
+코드의 실행 시점이 아닌 코드 작성 단계에서 오류를 포착하므로 디버깅 시간이 짧아질 것을 고려하면, Learning curve를 극복해서라도 선택할 가치가 충분하다는 방향으로 팀의 합의가 도출되었습니다.
+
+**Type 문서화 기능을 높이기 위한 convention 지정**
+
+interface와 type alias의 용도를 구분
+
+|<img width="144" alt="interface" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/0b405081-6a42-4b1f-b45b-bba7d971ad95">| <img width="566" alt="type alias" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/742a3815-02d7-4d20-ae03-93dbf26975e6">|
+| --- | --- |
+|interface는 페이지별 model 폴더에 I로 시작하도록 type명 지정, API 데이터에 대한 타입 정의 | 함수형 컴포넌트와 styled-components의 props에 대해서는 type alias를 사용 |
+
+
+
+
+
+
+
+
+
+**결과 및 회고**
+
+- Typescript 도입의 주된 목적이었던 디버깅 시간 단축 효과가 팀 전반적으로 체감되었습니다.
+- type의 문서화를 통해 개발 단계 및 리팩토링 단계에서 코드 이해 및 유지보수에 도움이 되었습니다. 특히 같은 페이지를 2명 이상이 작업할 경우나, 유저 정보와 같이 다른 팀원들이 활용해야 할 데이터의 구조가 명시되어 있을 경우 가독성이 높아져서 생산성이 증대되었습니다.
+- Typescript 입문자인 팀원분들과 함께 했던 만큼 코드 리뷰의 효과가 클 것으로 예상되어, 다음 협업에서는 코드 리뷰에 일정 시간 이상을 배분하고 싶습니다.
+
+
+
 ## 협업 방식
 ### 매일 아침 회의마다 사전에 지정된 Pull Request 템플릿을 활용하여 각자의 배운 점 공유
 
