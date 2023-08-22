@@ -207,8 +207,7 @@ interface와 type alias의 용도를 구분
 
 따라서 리팩토링 단계에서 common-utils-queryKey.ts에 read-only 객체를 생성 후, query key를 상수화하여 등록했습니다.
 
-|![스크린샷 2023-08-22 오후 1 51 08](https://github.com/codestates-seb/seb44_main_028/assets/117507731/f7a2c325-9f75-419a-a5dd-95a1895964f8)
-|![쿼리 키](https://github.com/codestates-seb/seb44_main_028/assets/117507731/9d95e94a-14c0-4cc1-b40f-76aba7d763de) <img width="566" alt="type alias" src="https://github.com/codestates-seb/seb44_main_028/assets/117507731/742a3815-02d7-4d20-ae03-93dbf26975e6">|
+|![스크린샷 2023-08-22 오후 1 51 08](https://github.com/codestates-seb/seb44_main_028/assets/117507731/f7a2c325-9f75-419a-a5dd-95a1895964f8)|![쿼리 키](https://github.com/codestates-seb/seb44_main_028/assets/117507731/9d95e94a-14c0-4cc1-b40f-76aba7d763de)|
 | --- | --- |
 |common - queryKey.ts | 상수화된 query key 사용 예시|
 
