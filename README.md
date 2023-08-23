@@ -197,7 +197,7 @@ interface와 type alias의 용도를 구분
 
 **React-Query의 도입**
 
-전역 상태 관리는 redux-toolkit으로, 비동기 데이터의 상태는 React-Query로 캐싱하여 관리할 것을 제안했습니다. 이에 불필요한 store를 React-Query로 캐싱한 데이터로 대체하는 작업이 진행되기도 했습니다.
+전역 상태 관리는 redux-toolkit으로, 비동기 데이터의 상태는 React-Query로 캐싱하여 관리했습니다. 이에 불필요한 store를 React-Query로 캐싱한 데이터로 대체하는 작업이 진행되기도 했습니다.
 
 [카카오페이 프론트엔드 개발자들이 React Query를 선택한 이유 | 카카오페이 기술 블로그](https://tech.kakaopay.com/post/react-query-1/)
 
