@@ -70,7 +70,7 @@ public class ProductCategoryService {
     public void deleteProductCategoriesByProductId(String productId) {
         productCategoryRepository.deleteByProductProductId(productId);
     }
-
+/*
     public GetProducts getProductsByCategory(String categoryId, Pageable pageable) {
         Category category = categoryRepository.findById(categoryId).orElse(null);
 
@@ -106,5 +106,5 @@ public class ProductCategoryService {
 
     public List<ProductCategory> findCategories(String categoryId) {
         return productCategoryRepository.findByCategoryCategoryId(categoryId);
-    }
+    }*/
 }

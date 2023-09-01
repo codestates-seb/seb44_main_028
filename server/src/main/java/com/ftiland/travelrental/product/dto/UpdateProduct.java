@@ -36,11 +36,13 @@ public class UpdateProduct {
 
         private String productId;
         private List<String> deletedImageName;
+        private boolean deleteCheck;
 
-        public static Response from(Product product, List<String> imageFileNames) {
+        public static Response from(Product product, List<String> imageFileNames, boolean deleteCheck) {
             return Response.builder()
                     .productId(product.getProductId())
                     .deletedImageName(imageFileNames)
+                    .deleteCheck(deleteCheck)
                     .build();
         }
     }

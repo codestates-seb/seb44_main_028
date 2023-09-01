@@ -60,7 +60,9 @@ public class ProductController {
         UpdateProduct.Response response = productService.updateProduct(request, productId, memberId, imageDtos);
 
         // 이전 이미지 삭제
-        imageService.deleteImages(response.getDeletedImageName());
+        if (response.isDeleteCheck()) {
+            imageService.deleteImages(response.getDeletedImageName());
+        }
 
         return ResponseEntity.ok(response);
     }

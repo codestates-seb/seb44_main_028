@@ -6,6 +6,7 @@ import com.ftiland.travelrental.category.dto.CategoryDtoForProductDetail;
 import com.ftiland.travelrental.common.exception.BusinessLogicException;
 import com.ftiland.travelrental.common.exception.ExceptionCode;
 import com.ftiland.travelrental.image.dto.ImageDto;
+import com.ftiland.travelrental.image.service.DeletedImageService;
 import com.ftiland.travelrental.image.service.ImageProductService;
 import com.ftiland.travelrental.member.service.MemberService;
 
@@ -20,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +39,7 @@ public class ProductService {
     private final MemberService memberService;
     private final ProductCategoryService productCategoryService;
     private final ImageProductService imageProductService;
+    private final DeletedImageService deletedImageService;
 
     @Transactional
     public CreateProduct.Response createProduct(CreateProduct.Request request, Long memberId, List<ImageDto> images) {
@@ -71,6 +72,8 @@ public class ProductService {
                 productCategoryService.createProductCategories(product, request.getCategoryIds());
 
         imageProductService.createImageProducts(product, images);
+
+        deletedImageService.deleteDeletedImages(images);
 
         return CreateProduct.Response.from(product, productCategories);
     }
@@ -117,11 +120,13 @@ public class ProductService {
                     productCategoryService.createProductCategories(product, categoryIds);
                 });
 
+        boolean deleteCheck = !Objects.isNull(images);
+
         List<String> imageFileNames = imageProductService.findImageFileName(productId);
 
         imageProductService.createImageProducts(product, images);
 
-        return UpdateProduct.Response.from(product, imageFileNames);
+        return UpdateProduct.Response.from(product, imageFileNames, deleteCheck);
     }
 
     @Transactional
@@ -160,7 +165,7 @@ public class ProductService {
         return GetProducts.from(products);
     }
 
-    @Transactional
+    @Transactional()
     public void updateView(String productId) {
         Product product = findProduct(productId);
         product.setViewCount(product.getViewCount() + 1);

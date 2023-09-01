@@ -33,7 +33,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private ChatRoomRepository chatRoomRepository;
     private ChatRoomMembersRepository chatRoomMembersRepository;
 
-    private MultiValueMap<String,String> sessions = new LinkedMultiValueMap<>();
+    private MultiValueMap<String, String> sessions = new LinkedMultiValueMap<>();
 
     @Autowired
     public void WebSocketHandler(ChatEntityService chatEntityService, ChatDtoService chatDtoService, ChatRoomRepository chatRoomRepository, ChatRoomMembersRepository chatRoomMembersRepository) {
@@ -51,18 +51,18 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ChatMessageDto chatMessage = objectMapper.readValue(payload, ChatMessageDto.class);
         String roomId = chatMessage.getRoomId();
 
-        if(chatEntityService.verifyChatroomMember(roomId,chatMessage.getSenderId())==false){
+        if (chatEntityService.verifyChatroomMember(roomId, chatMessage.getSenderId()) == false) {
             log.error("[ Invalid chat access ]");
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_ACCESS);
         }
 
-        if(chatMessage.getType()== ChatMessageDto.MessageType.CONNECT){
-            sessions.add(session.getId(),roomId);
+        if (chatMessage.getType() == ChatMessageDto.MessageType.CONNECT) {
+            sessions.add(session.getId(), roomId);
         }
 
-        if (chatDtoService.findUseChatRoom(roomId)== false) {
+        if (chatDtoService.findUseChatRoom(roomId) == false) {
 
-            ChatRoom preChatRoom = chatRoomRepository.findById(roomId).orElseThrow(()->new BusinessLogicException(ExceptionCode.NOT_EXISTS));
+            ChatRoom preChatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_EXISTS));
 
             ChatRoomDto chatRoom = ChatRoomDto.builder()
                     .roomId(roomId)
@@ -71,10 +71,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                     .build();
             chatDtoService.putChatRooms(roomId, chatRoom);
             chatRoom.handlerActions(session, chatMessage, chatDtoService, chatEntityService);
-        }
-
-
-        else if(chatDtoService.findUseChatRoom(roomId)==true){
+        } else if (chatDtoService.findUseChatRoom(roomId) == true) {
 
             ChatRoomDto chatRoom = chatDtoService.findRoomById(chatMessage.getRoomId());
             chatRoom.handlerActions(session, chatMessage, chatDtoService, chatEntityService);
@@ -83,11 +80,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception{
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
         List<String> roomIdList = sessions.get(session.getId());
 
-        if(roomIdList.size()>0) {
+        if (roomIdList.size() > 0) {
             sessions.remove(session.getId());
 
             for (String roomId : roomIdList) {

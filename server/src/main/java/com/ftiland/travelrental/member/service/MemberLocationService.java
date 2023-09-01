@@ -40,15 +40,15 @@ public class MemberLocationService {
         return memberRepository.save(member);
     }
 
-    public String getLocation(Member member){
-        String latitude =member.getLatitude().toString();
+    public String getLocation(Member member) {
+        String latitude = member.getLatitude().toString();
         String longitude = member.getLongitude().toString();
 
-        String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x="+longitude+"&y="+latitude;
+        String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=" + longitude + "&y=" + latitude;
         String addr = "";
-        try{
-            addr=getRegionAddress(getJSONData(url));
-        }catch (Exception e){
+        try {
+            addr = getRegionAddress(getJSONData(url));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -61,7 +61,7 @@ public class MemberLocationService {
         StringBuffer response = new StringBuffer();
 
         //인증키 - KakaoAK하고 한 칸 띄워주셔야해요!
-        String auth = "KakaoAK " + restApi ;
+        String auth = "KakaoAK " + restApi;
 
         //URL 설정
         URL url = new URL(apiUrl);
@@ -104,7 +104,7 @@ public class MemberLocationService {
         String value = "";
         JSONObject jObj = (JSONObject) JSONValue.parse(jsonString);
         JSONObject meta = (JSONObject) jObj.get("meta");
-        Integer size =(Integer) meta.get("total_count");
+        Integer size = (Integer) meta.get("total_count");
 
         if (size > 0) {
             JSONArray jArray = (JSONArray) jObj.get("documents");

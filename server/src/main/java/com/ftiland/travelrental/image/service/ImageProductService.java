@@ -6,6 +6,7 @@ import com.ftiland.travelrental.image.repository.ImageProductRepository;
 import com.ftiland.travelrental.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ImageProductService {
 
     private final ImageProductRepository imageProductRepository;
@@ -25,6 +27,7 @@ public class ImageProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void createImageProducts(Product product, List<ImageDto> imageDtos) {
         List<ImageProduct> images = imageDtos.stream()
                 .map(i -> new ImageProduct(
@@ -40,6 +43,7 @@ public class ImageProductService {
     }
 
     // 상품 이미지
+    @Transactional
     public List<String> findImageProducts(String productId) {
         return imageProductRepository.findImageUrlByProductId(productId);
     }

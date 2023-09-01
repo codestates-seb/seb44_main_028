@@ -3,7 +3,7 @@ package com.ftiland.travelrental.category.controller;
 import com.ftiland.travelrental.category.dto.CategoryDto;
 import com.ftiland.travelrental.category.dto.CreateCategory;
 import com.ftiland.travelrental.category.service.CategoryService;
-import com.ftiland.travelrental.image.entity.ImageCategory;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +33,9 @@ public class CategoryController {
                                             @RequestParam("image") MultipartFile imageFile){
 
         CreateCategory.Request request = new CreateCategory.Request(categoryId, title);
-        ImageCategory imageCategory = imageService.storeImageCategory(imageFile, categoryId);
 
-        return ResponseEntity.ok(categoryService.createCategory(request, imageCategory));
+        ImageDto imageDto = imageService.storeImage(imageFile);
+
+        return ResponseEntity.ok(categoryService.createCategory(request, imageDto));
     }
 }

@@ -2,6 +2,7 @@ package com.ftiland.travelrental.member.controller;
 
 import com.ftiland.travelrental.common.annotation.CurrentMember;
 import com.ftiland.travelrental.common.utils.MemberAuthUtils;
+import com.ftiland.travelrental.image.dto.ImageDto;
 import com.ftiland.travelrental.image.entity.ImageMember;
 import com.ftiland.travelrental.image.service.ImageService;
 import com.ftiland.travelrental.member.dto.MemberDto;
@@ -30,15 +31,22 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<MemberDto.Response> getMember(@CurrentMember Long memberId) {
-        Member member = memberService.findMember(memberId);
-        MemberDto.Response response = MemberDto.Response.from(member);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok(memberService.findMemberDto(memberId));
     }
 
     @PatchMapping
-    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId, @RequestParam("displayName") String displayName, @RequestParam("imageFile") MultipartFile imageFile) {
+    public ResponseEntity<MemberDto.Response> patchMember(@CurrentMember Long memberId,
+                                                          @RequestParam("displayName") String displayName,
+                                                          @RequestParam("imageFile") MultipartFile imageFile) {
 
-        MemberDto.Response response = memberService.updateMember(displayName, imageFile, memberId);
+        ImageDto imageDto = imageService.storeImage(imageFile);
+
+        MemberDto.Response response = memberService.updateMember(displayName, imageDto, memberId);
+
+        if (response.isDeleteCheck()) {
+            imageService.deleteImage(response.getImageUrl());
+        }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -51,10 +59,10 @@ public class MemberController {
     }
 
     @PostMapping("/default")
-    public ResponseEntity<ImageMember> createImage(@RequestParam MultipartFile imageFile) {
-        ImageMember imageMember = imageService.storeImageMember(imageFile, 1L);
-        log.info("[MemberController] createImage : {}", imageMember.getImageUrl());
+    public ResponseEntity<ImageDto> createImage(@RequestParam MultipartFile imageFile) {
+        ImageDto imageDto = imageService.storeImage(imageFile);
+        log.info("[MemberController] createImage : {}", imageDto.getImageUrl());
 
-        return ResponseEntity.ok(imageMember);
+        return ResponseEntity.ok(imageDto);
     }
 }

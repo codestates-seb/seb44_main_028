@@ -36,34 +36,34 @@ public class ChatController {
     private MemberService memberService;
 
     @Autowired
-    public void ChatController(ChatDtoService chatDtoService, ChatEntityService chatEntityService, ChatMapper chatMapper, ChatRoomMembersRepository chatRoomMembersRepository,ProductService productService,MemberService memberService){
+    public void ChatController(ChatDtoService chatDtoService, ChatEntityService chatEntityService, ChatMapper chatMapper, ChatRoomMembersRepository chatRoomMembersRepository, ProductService productService, MemberService memberService) {
         this.chatDtoService = chatDtoService;
         this.chatEntityService = chatEntityService;
         this.chatMapper = chatMapper;
-        this.chatRoomMembersRepository= chatRoomMembersRepository;
+        this.chatRoomMembersRepository = chatRoomMembersRepository;
         this.productService = productService;
         this.memberService = memberService;
     }
 
     @GetMapping("/seller")
-    public ResponseEntity getSellerId(@CurrentMember long senderId,@Param("productId") String productId){
+    public ResponseEntity getSellerId(@CurrentMember long senderId, @Param("productId") String productId) {
         Long receiverId = productService.findSellerId(productId);
         ResponseDto.SellerInfoForCustomer response = ResponseDto.SellerInfoForCustomer.builder()
                 .sellerId(receiverId)
-                .chatRoomExists(chatEntityService.existsChatRooms(senderId,receiverId))
+                .chatRoomExists(chatEntityService.existsChatRooms(senderId, receiverId))
                 .build();
 
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     // 채팅방 생성
     @PostMapping
-    public HttpStatus createRoom(@CurrentMember Long memberId, @RequestBody RequestDto.Post requestBody){
+    public HttpStatus createRoom(@CurrentMember Long memberId, @RequestBody RequestDto.Post requestBody) {
 
         requestBody.setSenderId(memberId);
         requestBody.setReceiverId(productService.findSellerId(requestBody.getProductId()));
 
-        if(chatEntityService.existsChatRooms(requestBody.getSenderId(), requestBody.getReceiverId())==true){
+        if (chatEntityService.existsChatRooms(requestBody.getSenderId(), requestBody.getReceiverId()) == true) {
             return null;
         }
 
@@ -75,46 +75,46 @@ public class ChatController {
 
     // 채팅방 이전 메세지 불러오기 case 1
     @GetMapping("/message1")
-    public ResponseEntity findChatroomMessages(@Param("roomId")String roomId){
+    public ResponseEntity findChatroomMessages(@Param("roomId") String roomId) {
         ArrayList<ChatMessage> chatMessageList = chatEntityService.findChatroomMessages(roomId);
         ResponseDto.Messages response = chatMapper.ChatMessagesToResponseMessages(chatMessageList);
 
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     // 채팅방 이전 메세지 불러오기 case 2
     @GetMapping("/message2")
-    public ResponseEntity findChatRoomMessages(@Param("memberId") Long memberId){
+    public ResponseEntity findChatRoomMessages(@Param("memberId") Long memberId) {
         List<ChatMessage> chatMessageList = chatEntityService.findChatRoomMessage2(memberId);
         ResponseDto.Messages response = chatMapper.ChatMessagesToResponseMessages(chatMessageList);
 
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     // 채팅방 리스트 불러오기
     @GetMapping("/chatrooms")
-    public ResponseEntity findChatRooms(@CurrentMember Long memberId){
+    public ResponseEntity findChatRooms(@CurrentMember Long memberId) {
 
         List<ChatRoom> chatRooms = chatEntityService.existsChatRooms(memberId);
         List<Member> senderList = new ArrayList<>();
-        for (ChatRoom chatRoom : chatRooms){
+        for (ChatRoom chatRoom : chatRooms) {
             String roomId = chatRoom.getChatroomId();
-            senderList.add(chatEntityService.findReceiver(memberId,roomId));
+            senderList.add(chatEntityService.findReceiver(memberId, roomId));
         }
-        ResponseDto.ChatRooms response = chatMapper.ChatRoomsToChatRoomList(chatRooms,senderList);
+        ResponseDto.ChatRooms response = chatMapper.ChatRoomsToChatRoomList(chatRooms, senderList);
 
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     // 특정 채팅방 정보 불러오기
     @GetMapping("/chatroom")
-    public ResponseEntity findChatRoom(@CurrentMember Long senderId,@Param("productId") String productId){
+    public ResponseEntity findChatRoom(@CurrentMember Long senderId, @Param("productId") String productId) {
         // 판매자 id를 받아서 맴버 id 참조 -> 보안 문제해결
         Long receiverId = productService.findSellerId(productId);
 
-        ChatRoom chatRoom = chatEntityService.findChatRoom(senderId,receiverId);
+        ChatRoom chatRoom = chatEntityService.findChatRoom(senderId, receiverId);
         ResponseDto.ChatRoom response = chatMapper.ChatRoomToResponseChatRoom(chatRoom);
 
-        return new ResponseEntity(response,HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

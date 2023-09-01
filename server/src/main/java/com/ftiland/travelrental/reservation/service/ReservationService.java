@@ -245,13 +245,11 @@ public class ReservationService {
     public long countAllReservation(Long memberId) {
         long borrowCount = reservationRepository.countByMemberMemberId(memberId);
 
-        log.info("borrowCount : {}", borrowCount);
         List<Product> products = productService.findProductByMemberId(memberId);
 
         long lenderCount = products.stream()
                 .mapToLong(p -> reservationRepository.countByProductProductId(p.getProductId()))
                 .sum();
-        log.info("borrowCount : {}", lenderCount);
 
         return borrowCount + lenderCount;
     }

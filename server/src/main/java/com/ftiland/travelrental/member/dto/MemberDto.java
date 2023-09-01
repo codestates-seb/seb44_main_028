@@ -20,8 +20,9 @@ public class MemberDto {
         private String address;
         private Double latitude;
         private Double longitude;
+        private boolean deleteCheck;
 
-        public static MemberDto.Response from(Member member, String imageUrl) {
+        public static MemberDto.Response from(Member member, String imageUrl, boolean deleteCheck) {
             return Response.builder()
                     .memberId(member.getMemberId())
                     .email(member.getEmail())
@@ -30,6 +31,7 @@ public class MemberDto {
                     .longitude(member.getLongitude())
                     .latitude(member.getLatitude())
                     .imageUrl(imageUrl)
+                    .deleteCheck(deleteCheck)
                     .build();
         }
 
