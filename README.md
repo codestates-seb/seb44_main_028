@@ -17,7 +17,7 @@
 
 
 <br>
-
+![백엔드 아키텍처 drawio](https://github.com/codestates-seb/seb44_main_028/assets/87743103/be54ff55-96cb-4afe-96ee-e5f9a301b853)
 
 ## 팀원 소개 및 역할
 <table>
