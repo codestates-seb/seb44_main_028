@@ -157,6 +157,9 @@
 |<b>상품 필터 정렬</b>|<b>마이 페이지</b>|
 |![Jul-29-2023 18-08-32](https://github.com/codestates-seb/seb44_main_028/assets/72354092/284fe563-070b-481e-9c46-b7ce5532c9c2)|![Aug-11-2023 03-52-54](https://github.com/codestates-seb/seb44_main_028/assets/72354092/a8deb793-a749-41ce-b987-2254fdf7db1a)|
 
+
+<br>
+
 ## 프로젝트 주요 관심사
 - Spring Cache 적용으로 읽기 작업 성능 향상
 - MySql의 테이블 인덱스 설정을 통한 성능개선 
@@ -165,6 +168,8 @@
 - 이미지 등록/삭제 과정을 하나의 단위로 묶어 S3에 고아 이미지가 남는 경우를 방지 및 고아 이미지 삭제 성능개선
 - Github actions으로 CI/CD 환경을 구축하여 개발 생산성 증대
 - main, dev, feat으로 branch 구분하여 형상관리 
+
+<br>
 
 ## 협업 방식
 ### 매일 아침 회의마다 사전에 지정된 Pull Request 템플릿을 활용하여 각자의 배운 점 공유
