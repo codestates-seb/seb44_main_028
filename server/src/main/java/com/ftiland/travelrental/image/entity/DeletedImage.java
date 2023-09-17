@@ -1,4 +1,4 @@
-package com.ftiland.travelrental.image.service;
+package com.ftiland.travelrental.image.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

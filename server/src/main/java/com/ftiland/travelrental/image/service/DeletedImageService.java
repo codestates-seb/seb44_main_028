@@ -1,6 +1,8 @@
 package com.ftiland.travelrental.image.service;
 
 import com.ftiland.travelrental.image.dto.ImageDto;
+import com.ftiland.travelrental.image.entity.DeletedImage;
+import com.ftiland.travelrental.image.repository.DeletedImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
