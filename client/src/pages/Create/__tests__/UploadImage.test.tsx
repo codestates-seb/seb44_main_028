@@ -5,7 +5,7 @@ import UploadImages from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 
 describe('UploadImages', () => {
-  test('Checking if modal appears when uploading more than 5 images', async () => {
+  test('사진을 5장 이상 업로드 시 모달에 해당 텍스트가 화면에 뜨는가', async () => {
     const showImages = [
       'image1.jpg',
       'image2.jpg',
