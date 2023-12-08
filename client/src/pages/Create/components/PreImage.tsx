@@ -4,7 +4,7 @@ import { PreImageWrapper } from '../style';
 const PreImage = ({ imageSrc, ImageId, handleDeleteImage }: PreImageProps) => {
   return (
     <PreImageWrapper>
-      <img src={imageSrc} />
+      <img src={imageSrc} alt="Uploaded Image" />
       <IoIosClose
         className="closeIcon"
         onClick={() => handleDeleteImage(ImageId)}
