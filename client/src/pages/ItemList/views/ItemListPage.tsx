@@ -21,8 +21,10 @@ import useGetMe from '../../../common/utils/customHooks/useGetMe';
 import ErrorPage from '../../../common/components/ErrorPage';
 import { ItemListPageContainer, ProductListWrapper } from '../style';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function ItemListPage() {
+  useScrollToTop();
   const params = useParams();
   const navigate = useNavigate();
   const [distanceSelectedValue, setDistanceSelectedValue] = useState(
@@ -34,18 +36,17 @@ function ItemListPage() {
 
   const { data: userData } = useGetMe();
   const [page, setPage] = useState(0);
-  const size = 10;
+  const size = 5;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const [queryParams, setQueryParams] = useState<queryParams>({
-    page: page,
-    size: size,
     categoryId: params.categoryId,
     sortBy: PRODUCT_FILTER_OPTIONS.find(
       (option) => option.label === productFilterSelectedValue,
     )?.value,
+    size: size,
   });
   useEffect(() => {
     const decrypt = useDecryptToken();
@@ -63,28 +64,35 @@ function ItemListPage() {
     error,
     isFetching,
     refetch,
-  } = useQuery([JSON.stringify(queryParams), page], async () => {
-    try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/products`,
-        {
-          params: queryParams,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
+  } = useQuery(
+    [
+      queryParams.categoryId,
+      queryParams.sortBy,
+      queryParams.distance,
+      page,
+      queryParams.size,
+    ],
+    async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/products?page=${page}&size=${queryParams.size}`,
+          {
+            params: {
+              categoryId: queryParams.categoryId,
+              sortBy: queryParams.sortBy,
+              distance: queryParams.distance,
+            },
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
           },
-        },
-      );
-      const newDatas = res.data.products;
-      const filteredProducts = newDatas.filter(
-        (newData: ItemCardProps) =>
-          !items.some((item) => item.productId === newData.productId),
-      );
-      setItems((prevIetm) => [...prevIetm, ...filteredProducts]);
-      return res.data.products;
-    } catch (err) {
-      console.log('err', err);
-    }
-  });
+        );
+        setItems((prevIetm) => [...prevIetm, ...res.data.products]);
+      } catch (err) {
+        console.log('err', err);
+      }
+    },
+  );
 
   useEffect(() => {
     // 멤버 유저 아닌 경우
@@ -106,8 +114,8 @@ function ItemListPage() {
       )?.value,
       distance: distanceSelect || undefined,
     }));
-    refetch();
-  }, [distanceSelectedValue]);
+    setPage(0);
+  }, [distanceSelectedValue, productFilterSelectedValue]);
 
   useEffect(() => {
     setQueryParams((prevParams) => ({
@@ -116,8 +124,19 @@ function ItemListPage() {
         (option) => option.label === productFilterSelectedValue,
       )?.value,
     }));
-    refetch();
+    setPage(0);
   }, [productFilterSelectedValue]);
+
+  useEffect(() => {
+    const distanceSelect = DISTANCE_OPTIONS.find(
+      (option) => option.label === distanceSelectedValue,
+    )?.value;
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      distance: distanceSelect || undefined,
+    }));
+    setPage(0);
+  }, [distanceSelectedValue]);
   useEffect(() => {
     function handleScroll() {
       if (
@@ -130,13 +149,18 @@ function ItemListPage() {
         }
       }
     }
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [isFetching]);
 
+  useEffect(() => {
+    refetch();
+  }, [page, queryParams]);
+  useEffect(() => {
+    setItems([]);
+  }, [queryParams]);
   if (isLoading && page === 1) {
     return <Loading />;
   }

@@ -100,3 +100,6 @@ export const CATEGORY: CategoryProps[] = [
 export const NODATA_TEXT = '검색 결과가 없습니다.';
 
 export const ACCESS_TOKEN = 'access_token';
+
+export const STALE_TIME = 5 * 60 * 1000;
+export const CACHE_TIME = 30 * 60 * 1000;

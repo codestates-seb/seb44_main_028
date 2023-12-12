@@ -9,12 +9,9 @@ import com.ftiland.travelrental.interest.mapper.InterestMapper;
 import com.ftiland.travelrental.interest.repository.InterestRepository;
 
 import com.ftiland.travelrental.member.entity.Member;
-import com.ftiland.travelrental.member.repository.MemberRepository;
 import com.ftiland.travelrental.member.service.MemberService;
 import com.ftiland.travelrental.product.entity.Product;
-import com.ftiland.travelrental.product.repository.ProductRepository;
 import com.ftiland.travelrental.product.service.ProductService;
-import com.ftiland.travelrental.reservation.dto.GetBorrowReservations;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,41 +37,40 @@ public class InterestService {
     private ProductService productService;
 
     @Autowired
-    public  InterestService ( InterestRepository interestRepository, MemberService memberService, ImageService imageService, InterestMapper interestMapper,ProductService productService){
+    public InterestService(InterestRepository interestRepository,
+                           MemberService memberService,
+                           ImageService imageService,
+                           InterestMapper interestMapper,
+                           ProductService productService) {
         this.interestRepository = interestRepository;
         this.memberService = memberService;
         this.imageService = imageService;
         this.interestMapper = interestMapper;
 
         this.productService = productService;
-
     }
 
     // 특정 관심객체 검색
-    public Optional<Interest> findVerifiedInterest(Long memberId, String productId){
+    public Optional<Interest> findVerifiedInterest(Long memberId, String productId) {
 
-        Optional<Interest> optionalInterest = interestRepository.findByProductIdMemberId(memberId,productId);
+        Optional<Interest> optionalInterest = interestRepository.findByProductIdMemberId(memberId, productId);
         return optionalInterest;
     }
 
-
     // 한 사용자의 관심 목록
-    public InterestDto.ResponsesDto  findInterest(Long memberId,int page,int size){
-        Pageable pageable = PageRequest.of(page,size);
+    public InterestDto.ResponsesDto findInterest(Long memberId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
 
         // 맴버 존재하는지 검사
         memberService.findMember(memberId);
         long start = System.currentTimeMillis();
         Page<Interest> pagedList = interestRepository.findByMemberId(memberId, pageable);
+//        Page<InterestDto.GetResponseDto> pagedList = interestRepository.findByMemberId(memberId, pageable);
         long end = System.currentTimeMillis();
         log.info("findByMemberId total time = {}", end - start);
-        long start2 = System.currentTimeMillis();
-        InterestDto.ResponsesDto responses = interestMapper.interestsToResponsesDto(pagedList);
-        long end2 = System.currentTimeMillis();
-        log.info("interestsToResponsesDto total time = {}", end2 - start2);
-
-
-        return responses;
+        InterestDto.ResponsesDto responsesDto = interestMapper.interestsToResponsesDto(pagedList);
+//        InterestDto.ResponsesDto responsesDto = InterestDto.ResponsesDto.from(pagedList);
+        return responsesDto;
     }
 
     // 한 사용자의 관심 목록 (페이징 x)
@@ -89,21 +85,27 @@ public class InterestService {
     }
 
     // 관심 상품 등록
-    public Interest createInterest(Long memberId,String productId){
+    public Interest createInterest(Long memberId, String productId) {
 
         // 이미 관심 목록에 등록했으면 에러 리턴
-        if (findVerifiedInterest(memberId,productId).isPresent()){throw new BusinessLogicException(ExceptionCode.INTEREST_EXISTS);}
+        if (findVerifiedInterest(memberId, productId).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.INTEREST_EXISTS);
+        }
         Member member = memberService.findMember(memberId);
         Product product = productService.findProduct(productId);
-        Interest interest = Interest.builder().interestId(UUID.randomUUID().toString()).member(member).product(product).build();
+        Interest interest = Interest.builder()
+                .interestId(UUID.randomUUID().toString())
+                .member(member)
+                .product(product).build();
 
         return interestRepository.save(interest);
     }
 
     // 관심 상품 해제
-    public void deleteInterest(Long memberId,String interestId){
-        Interest interest = interestRepository.findById(interestId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.INTEREST_NOT_EXISTS));
-        if ( interest.getMember().getMemberId() == memberId){
+    public void deleteInterest(Long memberId, String interestId) {
+        Interest interest = interestRepository.findById(interestId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INTEREST_NOT_EXISTS));
+        if (interest.getMember().getMemberId() == memberId) {
             interestRepository.delete(interest);
         }
     }

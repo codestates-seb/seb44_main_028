@@ -8,6 +8,8 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -95,30 +97,25 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                 if (refreshTokenMemberEmail != null) {
                     // check member exist
                     Member member = memberService.findMemberByEmail(refreshTokenMemberEmail);
+
                     // Access token 재발급
-                    Map<String, Object> claims = new HashMap<>();
-                    claims.put("memberId", member.getMemberId());
-                    claims.put("displayName", member.getDisplayName());
-                    claims.put("email", member.getEmail());
-
-                    String subject = member.getEmail();
-                    Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-                    String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+                    String accessToken = delegateAccessToken(member);
 
                     response.setHeader("Authorization", "Bearer " + accessToken);
-                    response.setStatus(HttpServletResponse.SC_OK, "Access token refreshed successfully");
+                    response.setStatus(HttpServletResponse.SC_OK, "엑세스 토큰을 성공적으로 재발급하였습니다");
                     return;
                 }
             } catch (ExpiredJwtException e) {
-
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "리프레시 토큰이 만료되었습니다");
+                return;
             } catch (Exception e) {
-
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다");
+                return;
             }
         }
 
         // 401 Unauthorized 에러 반환
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "권한이 없습니다");
     }
 
     private String getRefreshTokenFromCookie(HttpServletRequest request, String cookieName) {
@@ -134,5 +131,20 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             logger.info("no cookie");
         }
         return null;
+    }
+
+    private String delegateAccessToken(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", member.getMemberId());
+        claims.put("displayName", member.getDisplayName());
+        claims.put("email", member.getEmail());
+
+        String subject = member.getEmail();
+        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+
+        return accessToken;
     }
 }

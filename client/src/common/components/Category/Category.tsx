@@ -5,6 +5,7 @@ import axios from 'axios';
 import Loading from '../Loading';
 import { ICategory } from '../../model/ICategory';
 import ErrorPage from '../ErrorPage';
+import { QUERY_KEY } from '../../utils/queryKet';
 
 const Category = () => {
   const fetchCategoryData = async () => {
@@ -17,7 +18,7 @@ const Category = () => {
     data: category,
     isLoading,
     isError,
-  } = useQuery<ICategory[]>('categories', fetchCategoryData);
+  } = useQuery<ICategory[]>(QUERY_KEY.CATEGORY, fetchCategoryData);
 
   if (isLoading) {
     return <Loading />;

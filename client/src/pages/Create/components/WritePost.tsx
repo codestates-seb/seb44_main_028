@@ -12,12 +12,7 @@ import { BiErrorCircle } from 'react-icons/bi';
 import UploadImage from '../components/UploadImage';
 import ModalMain from '../../../common/components/Modal/ModalMain';
 import CheckBoxList from '../../../common/components/Checkbox/CheckBoxList';
-import {
-  CONTENT_DESCRIPTION,
-  MAX_IMAGE_COUNT,
-  INPIT_VALIDATION,
-  INPUT_FIELD,
-} from '../constants';
+import { CONTENT_DESCRIPTION, MAX_IMAGE_COUNT } from '../constants';
 import { categories } from '../type';
 import { IProductDetail } from '../../Update/model/IProductDetail';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
@@ -145,7 +140,6 @@ const WritePost = ({
       .then((res) => {
         const { data } = res;
         navigate(`/detail/${data.productId}`);
-        console.log('data', data);
       })
       .catch((err) => {
         console.log(err);
@@ -165,7 +159,6 @@ const WritePost = ({
       )
       .then((res) => {
         const { data } = res;
-        console.log('data', data);
         navigate(`/detail/${params.itemId}`);
       })
       .catch((err) => {

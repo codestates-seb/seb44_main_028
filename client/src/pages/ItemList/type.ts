@@ -1,5 +1,5 @@
 export type queryParams = {
-  page: number;
+  // page: number;
   size: number;
   categoryId: string | undefined;
   sortBy: string | undefined | number;

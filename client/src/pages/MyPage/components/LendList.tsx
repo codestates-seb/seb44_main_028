@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import Paging from './Paging';
 import axios from 'axios';
-import { WishListWrapper, LendListWrapper, LendWrapper } from '../style';
+import {
+  WishListWrapper,
+  LendListWrapper,
+  LendWrapper,
+  LendListContainer,
+} from '../style';
 import { DefaultBtn } from '../../../common/components/Button';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import LendCard from '../../../common/components/MypageCard/LendCard';
@@ -20,10 +25,16 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
   const [items, setItems] = useState<lendCardProps[]>([]);
   const [isItemCardClicked, setIsItemCardClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [currentStatus, setCurrentStatus] = useState(''); //현재상태
-  const [itemsPerPage] = useState(3);
+
+  const [currentStatus, setCurrentStatus] = useState('REQUESTED'); //현재상태
+  const [itemsPerPage] = useState(100);
+
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
+
+  const [selectedLendCard, setSelectedLendCard] =
+    useState<lendCardProps | null>(null);
+
   console.log('currentStatus:', currentStatus);
 
   const fetchItemsForPage = async (page: number) => {
@@ -35,6 +46,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/products/members`,
         {
+          params: { page: 0, size: 100 },
           headers: { Authorization: `Bearer ${accessToken}` },
         },
       ); // 실제 API 엔드포인트에 맞게 수정
@@ -86,7 +98,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
     // handlePageChange(currentPage);
     // setIsOpen(true);
   };
-
+  console.log('sekect', selectedLendCard);
   return (
     <WishListWrapper>
       {isItemCardClicked === true ? (
@@ -122,19 +134,31 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
         </LendWrapper>
       ) : null}
       <LendListWrapper>
-        {items?.map((item, index) => (
+        {isItemCardClicked && selectedLendCard ? (
           <LendCard
-            key={index}
-            lendCardData={item}
-            isItemCardClicked={isItemCardClicked}
+            lendCardData={selectedLendCard}
             setIsItemCardClicked={setIsItemCardClicked}
+            setSelectedLendCard={setSelectedLendCard}
+            currentStatus={currentStatus}
           />
-        ))}
+        ) : (
+          items?.map((item, index) => (
+            <LendCard
+              key={index}
+              lendCardData={item}
+              isItemCardClicked={isItemCardClicked}
+              setIsItemCardClicked={setIsItemCardClicked}
+              setSelectedLendCard={setSelectedLendCard}
+              currentStatus={currentStatus}
+              setCurrentStatus={setCurrentStatus}
+            />
+          ))
+        )}
         {/* {LENDCARD_DATA.map((item, index) => (
           <LendCard key={index} lendCardData={item} />
         ))} */}
       </LendListWrapper>
-      <div>
+      {/* <div>
         <Paging
           currentPage={currentPage}
           onPageChange={handlePageChange}
@@ -142,7 +166,7 @@ function LendList({ lendCardData }: { lendCardData: lendCardProps }) {
           totalItemsCount={totalItemsCount}
           totalPages={totalPages}
         />
-      </div>
+      </div> */}
     </WishListWrapper>
   );
 }

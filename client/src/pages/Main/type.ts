@@ -1,4 +1,4 @@
 export type ImageData = {
   image: string;
-  name: string;
+  // name?: string;
 };

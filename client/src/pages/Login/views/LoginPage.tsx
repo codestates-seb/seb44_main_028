@@ -3,33 +3,39 @@ import axios, { AxiosError } from 'axios';
 import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
 import KakaoLogin from '../components/KakaoLogin';
 import { LoginPageContainer } from '../style';
-import { ACCESS_TOKEN } from '../constants';
+import styled from 'styled-components';
+
+export const Logo = styled.div`
+  width: 260px;
+  height: 100px;
+  margin-right: 30px;
+  background: url('/logo.png') no-repeat center/cover;
+`;
+
+export const WelcomeNoticeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+`;
+
+export const WelcomeNotice = styled.p`
+  font-size: 18px;
+  font-weight: 100;
+  color: #656565;
+  margin: 5px 0 5px 0;
+`;
 
 function LoginPage() {
-  const navigate = useNavigate();
-  const decrypt = useDecryptToken();
-  const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN) || '';
-  const accessToken = decrypt(encryptedAccessToken);
-  const handleWithdrawal = async () => {
-    try {
-      await axios.delete(process.env.REACT_APP_API_URL + '/api/members', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      localStorage.removeItem(ACCESS_TOKEN);
-      navigate('/');
-    } catch (error: AxiosError | any) {
-      if (error.response.status === 401) {
-        alert('로그인이 만료되었습니다. 다시 로그인해주세요');
-      }
-      navigate('/login');
-    }
-  };
   return (
     <LoginPageContainer>
+      <Logo />
+      <WelcomeNoticeWrapper>
+        <WelcomeNotice>환영합니다.</WelcomeNotice>
+        <WelcomeNotice>간편한 소셜 로그인으로 시작해보세요.</WelcomeNotice>
+      </WelcomeNoticeWrapper>
       <KakaoLogin />
-      <button onClick={handleWithdrawal}>회원탈퇴 임시 버튼</button>
     </LoginPageContainer>
   );
 }

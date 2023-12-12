@@ -9,6 +9,7 @@ import {
   clickRightArrow,
 } from '../store/MonthlyReservationStore';
 import { ACCESS_TOKEN } from '../../Login/constants';
+import { decryptToken } from '../../../common/utils/helperFunctions/decryptToken';
 
 function MonthSwitchBtns() {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function MonthSwitchBtns() {
   const { itemId } = useParams<{ itemId: string }>();
   console.log('현재 날짜', current);
   const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
-  const accessToken = encryptedAccessToken || '';
+  const accessToken = decryptToken(encryptedAccessToken || '');
 
   const onClickBack = () => {
     if (current.month > 1) {

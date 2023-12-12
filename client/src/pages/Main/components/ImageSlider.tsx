@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 import { SliderWrapper, SliderButton, SliderDotsWrapper } from '../style';
 import { IMAGE_SLIDER } from '../constants';
@@ -40,10 +40,7 @@ const ImageSlider = () => {
           <MdOutlineChevronRight onClick={handleGoToNext} className="next" />
         </div>
       </SliderButton>
-      <img
-        src={IMAGE_SLIDER[currentIndex].image}
-        alt={IMAGE_SLIDER[currentIndex].name}
-      ></img>
+
       <SliderDotsWrapper>
         {IMAGE_SLIDER.map((_, index) => (
           <div key={index} onClick={() => goToSlide(index)}>

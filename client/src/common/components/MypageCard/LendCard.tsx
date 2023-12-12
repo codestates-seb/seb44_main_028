@@ -9,6 +9,7 @@ import {
   LendDatesWrapper,
   LendButtonWapper,
   LendTitleWrapper,
+  LendPeriod,
   LendImgWrapper,
   LendContentWrapper,
   ItemImage,
@@ -17,36 +18,75 @@ import { ACCESS_TOKEN } from '../../constants';
 import useDecryptToken from '../../utils/customHooks/useDecryptToken';
 import useGetMe from '../../utils/customHooks/useGetMe';
 import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
+import { ILendCard } from '../../model/ILendCard';
 
 const LendCard = ({
   lendCardData,
   setIsItemCardClicked,
+  setSelectedLendCard,
+  currentStatus,
+  setCurrentStatus,
+  isItemCardClicked,
+  setReqeustList,
+  setConfirmList,
+  setRejectedList,
+  setPastList,
+  handleProductClick,
 }: {
   lendCardData: lendCardProps;
-  isItemCardClicked: boolean;
+  isItemCardClicked?: boolean;
   setIsItemCardClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedLendCard: React.Dispatch<
+    React.SetStateAction<lendCardProps | null>
+  >;
+  currentStatus?: string | undefined;
+  setCurrentStatus?: React.Dispatch<React.SetStateAction<string>>;
+  setReqeustList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  setConfirmList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  setRejectedList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  setPastList?: React.Dispatch<React.SetStateAction<lendCardProps[]>>;
+  handleProductClick?: any;
 }) => {
   console.log('lendCardData:', lendCardData);
   const decrypt = useDecryptToken();
   const { data: userData } = useGetMe();
   console.log('userData', userData);
   const [items, setItems] = useState([]);
-  const [currentStatus, setCurrentStatus] = useState('');
+  const [page, setPage] = useState(0);
+  const [reservation, setReservation] = useState<ILendCard[]>([]);
+  // const [requestList, setReqeustList] = useState([]);
+  // const [confirmList, setConfirmList] = useState([]);
+  // const [rejectedList, setRejectedList] = useState([]);
+  // const [pastList, setPastList] = useState([]);
 
   console.log('currentStatus:', currentStatus);
 
   useEffect(() => {
     const fetchItems = async () => {
+      const encryptedAccessToken: string | null =
+        localStorage.getItem(ACCESS_TOKEN) || '';
+      const accessToken = decrypt(encryptedAccessToken);
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products/members`,
-        );
-        const processedItems = response.data.map((item: lendCardProps) => {
-          const { startDate, endDate } = processDataWithRegex(item.startDate);
-          return { ...item, startDate, endDate };
-        });
+          `${process.env.REACT_APP_API_URL}/api/reservations/products/${lendCardData.productId}`,
+          {
+            params: { size: 9, page: page, status: currentStatus },
 
-        setItems(processedItems);
+            headers: { Authorization: `Bearer ${accessToken}` },
+          },
+        );
+
+        if (currentStatus === 'REQUESTED' && setReqeustList) {
+          setReqeustList(response.data.reservations);
+        } else if (currentStatus === 'RESERVED' && setPastList) {
+          setPastList(response.data.reservations);
+        } else if (currentStatus === 'COMPLETED' && setConfirmList) {
+          setConfirmList(response.data.reservations);
+        } else if (currentStatus === 'CANCELED' && setRejectedList) {
+          setRejectedList(response.data.reservations);
+        }
+
+        if (reservation) console.log('받아온거', reservation);
       } catch (error) {
         console.error('아이템을 불러올 수없습니다.', error);
       }
@@ -74,6 +114,9 @@ const LendCard = ({
     }
   };
 
+  const handleReservationConfirm = () => {
+    // reservationConfirmed();
+  };
   //   const productCancel = async (productId: string, reservationId: string) => {
   //     const encryptedAccessToken: string | null =
   //       localStorage.getItem(ACCESS_TOKEN) || '';
@@ -104,11 +147,12 @@ const LendCard = ({
   //     }
   //   };
 
-  const handleProductClick = (e: any) => {
-    setCurrentStatus('REQUESTED');
-    setIsItemCardClicked(true);
-    console.log('handleProductClick을 눌렀습니다.:', e.target.value);
-  };
+  // const handleProductClick = (e: any) => {
+  //   //setCurrentStatus('REQUESTED');
+  //   setIsItemCardClicked(true);
+  //   setSelectedLendCard(lendCardData);
+  //   console.log('handleProductClick을 눌렀습니다.:', e.target.value);
+  // };
 
   return (
     <>
@@ -119,23 +163,24 @@ const LendCard = ({
         <LendContentWrapper>
           <LendTitleWrapper>{lendCardData.username}</LendTitleWrapper>
           <LendDatesWrapper>
-            <div>예약기간</div>
-            {lendCardData.status === 'CANCELED' ? (
+            <LendPeriod>예약기간</LendPeriod>
+            {currentStatus === 'CANCELED' ? (
               <div>{`${lendCardData.startDate}`}</div>
             ) : (
               <div>{`${lendCardData.startDate} - ${lendCardData.endDate}`}</div>
             )}
           </LendDatesWrapper>
           <LendButtonWapper>
-            {lendCardData.status === 'REQUESTED' && (
+            {currentStatus === 'REQUESTED' && (
               <DefaultBtn
                 color={colorPalette.whiteColor}
                 backgroundColor={colorPalette.deepMintColor}
+                // onClick={}
               >
                 예약 확정
               </DefaultBtn>
             )}
-            {lendCardData.status === 'REQUESTED' && (
+            {currentStatus === 'REQUESTED' && (
               <DefaultBtn
                 color={colorPalette.whiteColor}
                 backgroundColor={colorPalette.cancleButtonColor}

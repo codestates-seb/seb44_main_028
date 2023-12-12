@@ -333,10 +333,19 @@ export const Rating = styled(DefaultBtn)``;
 
 //WishList
 
-export const WishListWrapper = styled.div``;
+export const WishListWrapper = styled.div`
+  display: flex;
+`;
+export const WishCardWrapper = styled.div`
+  display: flex;
+  grid-template-columns: 1fr 1fr 1fr;
+`;
 export const LendListWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+`;
+export const LendListContainer = styled.div`
+  display: flex;
 `;
 //BorrowList
 

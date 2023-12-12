@@ -1,77 +1,58 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import useDecryptToken from '../../../common/utils/customHooks/useDecryptToken';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import { makeDateFilledWithZero } from '../../../common/utils/helperFunctions/makeDateFilledWithZero';
 import BigBtn from '../../../common/components/Button';
 import { RootState } from '../../../common/store/RootStore';
-import { IReservationData } from '../model/IReservationData';
 import { colorPalette } from '../../../common/utils/enum/colorPalette';
 import { ACCESS_TOKEN } from '../../Login/constants';
+import { calculateDateDifference } from '../../../common/utils/helperFunctions/calculateDateDifference';
+import usePostReservationData from '../../../common/utils/customHooks/usePostReservationData';
+import { decryptToken } from '../../../common/utils/helperFunctions/decryptToken';
+import { QUERY_KEY } from '../../../common/utils/queryKey';
 
-const sendReservationData = async ({
-  startDate,
-  endDate,
-  productId,
-  accessToken,
-}: IReservationData) => {
-  console.log('startDate', startDate);
-  console.log('endDate', endDate);
-  try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/reservations/products/${productId}`,
-      {
-        startDate: startDate,
-        endDate: endDate,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-    console.log('1. POST 요청에 대한 응답', response);
-    return response.data;
-  } catch (error) {
-    console.log('POST 요청 시 에러', error);
-  }
+type ReservationBtnProps = {
+  minimumRentalPeriod: number;
 };
 
-function ReservationBtn() {
+function ReservationBtn({ minimumRentalPeriod }: ReservationBtnProps) {
   const { itemId } = useParams<{ itemId: string }>();
   // 유저가 선택한 날짜를 가져온다.
   const currentReservationDate = useSelector(
     (state: RootState) => state.reservation,
   );
-  console.log('시작 날짜', currentReservationDate.startDate);
-  console.log('마감 날짜', currentReservationDate.endDate);
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
+  const sendReservationData = usePostReservationData();
 
   const mutation = useMutation(sendReservationData, {
     onSuccess: () => {
-      queryClient.invalidateQueries('reservation');
+      queryClient.invalidateQueries(QUERY_KEY.RESERVATION);
+      navigate('/mypage');
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: AxiosError) => {
+      console.log(error.message);
     },
   });
 
-  const decrypt = useDecryptToken();
   const encryptedAccessToken = localStorage.getItem(ACCESS_TOKEN);
-  if (!encryptedAccessToken) {
-    alert('로그인이 필요합니다.');
-    return null;
-  }
-  const accessToken = decrypt(encryptedAccessToken);
+  const accessToken = decryptToken(encryptedAccessToken || '');
+  console.log('accessToken', accessToken);
 
   const handleReservationClick = () => {
     const startDate = currentReservationDate.startDate;
     const endDate = currentReservationDate.endDate;
+
     if (!startDate || !endDate) {
       alert('날짜를 선택해주세요');
-      return null;
+      return;
+    }
+
+    if (calculateDateDifference(startDate, endDate) < minimumRentalPeriod) {
+      alert('최소 대여 기간보다 짧게 예약할 수 없습니다.');
+      return;
     }
 
     mutation.mutate({
@@ -91,6 +72,7 @@ function ReservationBtn() {
       width={175}
       children={'예약하기'}
       onClick={handleReservationClick}
+      style={{ marginTop: '20px' }}
     />
   );
 }

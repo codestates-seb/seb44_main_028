@@ -3,6 +3,7 @@ import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import { BsFillHeartFill } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
+import { priceForMatter } from '../../utils/helperFunctions/priceForMatter';
 import {
   ItemCardContainer,
   ItemImage,
@@ -19,6 +20,8 @@ import useDecryptToken from '../../utils/customHooks/useDecryptToken';
 import { ACCESS_TOKEN } from '../../constants';
 import { IInterest } from '../../model/IInterest';
 import useGetMe from '../../utils/customHooks/useGetMe';
+import { addressForMatter } from '../../../pages/MyPage/helper/addressForMatter';
+import { QUERY_KEY } from '../../utils/queryKet';
 
 const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   const navigate = useNavigate();
@@ -42,7 +45,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
   }, []);
 
   const { data: interestItems, refetch } = useQuery(
-    'interests',
+    QUERY_KEY.INTERESTS,
     () =>
       axios.get(`${process.env.REACT_APP_API_URL}/api/members/interests/find`, {
         headers: {
@@ -67,7 +70,7 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
           },
         },
       )
-      .then((res) => {
+      .then(() => {
         setIsHeartClicked(true);
         refetch();
       }),
@@ -137,13 +140,15 @@ const ItemCard = ({ itemCardData }: { itemCardData: ItemCardProps }) => {
         <ItemDescription>{itemCardData.content}</ItemDescription>
         <ItemLocationWrapper>
           <MdLocationOn />
-          <span>{itemCardData.address}</span>
+          <span>{addressForMatter(itemCardData.address)}</span>
         </ItemLocationWrapper>
       </ItemInfo>
       <PriceFavoriteWrapper isHeartClicked={isHeartClicked}>
         <ItemPrice>
-          {`최소 대여기간 ${itemCardData.minimumRentalPeriod}일 고정금 ${itemCardData.baseFee}
-          만원 / 1일 ${itemCardData.feePerDay}만원`}
+          {`최소 대여기간 ${
+            itemCardData.minimumRentalPeriod
+          }일 고정금 ${priceForMatter(itemCardData.baseFee)}
+          원 / 1일 ${priceForMatter(itemCardData.feePerDay)}원`}
         </ItemPrice>
         <BsFillHeartFill onClick={handleHeartClick} />
       </PriceFavoriteWrapper>

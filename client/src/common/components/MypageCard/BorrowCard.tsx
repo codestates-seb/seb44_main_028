@@ -4,6 +4,9 @@ import { DefaultBtn } from '../Button';
 import { borrowCardProps } from '../../type';
 import { processDataWithRegex } from '../../utils/helperFunctions/processDataWithRegex';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/ko';
 import {
   BorrowCardWrapper,
   DatesWrapper,
@@ -22,6 +25,8 @@ const BorrowCard = ({
 }: {
   borrowCardData: borrowCardProps;
 }) => {
+  const now = dayjs();
+
   const [items, setItems] = useState([] as borrowCardProps[]);
   const [canceled, setCanceled] = useState(false);
 
@@ -89,11 +94,20 @@ const BorrowCard = ({
           <ContentWrapper>
             <TitleWrapper>{borrowCardData.title}</TitleWrapper>
             <DatesWrapper>
-              <div>예약기간</div>
               {borrowCardData.status === 'CANCELED' ? (
-                <div>{`${borrowCardData.startDate}`}</div>
+                <>
+                  <div>취소된 날짜</div>
+                  <div>
+                    <span className="product-date">
+                      {now.format('YYYY.MM.DD')}
+                    </span>
+                  </div>
+                </>
               ) : (
-                <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+                <>
+                  <div>예약기간</div>
+                  <div>{`${borrowCardData.startDate} - ${borrowCardData.endDate}`}</div>
+                </>
               )}
             </DatesWrapper>
 

@@ -4,6 +4,7 @@ import { colorPalette } from '../utils/enum/colorPalette';
 import { fontSize } from '../utils/enum/fontSize';
 import { border } from '../utils/enum/border';
 import { borderRadius } from '../utils/enum/borderRadius';
+import { WishCardWrapper } from '../../pages/MyPage/style';
 
 // ScrollToTop 컴포넌트의 스타일을 정의
 export const ScrollToTopButtonContainer = styled.div`
@@ -118,6 +119,7 @@ export const ItemCardListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 8.063rem;
+
   & p {
     font-size: 24px;
     margin-bottom: 1.25rem;
@@ -132,6 +134,7 @@ export const ItemCardWrapper = styled.div`
 export const ItemCardContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 2rem;
   width: 22.5rem;
   height: 22rem;
   border-bottom: 1px solid ${colorPalette.borderColor};
@@ -397,7 +400,6 @@ export const DatesWrapper = styled.div`
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
   div {
-    margin-bottom: -0.5rem;
     transform: translateY(1rem);
   }
 `;
@@ -425,6 +427,9 @@ export const ButtonWapper = styled.div`
   }
 `;
 //LendCard
+export const WishListWrapper = styled.div``;
+export const LendWrapper = styled.div``;
+export const LendListWrapper = styled.div``;
 export const LendCardWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -462,12 +467,10 @@ export const LendDatesWrapper = styled.div`
   width: 10rem;
   font-size: ${fontSize.small};
   color: ${colorPalette.grayTextColor};
-  div {
-    margin-bottom: -0.5rem;
-    transform: translateY(1rem);
-  }
 `;
-
+export const LendPeriod = styled.p`
+  margin-bottom: 0.5rem;
+`;
 export const LendTitleWrapper = styled.div`
   display: flex;
   /* border: 1px solid black; */

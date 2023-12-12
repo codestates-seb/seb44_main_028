@@ -15,8 +15,6 @@ export const ItemContentContainer = styled.div`
 export const ItemInfoWrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 33.75rem;
-  width: 100%;
   margin-bottom: 5rem;
 `;
 export const ItemImageWrapper = styled.div`
@@ -154,9 +152,11 @@ export const ItemTagWrapper = styled.div`
   margin-right: 1rem;
 `;
 export const StyledSlider = styled(Slider)`
-  width: 49.5rem;
-  height: 33.75rem;
   margin-right: 0;
+
+  .slick-dots li.slick-active button:before {
+    color: white !important;
+  }
 
   .slick-slide div {
     cursor: pointer;
@@ -174,8 +174,6 @@ export const StyledSlider = styled(Slider)`
 `;
 
 export const ImageCarouselContainer = styled.div`
-  width: 49.5rem;
-  height: 33.75rem;
   ul {
     transform: translateY(-2.5rem);
   }
@@ -183,7 +181,5 @@ export const ImageCarouselContainer = styled.div`
 export const ItemImageBox = styled.div`
   & img {
     margin-right: 0;
-    width: 49.5rem;
-    height: 33.75rem;
   }
 `;

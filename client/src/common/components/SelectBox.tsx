@@ -22,13 +22,11 @@ const SelectBox = ({
   const [onClick, setOnClick] = useState(false);
   const selectBoxRef = useRef<HTMLDivElement>(null);
 
-  console.log(selectOptionData);
   const onClickHandler = () => {
     setOnClick(!onClick);
   };
   const selectOption = (e: React.MouseEvent<HTMLLIElement>) => {
     const optionValue = e.currentTarget.innerText as string;
-    console.log(optionValue);
     optionValue && setSelectedValue?.(optionValue);
   };
   const handleClickOutside = (e: MouseEvent) => {

@@ -53,3 +53,7 @@ export const SliderDotsWrapper = styled.div`
     opacity: 0.5;
   }
 `;
+export const MainImageCarousel = styled.div`
+  padding-top: 4.1rem;
+  margin-bottom: 2rem;
+`;

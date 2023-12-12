@@ -21,6 +21,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, String
                                                                                                     ReservationStatus status,
                                                                                                     String productId);
 
+    List<Reservation> findReservationByStatus(ReservationStatus status);
+
     @Query("SELECT r " +
             "FROM Reservation r " +
             "WHERE r.product.productId = :productId AND r.status != :status " +

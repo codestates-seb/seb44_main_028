@@ -27,8 +27,11 @@ import { set } from 'react-hook-form';
 import { LocationProps } from '../type';
 import { access } from 'fs';
 import { useLocation } from 'react-router-dom';
+import { addressForMatter } from '../helper/addressForMatter';
+import useScrollToTop from '../../../common/utils/customHooks/useScrollToTop';
 
 function MypageProfile() {
+  useScrollToTop();
   const queryClient = useQueryClient();
   const decrypt = useDecryptToken();
 
@@ -92,11 +95,7 @@ function MypageProfile() {
         `${process.env.REACT_APP_API_URL}/api/members/location`,
         formData,
         { headers: { Authorization: `Bearer ${accessToken}` } },
-        // {
-        //   headers: {
-        //     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJJZCI6MSwic3ViIjoiZGFkYSIsImlhdCI6MTY4OTY2MTE3NiwiZXhwIjoxNjkwMjYxMTc2fQ.ri4YulVTAY7oAH_Xc-1Vm8mlFVXyMcKOf3gVAsc_SkIEE64AsI7ZVgrmF5yQpEdf1kuXhtXLO9zCUmvgnwhRQw`,
-        //   },
-        // },
+        //
       )
       .then((res) => {
         console.log(res);
@@ -138,7 +137,7 @@ function MypageProfile() {
             {isGetLocationData && (
               <LocationContent>
                 <FaMapMarkerAlt />
-                <div>{isGetLocationData}</div>
+                <div>{addressForMatter(isGetLocationData)}</div>
               </LocationContent>
             )}
             <TownBtn onClick={handleLocation}>내 동네 설정</TownBtn>
@@ -150,15 +149,6 @@ function MypageProfile() {
           <GradeIcon {...iconProps} />
         </EvaluationItem>
         <EvaluationScore></EvaluationScore>
-        {/* <BorrowCard
-          borrowCardData={{
-            title: '감자팔아요',
-            image: '',
-            status: 'REQUESTED',
-            startDate: '2021-01-12',
-            endDate: '2050-12-10',
-          }}
-        /> */}
       </MypageRight>
     </MypageProfileWrapper>
   );
