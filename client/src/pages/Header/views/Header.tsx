@@ -42,11 +42,11 @@ function Header() {
   };
   return (
     <HeaderContainer>
-      <LogoWrapper>
+      <LogoWrapper data-testid="logo">
         <Link to="/">{LogoText}</Link>
       </LogoWrapper>
       <NavWrapper>
-        <ol>
+        <ol data-testid="list">
           {NavMenuList.map((NavMenu, index) => (
             <NavList key={index}>
               <Link to={NavMenu.href}>{NavMenu.title}</Link>
