@@ -77,6 +77,7 @@ const UploadImages = ({
           id="input-file"
           multiple
           onChange={handleAddImages}
+          data-testid="input-file"
         />
         <BiSolidCameraPlus />
         <UploadImageCountWrapper>
