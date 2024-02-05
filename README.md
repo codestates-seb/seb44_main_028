@@ -12,7 +12,7 @@
   <li><strong>프로젝트 명:</strong> Playpack</li>
   <li><strong>팀 명:</strong> FT I랜드</li>
   <li><strong>프로젝트 기간:</strong> 23.06.28 ~ 23.07.24</li>
-  <li><strong>팀 원:</strong> 이민선, 박채연, 허금희, 최민환, 김아영, 이명규</li>
+  <li><strong>팀 원:</strong> 이민선, 박채연, 허도원, 최민환, 김아영, 이명규</li>
 </ul>
 
 
@@ -25,7 +25,7 @@
 <tr>
 <th>이민선 <br>(FE 팀장)</th>
 <th>박채연 <br>(FE 팀원)</th>
-<th>허금희 <br>(FE 팀원)</th>
+<th>허도원 <br>(FE 팀원)</th>
 <th>최민환 <br>(BE 부팀장)</th>
 <th>김아영 <br>(BE 팀원)</th>
 <th>이명규 <br>(BE 팀원)</th>
